@@ -1,0 +1,1 @@
+task --> intervallo_temporale oppure data inizia data fine
