@@ -18,7 +18,7 @@ public interface Task {
     
     int getKey();
     
-    void setNumCollaborator(int num);
+    void setNumCollaborator(int num); //tramite questa si può anche modificare il numCollaboratori
     
     int getNumCollaborator();
     
@@ -40,15 +40,15 @@ public interface Task {
     
     Map<Skill, Integer> getSkill();
     
-    void setSkill(Map<Skill, Integer> skill_level);
+    void setSkill(Map<Skill, Integer> skill_levelMin);
     
-    void addSkill(Skill skill, int level);
+    void addSkill(Skill skill, int levelMin);
     
     List<Developer> getCollaborators();
     
     Developer getCollaborator(int key);
     
-    void setCollaborator(List<Developer>);
+    void setCollaborator(List<Developer> listDev);
     
     void addCollaborator(Developer collaborator);
     

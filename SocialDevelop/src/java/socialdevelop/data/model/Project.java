@@ -23,22 +23,29 @@ public interface Project  {
         
     String getDescription();
     
-    void setDescription(String description);
+    void setDescription(String description); //va bene anche per la modifica
     
     Developer getCoordinator();
     
     void setCoordinator(Developer coordinator);
     
-    List<Task> getTask();
+    List<Task> getTasks();
     
-    void setTask(List<Task> tasks);
+    void setTasks(List<Task> tasks);
     
     void addTask(Task task);
     
-    List<Message> getMessages();
+    void removeTask(Task task);
     
+    List<Message> getMessages();
+        
     void addMessage(Message message);
     
+    void removeMessage(Message message);
+    
     boolean isFull();
+    
+    List<Project> getProjects(String filtro);
+    
     
 }

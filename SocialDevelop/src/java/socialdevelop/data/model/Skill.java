@@ -32,10 +32,8 @@ public interface Skill {
     void addChild(Skill child);
     
     List<Developer> getDevelopers();
-    
-    
+        
     Map<Developer, Integer> getDevelopersByLevel(int level);
     
-
     
 }
