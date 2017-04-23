@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/SocialDevelop"/>
+<Resource
+        name="jdbc/socialdevDB" 
+        type="javax.sql.DataSource"
+        auth="Container" 
+        driverClassName="com.mysql.jdbc.Driver"
+        url="jdbc:mysql://localhost/socialdevDB"
+        username=""
+        password=""
+        maxActive="10"
+        maxIdle="5"
+        maxWait="10000"
+    />

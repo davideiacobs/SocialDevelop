@@ -46,17 +46,7 @@ public interface Developer {
     void setBiography(String biography);
     
     String getBiography();
-        
-    List<Task> getTasks();
-    
-    //per recuperare i voti relativi ai task a cui 
-    //il developer ha partecipato, basta un array assoc
-    //con Task-Voto, perchè è possibile risalire alle info
-    //del coordinatore che ha lasciato la valutazione attraverso il task
-    //stesso che ha un unico coordinatore
-    Map<Task, Integer> getTaskWithFeedback(); 
-    //"valutazione" va bene come Integer???
-    
+      
     void setCurriculum(File curriculum);
     
     void setCurriculum(String curriculum);
@@ -68,6 +58,14 @@ public interface Developer {
     void setSkills(Map<Skill, Integer> skills);
     
     Map<Skill, Integer> getSkills();
+
+    //per recuperare i voti relativi ai task a cui 
+    //il developer ha partecipato, basta un array assoc
+    //con Task-Voto, perchè è possibile risalire alle info
+    //del coordinatore che ha lasciato la valutazione attraverso il task
+    //stesso che ha un unico coordinatore
+    Map<Task, Integer> getTasksWithFeedback(); 
+    //"valutazione" va bene come Integer???
     
     void addSkill(Skill skill, int level);
     
@@ -75,9 +73,7 @@ public interface Developer {
     
     void modSkillLevel(Skill skill, int level);
     
-    List<Project> getProjects ();
-    
-    
+    //List<Project> getProjects ();
     
     
 }

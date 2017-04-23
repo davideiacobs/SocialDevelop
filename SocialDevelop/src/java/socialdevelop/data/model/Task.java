@@ -7,6 +7,7 @@ package socialdevelop.data.model;
 
 import java.time.Period;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
@@ -38,30 +39,20 @@ public interface Task {
     
     Type getType();
     
-    Map<Skill, Integer> getSkill();
+    Map<Skill, Integer> getSkills();
     
-    void setSkill(Map<Skill, Integer> skill_levelMin);
+    void setSkills(Map<Skill, Integer> skill_levelMin);
     
     void addSkill(Skill skill, int levelMin);
     
     List<Developer> getCollaborators();
-    
-    Developer getCollaborator(int key);
-    
-    void setCollaborator(List<Developer> listDev);
+        
+    void setCollaborators(List<Developer> listDev);
     
     void addCollaborator(Developer collaborator);
     
     void removeCollaborator(Developer collaborator);
-    
-    void setState(Developer collaborator);
-    
-    int getState(Developer collaborator);
-    
-    Date getDataReq(Developer collaborator);
-    
-    void setDataReq(Developer collaborator, Date dataReq);
-    
+        
     int getVote(Developer collaborator);
     
     void setVote(Developer collaborator, int vote);

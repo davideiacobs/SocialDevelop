@@ -5,6 +5,7 @@
  */
 package socialdevelop.data.model;
 
+import it.univaq.f4i.iw.framework.data.DataLayerException;
 import java.util.List;
 
 
@@ -23,11 +24,11 @@ public interface Project  {
         
     String getDescription();
     
-    void setDescription(String description); //va bene anche per la modifica
-    
-    Developer getCoordinator();
-    
+    void setDescription(String description);
+        
     void setCoordinator(Developer coordinator);
+    
+    Developer getCoordinator() throws DataLayerException;
     
     List<Task> getTasks();
     
@@ -38,14 +39,13 @@ public interface Project  {
     void removeTask(Task task);
     
     List<Message> getMessages();
+    
+    List<Message> getPublicMessages();
         
     void addMessage(Message message);
     
     void removeMessage(Message message);
     
     boolean isFull();
-    
-    List<Project> getProjects(String filtro);
-    
     
 }

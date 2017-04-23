@@ -5,30 +5,30 @@
  */
 package socialdevelop.data.model;
 
-import java.util.List;
-import java.util.Map;
+import java.util.GregorianCalendar;
 
 /**
  *
  * @author david
  */
 
-public interface Skill {
+//non va nel data model, ma serve
+
+
+public class CollaborationRequestImpl {
     
-    int getKey();
+    int key;
     
-    void setName(String name);
+    Developer coordinator;
     
-    String getName();
+    Task task;
     
-    List<Skill> getChild();
+    Developer collaborator;
     
-    Skill getParent();
+    GregorianCalendar data;
     
-    void setParent(Skill parent);
+    int state;
     
-    void setChild(List<Skill> skills);
     
-    void addChild(Skill child);
     
 }
