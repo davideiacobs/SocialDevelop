@@ -27,6 +27,8 @@ public interface Message {
     
     String getType();
     
-   
+    void setDirty(boolean dirty);
+
+    boolean isDirty();
     
 }

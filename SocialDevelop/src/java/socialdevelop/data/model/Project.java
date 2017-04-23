@@ -30,7 +30,7 @@ public interface Project  {
     
     Developer getCoordinator() throws DataLayerException;
     
-    List<Task> getTasks();
+    List<Task> getTasks() throws DataLayerException;
     
     void setTasks(List<Task> tasks);
     
@@ -38,14 +38,15 @@ public interface Project  {
     
     void removeTask(Task task);
     
-    List<Message> getMessages();
+    List<Message> getMessages() throws DataLayerException;
     
-    List<Message> getPublicMessages();
+    //List<Message> getPublicMessages() throws DataLayerException;
         
     void addMessage(Message message);
     
     void removeMessage(Message message);
-    
-    boolean isFull();
-    
+        
+    void setDirty(boolean dirty);
+
+    boolean isDirty();
 }

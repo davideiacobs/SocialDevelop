@@ -31,4 +31,7 @@ public interface Skill {
     
     void addChild(Skill child);
     
+    void setDirty(boolean dirty);
+
+    boolean isDirty();
 }

@@ -5,9 +5,8 @@
  */
 package socialdevelop.data.model;
 
+import it.univaq.f4i.iw.framework.data.DataLayerException;
 import java.time.Period;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
@@ -19,13 +18,13 @@ public interface Task {
     
     int getKey();
     
-    void setNumCollaborator(int num); //tramite questa si può anche modificare il numCollaboratori
+    void setNumCollaborators(int num); //tramite questa si può anche modificare il numCollaboratori
     
-    int getNumCollaborator();
+    int getNumCollaborators();
     
     boolean isOpen();
     
-    void setOpen();
+    void setOpen(boolean isOpen);
     
     void setDescription(String description);
     
@@ -37,25 +36,34 @@ public interface Task {
     
     void setType(Type type);
     
-    Type getType();
+    Type getType() throws DataLayerException;
     
-    Map<Skill, Integer> getSkills();
+    Map<Skill, Integer> getSkills() throws DataLayerException;
     
     void setSkills(Map<Skill, Integer> skill_levelMin);
     
     void addSkill(Skill skill, int levelMin);
     
-    List<Developer> getCollaborators();
+    void removeSkill(Skill skill);
+    
+    Map<Developer,Integer> getCollaborators() throws DataLayerException;
         
-    void setCollaborators(List<Developer> listDev);
+    void setCollaborators(List<Developer> listDev); 
+    //al momento del setCollaborators Integer è null
     
     void addCollaborator(Developer collaborator);
+    //voto all'inizio è null
     
     void removeCollaborator(Developer collaborator);
         
-    int getVote(Developer collaborator);
+    int getVote(Developer collaborator) throws DataLayerException;
     
     void setVote(Developer collaborator, int vote);
     
+    boolean isFull();
+
+    void setDirty(boolean dirty);
+
+    boolean isDirty();
     
 }

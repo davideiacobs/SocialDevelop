@@ -75,5 +75,8 @@ public interface Developer {
     
     //List<Project> getProjects ();
     
+    void setDirty(boolean dirty);
+
+    boolean isDirty();
     
 }

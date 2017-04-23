@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package socialdevelop.data.model;
+package socialdevelop.data.impl;
 
 import java.util.GregorianCalendar;
+import socialdevelop.data.model.Developer;
+import socialdevelop.data.model.Task;
 
 /**
  *

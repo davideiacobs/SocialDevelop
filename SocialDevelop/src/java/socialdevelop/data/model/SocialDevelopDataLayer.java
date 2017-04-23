@@ -37,6 +37,14 @@ public interface SocialDevelopDataLayer extends DataLayer {
     
     Skill getSkill(int skill_key);
     
+    Map<Skill, Integer> getSkills(Task task) throws DataLayerException;
+    
+    Map<Developer,Integer> getCollaborators(Task task) throws DataLayerException;
+    
+    int getVote(Task task, Developer developer) throws DataLayerException;
+    
+    Type getType(Task task) throws DataLayerException;
+    
     Developer getDeveloper(int developer_key);
     
     //List<Developer> getDevelopersBySkill(Skill filtro);
@@ -45,12 +53,15 @@ public interface SocialDevelopDataLayer extends DataLayer {
     
     Map<Developer, Integer> getDevelopersBySkill(Skill filtro, int level);
     
-    Task getTask(int task_key);
+    //Task getTask(int task_key);
     
-    Message getMessage(int message_key);
+    List<Task> getTasks(Project project) throws DataLayerException;
+    
+    //Message getMessage(int message_key);
     //recupera oggetto message
+    List<Message> getMessages(Project project) throws DataLayerException;
     
-    Message getMessages(int project_key, int developer_key); 
+    Message getPublicMessages(int project_key, int developer_key); 
     //se il developer appartiene al progetto chiama la getMessage di Project che restituisce tutti
     //i messaggi, altrimenti chiama quella che restituisce i soli messaggi pubblici
     

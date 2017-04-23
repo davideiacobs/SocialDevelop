@@ -16,4 +16,7 @@ public interface Type {
     
     String getType();
     
+    void setDirty(boolean dirty);
+
+    boolean isDirty();
 }
