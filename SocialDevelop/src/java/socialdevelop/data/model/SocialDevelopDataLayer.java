@@ -65,6 +65,10 @@ public interface SocialDevelopDataLayer extends DataLayer {
     //se il developer appartiene al progetto chiama la getMessage di Project che restituisce tutti
     //i messaggi, altrimenti chiama quella che restituisce i soli messaggi pubblici
     
+    List<Skill> getChild(Skill skill) throws DataLayerException;
+    
+    Skill getParent(Skill skill)throws DataLayerException;
+ 
     List<Developer> getProjectCollaborators(int project_key) throws DataLayerException;
     //utilizza getTasks
     

@@ -5,6 +5,7 @@
  */
 package socialdevelop.data.model;
 
+import it.univaq.f4i.iw.framework.data.DataLayerException;
 import java.util.List;
 import java.util.Map;
 
@@ -21,11 +22,11 @@ public interface Skill {
     
     String getName();
     
-    List<Skill> getChild();
+    List<Skill> getChild() throws DataLayerException;
     
-    Skill getParent();
+    Skill getParent()throws DataLayerException;
     
-    void setParent(Skill parent);
+    void setParent(Skill skill);
     
     void setChild(List<Skill> skills);
     
