@@ -51,4 +51,8 @@ public class TypeImpl implements Type{
     public boolean isDirty() {
         return dirty;
     }
+    
+    protected void setKey(int key) {
+        this.key = key;
+    }
 }

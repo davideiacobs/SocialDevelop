@@ -109,6 +109,10 @@ public class CollaborationRequestImpl implements CollaborationRequest{
         return dirty;
     }
     
+    protected void setKey(int key) {
+        this.key = key;
+    }
+    
     
     
     

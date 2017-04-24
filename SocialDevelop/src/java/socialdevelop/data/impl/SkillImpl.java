@@ -91,4 +91,8 @@ public class SkillImpl implements Skill{
     public boolean isDirty() {
         return dirty;
     }
+    
+    protected void setKey(int key) {
+        this.key = key;
+    }
 }   

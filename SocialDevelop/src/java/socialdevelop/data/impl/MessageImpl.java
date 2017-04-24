@@ -79,4 +79,7 @@ public class MessageImpl implements Message{
         return dirty;
     }
     
+    protected void setKey(int key) {
+        this.key = key;
+    }
 }

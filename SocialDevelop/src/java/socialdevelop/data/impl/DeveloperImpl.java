@@ -201,6 +201,10 @@ public class DeveloperImpl implements Developer {
     public boolean isDirty() {
         return dirty;
     }
+    
+    protected void setKey(int key) {
+        this.key = key;
+    }
       
 
 }

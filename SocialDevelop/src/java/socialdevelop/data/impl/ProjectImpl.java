@@ -146,4 +146,7 @@ public class ProjectImpl implements Project {
         return dirty;
     }
     
+    protected void setKey(int key) {
+        this.key = key;
+    }
 }
