@@ -12,6 +12,8 @@ package socialdevelop.data.model;
 
 public interface Type {
     
+    int getKey();
+    
     void setType(String type);
     
     String getType();

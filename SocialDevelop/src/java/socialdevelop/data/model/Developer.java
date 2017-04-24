@@ -5,6 +5,7 @@
  */
 package socialdevelop.data.model;
 
+import it.univaq.f4i.iw.framework.data.DataLayerException;
 import java.io.File;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -57,14 +58,14 @@ public interface Developer {
     
     void setSkills(Map<Skill, Integer> skills);
     
-    Map<Skill, Integer> getSkills();
+    Map<Skill, Integer> getDeveloperSkills() throws DataLayerException;
 
     //per recuperare i voti relativi ai task a cui 
     //il developer ha partecipato, basta un array assoc
     //con Task-Voto, perchè è possibile risalire alle info
     //del coordinatore che ha lasciato la valutazione attraverso il task
     //stesso che ha un unico coordinatore
-    Map<Task, Integer> getTasksWithFeedback(); 
+    Map<Task, Integer> getDeveloperTasks() throws DataLayerException; 
     //"valutazione" va bene come Integer???
     
     void addSkill(Skill skill, int level);

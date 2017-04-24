@@ -5,6 +5,7 @@
  */
 package socialdevelop.data.model;
 
+import it.univaq.f4i.iw.framework.data.DataLayerException;
 import java.util.GregorianCalendar;
 
 /**
@@ -15,13 +16,13 @@ public interface CollaborationRequest {
     
     int getKey();
     
-    Developer getCoordinator();
+    Developer getCoordinatorRequest() throws DataLayerException;
     
-    void setCoordinator(Developer coordinator);
+    void setCoordinatorRequest(Developer coordinator);
     
-    Developer getCollaborator();
+    Developer getCollaboratorRequest() throws DataLayerException;
     
-    void setCollaborator(Developer collaborator);
+    void setCollaboratorRequest(Developer collaborator);
     
     GregorianCalendar getDate();
     
@@ -31,7 +32,11 @@ public interface CollaborationRequest {
     
     void setState(int state);
     
-    Task getTask();
+    Task getTaskRequest() throws DataLayerException;
     
-    void setTask(Task task);
+    void setTaskRequest(Task task);
+    
+    void setDirty(boolean dirty);
+
+    boolean isDirty();
 }

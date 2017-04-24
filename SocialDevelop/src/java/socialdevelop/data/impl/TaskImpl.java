@@ -113,9 +113,9 @@ public class TaskImpl implements Task{
     }
     
     @Override
-    public Map<Skill, Integer> getSkills() throws DataLayerException{
+    public Map<Skill, Integer> getSkillsForTask() throws DataLayerException{
         if(skills == null){
-            skills = ownerdatalayer.getSkills(this);
+            skills = ownerdatalayer.getSkillsForTask(this);
         }
         return skills;
     }

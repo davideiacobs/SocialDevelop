@@ -10,6 +10,7 @@ import it.univaq.f4i.iw.framework.data.DataLayerException;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+import socialdevelop.data.impl.CollaborationRequestImpl;
 
 /**
  *
@@ -27,8 +28,6 @@ public interface SocialDevelopDataLayer extends DataLayer {
         
     Message createMessage();
     
-    
-    
     Project getProject(int project_key) throws DataLayerException;
     
     List<Project> getProjects() throws DataLayerException;
@@ -37,7 +36,13 @@ public interface SocialDevelopDataLayer extends DataLayer {
     
     Skill getSkill(int skill_key);
     
-    Map<Skill, Integer> getSkills(Task task) throws DataLayerException;
+    Map<Skill, Integer> getSkillsForTask(Task task) throws DataLayerException;
+    
+    Map<Skill, Integer> getDeveloperSkills(Developer developer) throws DataLayerException;
+    
+    Map<Task, Integer> getDeveloperTasks(Developer developer) throws DataLayerException;
+    
+    Developer getCoordinatorRequest(Task task) throws DataLayerException;
     
     Map<Developer,Integer> getCollaborators(Task task) throws DataLayerException;
     
@@ -56,6 +61,8 @@ public interface SocialDevelopDataLayer extends DataLayer {
     //Task getTask(int task_key);
     
     List<Task> getTasks(Project project) throws DataLayerException;
+    
+    Task getTaskRequest(CollaborationRequest request) throws DataLayerException;
     
     //Message getMessage(int message_key);
     //recupera oggetto message
@@ -85,6 +92,7 @@ public interface SocialDevelopDataLayer extends DataLayer {
     List<Task> getOfferts(int developer_key); 
     //richiede la lista delle skills del developer e cerca i task aperti che richiedono
     //tali skills
-    
+
+    Developer getCollaboratorRequest(CollaborationRequestImpl request) throws DataLayerException;
     
 }

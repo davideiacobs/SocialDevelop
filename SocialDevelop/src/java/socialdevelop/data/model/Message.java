@@ -21,7 +21,7 @@ public interface Message {
     
     void setPrivate(boolean flag);
     
-    boolean getPrivate();
+    boolean isPrivate();
     
     void setType(String type); //type in {annuncio,discussione,richiesta}
     
