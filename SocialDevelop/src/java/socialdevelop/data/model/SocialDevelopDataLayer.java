@@ -36,11 +36,11 @@ public interface SocialDevelopDataLayer extends DataLayer {
     
     Skill getSkill(int skill_key);
     
-    Map<Skill, Integer> getSkillsForTask(Task task) throws DataLayerException;
+    Map<Skill, Integer> getSkillsByTask(Task task) throws DataLayerException;
     
-    Map<Skill, Integer> getDeveloperSkills(Developer developer) throws DataLayerException;
+    Map<Skill, Integer> getSkillsByDeveloper(Developer developer) throws DataLayerException;
     
-    Map<Task, Integer> getDeveloperTasks(Developer developer) throws DataLayerException;
+    Map<Task, Integer> getTasksByDeveloper(Developer developer) throws DataLayerException;
     
     Developer getCoordinatorRequest(Task task) throws DataLayerException;
     

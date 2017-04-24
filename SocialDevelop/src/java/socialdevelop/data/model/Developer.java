@@ -58,14 +58,14 @@ public interface Developer {
     
     void setSkills(Map<Skill, Integer> skills);
     
-    Map<Skill, Integer> getDeveloperSkills() throws DataLayerException;
+    Map<Skill, Integer> getSkillsByDeveloper() throws DataLayerException;
 
     //per recuperare i voti relativi ai task a cui 
     //il developer ha partecipato, basta un array assoc
     //con Task-Voto, perchè è possibile risalire alle info
     //del coordinatore che ha lasciato la valutazione attraverso il task
     //stesso che ha un unico coordinatore
-    Map<Task, Integer> getDeveloperTasks() throws DataLayerException; 
+    Map<Task, Integer> getTasksByDeveloper() throws DataLayerException; 
     //"valutazione" va bene come Integer???
     
     void addSkill(Skill skill, int level);

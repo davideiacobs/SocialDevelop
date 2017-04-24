@@ -161,9 +161,9 @@ public class DeveloperImpl implements Developer {
     }
     
     @Override
-    public Map<Skill, Integer> getDeveloperSkills() throws DataLayerException{
+    public Map<Skill, Integer> getSkillsByDeveloper() throws DataLayerException{
         if(skills == null){
-            skills = ownerdatalayer.getDeveloperSkills(this);
+            skills = ownerdatalayer.getSkillsByDeveloper(this);
         }
         return skills;
     }
@@ -188,8 +188,8 @@ public class DeveloperImpl implements Developer {
     
 
     @Override
-    public Map<Task, Integer> getDeveloperTasks() throws DataLayerException{
-        return ownerdatalayer.getDeveloperTasks(this);
+    public Map<Task, Integer> getTasksByDeveloper() throws DataLayerException{
+        return ownerdatalayer.getTasksByDeveloper(this);
     } 
         
     @Override

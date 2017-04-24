@@ -38,7 +38,7 @@ public interface Task {
     
     Type getType() throws DataLayerException;
     
-    Map<Skill, Integer> getSkillsForTask() throws DataLayerException;
+    Map<Skill, Integer> getSkillsByTask() throws DataLayerException;
     
     void setSkills(Map<Skill, Integer> skill_levelMin);
     
