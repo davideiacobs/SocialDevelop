@@ -57,6 +57,9 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sSkillsByTask = connection.prepareStatement("SELECT task_ID FROM task_has_skill WHERE"
                                                           + "skill_ID=?");
             sSkillsByDeveloper = connection.prepareStatement("SELECT skill_ID FROM skill_has_developer WHERE developer_ID=?");
+            sRequestByTask = connection.prepareStatement("SELECT * FROM task_has_developer WHERE task_ID=?");
+            sCollaboratorsByTask = connection.prepareStatement("SELECT developer_ID FROM task_has_developer WHERE task_ID=?"
+                                                            + "AND state=1");
             sImagesByIssue = connection.prepareStatement("SELECT article_image.imageID FROM article_image INNER JOIN article ON (article_image.articleID = article.ID) WHERE article.issueID=?");
             sImagesByArticle = connection.prepareStatement("SELECT imageID FROM article_image WHERE articleID=?");
             sImageData = connection.prepareStatement("SELECT data FROM image WHERE ID=?");
