@@ -18,6 +18,10 @@ public interface Task {
     
     int getKey();
     
+    String getName();
+    
+    void setName(String name);
+    
     void setNumCollaborators(int num); //tramite questa si può anche modificare il numCollaboratori
     
     int getNumCollaborators();

@@ -54,8 +54,9 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                                                          + "(name LIKE ? or description LIKE ?)");
             sGetLatestIssueNumber = connection.prepareStatement("SELECT MAX(number) AS number FROM issue");
             sArticlesByIssue = connection.prepareStatement("SELECT ID AS articleID FROM article WHERE issueID=?");
-            sArticles = connection.prepareStatement("SELECT ID AS articleID FROM article");
-            sUnassignedArticles = connection.prepareStatement("SELECT ID AS articleID FROM article WHERE issueID IS NULL");
+            sSkillsByTask = connection.prepareStatement("SELECT task_ID FROM task_has_skill WHERE"
+                                                          + "skill_ID=?");
+            sSkillsByDeveloper = connection.prepareStatement("SELECT skill_ID FROM skill_has_developer WHERE developer_ID=?");
             sImagesByIssue = connection.prepareStatement("SELECT article_image.imageID FROM article_image INNER JOIN article ON (article_image.articleID = article.ID) WHERE article.issueID=?");
             sImagesByArticle = connection.prepareStatement("SELECT imageID FROM article_image WHERE articleID=?");
             sImageData = connection.prepareStatement("SELECT data FROM image WHERE ID=?");

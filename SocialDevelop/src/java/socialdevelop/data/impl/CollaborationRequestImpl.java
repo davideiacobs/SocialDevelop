@@ -20,7 +20,7 @@ import socialdevelop.data.model.Task;
 
 public class CollaborationRequestImpl implements CollaborationRequest{
     
-    private int key;
+    private int key; 
     private Developer coordinator;
     private Task task;
     private Developer collaborator;

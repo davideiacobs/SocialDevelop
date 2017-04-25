@@ -68,7 +68,7 @@ public interface SocialDevelopDataLayer extends DataLayer {
     //recupera oggetto message
     List<Message> getMessages(Project project) throws DataLayerException;
     
-    Message getPublicMessages(int project_key, int developer_key); 
+    Message getPrivateMessages(int project_key, int developer_key); 
     //se il developer appartiene al progetto chiama la getMessage di Project che restituisce tutti
     //i messaggi, altrimenti chiama quella che restituisce i soli messaggi pubblici
     

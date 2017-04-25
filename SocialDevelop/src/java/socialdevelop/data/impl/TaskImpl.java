@@ -25,6 +25,7 @@ import socialdevelop.data.model.SocialDevelopDataLayer;
 public class TaskImpl implements Task{
     
     private int key;
+    private String name;
     private Period timeInterval;
     private boolean open;
     private int numCollaborators;
@@ -39,6 +40,7 @@ public class TaskImpl implements Task{
     public TaskImpl(SocialDevelopDataLayer ownerdatalayer) {
         this.ownerdatalayer = ownerdatalayer;
         key = 0;
+        name = "";
         timeInterval = null;
         open = true;
         numCollaborators = 0;
@@ -205,5 +207,16 @@ public class TaskImpl implements Task{
     
     protected void setKey(int key) {
         this.key = key;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+   @Override
+    public void setName(String name) {
+        this.name = name;
+        this.dirty = true;
     }
 }
