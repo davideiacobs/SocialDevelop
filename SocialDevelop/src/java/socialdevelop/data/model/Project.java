@@ -26,7 +26,7 @@ public interface Project  {
     
     void setDescription(String description);
         
-    void setCoordinator(Developer coordinator);
+    void setCoordinator(int coordinator_key);
     
     Developer getCoordinator() throws DataLayerException;
     

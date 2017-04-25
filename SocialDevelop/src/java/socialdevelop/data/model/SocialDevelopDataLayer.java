@@ -28,6 +28,8 @@ public interface SocialDevelopDataLayer extends DataLayer {
         
     Message createMessage();
     
+    Type createType();
+    
     Project getProject(int project_key) throws DataLayerException;
     
     List<Project> getProjects() throws DataLayerException;
@@ -74,7 +76,7 @@ public interface SocialDevelopDataLayer extends DataLayer {
     
     List<Skill> getChild(Skill skill) throws DataLayerException;
     
-    Skill getParent(Skill skill)throws DataLayerException;
+    int getParent(Skill skill)throws DataLayerException;
  
     List<Developer> getProjectCollaborators(int project_key) throws DataLayerException;
     //utilizza getTasks

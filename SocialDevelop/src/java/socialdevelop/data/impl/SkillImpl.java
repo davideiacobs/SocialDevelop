@@ -18,7 +18,7 @@ public class SkillImpl implements Skill{
     
     private int key;
     private String name;
-    private Skill parent;
+    private int parent_id;
     private List<Skill> child;
     protected SocialDevelopDataLayer ownerdatalayer;
     protected boolean dirty;
@@ -27,7 +27,7 @@ public class SkillImpl implements Skill{
         this.ownerdatalayer = ownerdatalayer;
         key = 0;
         name = "";
-        parent = null;
+        parent_id = 0;
         child = null;
         dirty = false;
     }
@@ -57,16 +57,16 @@ public class SkillImpl implements Skill{
     }
     
     @Override
-    public Skill getParent() throws DataLayerException{
-        if(parent == null){
-            parent = ownerdatalayer.getParent(this);
+    public int getParent() throws DataLayerException{
+        if(parent_id == 0){
+            parent_id = ownerdatalayer.getParent(this);
         }
-        return parent;
+        return parent_id;
     }
     
     @Override
-    public void setParent(Skill skill){
-        this.parent = skill;
+    public void setParent(int skill_id){
+        this.parent_id = skill_id;
         this.dirty = true;
     }
     

@@ -6,7 +6,7 @@
 package socialdevelop.data.model;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
-import java.time.Period;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -34,9 +34,9 @@ public interface Task {
     
     String getDescription();
     
-    Period getTimeInterval();
+    Timestamp getTimeInterval();
     
-    void setTimeInterval(Period interval);
+    void setTimeInterval(Timestamp interval);
     
     void setType(Type type);
     

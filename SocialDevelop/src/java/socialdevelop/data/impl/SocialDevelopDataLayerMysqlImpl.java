@@ -8,11 +8,20 @@ package socialdevelop.data.impl;
 import it.univaq.f4i.iw.framework.data.DataLayerException;
 import it.univaq.f4i.iw.framework.data.DataLayerMysqlImpl;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import socialdevelop.data.model.Developer;
+import socialdevelop.data.model.Project;
+import socialdevelop.data.model.Skill;
 import socialdevelop.data.model.SocialDevelopDataLayer;
+import socialdevelop.data.model.Task;
+import socialdevelop.data.model.Type;
 
 /**
  *
@@ -86,7 +95,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                                                                + "WHERE task_has_developer.developer_ID=? AND "
                                                               + "task_has_developer.date=?) ON (project.ID = task.project_ID)");
 
-             sInvitesByCoordinatorID = connection.prepareStatement("SELECT thd.* FROM ((task_has_developer AS thd INNERJOIN task AS t ON t.ID=thd.task_ID) INNERJOIN project AS p ON t.project_ID=p.ID) WHERE thd.ID=? AND thd.state=0");
+            sInvitesByCoordinatorID = connection.prepareStatement("SELECT thd.* FROM ((task_has_developer AS thd INNERJOIN task AS t ON t.ID=thd.task_ID) INNERJOIN project AS p ON t.project_ID=p.ID) WHERE thd.ID=? AND thd.state=0");
             sRequestByCollaboratorID = connection.prepareStatement("SELECT thd.* FROM task_has_developer AS thd WHERE thd.developer_ID=?");  
             sOffertsByDeveloperID = connection.prepareStatement("SELECT t.* FROM ((((task AS t INNERJOIN task_has_skill AS ths ON t.ID=ths.task_ID) INNERJOIN skill AS s ON ths.skill_ID=s.ID) INNERJOIN skill_has_developer AS shd ON shd.skill_id=s.ID) INNERJOIN developer AS d ON shd.developer_ID=d.ID) WHERE d.ID=?");
             sDeveloperByRequest = connection.prepareStatement("SELECT d.* from (developer AS d INNERJOIN task_has_developer AS thd d.ID=thd.developer_ID) WHERE thd.ID=?");
@@ -119,6 +128,113 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             throw new DataLayerException("Error initializing newspaper data layer", ex);
         }
     }
+    
+    //metodi "factory" che permettono di creare
+    //e inizializzare opportune implementazioni
+    //delle interfacce del modello dati, nascondendo
+    //all'utente tutti i particolari
+    //factory methods to create and initialize
+    //suitable implementations of the data model interfaces,
+    //hiding all the implementation details
+    @Override
+    public Project createProject() {
+        return new ProjectImpl(this);
+    }
 
+    public Project createProject(ResultSet rs) throws DataLayerException {
+        try {
+            ProjectImpl a = new ProjectImpl(this);
+            a.setKey(rs.getInt("ID"));
+            a.setName(rs.getString("name"));
+            a.setDescription(rs.getString("description"));
+            a.setCoordinator(rs.getInt("coordinator_ID"));
+            return a;
+        } catch (SQLException ex) {
+            throw new DataLayerException("Unable to create project object form ResultSet", ex);
+        }
+    }
+    
+     @Override
+    public Task createTask() {
+        return new TaskImpl(this);
+    }
+
+    public Task createTask(ResultSet rs) throws DataLayerException {
+        try {
+            TaskImpl a = new TaskImpl(this);
+            a.setKey(rs.getInt("ID"));
+            a.setName(rs.getString("name"));
+            a.setTimeInterval(rs.getTimestamp("timeInterval"));
+            a.setOpen(rs.getBoolean("open"));
+            a.setNumCollaborators(rs.getInt("numCollaborators"));
+            a.setDescription(rs.getString("description"));     
+            return a;
+        } catch (SQLException ex) {
+            throw new DataLayerException("Unable to create task object form ResultSet", ex);
+        }
+    }
+        
+    
+    @Override
+    public Skill createSkill() {
+        return new SkillImpl(this);
+    }
+
+    public Skill createSkill(ResultSet rs) throws DataLayerException {
+        try {
+            SkillImpl a = new SkillImpl(this);
+            a.setKey(rs.getInt("ID"));
+            a.setName(rs.getString("name"));
+            a.setParent(rs.getInt("parent_ID"));     
+            return a;
+        } catch (SQLException ex) {
+            throw new DataLayerException("Unable to create task object form ResultSet", ex);
+        }
+    }
+    
+    @Override
+    public Developer createDeveloper() {
+        return new DeveloperImpl(this);
+    }
+
+    public Developer createDeveloper(ResultSet rs) throws DataLayerException {
+        try {
+            DeveloperImpl a = new DeveloperImpl(this);
+            a.setKey(rs.getInt("ID"));
+            a.setName(rs.getString("name"));
+            a.setSurname(rs.getString("surname"));
+            a.setUsername(rs.getString("username"));
+            a.setMail(rs.getString("mail"));
+            a.setPwd(rs.getString("pwd"));
+            a.setBiography(rs.getString("biography"));
+            GregorianCalendar birthdate = new GregorianCalendar();
+            java.sql.Date date;
+            date = rs.getDate("birthdate");
+            birthdate.setTime(date);
+            a.setBirthDate(birthdate);
+            a.setCurriculum(rs.getString("curriculumString"));
+            //PROBLEMA CON FILE!!!!
+            //a.setCurriculum(rs.getFile("curriculumFile"));
+            return a;
+        } catch (SQLException ex) {
+            throw new DataLayerException("Unable to create task object form ResultSet", ex);
+        }
+    }
+    
+    @Override
+    public Type createType() {
+        return new TypeImpl(this);
+    }
+
+    public Type createType(ResultSet rs) throws DataLayerException {
+        try {
+            TypeImpl a = new TypeImpl(this);
+            a.setKey(rs.getInt("ID"));
+            a.setType(rs.getString("type"));  
+            return a;
+        } catch (SQLException ex) {
+            throw new DataLayerException("Unable to create task object form ResultSet", ex);
+        }
+    }
     
 }

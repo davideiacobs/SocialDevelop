@@ -6,7 +6,7 @@
 package socialdevelop.data.impl;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
-import java.time.Period;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import socialdevelop.data.model.Task;
 import socialdevelop.data.model.Type;
@@ -26,7 +26,7 @@ public class TaskImpl implements Task{
     
     private int key;
     private String name;
-    private Period timeInterval;
+    private Timestamp timeInterval;
     private boolean open;
     private int numCollaborators;
     private String description;
@@ -90,12 +90,12 @@ public class TaskImpl implements Task{
     }
     
     @Override
-    public Period getTimeInterval(){
+    public Timestamp getTimeInterval(){
         return timeInterval;
     }
     
     @Override
-    public void setTimeInterval(Period timeInterval){
+    public void setTimeInterval(Timestamp timeInterval){
         this.timeInterval = timeInterval;
         this.dirty = true;
     }

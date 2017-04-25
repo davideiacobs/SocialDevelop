@@ -70,9 +70,9 @@ public class ProjectImpl implements Project {
     }
     
     @Override
-    public void setCoordinator(Developer coordinator){
-        this.coordinator = coordinator;
-        this.coordinator_key = coordinator.getKey();
+    public void setCoordinator(int coordinator_key){
+        this.coordinator = ownerdatalayer.getDeveloper(coordinator_key);
+        this.coordinator_key = coordinator_key;
         this.dirty = true;
     }
     

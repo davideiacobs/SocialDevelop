@@ -24,9 +24,9 @@ public interface Skill {
     
     List<Skill> getChild() throws DataLayerException;
     
-    Skill getParent()throws DataLayerException;
+    int getParent()throws DataLayerException;
     
-    void setParent(Skill skill);
+    void setParent(int skill_id);
     
     void setChild(List<Skill> skills);
     
