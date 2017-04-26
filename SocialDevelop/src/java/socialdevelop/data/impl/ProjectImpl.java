@@ -59,6 +59,18 @@ public class ProjectImpl implements Project {
     }
     
     @Override
+    public void setCoordinatorKey(int coordinator_key){
+        this.coordinator_key = coordinator_key;
+        this.coordinator = null;
+        this.dirty = true;
+    }
+    
+    @Override
+    public int getCoordinatorKey(){
+        return coordinator_key;
+    }
+    
+    @Override
     public void setDescription(String description){
         this.description = description;
         this.dirty = true;
@@ -70,9 +82,9 @@ public class ProjectImpl implements Project {
     }
     
     @Override
-    public void setCoordinator(int coordinator_key){
-        this.coordinator = ownerdatalayer.getDeveloper(coordinator_key);
-        this.coordinator_key = coordinator_key;
+    public void setCoordinator(Developer coordinator) {
+        this.coordinator = coordinator;
+        this.coordinator_key = coordinator.getKey();
         this.dirty = true;
     }
     

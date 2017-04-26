@@ -29,7 +29,19 @@ public class CollaborationRequestImpl implements CollaborationRequest{
     
     protected SocialDevelopDataLayer ownerdatalayer;
     protected boolean dirty;
+    
+    public CollaborationRequestImpl(SocialDevelopDataLayer ownerdatalayer) {
+        this.ownerdatalayer = ownerdatalayer;
+        key = 0;
+        coordinator = null;
+        task = null;
+        collaborator = null;
+        date = null;
+        state = 0;
+        dirty = false;
+    }
 
+    
     @Override
     public int getKey() {
         return key;

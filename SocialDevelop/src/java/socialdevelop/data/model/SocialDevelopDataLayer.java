@@ -34,34 +34,32 @@ public interface SocialDevelopDataLayer extends DataLayer {
     
     List<Project> getProjects() throws DataLayerException;
     
-    List<Project> getProjects(String filtro);
+    List<Project> getProjects(String filtro) throws DataLayerException;
     
-    Skill getSkill(int skill_key);
+    Skill getSkill(int skill_key) throws DataLayerException;
     
-    Map<Skill, Integer> getSkillsByTask(Task task) throws DataLayerException;
+    Task getTask(int task_key) throws DataLayerException;
     
-    Map<Skill, Integer> getSkillsByDeveloper(Developer developer) throws DataLayerException;
+    Map<Skill, Integer> getSkillsByTask(int task_key) throws DataLayerException;
     
-    Map<Task, Integer> getTasksByDeveloper(Developer developer) throws DataLayerException;
+    Map<Skill, Integer> getSkillsByDeveloper(int developer_key) throws DataLayerException;
     
-    Developer getCoordinatorRequest(Task task) throws DataLayerException;
+    Map<Task, Integer> getTasksByDeveloper(int developer_key) throws DataLayerException;
+        
+    Map<Developer,Integer> getCollaboratorsByTask(int task_key) throws DataLayerException;
     
-    Map<Developer,Integer> getCollaborators(Task task) throws DataLayerException;
-    
-    int getVote(Task task, Developer developer) throws DataLayerException;
+    int getVote(int task_key, int developer_key) throws DataLayerException;
     
     Type getType(Task task) throws DataLayerException;
     
-    Developer getDeveloper(int developer_key);
+    Developer getDeveloper(int developer_key) throws DataLayerException;
     
     //List<Developer> getDevelopersBySkill(Skill filtro);
     
     Map<Developer, Integer> getDevelopersBySkill(Skill filtro);
     
     Map<Developer, Integer> getDevelopersBySkill(Skill filtro, int level);
-    
-    //Task getTask(int task_key);
-    
+        
     List<Task> getTasks(Project project) throws DataLayerException;
     
     Task getTaskRequest(CollaborationRequest request) throws DataLayerException;
@@ -97,4 +95,6 @@ public interface SocialDevelopDataLayer extends DataLayer {
 
     Developer getCollaboratorRequest(CollaborationRequestImpl request) throws DataLayerException;
     
+    Developer getCoordinatorRequest(Task task) throws DataLayerException;
+
 }
