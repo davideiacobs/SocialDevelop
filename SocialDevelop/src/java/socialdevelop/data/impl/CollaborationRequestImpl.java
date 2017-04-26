@@ -62,9 +62,9 @@ public class CollaborationRequestImpl implements CollaborationRequest{
     }
 
     @Override
-    public Task getTaskRequest() throws DataLayerException {
+    public Task getTaskByRequest() throws DataLayerException {
         if(task == null){
-            task = ownerdatalayer.getTaskRequest(this);
+            task = ownerdatalayer.getTaskByRequest(this);
         }
         return task;
     }

@@ -111,7 +111,7 @@ public class ProjectImpl implements Project {
     @Override
     public List<Task> getTasks() throws DataLayerException {
         if(tasks == null){
-           tasks = ownerdatalayer.getTasks(this);
+           tasks = ownerdatalayer.getTasks(this.key);
         }
         return tasks;
     }
@@ -131,7 +131,7 @@ public class ProjectImpl implements Project {
     @Override
     public List<Message> getMessages() throws DataLayerException {
         if(messages == null){
-           messages = ownerdatalayer.getMessages(this);
+           messages = ownerdatalayer.getMessages(this.key);
         }
         return messages;
     }

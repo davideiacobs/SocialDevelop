@@ -32,7 +32,7 @@ public interface CollaborationRequest {
     
     void setState(int state);
     
-    Task getTaskRequest() throws DataLayerException;
+    Task getTaskByRequest() throws DataLayerException;
     
     void setTaskRequest(Task task);
     

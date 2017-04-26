@@ -50,23 +50,23 @@ public interface SocialDevelopDataLayer extends DataLayer {
     
     int getVote(int task_key, int developer_key) throws DataLayerException;
     
-    Type getType(Task task) throws DataLayerException;
+    Type getTypeByTask(int task_key) throws DataLayerException;
     
     Developer getDeveloper(int developer_key) throws DataLayerException;
-    
-    //List<Developer> getDevelopersBySkill(Skill filtro);
-    
-    Map<Developer, Integer> getDevelopersBySkill(Skill filtro);
-    
-    Map<Developer, Integer> getDevelopersBySkill(Skill filtro, int level);
         
-    List<Task> getTasks(Project project) throws DataLayerException;
+    Map<Developer, Integer> getDevelopersBySkill(int skill_key) throws DataLayerException;
     
-    Task getTaskRequest(CollaborationRequest request) throws DataLayerException;
+    Map<Developer, Integer> getDevelopersBySkill(int skill_key, int level) throws DataLayerException;
+        
+    List<Task> getTasks(int project_key) throws DataLayerException;
+    
+    Task getTaskByRequest(CollaborationRequest request) throws DataLayerException;
     
     //Message getMessage(int message_key);
     //recupera oggetto message
-    List<Message> getMessages(Project project) throws DataLayerException;
+    Message getMessage(int message_key) throws DataLayerException;
+    
+    List<Message> getMessages(int project_key) throws DataLayerException;
     
     Message getPrivateMessages(int project_key, int developer_key); 
     //se il developer appartiene al progetto chiama la getMessage di Project che restituisce tutti

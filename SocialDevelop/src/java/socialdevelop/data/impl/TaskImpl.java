@@ -101,9 +101,9 @@ public class TaskImpl implements Task{
     }
     
     @Override
-    public Type getType() throws DataLayerException{
+    public Type getTypeByTask() throws DataLayerException{
         if(type==null){
-            type = ownerdatalayer.getType(this);
+            type = ownerdatalayer.getTypeByTask(this.key);
         }
         return type;
     }
@@ -117,7 +117,7 @@ public class TaskImpl implements Task{
     @Override
     public Map<Skill, Integer> getSkillsByTask() throws DataLayerException{
         if(skills == null){
-            skills = ownerdatalayer.getSkillsByTask(this);
+            skills = ownerdatalayer.getSkillsByTask(this.key);
         }
         return skills;
     }
@@ -141,9 +141,9 @@ public class TaskImpl implements Task{
     }
     
     @Override
-    public Map<Developer,Integer> getCollaborators()throws DataLayerException{
+    public Map<Developer,Integer> getCollaboratorsByTask()throws DataLayerException{
         if(collaborators == null){
-            collaborators = ownerdatalayer.getCollaborators(this);
+            collaborators = ownerdatalayer.getCollaboratorsByTask(this.key);
         }
         return collaborators;
     }
@@ -173,7 +173,7 @@ public class TaskImpl implements Task{
     @Override
     public int getVote(Developer developer) throws DataLayerException {
         if(collaborators.get(developer)==null){
-            collaborators.put(developer, ownerdatalayer.getVote(this, developer));
+            collaborators.put(developer, ownerdatalayer.getVote(this.key, developer.getKey()));
         }
         return collaborators.get(developer);
     }
@@ -188,7 +188,7 @@ public class TaskImpl implements Task{
     public boolean isFull(){
         boolean isFull = false ;
         try {
-            isFull = (numCollaborators == this.getCollaborators().size());
+            isFull = (numCollaborators == this.getCollaboratorsByTask().size());
         } catch (DataLayerException ex) {
             Logger.getLogger(TaskImpl.class.getName()).log(Level.SEVERE, null, ex);
         }

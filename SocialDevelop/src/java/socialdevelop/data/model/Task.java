@@ -40,7 +40,7 @@ public interface Task {
     
     void setType(Type type);
     
-    Type getType() throws DataLayerException;
+    Type getTypeByTask() throws DataLayerException;
     
     Map<Skill, Integer> getSkillsByTask() throws DataLayerException;
     
@@ -50,7 +50,7 @@ public interface Task {
     
     void removeSkill(Skill skill);
     
-    Map<Developer,Integer> getCollaborators() throws DataLayerException;
+    Map<Developer,Integer> getCollaboratorsByTask() throws DataLayerException;
         
     void setCollaborators(List<Developer> listDev); 
     //al momento del setCollaborators Integer è null

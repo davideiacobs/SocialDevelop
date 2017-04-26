@@ -34,10 +34,10 @@ import socialdevelop.data.model.Type;
 public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implements SocialDevelopDataLayer{
     
     private PreparedStatement sProjectByID, sTaskByID, sProjects, sDeveloperByID, sSkillByID;
-    private PreparedStatement sProjectByIDFilter, sSkillsByTask, sSkillsByDeveloper, sRequestByTask; 
-    private PreparedStatement sCollaboratorsByTask, sVoteByTaskandDeveloper, sTypeByTask;
+    private PreparedStatement sProjectsByFilter, sSkillsByTask, sSkillsByDeveloper, sRequestByTask; 
+    private PreparedStatement sCollaboratorsByTask, sVoteByTaskandDeveloper, sTypeByTask, sMessagesByProject;
     private PreparedStatement sDeveloperBySkillWithLevel, sDeveloperBySkill, sTasksByProject, sTaskByRequest ;
-    private PreparedStatement sParentBySkill, sCollaboratorsByProjectID, sProjectsByDeveloperID;
+    private PreparedStatement sParentBySkill, sMessageByID, sCollaboratorsByProjectID, sProjectsByDeveloperID;
     private PreparedStatement sProjectsByDeveloperIDandDate, sInvitesByCoordinatorID, sRequestByCollaboratorID;
     private PreparedStatement sOffertsByDeveloperID, sDeveloperByRequest, sTasksByDeveloper;
     private PreparedStatement iProject, uProject, dProject;
@@ -61,13 +61,14 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sProjectByID = connection.prepareStatement("SELECT * FROM project WHERE ID=?");
             sTaskByID = connection.prepareStatement("SELECT * FROM task WHERE ID=?");
             sDeveloperByID = connection.prepareStatement("SELECT * FROM developer WHERE ID=?");
+            sMessagesByProject = connection.prepareStatement("SELECT ID FROM messages WHERE project_ID=?");
             sProjects = connection.prepareStatement("SELECT ID FROM project");
             sSkillByID = connection.prepareStatement("SELECT * FROM skill WHERE ID=?");
-            sProjectByIDFilter = connection.prepareStatement("SELECT * FROM project WHERE ID=? and "
+            sProjectsByFilter = connection.prepareStatement("SELECT ID FROM project WHERE "
                                                          + "(name LIKE ? or description LIKE ?)");
             sSkillsByTask = connection.prepareStatement("SELECT skill.ID,task_has_skill.level_min FROM skill INNER JOIN task_has_skill ON"
                                     + "(skill.ID = task_has_skill.skill_ID) WHERE task_has_skill.task_ID=?");
-            sSkillsByDeveloper = connection.prepareStatement("SELECT developer.ID, skill_has_developer.level FROM developer INNER JOIN skill_has_developer"
+            sSkillsByDeveloper = connection.prepareStatement("SELECT skill_has_developer.skill_ID, skill_has_developer.level FROM developer INNER JOIN skill_has_developer"
                                         + "ON (developer.ID = skill_has_developer.developer_ID) WHERE skill_has_developer.developer_ID=?");
             sTasksByDeveloper = connection.prepareStatement("SELECT task_ID,vote FROM task_has_developer WHERE developer_ID=? AND state=1");
             sRequestByTask = connection.prepareStatement("SELECT * FROM task_has_developer WHERE task_ID=?");
@@ -77,10 +78,10 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sVoteByTaskandDeveloper = connection.prepareStatement("SELECT vote FROM task_has_developer WHERE task_ID=? "
                                         + "AND developer_ID=?");
             sTypeByTask = connection.prepareStatement("SELECT type_ID FROM task_has_skill WHERE task_ID=?");
-            sDeveloperBySkillWithLevel = connection.prepareStatement("SELECT developer.* FROM developer INNER JOIN "
+            sDeveloperBySkillWithLevel = connection.prepareStatement("SELECT developer.*, skill_has_developer.level FROM developer INNER JOIN "
                                 + "skill_has_developer ON (developer.ID = skill_has_developer.developer_ID)"
                                             + "WHERE skill_has_developer.skill_ID=? AND skill_has_developer.level=?");
-            sDeveloperBySkill = connection.prepareStatement("SELECT developer.* FROM developer INNER JOIN skill_has_developer "
+            sDeveloperBySkill = connection.prepareStatement("SELECT developer.*, skill_has_developer.level FROM developer INNER JOIN skill_has_developer "
                                             + "ON(developer.ID = skill_has_developer.developer_ID) WHERE skill_has_developer.skill_ID=?");
             sTasksByProject = connection.prepareStatement("SELECT * FROM task WHERE project_ID=?");
             sTaskByRequest = connection.prepareStatement("SELECT task.* FROM task_has_developer INNER JOIN task ON"
@@ -314,27 +315,77 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
 
             }
         } catch (SQLException ex) {
-            throw new DataLayerException("Unable to load authors", ex);
+            throw new DataLayerException("Unable to load projects", ex);
         }
         return result; //restituisce in result tutti gli oggetti Project esistenti
     }
     
     @Override
-    public List<Project> getProjects(String filtro) throws DataLayerException {
+    public List<Project> getProjects(String filter) throws DataLayerException {
         List<Project> result = new ArrayList();
-         try {
-            sProjects.setString(1, filtro);
-            try (ResultSet rs = sProjects.executeQuery()) {
+        try {
+            sProjectsByFilter.setString(1, filter); //setta primo parametro query a project_key
+            try (ResultSet rs = sProjectsByFilter.executeQuery()) {
                 while (rs.next()) {
                     result.add(getProject(rs.getInt("ID")));
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DataLayerException("Unable to load projects", ex);
+        }
+        return result; //restituisce in result tutti gli oggetti Project esistenti
+    }
+    
+    @Override
+    public List<Task> getTasks(int project_key) throws DataLayerException {
+        List<Task> result = new ArrayList();
+         try {
+            sTasksByProject.setInt(1, project_key);
+            try (ResultSet rs = sProjects.executeQuery()) {
+                while (rs.next()) {
+                    result.add(getTask(rs.getInt("ID")));
 
                 }
             } 
          }catch (SQLException ex) {
-                throw new DataLayerException("Unable to load authors", ex);
+                throw new DataLayerException("Unable to load tasks by project", ex);
             }
-        return result; //restituisce in result tutti gli oggetti Project che hanno 
-                        //la stringa filtro nel nome o nella descrizione
+        return result; 
+    }
+    
+     @Override
+    public Message getMessage(int message_key) throws DataLayerException {
+         try {
+            sMessageByID.setInt(1, message_key); //setta primo parametro query a project_key
+            try (ResultSet rs = sMessageByID.executeQuery()) {
+                if (rs.next()) {
+                    //notare come utilizziamo il costrutture
+                    //"helper" della classe AuthorImpl
+                    //per creare rapidamente un'istanza a
+                    //partire dal record corrente
+                    return createMessage(rs);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DataLayerException("Unable to load message by ID", ex);
+        }
+        return null;
+    }
+    
+    @Override
+    public List<Message> getMessages(int project_key) throws DataLayerException {
+        List<Message> result = new ArrayList();
+        try {
+            sMessagesByProject.setInt(1, project_key);
+            try (ResultSet rs = sMessagesByProject.executeQuery()) {
+                while (rs.next()) {
+                    result.add(getMessage(rs.getInt("ID")));
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DataLayerException("Unable to load projects", ex);
+        }
+        return result; //restituisce in result tutti gli oggetti Project esistenti
     }
     
     @Override
@@ -368,15 +419,31 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         }
         return null;
     }
+  
     
     @Override
-    public Map<Skill, Integer> getSkillsByDeveloper(int developer_key) throws DataLayerException{
+    public Type getTypeByTask(int type_key) throws DataLayerException{
+        try{
+            sTypeByTask.setInt(1, type_key);
+            try (ResultSet rs = sTypeByTask.executeQuery()) {
+                if (rs.next()){
+                    return createType(rs);
+                }
+            }
+        }catch (SQLException ex) {
+                throw new DataLayerException("Unable to load typeByTask", ex);
+            }
+        return null;
+    }
+    
+    @Override
+    public Map<Skill, Integer> getSkillsByTask(int task_key) throws DataLayerException{
         Map<Skill,Integer> result = new HashMap<>();
         try{
-            sSkillsByDeveloper.setInt(1, developer_key);
+            sSkillsByTask.setInt(1, task_key);
             try (ResultSet rs = sSkillsByDeveloper.executeQuery()) {
                 while (rs.next()){
-                    result.put(getSkill(rs.getInt("ID")), rs.getInt("level"));
+                    result.put(getSkill(rs.getInt("ID")), rs.getInt("level_min"));
                 }
             }
         }catch (SQLException ex) {
@@ -417,7 +484,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                 return createDeveloper(rs);
             }
         }catch (SQLException ex) {
-                throw new DataLayerException("Unable to load taskByDev", ex);
+                throw new DataLayerException("Unable to load developer", ex);
             }
     }
     
@@ -433,11 +500,62 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                 }
             }
         }catch (SQLException ex) {
-                throw new DataLayerException("Unable to load taskByDev", ex);
+                throw new DataLayerException("Unable to load collaboratorByTask", ex);
             }
         return result;
     }
     
+    
+    @Override
+    public Map<Developer,Integer> getDevelopersBySkill(int skill_key) throws DataLayerException{
+        Map<Developer,Integer> result = new HashMap<>();
+        try{
+            sDeveloperBySkill.setInt(1, skill_key);
+            try(ResultSet rs = sDeveloperBySkill.executeQuery()) {
+                while (rs.next()){
+                   result.put(getDeveloper(rs.getInt("ID")), rs.getInt("level"));
+                }
+            }
+        }catch (SQLException ex) {
+                throw new DataLayerException("Unable to load developerBySkill", ex);
+            }
+        return result;
+    }
+    
+    @Override
+    public Map<Developer,Integer> getDevelopersBySkill(int skill_key, int level) throws DataLayerException{
+        Map<Developer,Integer> result = new HashMap<>();
+        try{
+            sDeveloperBySkillWithLevel.setInt(1, skill_key);
+            sDeveloperBySkillWithLevel.setInt(2, level);
+            
+            try(ResultSet rs = sDeveloperBySkillWithLevel.executeQuery()) {
+                while (rs.next()){
+                   result.put(getDeveloper(rs.getInt("ID")), rs.getInt("level"));
+                }
+            }
+        }catch (SQLException ex) {
+                throw new DataLayerException("Unable to load developerBySkill", ex);
+            }
+        return result;
+    }
+    
+    @Override
+    public Map<Skill,Integer> getSkillsByDeveloper(int developer_key) throws DataLayerException{
+        Map<Skill,Integer> result = new HashMap<>();
+        try{
+            sSkillsByDeveloper.setInt(1, developer_key);
+            
+            try(ResultSet rs = sSkillsByDeveloper.executeQuery()) {
+                while (rs.next()){
+                   result.put(getSkill(rs.getInt("ID")), rs.getInt("level"));
+                }
+            }
+        }catch (SQLException ex) {
+                throw new DataLayerException("Unable to load skillByDeveloper", ex);
+            }
+        return result;
+    }
     
     
 }
