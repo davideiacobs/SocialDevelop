@@ -353,16 +353,12 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         return result; 
     }
     
-     @Override
+    @Override
     public Message getMessage(int message_key) throws DataLayerException {
          try {
             sMessageByID.setInt(1, message_key); //setta primo parametro query a project_key
             try (ResultSet rs = sMessageByID.executeQuery()) {
                 if (rs.next()) {
-                    //notare come utilizziamo il costrutture
-                    //"helper" della classe AuthorImpl
-                    //per creare rapidamente un'istanza a
-                    //partire dal record corrente
                     return createMessage(rs);
                 }
             }
@@ -481,11 +477,14 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         try{
             sDeveloperByID.setInt(1, developer_key);
             try(ResultSet rs = sDeveloperByID.executeQuery()){
+                if(rs.next()){
                 return createDeveloper(rs);
+                }
             }
         }catch (SQLException ex) {
                 throw new DataLayerException("Unable to load developer", ex);
             }
+        return null;
     }
     
     
@@ -557,7 +556,21 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         return result;
     }
     
-    
+    @Override
+    public Skill getParent(int skill_key) throws DataLayerException{
+        try{
+            sParentBySkill.setInt(1, skill_key);
+            try(ResultSet rs = sParentBySkill.executeQuery()){
+                if (rs.next()){
+                return getSkill(rs.getInt("parent_ID"));
+                }
+            }
+        }catch (SQLException ex) {
+                throw new DataLayerException("Unable to load skillByDeveloper", ex);
+            }
+        return null;
+        
+    }
 }
 
 

@@ -51,7 +51,7 @@ public class SkillImpl implements Skill{
     @Override
     public List<Skill> getChild() throws DataLayerException{
         if(child == null){
-            child = ownerdatalayer.getChild(this);
+            child = ownerdatalayer.getChild(this.key);
         }
         return child;
     }
@@ -59,7 +59,7 @@ public class SkillImpl implements Skill{
     @Override
     public int getParent() throws DataLayerException{
         if(parent_id == 0){
-            parent_id = ownerdatalayer.getParent(this);
+            parent_id = ownerdatalayer.getParent(this.key);
         }
         return parent_id;
     }
