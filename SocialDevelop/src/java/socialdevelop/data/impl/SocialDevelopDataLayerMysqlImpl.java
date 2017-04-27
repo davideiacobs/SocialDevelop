@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +40,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     private PreparedStatement sDeveloperBySkillWithLevel, sDeveloperBySkill, sTasksByProject, sTaskByRequest ;
     private PreparedStatement sParentBySkill, sMessageByID, sCollaboratorsByProjectID, sProjectsByDeveloperID;
     private PreparedStatement sProjectsByDeveloperIDandDate, sInvitesByCoordinatorID, sRequestByCollaboratorID;
-    private PreparedStatement sOffertsByDeveloperID, sDeveloperByRequest, sTasksByDeveloper;
+    private PreparedStatement sOffertsByDeveloperID, sDeveloperByRequest, sTasksByDeveloper, sChildBySkill;
     private PreparedStatement iProject, uProject, dProject;
     private PreparedStatement iSkill, uSkill, dSkill;
     private PreparedStatement iTask, uTask, dTask;
@@ -88,15 +89,16 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                                             + "(task_has_developer.task_ID = task.ID) WHERE task_has_developer.task_ID=? AND"
                                              + "task_has_developer.developer_ID=?");
             sParentBySkill = connection.prepareStatement("SELECT parent_ID FROM skill WHERE ID=?");
-            sCollaboratorsByProjectID = connection.prepareStatement("SELECT developer.* "
+            sChildBySkill = connection.prepareStatement("SELECT ID FROM skill WHERE parent_ID=?");
+            sCollaboratorsByProjectID = connection.prepareStatement("SELECT developer.ID "
                                                          + "FROM developer INNER JOIN (task_has_developer INNER JOIN task ON "
                                                   + "(task_has_developer.task_ID = task.ID) WHERE task.project_ID=?) ON (developer.ID = task_has_developer.developer_ID)");
                                                 
             //seleziona i progetti ai quali il developer ha partecipato
-            sProjectsByDeveloperID = connection.prepareStatement("SELECT project.* FROM project INNER JOIN (task INNER JOIN task_has_developer"
+            sProjectsByDeveloperID = connection.prepareStatement("SELECT project.ID FROM project INNER JOIN (task INNER JOIN task_has_developer"
                                                                 + "ON (task.ID = task_has_developer.task_ID) "
                                                                + "WHERE task_has_developer.developer_ID=?) ON (project.ID = task.project_ID");
-            sProjectsByDeveloperIDandDate = connection.prepareStatement("SELECT project.* FROM project INNER JOIN (task INNER JOIN task_has_developer"
+            sProjectsByDeveloperIDandDate = connection.prepareStatement("SELECT project.ID FROM project INNER JOIN (task INNER JOIN task_has_developer"
                                                                 + "ON (task.ID = task_has_developer.task_ID) "
                                                                + "WHERE task_has_developer.developer_ID=? AND "
                                                               + "task_has_developer.date=?) ON (project.ID = task.project_ID)");
@@ -566,11 +568,76 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                 }
             }
         }catch (SQLException ex) {
-                throw new DataLayerException("Unable to load skillByDeveloper", ex);
+                throw new DataLayerException("Unable to load skill parent", ex);
             }
         return null;
         
     }
+    
+    @Override
+    public List<Skill> getChild(int skill_key) throws DataLayerException{
+        List<Skill> result = new ArrayList();
+        try{
+            sChildBySkill.setInt(1, skill_key);
+            try(ResultSet rs = sChildBySkill.executeQuery()){
+                while (rs.next()){
+                    result.add(getSkill(rs.getInt("ID")));
+                }
+            }
+            
+        }catch (SQLException ex) {
+                throw new DataLayerException("Unable to load skill child", ex);
+            }
+        return result;
+    }
+    
+    @Override
+    public  List<Developer> getProjectCollaborators(int project_key) throws DataLayerException{
+        List<Developer> result = new ArrayList();
+        try{
+            sCollaboratorsByProjectID.setInt(1, project_key);
+            try(ResultSet rs = sCollaboratorsByProjectID.executeQuery()){
+                while(rs.next()){
+                    result.add(getDeveloper(rs.getInt("ID")));
+                }
+            }
+        }catch (SQLException ex) {
+                throw new DataLayerException("Unable to load skill child", ex);
+            }
+        return result;
+    }
+    
+     public List<Project> getDeveloperProjects (int developer_key) throws DataLayerException{
+         List<Project> result = new ArrayList();
+         try{
+             sProjectsByDeveloperID.setInt(1, developer_key);
+             try(ResultSet rs = sProjectsByDeveloperID.executeQuery()){
+                 while(rs.next()){
+                     result.add(getProject(rs.getInt("ID")));
+                 }
+             }
+         }catch (SQLException ex) {
+                throw new DataLayerException("Unable to load projects by developer", ex);
+            }
+        return result;
+     }
+     
+     public  List<Project> getDeveloperProjects (int developer_key, GregorianCalendar data) throws DataLayerException{
+         List<Project> result = new ArrayList();
+         try{
+             sProjectsByDeveloperIDandDate.setInt(1, developer_key);
+             Date sqldate = new Date(data.getTimeInMillis());
+             sProjectsByDeveloperIDandDate.setDate(2, sqldate);
+             try(ResultSet rs = sProjectsByDeveloperIDandDate.executeQuery()){
+                 while (rs.next()){
+                     result.add(getProject(rs.getInt("ID")));
+                 }
+             }
+         }catch (SQLException ex) {
+                throw new DataLayerException("Unable to load projects by developer and date", ex);
+            }
+        return result;
+     }
 }
 
 
