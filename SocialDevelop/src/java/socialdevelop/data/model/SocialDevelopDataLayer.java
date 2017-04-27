@@ -97,5 +97,6 @@ public interface SocialDevelopDataLayer extends DataLayer {
     Developer getCollaboratorRequest(CollaborationRequestImpl request) throws DataLayerException;
     
     Developer getCoordinatorRequest(Task task) throws DataLayerException;
-
+    
+    CollaborationRequest getCollaborationRequest(int collaborator_key, int task_key ) throws DataLayerException;
 }

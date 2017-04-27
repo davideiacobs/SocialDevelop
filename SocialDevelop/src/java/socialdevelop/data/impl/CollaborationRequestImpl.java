@@ -20,10 +20,12 @@ import socialdevelop.data.model.Task;
 
 public class CollaborationRequestImpl implements CollaborationRequest{
     
-    private int key; 
     private Developer coordinator;
+    private int coordinator_key;
     private Task task;
+    private int task_key;
     private Developer collaborator;
+    private int collaborator_key;
     private GregorianCalendar date;
     private int state;
     
@@ -32,19 +34,15 @@ public class CollaborationRequestImpl implements CollaborationRequest{
     
     public CollaborationRequestImpl(SocialDevelopDataLayer ownerdatalayer) {
         this.ownerdatalayer = ownerdatalayer;
-        key = 0;
         coordinator = null;
+        coordinator_key = 0;
         task = null;
+        task_key = 0;
         collaborator = null;
+        collaborator_key = 0;
         date = null;
         state = 0;
         dirty = false;
-    }
-
-    
-    @Override
-    public int getKey() {
-        return key;
     }
 
     @Override
@@ -58,9 +56,22 @@ public class CollaborationRequestImpl implements CollaborationRequest{
     @Override
     public void setCoordinatorRequest(Developer coordinator) {
         this.coordinator = coordinator;
+        this.coordinator_key = coordinator.getKey();
         this.dirty = true;
     }
 
+    @Override
+    public void setCoordinatorKey(int coordinator_key){
+        this.coordinator_key = coordinator_key;
+        this.coordinator = null;
+        this.dirty = true;
+    }
+    
+    @Override
+    public int getCoordinatorKey(){
+        return coordinator_key;
+    }
+    
     @Override
     public Task getTaskByRequest() throws DataLayerException {
         if(task == null){
@@ -68,10 +79,23 @@ public class CollaborationRequestImpl implements CollaborationRequest{
         }
         return task;
     }
+    
+    @Override
+    public void setTaskKey(int task_key){
+        this.task_key = task_key;
+        this.task = null;
+        this.dirty = true;
+    }
+    
+    @Override
+    public int getTaskKey(){
+        return task_key;
+    }
 
     @Override
     public void setTaskRequest(Task task) {
         this.task = task;
+        this.task_key = task.getKey();
         this.dirty = true;
     }
 
@@ -86,7 +110,21 @@ public class CollaborationRequestImpl implements CollaborationRequest{
     @Override
     public void setCollaboratorRequest(Developer collaborator) {
         this.collaborator = collaborator;
+        this.collaborator_key = collaborator.getKey();
         this.dirty = true;
+    }
+    
+    
+    @Override
+    public void setCollaboratorKey(int collaborator_key){
+        this.collaborator_key = collaborator_key;
+        this.collaborator = null;
+        this.dirty = true;
+    }
+    
+    @Override
+    public int getCollaboratorKey(){
+        return collaborator_key;
     }
 
     @Override
@@ -120,13 +158,5 @@ public class CollaborationRequestImpl implements CollaborationRequest{
     public boolean isDirty() {
         return dirty;
     }
-    
-    protected void setKey(int key) {
-        this.key = key;
-    }
-    
-    
-    
-    
-    
+        
 }

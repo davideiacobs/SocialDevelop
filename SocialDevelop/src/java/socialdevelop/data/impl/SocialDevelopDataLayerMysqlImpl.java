@@ -34,7 +34,8 @@ import socialdevelop.data.model.Type;
  */
 public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implements SocialDevelopDataLayer{
     
-    private PreparedStatement sProjectByID, sTaskByID, sProjects, sDeveloperByID, sSkillByID;
+    //NB: sRequestByID --> ID è inteso come coppia collaborator_key-task_key)
+    private PreparedStatement sProjectByID, sTaskByID, sProjects, sDeveloperByID, sSkillByID, sRequestByID;
     private PreparedStatement sProjectsByFilter, sSkillsByTask, sSkillsByDeveloper, sRequestByTask; 
     private PreparedStatement sCollaboratorsByTask, sVoteByTaskandDeveloper, sTypeByTask, sMessagesByProject;
     private PreparedStatement sDeveloperBySkillWithLevel, sDeveloperBySkill, sTasksByProject, sTaskByRequest ;
@@ -65,6 +66,9 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sMessagesByProject = connection.prepareStatement("SELECT ID FROM messages WHERE project_ID=?");
             sPublicMessagesByProject= connection.prepareStatement("SELECT ID FROM messages WHERE project_ID=? and private=0");
             sProjects = connection.prepareStatement("SELECT ID FROM project");
+            sRequestByID = connection.prepareStatement("SELECT task_has_developer.*,project.coordinator_ID"
+                    + " FROM (task_has_developer INNER JOIN task ON (task.ID=task_has_developer.task_ID) "
+                    + "WHERE developer_ID=? AND task_ID=?) INNER JOIN project ON (task.project_ID=project.ID)");
             sSkillByID = connection.prepareStatement("SELECT * FROM skill WHERE ID=?");
             sProjectsByFilter = connection.prepareStatement("SELECT ID FROM project WHERE "
                                                          + "(name LIKE ? or description LIKE ?)");
@@ -275,14 +279,16 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     public CollaborationRequest createCollaborationRequest(ResultSet rs) throws DataLayerException {
         try {
             CollaborationRequestImpl a = new CollaborationRequestImpl(this);
-            a.setKey(rs.getInt("ID"));
+            //a.setKey(rs.getInt("ID"));
             GregorianCalendar requestDate = new GregorianCalendar();
             java.sql.Date date;
             date = rs.getDate("date");
             requestDate.setTime(date);
             a.setDate(requestDate);
             a.setState(rs.getInt("state"));
-            
+            a.setCollaboratorKey(rs.getInt("developer_ID"));
+            a.setCoordinatorKey(rs.getInt("coordinator_ID"));
+            a.setTaskKey(rs.getInt(("task_ID")));
             return a;
         } catch (SQLException ex) {
             throw new DataLayerException("Unable to create collaborationRequest object form ResultSet", ex);
@@ -677,8 +683,45 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             }
         return result;
     }
-
     
-}
+    @Override
+    public CollaborationRequest getCollaborationRequest(int collaborator_key, int task_key) throws DataLayerException{
+         try {
+            sRequestByID.setInt(1, collaborator_key);
+            sRequestByID.setInt(2, task_key);
+            try (ResultSet rs = sRequestByID.executeQuery()) {
+                if (rs.next()) {
+                    //notare come utilizziamo il costrutture
+                    //"helper" della classe AuthorImpl
+                    //per creare rapidamente un'istanza a
+                    //partire dal record corrente
+                    return createCollaborationRequest(rs);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DataLayerException("Unable to load collaboration request by ID", ex);
+        }
+        return null;
+    }
+
+     
+     @Override
+    public List<CollaborationRequest> getInvites(int coordinator_key) throws DataLayerException{
+        List<CollaborationRequest> result = new ArrayList();
+        try{
+            sInvitesByCoordinatorID.setInt(1,coordinator_key);
+            try(ResultSet rs = sInvitesByCoordinatorID.executeQuery()){
+                while(rs.next()){
+                    result.add(getCollaborationRequest(rs.getInt("developer_ID"), rs.getInt("task_ID")));
+                }
+            }
+        }catch (SQLException ex) {
+            throw new DataLayerException("Unable to load invetes by project coordinator key ", ex);
+        }
+        return result;
+    }
+
+            
+    }   
 
 

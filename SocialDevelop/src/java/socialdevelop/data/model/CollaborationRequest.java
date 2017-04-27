@@ -14,15 +14,21 @@ import java.util.GregorianCalendar;
  */
 public interface CollaborationRequest {
     
-    int getKey();
-    
     Developer getCoordinatorRequest() throws DataLayerException;
     
     void setCoordinatorRequest(Developer coordinator);
     
+    int getCoordinatorKey();
+    
+    void setCoordinatorKey(int coordinator_key);
+    
     Developer getCollaboratorRequest() throws DataLayerException;
     
     void setCollaboratorRequest(Developer collaborator);
+    
+    void setCollaboratorKey(int collaborator_key);
+    
+    int getCollaboratorKey();
     
     GregorianCalendar getDate();
     
@@ -35,6 +41,10 @@ public interface CollaborationRequest {
     Task getTaskByRequest() throws DataLayerException;
     
     void setTaskRequest(Task task);
+    
+    void setTaskKey(int task_key);
+    
+    int getTaskKey();
     
     void setDirty(boolean dirty);
 
