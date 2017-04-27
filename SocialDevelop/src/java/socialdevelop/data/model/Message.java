@@ -19,6 +19,14 @@ public interface Message {
     
     String getText();
     
+    void setProject(Project project);
+    
+    Project getProject();
+    
+    void setProjectKey(int project_key);
+    
+    int getProjectKey();
+    
     void setPrivate(boolean flag);
     
     boolean isPrivate();

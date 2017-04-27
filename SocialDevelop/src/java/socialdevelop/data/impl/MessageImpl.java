@@ -6,6 +6,7 @@
 package socialdevelop.data.impl;
 
 import socialdevelop.data.model.Message;
+import socialdevelop.data.model.Project;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 
 /**
@@ -18,6 +19,8 @@ public class MessageImpl implements Message{
     private String text;
     private boolean isPrivate;
     private String type;
+    private Project project;
+    private int project_key;
     protected SocialDevelopDataLayer ownerdatalayer;
     protected boolean dirty;
     
@@ -25,6 +28,8 @@ public class MessageImpl implements Message{
         this.ownerdatalayer = ownerdatalayer;
         key = 0;
         text = "";
+        project = null;
+        project_key = 0;
         isPrivate = false;
         type = "";
         dirty = false;
@@ -46,7 +51,30 @@ public class MessageImpl implements Message{
         this.text = text;
         this.dirty = true;
     }
-
+    
+    @Override
+    public void setProject(Project project){
+        this.project = project;
+        this.project_key = project.getKey();
+        this.dirty = true;
+    }
+    
+    @Override
+    public Project getProject(){
+        return project;
+    }
+    
+    @Override
+    public void setProjectKey(int project_key){
+        this.project = null;
+        this.project_key = project_key;
+        this.dirty = true;
+    }
+    
+    @Override
+    public int getProjectKey(){
+        return project_key;
+    }
     @Override
     public boolean isPrivate() {
         return isPrivate;
