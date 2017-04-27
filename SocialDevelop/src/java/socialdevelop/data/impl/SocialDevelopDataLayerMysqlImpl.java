@@ -40,7 +40,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     private PreparedStatement sDeveloperBySkillWithLevel, sDeveloperBySkill, sTasksByProject, sTaskByRequest ;
     private PreparedStatement sParentBySkill, sMessageByID, sCollaboratorsByProjectID, sProjectsByDeveloperID;
     private PreparedStatement sProjectsByDeveloperIDandDate, sInvitesByCoordinatorID, sRequestByCollaboratorID;
-    private PreparedStatement sOffertsByDeveloperID, sDeveloperByRequest, sTasksByDeveloper, sChildBySkill;
+    private PreparedStatement sOffertsByDeveloperID, sDeveloperByRequest, sTasksByDeveloper, sChildBySkill,sPublicMessagesByProject;
     private PreparedStatement iProject, uProject, dProject;
     private PreparedStatement iSkill, uSkill, dSkill;
     private PreparedStatement iTask, uTask, dTask;
@@ -63,6 +63,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sTaskByID = connection.prepareStatement("SELECT * FROM task WHERE ID=?");
             sDeveloperByID = connection.prepareStatement("SELECT * FROM developer WHERE ID=?");
             sMessagesByProject = connection.prepareStatement("SELECT ID FROM messages WHERE project_ID=?");
+            sPublicMessagesByProject= connection.prepareStatement("SELECT ID FROM messages WHERE project_ID=? and private=0");
             sProjects = connection.prepareStatement("SELECT ID FROM project");
             sSkillByID = connection.prepareStatement("SELECT * FROM skill WHERE ID=?");
             sProjectsByFilter = connection.prepareStatement("SELECT ID FROM project WHERE "
@@ -105,7 +106,9 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
 
             sInvitesByCoordinatorID = connection.prepareStatement("SELECT thd.* FROM ((task_has_developer AS thd INNERJOIN task AS t ON t.ID=thd.task_ID) INNERJOIN project AS p ON t.project_ID=p.ID) WHERE thd.ID=? AND thd.state=0");
             sRequestByCollaboratorID = connection.prepareStatement("SELECT thd.* FROM task_has_developer AS thd WHERE thd.developer_ID=?");  
-            sOffertsByDeveloperID = connection.prepareStatement("SELECT t.* FROM ((((task AS t INNERJOIN task_has_skill AS ths ON t.ID=ths.task_ID) INNERJOIN skill AS s ON ths.skill_ID=s.ID) INNERJOIN skill_has_developer AS shd ON shd.skill_id=s.ID) INNERJOIN developer AS d ON shd.developer_ID=d.ID) WHERE d.ID=?");
+            sOffertsByDeveloperID = connection.prepareStatement("SELECT t.ID FROM ((((task AS t INNERJOIN task_has_skill AS ths ON t.ID=ths.task_ID) "
+                                                        + "INNERJOIN skill AS s ON ths.skill_ID=s.ID) INNERJOIN skill_has_developer AS shd ON shd.skill_id=s.ID) "
+                                                        + "INNERJOIN developer AS d ON shd.developer_ID=d.ID) WHERE d.ID=? ");
             sDeveloperByRequest = connection.prepareStatement("SELECT d.* from (developer AS d INNERJOIN task_has_developer AS thd d.ID=thd.developer_ID) WHERE thd.ID=?");
             
             iProject = connection.prepareStatement("INSERT INTO project (name,description,coordinator_ID) VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
@@ -607,6 +610,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         return result;
     }
     
+    @Override
      public List<Project> getDeveloperProjects (int developer_key) throws DataLayerException{
          List<Project> result = new ArrayList();
          try{
@@ -622,6 +626,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         return result;
      }
      
+     @Override
      public  List<Project> getDeveloperProjects (int developer_key, GregorianCalendar data) throws DataLayerException{
          List<Project> result = new ArrayList();
          try{
@@ -638,6 +643,42 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             }
         return result;
      }
+     
+    @Override
+    public List<Task> getOfferts(int developer_key) throws DataLayerException{
+        List<Task> result= new ArrayList();
+        try{
+            sOffertsByDeveloperID.setInt(1,developer_key);
+            try(ResultSet rs = sOffertsByDeveloperID.executeQuery()){
+                while(rs.next()){
+                    result.add(getTask(rs.getInt("ID")));
+                }
+
+            }
+        }catch (SQLException ex) {
+                throw new DataLayerException("Unable to load projects by developer and date", ex);
+            }
+        return result;
+        
+        }
+    
+    @Override
+     public List<Message> getPublicMessages(int project_key) throws DataLayerException{
+         List<Message> result = new ArrayList();
+         try{
+            sPublicMessagesByProject.setInt(1, project_key);
+            try(ResultSet rs = sPublicMessagesByProject.executeQuery()){
+                while(rs.next()){
+                result.add(getMessage(rs.getInt("ID")));
+                }
+            }
+        }catch (SQLException ex) {
+                throw new DataLayerException("Unable to public message by project", ex);
+            }
+        return result;
+    }
+
+    
 }
 
 

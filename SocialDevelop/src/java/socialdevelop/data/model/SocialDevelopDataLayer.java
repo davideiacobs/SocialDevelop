@@ -68,7 +68,7 @@ public interface SocialDevelopDataLayer extends DataLayer {
     
     List<Message> getMessages(int project_key) throws DataLayerException;
     
-    Message getPrivateMessages(int project_key, int developer_key); 
+    List<Message> getPublicMessages(int project_key) throws DataLayerException;
     //se il developer appartiene al progetto chiama la getMessage di Project che restituisce tutti
     //i messaggi, altrimenti chiama quella che restituisce i soli messaggi pubblici
     
@@ -85,11 +85,12 @@ public interface SocialDevelopDataLayer extends DataLayer {
     
     CollaborationRequest createCollaborationRequest();
     
-    List<CollaborationRequest> getInvites(int coordinator_key);
+    List<CollaborationRequest> getInvites(int coordinator_key) throws DataLayerException;
 
-    List<CollaborationRequest> getRequests(int collaborator_key);
+    List<CollaborationRequest> getRequests(int collaborator_key) throws DataLayerException;
     
-    List<Task> getOfferts(int developer_key); 
+    List<Task> getOfferts(int developer_key) throws DataLayerException;
+    
     //richiede la lista delle skills del developer e cerca i task aperti che richiedono
     //tali skills
 
