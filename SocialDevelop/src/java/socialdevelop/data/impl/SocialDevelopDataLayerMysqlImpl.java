@@ -36,9 +36,9 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     
     //NB: sRequestByID --> ID è inteso come coppia collaborator_key-task_key)
     private PreparedStatement sProjectByID, sTaskByID, sProjects, sDeveloperByID, sSkillByID, sRequestByID;
-    private PreparedStatement sProjectsByFilter, sSkillsByTask, sSkillsByDeveloper, sRequestByTask, sQuestionsByCoordinatorID; 
+    private PreparedStatement sProjectsByFilter, sSkillsByTask, sSkillsByDeveloper, sQuestionsByCoordinatorID; 
     private PreparedStatement sCollaboratorsByTask, sVoteByTaskandDeveloper, sTypeByTask, sMessagesByProject;
-    private PreparedStatement sDeveloperBySkillWithLevel, sDeveloperBySkill, sTasksByProject, sTaskByRequest ;
+    private PreparedStatement sDeveloperBySkillWithLevel, sDeveloperBySkill, sTasksByProject ;
     private PreparedStatement sParentBySkill, sMessageByID, sCollaboratorsByProjectID, sProjectsByDeveloperID;
     private PreparedStatement sProjectsByDeveloperIDandDate, sInvitesByCoordinatorID, sProposalsByCollaboratorID;
     private PreparedStatement sOffertsByDeveloperID, sCoordinatorByTask, sTasksByDeveloper, sChildBySkill,sPublicMessagesByProject;
@@ -60,18 +60,28 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             super.init();
 
             //precompiliamo tutte le query utilizzate
+
             sProjectByID = connection.prepareStatement("SELECT * FROM project WHERE ID=?");
+            
             sTaskByID = connection.prepareStatement("SELECT * FROM task WHERE ID=?");
+            
             sDeveloperByID = connection.prepareStatement("SELECT * FROM developer WHERE ID=?");
+            
             sMessagesByProject = connection.prepareStatement("SELECT ID FROM messages WHERE project_ID=?");
+            
             sPublicMessagesByProject= connection.prepareStatement("SELECT ID FROM messages WHERE project_ID=? and private=0");
+            
             sProjects = connection.prepareStatement("SELECT ID FROM project");
+            
             sRequestByID = connection.prepareStatement("SELECT task_has_developer.*,project.coordinator_ID"
                     + " FROM (task_has_developer INNER JOIN task ON (task.ID=task_has_developer.task_ID) "
                     + "WHERE developer_ID=? AND task_ID=?) INNER JOIN project ON (task.project_ID=project.ID)");
+            
             sCoordinatorByTask = connection.prepareStatement("SELECT p.coordinator_ID FROM (task AS t WHERE t.ID=?) INNER JOIN project AS p "
                     + "ON (p.ID = task.project_ID)");
+            
             sSkillByID = connection.prepareStatement("SELECT * FROM skill WHERE ID=?");
+            
             sProjectsByFilter = connection.prepareStatement("SELECT ID FROM project WHERE "
                                                          + "(name LIKE ? or description LIKE ?)");
             sSkillsByTask = connection.prepareStatement("SELECT skill.ID,task_has_skill.level_min FROM skill INNER JOIN task_has_skill ON"
@@ -79,7 +89,9 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sSkillsByDeveloper = connection.prepareStatement("SELECT skill_has_developer.skill_ID, skill_has_developer.level FROM developer INNER JOIN skill_has_developer"
                                         + "ON (developer.ID = skill_has_developer.developer_ID) WHERE skill_has_developer.developer_ID=?");
             sTasksByDeveloper = connection.prepareStatement("SELECT task_ID,vote FROM task_has_developer WHERE developer_ID=? AND state=1");
-            sRequestByTask = connection.prepareStatement("SELECT * FROM task_has_developer WHERE task_ID=?");
+            
+            //sRequestByTask = connection.prepareStatement("SELECT * FROM task_has_developer WHERE task_ID=?");
+            
             sCollaboratorsByTask = connection.prepareStatement("SELECT developer.* FROM developer INNER JOIN task_has_developer "
                                      + "ON (developer.ID = task_has_developer.ID)  WHERE task_has_developer.task_ID=?"
                                                             + "AND task_has_developer.state=1");
@@ -92,9 +104,11 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sDeveloperBySkill = connection.prepareStatement("SELECT developer.*, skill_has_developer.level FROM developer INNER JOIN skill_has_developer "
                                             + "ON(developer.ID = skill_has_developer.developer_ID) WHERE skill_has_developer.skill_ID=?");
             sTasksByProject = connection.prepareStatement("SELECT * FROM task WHERE project_ID=?");
-            sTaskByRequest = connection.prepareStatement("SELECT task.* FROM task_has_developer INNER JOIN task ON"
+            
+            /*sTaskByRequest = connection.prepareStatement("SELECT task.* FROM task_has_developer INNER JOIN task ON"
                                             + "(task_has_developer.task_ID = task.ID) WHERE task_has_developer.task_ID=? AND"
                                              + "task_has_developer.developer_ID=?");
+            */
             sParentBySkill = connection.prepareStatement("SELECT parent_ID FROM skill WHERE ID=?");
             sChildBySkill = connection.prepareStatement("SELECT ID FROM skill WHERE parent_ID=?");
             sCollaboratorsByProjectID = connection.prepareStatement("SELECT developer.ID "
@@ -339,7 +353,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
 
         try (ResultSet rs = sProjects.executeQuery()) {
             while (rs.next()) {
-                result.add(getProject(rs.getInt("ID")));
+                result.add((Project) getProject(rs.getInt("ID")));
 
             }
         } catch (SQLException ex) {
@@ -355,7 +369,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sProjectsByFilter.setString(1, filter); //setta primo parametro query a project_key
             try (ResultSet rs = sProjectsByFilter.executeQuery()) {
                 while (rs.next()) {
-                    result.add(getProject(rs.getInt("ID")));
+                    result.add((Project) getProject(rs.getInt("ID")));
                 }
             }
         } catch (SQLException ex) {
@@ -371,7 +385,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sTasksByProject.setInt(1, project_key);
             try (ResultSet rs = sProjects.executeQuery()) {
                 while (rs.next()) {
-                    result.add(getTask(rs.getInt("ID")));
+                    result.add((Task) getTask(rs.getInt("ID")));
 
                 }
             } 
@@ -403,7 +417,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sMessagesByProject.setInt(1, project_key);
             try (ResultSet rs = sMessagesByProject.executeQuery()) {
                 while (rs.next()) {
-                    result.add(getMessage(rs.getInt("ID")));
+                    result.add((Message) getMessage(rs.getInt("ID")));
                 }
             }
         } catch (SQLException ex) {
@@ -467,7 +481,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sSkillsByTask.setInt(1, task_key);
             try (ResultSet rs = sSkillsByDeveloper.executeQuery()) {
                 while (rs.next()){
-                    result.put(getSkill(rs.getInt("ID")), rs.getInt("level_min"));
+                    result.put((Skill) getSkill(rs.getInt("ID")), rs.getInt("level_min"));
                 }
             }
         }catch (SQLException ex) {
@@ -476,14 +490,6 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         return result;
     }
     
-    /*@Override 
-    public int getVote(int task_key, int developer_key) throws DataLayerException {
-        try{
-            sVote.setInt(1, task_key);
-            sVote.setInt(2, task_key);
-        }
-    }*/
-    
     @Override
     public Map<Task, Integer> getTasksByDeveloper(int developer_key) throws DataLayerException{
         Map<Task, Integer> result = new HashMap<>();
@@ -491,7 +497,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sTasksByDeveloper.setInt(1, developer_key);
             try(ResultSet rs = sTasksByDeveloper.executeQuery()) {
                 while (rs.next()){
-                   result.put(getTask(rs.getInt("task_ID")), rs.getInt("vote"));
+                   result.put((Task) getTask(rs.getInt("task_ID")), rs.getInt("vote"));
                 }
             }
         }catch (SQLException ex) {
@@ -523,7 +529,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sCollaboratorsByTask.setInt(1, task_key);
             try(ResultSet rs = sCollaboratorsByTask.executeQuery()) {
                 while (rs.next()){
-                   result.put(getDeveloper(rs.getInt("developer_ID")), rs.getInt("vote"));
+                   result.put((Developer) getDeveloper(rs.getInt("developer_ID")), rs.getInt("vote"));
                 }
             }
         }catch (SQLException ex) {
@@ -540,7 +546,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sDeveloperBySkill.setInt(1, skill_key);
             try(ResultSet rs = sDeveloperBySkill.executeQuery()) {
                 while (rs.next()){
-                   result.put(getDeveloper(rs.getInt("ID")), rs.getInt("level"));
+                   result.put((Developer) getDeveloper(rs.getInt("ID")), rs.getInt("level"));
                 }
             }
         }catch (SQLException ex) {
@@ -558,7 +564,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             
             try(ResultSet rs = sDeveloperBySkillWithLevel.executeQuery()) {
                 while (rs.next()){
-                   result.put(getDeveloper(rs.getInt("ID")), rs.getInt("level"));
+                   result.put((Developer) getDeveloper(rs.getInt("ID")), rs.getInt("level"));
                 }
             }
         }catch (SQLException ex) {
@@ -575,7 +581,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             
             try(ResultSet rs = sSkillsByDeveloper.executeQuery()) {
                 while (rs.next()){
-                   result.put(getSkill(rs.getInt("ID")), rs.getInt("level"));
+                   result.put((Skill) getSkill(rs.getInt("ID")), rs.getInt("level"));
                 }
             }
         }catch (SQLException ex) {
@@ -590,7 +596,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sParentBySkill.setInt(1, skill_key);
             try(ResultSet rs = sParentBySkill.executeQuery()){
                 if (rs.next()){
-                return getSkill(rs.getInt("parent_ID"));
+                return (Skill) getSkill(rs.getInt("parent_ID"));
                 }
             }
         }catch (SQLException ex) {
@@ -607,7 +613,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sChildBySkill.setInt(1, skill_key);
             try(ResultSet rs = sChildBySkill.executeQuery()){
                 while (rs.next()){
-                    result.add(getSkill(rs.getInt("ID")));
+                    result.add((Skill) getSkill(rs.getInt("ID")));
                 }
             }
             
@@ -624,7 +630,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sCollaboratorsByProjectID.setInt(1, project_key);
             try(ResultSet rs = sCollaboratorsByProjectID.executeQuery()){
                 while(rs.next()){
-                    result.add(getDeveloper(rs.getInt("ID")));
+                    result.add((Developer) getDeveloper(rs.getInt("ID")));
                 }
             }
         }catch (SQLException ex) {
@@ -640,7 +646,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
              sProjectsByDeveloperID.setInt(1, developer_key);
              try(ResultSet rs = sProjectsByDeveloperID.executeQuery()){
                  while(rs.next()){
-                     result.add(getProject(rs.getInt("ID")));
+                     result.add((Project) getProject(rs.getInt("ID")));
                  }
              }
          }catch (SQLException ex) {
@@ -658,7 +664,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
              sProjectsByDeveloperIDandDate.setDate(2, sqldate);
              try(ResultSet rs = sProjectsByDeveloperIDandDate.executeQuery()){
                  while (rs.next()){
-                     result.add(getProject(rs.getInt("ID")));
+                     result.add((Project) getProject(rs.getInt("ID")));
                  }
              }
          }catch (SQLException ex) {
@@ -674,7 +680,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sOffertsByDeveloperID.setInt(1,developer_key);
             try(ResultSet rs = sOffertsByDeveloperID.executeQuery()){
                 while(rs.next()){
-                    result.add(getTask(rs.getInt("ID")));
+                    result.add((Task) getTask(rs.getInt("ID")));
                 }
 
             }
@@ -692,7 +698,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sPublicMessagesByProject.setInt(1, project_key);
             try(ResultSet rs = sPublicMessagesByProject.executeQuery()){
                 while(rs.next()){
-                result.add(getMessage(rs.getInt("ID")));
+                result.add((Message) getMessage(rs.getInt("ID")));
                 }
             }
         }catch (SQLException ex) {
@@ -729,7 +735,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sInvitesByCoordinatorID.setInt(1,coordinator_key);
             try(ResultSet rs = sInvitesByCoordinatorID.executeQuery()){
                 while(rs.next()){
-                    result.add(getCollaborationRequest(rs.getInt("developer_ID"), rs.getInt("task_ID")));
+                    result.add((CollaborationRequest) getCollaborationRequest(rs.getInt("developer_ID"), rs.getInt("task_ID")));
                 }
             }
         }catch (SQLException ex) {
@@ -745,7 +751,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sProposalsByCollaboratorID.setInt(1, collaborator_key);
             try(ResultSet rs = sProposalsByCollaboratorID.executeQuery()){
                 while(rs.next()){
-                    result.add(getCollaborationRequest(collaborator_key, rs.getInt("task_ID")));
+                    result.add((CollaborationRequest) getCollaborationRequest(collaborator_key, rs.getInt("task_ID")));
                 }
             }
         }catch (SQLException ex) {
@@ -761,7 +767,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sCoordinatorByTask.setInt(1, task_key);
             try(ResultSet rs = sCoordinatorByTask.executeQuery()){
                 if(rs.next()){
-                    return getDeveloper(rs.getInt("coordinator_ID"));
+                    return (Developer) getDeveloper(rs.getInt("coordinator_ID"));
                 }
             }
         }catch (SQLException ex) {
@@ -778,13 +784,29 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sQuestionsByCoordinatorID.setInt(1, coordinator_key);
             try(ResultSet rs = sQuestionsByCoordinatorID.executeQuery()){
                 while(rs.next()){
-                    result.add(getCollaborationRequest(rs.getInt("developer_ID"), rs.getInt("task_ID")));
+                    result.add((CollaborationRequest) getCollaborationRequest(rs.getInt("developer_ID"), rs.getInt("task_ID")));
                 }
             }
         }catch (SQLException ex) {
             throw new DataLayerException("Unable to load questions by coordinator key ", ex);
         }
         return result;
+    }
+    
+    @Override
+    public int getVote(int task_key, int developer_key) throws DataLayerException{
+        try{
+            sVoteByTaskandDeveloper.setInt(1,task_key);
+            sVoteByTaskandDeveloper.setInt(2, developer_key);
+            try(ResultSet rs = sVoteByTaskandDeveloper.executeQuery()){
+                if(rs.next()){
+                    return rs.getInt("vote");
+                }
+            }
+        }catch (SQLException ex) {
+            throw new DataLayerException("Unable to load vote by developer key and task key ", ex);
+        }
+        return -1;
     }
    
     }   

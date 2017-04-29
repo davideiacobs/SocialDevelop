@@ -60,8 +60,6 @@ public interface SocialDevelopDataLayer extends DataLayer {
         
     List<Task> getTasks(int project_key) throws DataLayerException;
     
-    Task getTaskByRequest(CollaborationRequest request) throws DataLayerException;
-    
     //Message getMessage(int message_key);
     //recupera oggetto message
     Message getMessage(int message_key) throws DataLayerException;
