@@ -85,18 +85,18 @@ public interface SocialDevelopDataLayer extends DataLayer {
     
     CollaborationRequest createCollaborationRequest();
     
-    List<CollaborationRequest> getInvites(int coordinator_key) throws DataLayerException;
+    List<CollaborationRequest> getInvitesByCoordinator(int coordinator_key) throws DataLayerException;
 
-    List<CollaborationRequest> getRequests(int collaborator_key) throws DataLayerException;
+    List<CollaborationRequest> getRequestsByCollaborator(int collaborator_key) throws DataLayerException;
     
-    List<Task> getOfferts(int developer_key) throws DataLayerException;
+    List<Task> getOffertsByDeveloper(int developer_key) throws DataLayerException;
     
     //richiede la lista delle skills del developer e cerca i task aperti che richiedono
     //tali skills
-
-    Developer getCollaboratorRequest(CollaborationRequestImpl request) throws DataLayerException;
     
-    Developer getCoordinatorRequest(Task task) throws DataLayerException;
+    List<CollaborationRequest> getQuestionsByCoordinator(int coordinator_key) throws DataLayerException;
+
+    Developer getCoordinatorByTask(int task_key) throws DataLayerException;
     
     CollaborationRequest getCollaborationRequest(int collaborator_key, int task_key ) throws DataLayerException;
 }

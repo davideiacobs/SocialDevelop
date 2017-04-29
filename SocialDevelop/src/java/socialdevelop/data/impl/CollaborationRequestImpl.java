@@ -28,6 +28,7 @@ public class CollaborationRequestImpl implements CollaborationRequest{
     private int collaborator_key;
     private GregorianCalendar date;
     private int state;
+    private int sender; //0 se inviata da coordinator, 1 se inviata da collaborator
     
     protected SocialDevelopDataLayer ownerdatalayer;
     protected boolean dirty;
@@ -37,6 +38,7 @@ public class CollaborationRequestImpl implements CollaborationRequest{
         coordinator = null;
         coordinator_key = 0;
         task = null;
+        sender = 0;
         task_key = 0;
         collaborator = null;
         collaborator_key = 0;
@@ -44,7 +46,23 @@ public class CollaborationRequestImpl implements CollaborationRequest{
         state = 0;
         dirty = false;
     }
-
+    
+    @Override
+    public int getSender(){
+        return sender;
+    }
+    
+    @Override 
+    public void setSender(int sender){
+        if(sender > 1){
+            this.sender = 1;
+        }else{
+            this.sender = 0;
+        }
+           
+        this.dirty = true;
+    }
+    
     @Override
     public Developer getCoordinatorRequest() throws DataLayerException{
         if(coordinator == null){

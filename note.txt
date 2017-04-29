@@ -1,1 +1,1 @@
-task --> intervallo_temporale oppure data inizia data fine
+distinguere inviti da richieste!! --> tipo in task_has_developer
