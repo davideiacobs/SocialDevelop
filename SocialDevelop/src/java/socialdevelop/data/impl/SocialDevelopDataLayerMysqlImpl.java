@@ -42,7 +42,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     private PreparedStatement sParentBySkill, sMessageByID, sCollaboratorsByProjectID, sProjectsByDeveloperID;
     private PreparedStatement sProjectsByDeveloperIDandDate, sInvitesByCoordinatorID, sProposalsByCollaboratorID;
     private PreparedStatement sOffertsByDeveloperID, sCoordinatorByTask, sTasksByDeveloper, sChildBySkill,sPublicMessagesByProject;
-    private PreparedStatement iProject, uProject, dProject;
+    private PreparedStatement sTypeByID, iProject, uProject, dProject;
     private PreparedStatement iDeveloper, uDeveloper, dDeveloper;
     private PreparedStatement iSkill, uSkill, dSkill;
     private PreparedStatement iTask, uTask, dTask;
@@ -65,6 +65,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sProjectByID = connection.prepareStatement("SELECT * FROM project WHERE ID=?");
             
             sTaskByID = connection.prepareStatement("SELECT * FROM task WHERE ID=?");
+            
+            sTypeByID = connection.prepareStatement("SELECT * FROM type WHERE ID=?");
             
             sDeveloperByID = connection.prepareStatement("SELECT * FROM developer WHERE ID=?");
             
@@ -446,7 +448,20 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         return null;
     }
     
-    
+    @Override
+    public Type getType(int type_key) throws DataLayerException {
+        try{
+           sTypeByID.setInt(1, type_key);
+           try(ResultSet rs = sTypeByID.executeQuery()){
+               if(rs.next()){
+                   return createType(rs);
+               }
+           }
+        }catch (SQLException ex) {
+            throw new DataLayerException("Unable to create type by ID", ex);
+        }
+        return null;
+    }
     
     @Override
      public Task getTask(int task_key) throws DataLayerException {
@@ -465,9 +480,9 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
   
     
     @Override
-    public Type getTypeByTask(int type_key) throws DataLayerException{
+    public Type getTypeByTask(int task_key) throws DataLayerException{
         try{
-            sTypeByTask.setInt(1, type_key);
+            sTypeByTask.setInt(1, task_key);
             try (ResultSet rs = sTypeByTask.executeQuery()) {
                 if (rs.next()){
                     return createType(rs);
@@ -1107,7 +1122,6 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     }
     
     @Override
-    //private=?,text=?,type=?,project_ID=? WHERE ID=?");
     public void storeMessage(Message message) throws DataLayerException {
         int key = message.getKey();
         try {
@@ -1169,7 +1183,114 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     }
     
     
+    @Override
+    public void storeType(Type type) throws DataLayerException {
+        int key = type.getKey();
+        try {
+            if (type.getKey() > 0) { //update
+                //non facciamo nulla se l'oggetto non ha subito modifiche
+                //do not store the object if it was not modified
+                if (!type.isDirty()) {
+                    return;
+                }
+                uType.setString(1, type.getType());
+                uType.setInt(2, type.getKey());
+
+                uType.executeUpdate();
+            } else { //insert
+                iType.setString(1, type.getType());                
+                if (iType.executeUpdate() == 1) {
+                    try (ResultSet keys = iType.getGeneratedKeys()) {
+                        if (keys.next()) {
+                           key = keys.getInt(1);
+                        }
+                    }
+                }
+            }
+           
+            if (key > 0) {
+                type.copyFrom(getType(key));
+            }
+            type.setDirty(false);
+        } catch (SQLException ex) {
+            throw new DataLayerException("Unable to store type", ex);
+        }
+    }
     
+    @Override
+    public void deleteType(Type type) throws DataLayerException{
+        int key = type.getKey();
+        try{
+            dType.setInt(1, key);
+            try(ResultSet rs = dType.executeQuery()){
+                
+                }
+            }catch (SQLException ex) {
+            throw new DataLayerException("Unable to delete type", ex);
+        }
+    }
+    
+    
+     @Override
+    // task_ID,developer_ID,state,date,vote
+    public void storeRequest(CollaborationRequest request) throws DataLayerException {
+        int task_key = request.getTaskKey();
+        int collaborator_key = request.getCollaboratorKey();
+        try {
+            if (collaborator_key > 0 && task_key >0) { //update
+                //non facciamo nulla se l'oggetto non ha subito modifiche
+                //do not store the object if it was not modified
+                if (!request.isDirty()) {
+                    return;
+                }
+                uRequest.setInt(1, task_key);
+                uRequest.setInt(2, collaborator_key);
+                uRequest.setInt(3, request.getState());
+                Date sqldate = new Date(request.getDate().getTimeInMillis());
+                uRequest.setDate(4, sqldate);
+                uRequest.setInt(5, request.getVote());
+                uRequest.executeUpdate();
+                
+            } else { //insert
+                iRequest.setInt(1, task_key);
+                iRequest.setInt(2, collaborator_key);
+                iRequest.setInt(3, request.getState());
+                Date sqldate = new Date(request.getDate().getTimeInMillis());
+                iRequest.setDate(4, sqldate);
+                iRequest.setInt(5, request.getVote());
+                if (iRequest.executeUpdate() == 1) {
+                    try (ResultSet keys = iRequest.getGeneratedKeys()) {
+                        if (keys.next()) {
+                           task_key = keys.getInt(1);
+                           collaborator_key = keys.getInt(2);
+                        }
+                    }
+                }
+            }
+           
+            if (task_key > 0 && collaborator_key > 0) {
+                request.copyFrom(getCollaborationRequest(collaborator_key, task_key));
+            }
+            request.setDirty(false);
+        } catch (SQLException ex) {
+            throw new DataLayerException("Unable to store type", ex);
+        }
+    }
+    
+    @Override
+    public void deleteRequest(CollaborationRequest request) throws DataLayerException{
+        int task_key = request.getTaskKey();
+        int collaborator_key = request.getCollaboratorKey();
+        try{
+            dRequest.setInt(1, task_key);
+            dRequest.setInt(2, collaborator_key);
+            try(ResultSet rs = dRequest.executeQuery()){
+                
+                }
+            }catch (SQLException ex) {
+            throw new DataLayerException("Unable to delete request", ex);
+        }
+    }
 }
     
     

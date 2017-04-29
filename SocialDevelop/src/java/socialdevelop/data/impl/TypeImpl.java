@@ -5,6 +5,7 @@
  */
 package socialdevelop.data.impl;
 
+import it.univaq.f4i.iw.framework.data.DataLayerException;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 import socialdevelop.data.model.Type;
 
@@ -54,5 +55,12 @@ public class TypeImpl implements Type{
     
     protected void setKey(int key) {
         this.key = key;
+    }
+    
+    @Override
+    public void copyFrom(Type tipo) throws DataLayerException {
+        key = tipo.getKey();
+        type = tipo.getType();
+        this.dirty = true;
     }
 }

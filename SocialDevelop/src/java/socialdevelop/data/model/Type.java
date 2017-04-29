@@ -5,6 +5,8 @@
  */
 package socialdevelop.data.model;
 
+import it.univaq.f4i.iw.framework.data.DataLayerException;
+
 /**
  *
  * @author david
@@ -21,4 +23,6 @@ public interface Type {
     void setDirty(boolean dirty);
 
     boolean isDirty();
+    
+    void copyFrom(Type type) throws DataLayerException;
 }

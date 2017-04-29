@@ -29,6 +29,7 @@ public class CollaborationRequestImpl implements CollaborationRequest{
     private GregorianCalendar date;
     private int state;
     private int sender; //0 se inviata da coordinator, 1 se inviata da collaborator
+    private int vote;
     
     protected SocialDevelopDataLayer ownerdatalayer;
     protected boolean dirty;
@@ -44,6 +45,7 @@ public class CollaborationRequestImpl implements CollaborationRequest{
         collaborator_key = 0;
         date = null;
         state = 0;
+        vote = 0;
         dirty = false;
     }
     
@@ -146,6 +148,17 @@ public class CollaborationRequestImpl implements CollaborationRequest{
     }
 
     @Override
+    public void setVote(int vote){
+        this.vote = vote;
+        this.dirty = true;
+    }
+    
+    @Override
+    public int getVote(){
+        return vote;
+    }
+    
+    @Override
     public GregorianCalendar getDate() {
         return date;
     }
@@ -175,6 +188,18 @@ public class CollaborationRequestImpl implements CollaborationRequest{
     @Override
     public boolean isDirty() {
         return dirty;
+    }
+    
+    @Override
+    public void copyFrom(CollaborationRequest request) throws DataLayerException {
+        task_key = request.getTaskKey();
+        collaborator_key = request.getCollaboratorKey();
+        vote = request.getVote();
+        date = request.getDate();
+        sender = request.getSender();
+        state = request.getState();
+        coordinator_key = request.getCoordinatorKey();
+        this.dirty = true;
     }
         
 }

@@ -49,6 +49,8 @@ public interface SocialDevelopDataLayer extends DataLayer {
     
     int getVote(int task_key, int developer_key) throws DataLayerException;
     
+    Type getType(int type_key) throws DataLayerException;
+    
     Type getTypeByTask(int task_key) throws DataLayerException;
     
     Developer getDeveloper(int developer_key) throws DataLayerException;
@@ -119,6 +121,12 @@ public interface SocialDevelopDataLayer extends DataLayer {
     
     void deleteMessage(Message message) throws DataLayerException;
     
+    void storeType(Type type) throws DataLayerException;
     
+    void deleteType(Type type) throws  DataLayerException;
+    
+    void storeRequest(CollaborationRequest request) throws DataLayerException;
+    
+    void deleteRequest(CollaborationRequest request) throws DataLayerException;
 
 }

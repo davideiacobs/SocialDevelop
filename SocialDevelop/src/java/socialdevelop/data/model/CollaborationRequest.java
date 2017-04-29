@@ -42,6 +42,10 @@ public interface CollaborationRequest {
     
     void setState(int state);
     
+    int getVote();
+    
+    void setVote(int vote);
+    
     Task getTaskByRequest() throws DataLayerException;
     
     void setTaskRequest(Task task);
@@ -53,4 +57,7 @@ public interface CollaborationRequest {
     void setDirty(boolean dirty);
 
     boolean isDirty();
+
+    void copyFrom(CollaborationRequest request) throws DataLayerException;
+
 }
