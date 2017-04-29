@@ -149,6 +149,15 @@ public class ProjectImpl implements Project {
     }
     
     @Override
+    public void copyFrom(Project project) throws DataLayerException {
+        key = project.getKey();
+        coordinator_key = project.getCoordinator().getKey();
+        description = project.getDescription();
+        name = project.getName();
+        this.dirty = true;
+    }
+    
+    @Override
     public void setDirty(boolean dirty) {
         this.dirty = dirty;
     }
@@ -161,4 +170,6 @@ public class ProjectImpl implements Project {
     protected void setKey(int key) {
         this.key = key;
     }
+    
+    
 }

@@ -95,4 +95,12 @@ public class SkillImpl implements Skill{
     protected void setKey(int key) {
         this.key = key;
     }
+    
+    @Override
+    public void copyFrom(Skill skill) throws DataLayerException {
+        key = skill.getKey();
+        parent_id = skill.getParent();
+        name = skill.getName();
+        this.dirty = true;
+    }
 }   

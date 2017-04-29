@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import socialdevelop.data.model.Developer;
+import socialdevelop.data.model.Project;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 
 /**
@@ -33,6 +34,8 @@ public class TaskImpl implements Task{
     private Type type;
     private Map<Skill, Integer> skills;
     private Map<Developer, Integer> collaborators;
+    private Project project;
+    private int project_key;
    
     protected SocialDevelopDataLayer ownerdatalayer;
     protected boolean dirty;
@@ -49,6 +52,8 @@ public class TaskImpl implements Task{
         skills = null;
         collaborators = null;
         dirty = false;
+        project = null;
+        project_key = 0;
     }
       
     @Override
@@ -65,6 +70,39 @@ public class TaskImpl implements Task{
     @Override
     public int getNumCollaborators(){
         return numCollaborators;
+    }
+    
+    @Override
+    public void setProjectKey(int project_key){
+        this.project_key = project_key;
+        this.project = null;
+        this.dirty = true;
+    }
+    
+    @Override
+    public int getProjectKey(){
+        return project_key;
+    }
+    
+    @Override
+    public void setProject(Project project) {
+        this.project = project;
+        this.project_key = project.getKey();
+        this.dirty = true;
+    }
+    
+    @Override
+    public Project getProject() throws DataLayerException{
+        //notare come il coordinatore in relazione venga caricato solo su richiesta
+        if (project == null && project_key > 0) {
+            project = ownerdatalayer.getProject(project_key);
+        }
+        //attenzione: il coordinatore caricato viene lagato all'oggetto in modo da non 
+        //dover venir ricaricato alle richieste successive, tuttavia, questo
+        //puo' rende i dati potenzialmente disallineati: se il coordinatore viene modificato
+        //nel DB, qui rimarrà la sua "vecchia" versione
+       
+        return project;
     }
     
     @Override 
@@ -217,6 +255,18 @@ public class TaskImpl implements Task{
    @Override
     public void setName(String name) {
         this.name = name;
+        this.dirty = true;
+    }
+    
+    @Override
+    public void copyFrom(Task task) throws DataLayerException {
+        key = task.getKey();
+        project_key = task.getProject().getKey();
+        name = task.getName();
+        numCollaborators = task.getNumCollaborators();
+        timeInterval = task.getTimeInterval();
+        description = task.getDescription();
+        open = task.isOpen();
         this.dirty = true;
     }
 }

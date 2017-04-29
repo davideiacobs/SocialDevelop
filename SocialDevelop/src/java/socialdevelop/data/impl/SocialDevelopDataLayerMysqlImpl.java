@@ -38,11 +38,12 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     private PreparedStatement sProjectByID, sTaskByID, sProjects, sDeveloperByID, sSkillByID, sRequestByID;
     private PreparedStatement sProjectsByFilter, sSkillsByTask, sSkillsByDeveloper, sQuestionsByCoordinatorID; 
     private PreparedStatement sCollaboratorsByTask, sVoteByTaskandDeveloper, sTypeByTask, sMessagesByProject;
-    private PreparedStatement sDeveloperBySkillWithLevel, sDeveloperBySkill, sTasksByProject ;
+    private PreparedStatement sDeveloperBySkillWithLevel, sDeveloperBySkill, sTasksByProject, sTaskByRequest ;
     private PreparedStatement sParentBySkill, sMessageByID, sCollaboratorsByProjectID, sProjectsByDeveloperID;
     private PreparedStatement sProjectsByDeveloperIDandDate, sInvitesByCoordinatorID, sProposalsByCollaboratorID;
     private PreparedStatement sOffertsByDeveloperID, sCoordinatorByTask, sTasksByDeveloper, sChildBySkill,sPublicMessagesByProject;
     private PreparedStatement iProject, uProject, dProject;
+    private PreparedStatement iDeveloper, uDeveloper, dDeveloper;
     private PreparedStatement iSkill, uSkill, dSkill;
     private PreparedStatement iTask, uTask, dTask;
     private PreparedStatement iMessage, uMessage, dMessage;
@@ -105,10 +106,10 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                                             + "ON(developer.ID = skill_has_developer.developer_ID) WHERE skill_has_developer.skill_ID=?");
             sTasksByProject = connection.prepareStatement("SELECT * FROM task WHERE project_ID=?");
             
-            /*sTaskByRequest = connection.prepareStatement("SELECT task.* FROM task_has_developer INNER JOIN task ON"
+            sTaskByRequest = connection.prepareStatement("SELECT task.* FROM task_has_developer INNER JOIN task ON"
                                             + "(task_has_developer.task_ID = task.ID) WHERE task_has_developer.task_ID=? AND"
                                              + "task_has_developer.developer_ID=?");
-            */
+            
             sParentBySkill = connection.prepareStatement("SELECT parent_ID FROM skill WHERE ID=?");
             sChildBySkill = connection.prepareStatement("SELECT ID FROM skill WHERE parent_ID=?");
             sCollaboratorsByProjectID = connection.prepareStatement("SELECT developer.ID "
@@ -152,6 +153,10 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             iSkill = connection.prepareStatement("INSERT INTO skill (name,parent_ID) VALUES(?,?)", Statement.RETURN_GENERATED_KEYS);
             uSkill = connection.prepareStatement("UPDATE skill SET name=?,parent_ID=? WHERE ID=?");
             dSkill = connection.prepareStatement("DELETE FROM skill WHERE ID=?");
+            
+            iDeveloper = connection.prepareStatement("INSERT INTO developer (name,surname,username,mail,pwd,birthdate,biography,curriculumFile,curriculumText) VALUES(?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            uDeveloper = connection.prepareStatement("UPDATE developer SET name=?,surname=?,username=?,mail=?,pwd=?,birthdate=?,biography=?,curriculumFile=?,curriculumText=? WHERE ID=?");
+            dDeveloper = connection.prepareStatement("DELETE FROM developer WHERE ID=?");
             
             iTask = connection.prepareStatement("INSERT INTO task (name,numCollaborators,timeInterval,description,open,project_ID) VALUES(?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             uTask = connection.prepareStatement("UPDATE task SET name=?,numCollaborators=?,timeInterval=?,description=?,open=?,project_ID=? WHERE ID=?");
@@ -808,7 +813,365 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         }
         return -1;
     }
-   
-    }   
+    
+    @Override
+    public Task getTaskByRequest(CollaborationRequest request) throws DataLayerException{
+        int developer_key = request.getCollaboratorKey();
+        int task_key = request.getTaskKey();
+        try{
+            sTaskByRequest.setInt(1, developer_key);
+            sTaskByRequest.setInt(2, task_key);
+            try(ResultSet rs = sTaskByRequest.executeQuery()){
+                if(rs.next()){
+                    return (Task) getTask(rs.getInt("task_ID"));
+                }
+            }
+        }catch (SQLException ex) {
+            throw new DataLayerException("Unable to load task by request ", ex);
+        }
+        return null;
+    }
+    
+    
+    @Override
+    public void storeProject(Project project) throws DataLayerException {
+        int key = project.getKey();
+        try {
+            if (project.getKey() > 0) { //update
+                //non facciamo nulla se l'oggetto non ha subito modifiche
+                //do not store the object if it was not modified
+                if (!project.isDirty()) {
+                    return;
+                }
+                uProject.setString(1, project.getName());
+                uProject.setString(2, project.getDescription());
+                if (project.getCoordinator() != null) {
+                    uProject.setInt(3, project.getCoordinator().getKey());
+                } else {
+                    uProject.setNull(3, java.sql.Types.INTEGER);
+                }
+                uProject.setInt(4, project.getKey());
+                uProject.executeUpdate();
+            } else { //insert
+                iProject.setString(1, project.getName());
+                iProject.setString(2, project.getDescription());
+                if (project.getCoordinator() != null) {
+                    iProject.setInt(3, project.getCoordinator().getKey());
+                } else {
+                    iProject.setNull(3, java.sql.Types.INTEGER);
+                }
+                
+                if (iProject.executeUpdate() == 1) {
+                    //per leggere la chiave generata dal database
+                    //per il record appena inserito, usiamo il metodo
+                    //getGeneratedKeys sullo statement.
+                    try (ResultSet keys = iProject.getGeneratedKeys()) {
+                        //il valore restituito è un ResultSet con un record
+                        //per ciascuna chiave generata (uno solo nel nostro caso)
+                        
+                        if (keys.next()) {
+                            //i campi del record sono le componenti della chiave
+                            //(nel nostro caso, un solo intero)
+                            key = keys.getInt(1);
+                        }
+                    }
+                }
+            }
+            //restituiamo l'oggetto appena inserito RICARICATO
+            //dal database tramite le API del modello. In tal
+            //modo terremo conto di ogni modifica apportata
+            //durante la fase di inserimento
+           
+            if (key > 0) {
+                project.copyFrom(getProject(key));
+            }
+            project.setDirty(false);
+        } catch (SQLException ex) {
+            throw new DataLayerException("Unable to store article", ex);
+        }
+    }
+    
+    @Override
+    public void deleteProject(Project project) throws DataLayerException{
+        int key = project.getKey();
+        try{
+            dProject.setInt(1, key);
+            try(ResultSet rs = dProject.executeQuery()){
+                
+                }
+            }catch (SQLException ex) {
+            throw new DataLayerException("Unable to store article", ex);
+        }
+    }
+    
+
+    @Override
+    public void storeDeveloper(Developer developer) throws DataLayerException {
+        int key = developer.getKey();
+        try {
+
+            if (developer.getKey() > 0) { //update
+                //non facciamo nulla se l'oggetto non ha subito modifiche
+                //do not store the object if it was not modified
+                if (!developer.isDirty()) {
+                    return;
+                }
+                uDeveloper.setString(1, developer.getName());
+                uDeveloper.setString(2, developer.getSurname());
+                uDeveloper.setString(3, developer.getUsername());
+                uDeveloper.setString(4, developer.getMail());
+                uDeveloper.setString(5, developer.getPwd());
+                Date sqldate = new Date(developer.getBirthDate().getTimeInMillis());
+                uDeveloper.setDate(6, sqldate);
+                uDeveloper.setString(7, developer.getBiography());
+                //uDeveloper.setFile(8, developer.getCurriculumFile());
+                uDeveloper.setString(9, developer.getCurriculumString());
+                uProject.setInt(10, developer.getKey());
+                uProject.executeUpdate();
+            } else { //insert
+                iDeveloper.setString(1, developer.getName());
+                iDeveloper.setString(2, developer.getSurname());
+                iDeveloper.setString(3, developer.getUsername());
+                iDeveloper.setString(4, developer.getMail());
+                iDeveloper.setString(5, developer.getPwd());
+                Date sqldate = new Date(developer.getBirthDate().getTimeInMillis());
+                iDeveloper.setDate(6, sqldate);
+                iDeveloper.setString(7, developer.getBiography());
+                //iDeveloper.setFile(8, developer.getCurriculumFile());
+                iDeveloper.setString(9, developer.getCurriculumString());
+               
+                if (iDeveloper.executeUpdate() == 1) {
+                    //per leggere la chiave generata dal database
+                    //per il record appena inserito, usiamo il metodo
+                    //getGeneratedKeys sullo statement.
+                    try (ResultSet keys = iDeveloper.getGeneratedKeys()) {
+                        //il valore restituito è un ResultSet con un record
+                        //per ciascuna chiave generata (uno solo nel nostro caso)
+                        
+                        if (keys.next()) {
+                            //i campi del record sono le componenti della chiave
+                            //(nel nostro caso, un solo intero)
+                            key = keys.getInt(1);
+                        }
+                    }
+                }
+            }
+            //restituiamo l'oggetto appena inserito RICARICATO
+            //dal database tramite le API del modello. In tal
+            //modo terremo conto di ogni modifica apportata
+            //durante la fase di inserimento
+           
+            if (key > 0) {
+                developer.copyFrom(getDeveloper(key));
+            }
+            developer.setDirty(false);
+        } catch (SQLException ex) {
+            throw new DataLayerException("Unable to store article", ex);
+        }
+    }
+    
+    @Override
+    public void deleteDeveloper(Developer developer) throws DataLayerException{
+        int key = developer.getKey();
+        try{
+            dDeveloper.setInt(1, key);
+            try(ResultSet rs = dDeveloper.executeQuery()){
+                
+                }
+            }catch (SQLException ex) {
+            throw new DataLayerException("Unable to store article", ex);
+        }
+    }
+    
+    @Override
+    public void storeTask(Task task) throws DataLayerException {
+        int key = task.getKey();
+        try {
+            if (task.getKey() > 0) { //update
+                //non facciamo nulla se l'oggetto non ha subito modifiche
+                //do not store the object if it was not modified
+                if (!task.isDirty()) {
+                    return;
+                }
+                uTask.setString(1, task.getName());
+                uTask.setInt(2, task.getNumCollaborators());
+                uTask.setTimestamp(3, task.getTimeInterval());
+                uTask.setString(4, task.getDescription());
+                uTask.setBoolean(5, task.isOpen());
+                
+                if (task.getProject() != null) {
+                    uTask.setInt(3, task.getProject().getKey());
+                } else {
+                    uTask.setNull(3, java.sql.Types.INTEGER);
+                }
+                uTask.setInt(4, task.getKey());
+                uTask.executeUpdate();
+            } else { //insert
+                iTask.setString(1, task.getName());
+                iTask.setInt(2, task.getNumCollaborators());
+                iTask.setTimestamp(3, task.getTimeInterval());
+                iTask.setString(4, task.getDescription());
+                iTask.setBoolean(5, task.isOpen());                
+                if (task.getProject() != null) {
+                    iTask.setInt(3, task.getProject().getKey());
+                } else {
+                    iTask.setNull(3, java.sql.Types.INTEGER);
+                }
+                
+                if (iTask.executeUpdate() == 1) {
+                    try (ResultSet keys = iTask.getGeneratedKeys()) {
+                       
+                        if (keys.next()) {
+                           key = keys.getInt(1);
+                        }
+                    }
+                }
+            }
+           
+            if (key > 0) {
+                task.copyFrom(getTask(key));
+            }
+            task.setDirty(false);
+        } catch (SQLException ex) {
+            throw new DataLayerException("Unable to store article", ex);
+        }
+    }
+    
+    @Override
+    public void deleteTask(Task task) throws DataLayerException{
+        int key = task.getKey();
+        try{
+            dTask.setInt(1, key);
+            try(ResultSet rs = dTask.executeQuery()){
+                
+                }
+            }catch (SQLException ex) {
+            throw new DataLayerException("Unable to store article", ex);
+        }
+    }
+    
+    @Override
+    public void storeSkill(Skill skill) throws DataLayerException {
+        int key = skill.getKey();
+        try {
+            if (skill.getKey() > 0) { //update
+                //non facciamo nulla se l'oggetto non ha subito modifiche
+                //do not store the object if it was not modified
+                if (!skill.isDirty()) {
+                    return;
+                }
+                uSkill.setString(1, skill.getName());
+                if(skill.getParent() != 0){
+                    uSkill.setInt(2, skill.getParent());
+                }else{
+                    uSkill.setNull(2, java.sql.Types.INTEGER);
+                }
+                uSkill.setInt(3, skill.getKey());
+                uSkill.executeUpdate();
+            } else { //insert
+                iSkill.setString(1, skill.getName());
+                if(skill.getParent() != 0){
+                    iSkill.setInt(2, skill.getParent());
+                }else{
+                    iSkill.setNull(2, java.sql.Types.INTEGER);
+                }
+                if (iSkill.executeUpdate() == 1) {
+                    try (ResultSet keys = iSkill.getGeneratedKeys()) {
+                        if (keys.next()) {
+                           key = keys.getInt(1);
+                        }
+                    }
+                }
+            }
+           
+            if (key > 0) {
+                skill.copyFrom(getSkill(key));
+            }
+            skill.setDirty(false);
+        } catch (SQLException ex) {
+            throw new DataLayerException("Unable to store article", ex);
+        }
+    }
+    
+    @Override
+    public void deleteSkill(Skill skill) throws DataLayerException{
+        int key = skill.getKey();
+        try{
+            dSkill.setInt(1, key);
+            try(ResultSet rs = dSkill.executeQuery()){
+                
+                }
+            }catch (SQLException ex) {
+            throw new DataLayerException("Unable to store article", ex);
+        }
+    }
+    
+    @Override
+    //private=?,text=?,type=?,project_ID=? WHERE ID=?");
+    public void storeMessage(Message message) throws DataLayerException {
+        int key = message.getKey();
+        try {
+            if (message.getKey() > 0) { //update
+                //non facciamo nulla se l'oggetto non ha subito modifiche
+                //do not store the object if it was not modified
+                if (!message.isDirty()) {
+                    return;
+                }
+                uMessage.setBoolean(1, message.isPrivate());
+                uMessage.setString(2, message.getText());
+                uMessage.setString(3, message.getType());
+                if(message.getProject()!=null){
+                    uMessage.setInt(4, message.getProject().getKey());
+                }else{
+                    uMessage.setNull(4, java.sql.Types.INTEGER);
+                }
+                uMessage.setInt(5, message.getKey());
+
+                uMessage.executeUpdate();
+            } else { //insert
+                iMessage.setBoolean(1, message.isPrivate());
+                iMessage.setString(2, message.getText());
+                iMessage.setString(3, message.getType());
+                if(message.getProject()!=null){
+                    iMessage.setInt(4, message.getProject().getKey());
+                }else{
+                    iMessage.setNull(4, java.sql.Types.INTEGER);
+                }
+                if (iMessage.executeUpdate() == 1) {
+                    try (ResultSet keys = iMessage.getGeneratedKeys()) {
+                        if (keys.next()) {
+                           key = keys.getInt(1);
+                        }
+                    }
+                }
+            }
+           
+            if (key > 0) {
+                message.copyFrom(getMessage(key));
+            }
+            message.setDirty(false);
+        } catch (SQLException ex) {
+            throw new DataLayerException("Unable to store article", ex);
+        }
+    }
+    
+    @Override
+    public void deleteMessage(Message message) throws DataLayerException{
+        int key = message.getKey();
+        try{
+            dMessage.setInt(1, key);
+            try(ResultSet rs = dMessage.executeQuery()){
+                
+                }
+            }catch (SQLException ex) {
+            throw new DataLayerException("Unable to store article", ex);
+        }
+    }
+    
+    
+    
+}
+    
+    
 
 

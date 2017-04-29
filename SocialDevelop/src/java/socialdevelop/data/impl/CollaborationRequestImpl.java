@@ -66,7 +66,7 @@ public class CollaborationRequestImpl implements CollaborationRequest{
     @Override
     public Developer getCoordinatorRequest() throws DataLayerException{
         if(coordinator == null){
-            coordinator = ownerdatalayer.getCoordinatorRequest(this.task);
+            coordinator = ownerdatalayer.getCoordinatorByTask(this.task_key);
         }
         return coordinator;
     }
@@ -120,7 +120,7 @@ public class CollaborationRequestImpl implements CollaborationRequest{
     @Override
     public Developer getCollaboratorRequest() throws DataLayerException {
         if(collaborator == null){
-            collaborator = ownerdatalayer.getCollaboratorRequest(this);
+            collaborator = ownerdatalayer.getDeveloper(this.collaborator_key);
         }
         return collaborator;
     }

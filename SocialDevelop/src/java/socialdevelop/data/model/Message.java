@@ -5,6 +5,7 @@
  */
 package socialdevelop.data.model;
 
+import it.univaq.f4i.iw.framework.data.DataLayerException;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ public interface Message {
     
     void setProject(Project project);
     
-    Project getProject();
+    Project getProject() throws DataLayerException;
     
     void setProjectKey(int project_key);
     
@@ -39,4 +40,5 @@ public interface Message {
 
     boolean isDirty();
     
+     void copyFrom(Message message) throws DataLayerException;
 }

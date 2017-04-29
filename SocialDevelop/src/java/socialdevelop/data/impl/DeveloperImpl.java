@@ -10,6 +10,7 @@ import java.io.File;
 import java.util.GregorianCalendar;
 import java.util.Map;
 import socialdevelop.data.model.Developer;
+import socialdevelop.data.model.Project;
 import socialdevelop.data.model.Skill;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 import socialdevelop.data.model.Task;
@@ -206,5 +207,18 @@ public class DeveloperImpl implements Developer {
         this.key = key;
     }
       
-
+    @Override
+    public void copyFrom(Developer developer) throws DataLayerException {
+        key = developer.getKey();
+        name = developer.getName();
+        surname = developer.getSurname();
+        username = developer.getUsername();
+        mail = developer.getMail();
+        pwd = developer.getPwd();
+        birthdate = developer.getBirthDate();
+        biography = developer.getBiography();
+        curriculumFile = developer.getCurriculumFile();
+        curriculumString = developer.getCurriculumString();
+        this.dirty = true;
+    }
 }

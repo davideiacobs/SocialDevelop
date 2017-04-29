@@ -35,4 +35,7 @@ public interface Skill {
     void setDirty(boolean dirty);
 
     boolean isDirty();
+    
+   void copyFrom(Skill skill) throws DataLayerException;
+
 }

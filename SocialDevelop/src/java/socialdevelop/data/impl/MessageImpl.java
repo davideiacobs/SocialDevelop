@@ -5,6 +5,7 @@
  */
 package socialdevelop.data.impl;
 
+import it.univaq.f4i.iw.framework.data.DataLayerException;
 import socialdevelop.data.model.Message;
 import socialdevelop.data.model.Project;
 import socialdevelop.data.model.SocialDevelopDataLayer;
@@ -60,7 +61,16 @@ public class MessageImpl implements Message{
     }
     
     @Override
-    public Project getProject(){
+    public Project getProject() throws DataLayerException{
+        
+        if (project == null && project_key > 0) {
+            project = ownerdatalayer.getProject(project_key);
+        }
+        //attenzione: il coordinatore caricato viene lagato all'oggetto in modo da non 
+        //dover venir ricaricato alle richieste successive, tuttavia, questo
+        //puo' rende i dati potenzialmente disallineati: se il coordinatore viene modificato
+        //nel DB, qui rimarrà la sua "vecchia" versione
+       
         return project;
     }
     
@@ -109,5 +119,15 @@ public class MessageImpl implements Message{
     
     protected void setKey(int key) {
         this.key = key;
+    }
+    
+    @Override
+    public void copyFrom(Message message) throws DataLayerException {
+        key = message.getKey();
+        isPrivate = message.isPrivate();
+        text = message.getText();
+        type = message.getType();
+        project_key = message.getProject().getKey();
+        this.dirty = true;
     }
 }

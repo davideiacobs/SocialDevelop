@@ -53,4 +53,6 @@ public interface Project  {
     void setDirty(boolean dirty);
 
     boolean isDirty();
+    
+    void copyFrom(Project project) throws DataLayerException;
 }

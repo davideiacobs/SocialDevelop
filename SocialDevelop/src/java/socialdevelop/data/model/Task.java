@@ -20,6 +20,14 @@ public interface Task {
     
     String getName();
     
+    int getProjectKey();
+    
+    void setProjectKey(int project_key);
+    
+    Project getProject() throws DataLayerException;
+    
+    void setProject(Project project);
+    
     void setName(String name);
     
     void setNumCollaborators(int num); //tramite questa si può anche modificare il numCollaboratori
@@ -69,5 +77,8 @@ public interface Task {
     void setDirty(boolean dirty);
 
     boolean isDirty();
+    
+    void copyFrom(Task task) throws DataLayerException;
+
     
 }

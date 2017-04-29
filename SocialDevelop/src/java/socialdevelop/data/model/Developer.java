@@ -80,4 +80,6 @@ public interface Developer {
 
     boolean isDirty();
     
+    void copyFrom(Developer developer) throws DataLayerException;
+    
 }
