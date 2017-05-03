@@ -4,9 +4,17 @@
         <servlet-name>Progetto</servlet-name>
         <servlet-class>socialdevelop.data.model.Project</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>NewServlet</servlet-name>
+        <servlet-class>socialdevelop.data.impl.NewServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Progetto</servlet-name>
         <url-pattern>/Progetto</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewServlet</servlet-name>
+        <url-pattern>/NewServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
@@ -14,7 +22,7 @@
         </session-timeout>
     </session-config>
     <resource-ref>
-        <res-ref-name>jdbc/socialdevDB</res-ref-name>
+        <res-ref-name>jdbc/mydb</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>
         <res-sharing-scope>Shareable</res-sharing-scope>
