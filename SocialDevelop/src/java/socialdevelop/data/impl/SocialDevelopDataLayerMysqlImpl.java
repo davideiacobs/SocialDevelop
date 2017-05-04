@@ -156,7 +156,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             uSkill = connection.prepareStatement("UPDATE skill SET name=?,parent_ID=? WHERE ID=?");
             dSkill = connection.prepareStatement("DELETE FROM skill WHERE ID=?");
             
-            iDeveloper = connection.prepareStatement("INSERT INTO developer (name,surname,username,mail,pwd,birthdate,biography,curriculumFile,curriculumText) VALUES(?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            iDeveloper = connection.prepareStatement("INSERT INTO developer (name,surname,username,mail,pwd,birthdate,biography,curriculumText) VALUES(?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             uDeveloper = connection.prepareStatement("UPDATE developer SET name=?,surname=?,username=?,mail=?,pwd=?,birthdate=?,biography=?,curriculumFile=?,curriculumText=? WHERE ID=?");
             dDeveloper = connection.prepareStatement("DELETE FROM developer WHERE ID=?");
             
@@ -940,9 +940,9 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                 uDeveloper.setDate(6, sqldate);
                 uDeveloper.setString(7, developer.getBiography());
                 //uDeveloper.setFile(8, developer.getCurriculumFile());
-                uDeveloper.setString(9, developer.getCurriculumString());
-                uProject.setInt(10, developer.getKey());
-                uProject.executeUpdate();
+                uDeveloper.setString(8, developer.getCurriculumString());
+                uDeveloper.setInt(9, developer.getKey());
+                uDeveloper.executeUpdate();
             } else { //insert
                 iDeveloper.setString(1, developer.getName());
                 iDeveloper.setString(2, developer.getSurname());
@@ -953,7 +953,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                 iDeveloper.setDate(6, sqldate);
                 iDeveloper.setString(7, developer.getBiography());
                 //iDeveloper.setFile(8, developer.getCurriculumFile());
-                iDeveloper.setString(9, developer.getCurriculumString());
+                iDeveloper.setString(8, developer.getCurriculumString());
                
                 if (iDeveloper.executeUpdate() == 1) {
                     //per leggere la chiave generata dal database

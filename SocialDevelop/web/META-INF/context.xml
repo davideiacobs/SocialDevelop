@@ -8,7 +8,7 @@
         type="javax.sql.DataSource"
         auth="Container"
         driverClassName="com.mysql.jdbc.Driver"
-        url="jdbc:mysql://localhost/mydb"
+        url="jdbc:mysql://localhost:3308/mydb"
         username="root"
         password="lebronjames1995"
         maxActive="10"
