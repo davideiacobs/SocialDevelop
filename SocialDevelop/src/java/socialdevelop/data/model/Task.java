@@ -7,6 +7,9 @@ package socialdevelop.data.model;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
 import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.Period;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
@@ -42,9 +45,13 @@ public interface Task {
     
     String getDescription();
     
-    Timestamp getTimeInterval();
+    //Timestamp getTimeInterval();
     
-    void setTimeInterval(Timestamp interval);
+    //void setTimeInterval(Timestamp interval);
+    
+    GregorianCalendar getTimeInterval();
+    
+    void setTimeInterval(GregorianCalendar interval);
     
     void setType(Type type);
     

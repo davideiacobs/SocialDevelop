@@ -47,27 +47,54 @@ public class provaDB2 extends HttpServlet {
         try {
             SocialDevelopDataLayer datalayer = new SocialDevelopDataLayerMysqlImpl(ds);
             datalayer.init();
+            
+            /*
+            -- TEST STORE TYPE -- 
             TypeImpl type = new TypeImpl(datalayer);
             type.setType("mariotti");
             datalayer.storeType(type);
-            sel = datalayer.getType(10).getType();
-            
-            /*DeveloperImpl dev = new DeveloperImpl(datalayer);
-            dev.setName("davide");
-            dev.setSurname("iacobelli");
+            //sel = datalayer.getType(10).getType();
+
+            -- TEST STORE DEVELOPER --             
+            DeveloperImpl dev = new DeveloperImpl(datalayer);
+            dev.setName("dav");
+            dev.setSurname("iacob");
             dev.setUsername("iacobs");
             dev.setMail("blabla@blabla");
             GregorianCalendar gc = new GregorianCalendar();
             gc.setLenient(false);
             gc.set(GregorianCalendar.YEAR, 1995);
-            gc.set(GregorianCalendar.MONTH, 04);
+            gc.set(GregorianCalendar.MONTH, 03); //parte da 0
             gc.set(GregorianCalendar.DATE, 27);
             dev.setBirthDate(gc);
             dev.setPwd("aooooo");
             dev.setBiography("come andiamo??");
             dev.setCurriculum("eeeeeehheeheheh");
-            datalayer.storeDeveloper(dev);*/
+            datalayer.storeDeveloper(dev);
             
+            -- TEST STORE PROJECT --             
+            ProjectImpl prj = new ProjectImpl(datalayer);
+            prj.setCoordinatorKey(1);
+            prj.setName("project1");
+            sel = prj.getName();
+            prj.setDescription("blabla");
+            datalayer.storeProject(prj);*/
+            
+            TaskImpl tsk = new TaskImpl(datalayer);
+            tsk.setName("sviluppo");
+            tsk.setDescription("come andiamo");
+            tsk.setNumCollaborators(8);
+            tsk.setOpen(true);
+            GregorianCalendar gc = new GregorianCalendar();
+            gc.setLenient(false);
+            gc.set(GregorianCalendar.YEAR, 2018);
+            gc.set(GregorianCalendar.MONTH, 07); //parte da 0
+            gc.set(GregorianCalendar.DATE, 28);   
+            tsk.setTimeInterval(gc);
+            tsk.setProjectKey(1);
+            //tsk.setProject(datalayer.getProject(1));
+            datalayer.storeTask(tsk);
+            sel = tsk.getName();
         } catch (SQLException ex) {
             Logger.getLogger(provaDB2.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NamingException ex) {

@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -156,7 +157,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             uSkill = connection.prepareStatement("UPDATE skill SET name=?,parent_ID=? WHERE ID=?");
             dSkill = connection.prepareStatement("DELETE FROM skill WHERE ID=?");
             
-            iDeveloper = connection.prepareStatement("INSERT INTO developer (name,surname,username,mail,pwd,birthdate,biography,curriculumText) VALUES(?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            iDeveloper = connection.prepareStatement("INSERT INTO developer (name,surname,username,mail,pwd,birthdate,biography,curriculumString) VALUES(?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             uDeveloper = connection.prepareStatement("UPDATE developer SET name=?,surname=?,username=?,mail=?,pwd=?,birthdate=?,biography=?,curriculumFile=?,curriculumText=? WHERE ID=?");
             dDeveloper = connection.prepareStatement("DELETE FROM developer WHERE ID=?");
             
@@ -216,10 +217,15 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             TaskImpl a = new TaskImpl(this);
             a.setKey(rs.getInt("ID"));
             a.setName(rs.getString("name"));
-            a.setTimeInterval(rs.getTimestamp("timeInterval"));
+            Timestamp ts = rs.getTimestamp("timeInterval");
+            GregorianCalendar timeInterval = new GregorianCalendar();
+            timeInterval.setTime(ts);
+            a.setTimeInterval(timeInterval);
+            //a.setTimeInterval(rs.getTimestamp("timeInterval"));
             a.setOpen(rs.getBoolean("open"));
             a.setNumCollaborators(rs.getInt("numCollaborators"));
-            a.setDescription(rs.getString("description"));     
+            a.setDescription(rs.getString("description"));   
+            a.setProjectKey(rs.getInt("project_ID"));
             return a;
         } catch (SQLException ex) {
             throw new DataLayerException("Unable to create task object form ResultSet", ex);
@@ -1010,7 +1016,9 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                 }
                 uTask.setString(1, task.getName());
                 uTask.setInt(2, task.getNumCollaborators());
-                uTask.setTimestamp(3, task.getTimeInterval());
+                //uTask.setTimestamp(3, task.getTimeInterval());
+                Date sqldate = new Date(task.getTimeInterval().getTimeInMillis());
+                uTask.setDate(3, sqldate);
                 uTask.setString(4, task.getDescription());
                 uTask.setBoolean(5, task.isOpen());
                 
@@ -1024,13 +1032,14 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             } else { //insert
                 iTask.setString(1, task.getName());
                 iTask.setInt(2, task.getNumCollaborators());
-                iTask.setTimestamp(3, task.getTimeInterval());
+                Date sqldate = new Date(task.getTimeInterval().getTimeInMillis());
+                iTask.setDate(3, sqldate);
                 iTask.setString(4, task.getDescription());
                 iTask.setBoolean(5, task.isOpen());                
                 if (task.getProject() != null) {
-                    iTask.setInt(3, task.getProject().getKey());
+                    iTask.setInt(6, task.getProject().getKey());
                 } else {
-                    iTask.setNull(3, java.sql.Types.INTEGER);
+                    iTask.setNull(6, java.sql.Types.INTEGER);
                 }
                 
                 if (iTask.executeUpdate() == 1) {

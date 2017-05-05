@@ -7,6 +7,7 @@ package socialdevelop.data.impl;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
 import java.sql.Timestamp;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import socialdevelop.data.model.Task;
 import socialdevelop.data.model.Type;
@@ -27,7 +28,8 @@ public class TaskImpl implements Task{
     
     private int key;
     private String name;
-    private Timestamp timeInterval;
+    //private Timestamp timeInterval;
+    private GregorianCalendar timeInterval; //data fine task
     private boolean open;
     private int numCollaborators;
     private String description;
@@ -128,15 +130,23 @@ public class TaskImpl implements Task{
     }
     
     @Override
-    public Timestamp getTimeInterval(){
+    public GregorianCalendar getTimeInterval(){
         return timeInterval;
     }
+    /*public Timestamp getTimeInterval(){
+        return timeInterval;
+    }*/
     
     @Override
-    public void setTimeInterval(Timestamp timeInterval){
-        this.timeInterval = timeInterval;
+    public void setTimeInterval(GregorianCalendar period){
+        this.timeInterval = period;
         this.dirty = true;
     }
+    /*public void setTimeInterval(Timestamp timeInterval){
+        this.timeInterval = timeInterval;
+        this.dirty = true;
+    }*/
+    
     
     @Override
     public Type getTypeByTask() throws DataLayerException{
