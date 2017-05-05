@@ -74,8 +74,8 @@ public class provaDB2 extends HttpServlet {
             
             -- TEST STORE PROJECT --             
             ProjectImpl prj = new ProjectImpl(datalayer);
-            prj.setCoordinatorKey(1);
-            prj.setName("project1");
+            prj.setCoordinatorKey(2);
+            prj.setName("project2");
             sel = prj.getName();
             prj.setDescription("blabla");
             datalayer.storeProject(prj);
@@ -107,7 +107,17 @@ public class provaDB2 extends HttpServlet {
             skl.setName("python");
             skl.setParentKey(1);
             datalayer.storeSkill(skl);
-            sel = skl.getName();*/
+            sel = skl.getName();
+            
+            --TEST STORE MESSAGE--
+            MessageImpl msg = new MessageImpl(datalayer);
+            msg.setPrivate(false);
+            msg.setProjectKey(2);
+            msg.setText("blablabla");
+            msg.setType("commento");
+            datalayer.storeMessage(msg);
+            sel = msg.getText();*/
+                    
             
         } catch (SQLException ex) {
             Logger.getLogger(provaDB2.class.getName()).log(Level.SEVERE, null, ex);

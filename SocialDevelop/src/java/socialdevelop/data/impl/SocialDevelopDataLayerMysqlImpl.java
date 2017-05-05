@@ -71,9 +71,11 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             
             sDeveloperByID = connection.prepareStatement("SELECT * FROM developer WHERE ID=?");
             
-            sMessagesByProject = connection.prepareStatement("SELECT ID FROM messages WHERE project_ID=?");
+            sMessagesByProject = connection.prepareStatement("SELECT ID FROM message WHERE project_ID=?");
             
-            sPublicMessagesByProject= connection.prepareStatement("SELECT ID FROM messages WHERE project_ID=? and private=0");
+            sMessageByID = connection.prepareStatement("SELECT * FROM message WHERE ID=?");
+            
+            sPublicMessagesByProject= connection.prepareStatement("SELECT ID FROM message WHERE project_ID=? and private=0");
             
             sProjects = connection.prepareStatement("SELECT ID FROM project");
             
@@ -419,7 +421,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     @Override
     public Message getMessage(int message_key) throws DataLayerException {
          try {
-            sMessageByID.setInt(1, message_key); //setta primo parametro query a project_key
+            sMessageByID.setInt(1, message_key); 
             try (ResultSet rs = sMessageByID.executeQuery()) {
                 if (rs.next()) {
                     return createMessage(rs);
@@ -866,7 +868,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     public void storeProject(Project project) throws DataLayerException {
         int key = project.getKey();
         try {
-            if (project.getKey() > 0) { //update
+            if (key > 0) { //update
                 //non facciamo nulla se l'oggetto non ha subito modifiche
                 //do not store the object if it was not modified
                 if (!project.isDirty()) {
@@ -939,7 +941,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         int key = developer.getKey();
         try {
 
-            if (developer.getKey() > 0) { //update
+            if (key > 0) { //update
                 //non facciamo nulla se l'oggetto non ha subito modifiche
                 //do not store the object if it was not modified
                 if (!developer.isDirty()) {
@@ -1016,7 +1018,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     public void storeTask(Task task) throws DataLayerException {
         int key = task.getKey();
         try {
-            if (task.getKey() > 0) { //update
+            if (key > 0) { //update
                 //non facciamo nulla se l'oggetto non ha subito modifiche
                 //do not store the object if it was not modified
                 if (!task.isDirty()) {
@@ -1089,7 +1091,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     public void storeSkill(Skill skill) throws DataLayerException {
         int key = skill.getKey();
         try {
-            if (skill.getKey() > 0) { //update
+            if (key > 0) { //update
                 //non facciamo nulla se l'oggetto non ha subito modifiche
                 //do not store the object if it was not modified
                 if (!skill.isDirty()) {
@@ -1148,7 +1150,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     public void storeMessage(Message message) throws DataLayerException {
         int key = message.getKey();
         try {
-            if (message.getKey() > 0) { //update
+            if (key > 0) { //update
                 //non facciamo nulla se l'oggetto non ha subito modifiche
                 //do not store the object if it was not modified
                 if (!message.isDirty()) {
@@ -1210,7 +1212,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     public void storeType(Type type) throws DataLayerException {
         int key = type.getKey();
         try {
-            if (type.getKey() > 0) { //update
+            if (key > 0) { //update
                 //non facciamo nulla se l'oggetto non ha subito modifiche
                 //do not store the object if it was not modified
                 if (!type.isDirty()) {

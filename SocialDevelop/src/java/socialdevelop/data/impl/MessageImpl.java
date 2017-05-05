@@ -127,7 +127,7 @@ public class MessageImpl implements Message{
         isPrivate = message.isPrivate();
         text = message.getText();
         type = message.getType();
-        project_key = message.getProject().getKey();
+        project_key = message.getProjectKey();
         this.dirty = true;
     }
 }
