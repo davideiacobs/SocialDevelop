@@ -49,9 +49,13 @@ public interface Task {
     
     //void setTimeInterval(Timestamp interval);
     
-    GregorianCalendar getTimeInterval();
+    GregorianCalendar getStartDate();
     
-    void setTimeInterval(GregorianCalendar interval);
+    void setStartDate(GregorianCalendar start);
+    
+    GregorianCalendar getEndDate();
+    
+    void setEndDate(GregorianCalendar end);
     
     void setType(Type type);
     

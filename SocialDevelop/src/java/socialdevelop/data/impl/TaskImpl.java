@@ -29,7 +29,8 @@ public class TaskImpl implements Task{
     private int key;
     private String name;
     //private Timestamp timeInterval;
-    private GregorianCalendar timeInterval; //data fine task
+    private GregorianCalendar start;
+    private GregorianCalendar end;
     private boolean open;
     private int numCollaborators;
     private String description;
@@ -46,7 +47,8 @@ public class TaskImpl implements Task{
         this.ownerdatalayer = ownerdatalayer;
         key = 0;
         name = "";
-        timeInterval = null;
+        start = null;
+        end = null;
         open = true;
         numCollaborators = 0;
         description = "";
@@ -130,22 +132,27 @@ public class TaskImpl implements Task{
     }
     
     @Override
-    public GregorianCalendar getTimeInterval(){
-        return timeInterval;
+    public GregorianCalendar getStartDate(){
+        return start;
     }
-    /*public Timestamp getTimeInterval(){
-        return timeInterval;
-    }*/
     
     @Override
-    public void setTimeInterval(GregorianCalendar period){
-        this.timeInterval = period;
+    public GregorianCalendar getEndDate(){
+        return end;
+    }
+    
+    
+    @Override
+    public void setStartDate(GregorianCalendar start){
+        this.start = start;
         this.dirty = true;
     }
-    /*public void setTimeInterval(Timestamp timeInterval){
-        this.timeInterval = timeInterval;
+    
+    @Override
+    public void setEndDate(GregorianCalendar end){
+        this.end = end;
         this.dirty = true;
-    }*/
+    }
     
     
     @Override
@@ -274,7 +281,8 @@ public class TaskImpl implements Task{
         project_key = task.getProject().getKey();
         name = task.getName();
         numCollaborators = task.getNumCollaborators();
-        timeInterval = task.getTimeInterval();
+        start = task.getStartDate();
+        end = task.getEndDate();
         description = task.getDescription();
         open = task.isOpen();
         this.dirty = true;

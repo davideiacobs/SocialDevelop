@@ -78,8 +78,10 @@ public class provaDB2 extends HttpServlet {
             prj.setName("project1");
             sel = prj.getName();
             prj.setDescription("blabla");
-            datalayer.storeProject(prj);*/
+            datalayer.storeProject(prj);
             
+            
+            -- TEST STORE TASK --
             TaskImpl tsk = new TaskImpl(datalayer);
             tsk.setName("sviluppo");
             tsk.setDescription("come andiamo");
@@ -90,11 +92,17 @@ public class provaDB2 extends HttpServlet {
             gc.set(GregorianCalendar.YEAR, 2018);
             gc.set(GregorianCalendar.MONTH, 07); //parte da 0
             gc.set(GregorianCalendar.DATE, 28);   
-            tsk.setTimeInterval(gc);
+            tsk.setStartDate(gc);
+            gc.set(GregorianCalendar.YEAR, 2018);
+            gc.set(GregorianCalendar.MONTH, 10); //parte da 0
+            gc.set(GregorianCalendar.DATE, 28);  
+            tsk.setEndDate(gc);
             tsk.setProjectKey(1);
             //tsk.setProject(datalayer.getProject(1));
             datalayer.storeTask(tsk);
-            sel = tsk.getName();
+            sel = tsk.getName();*/
+            
+            
         } catch (SQLException ex) {
             Logger.getLogger(provaDB2.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NamingException ex) {

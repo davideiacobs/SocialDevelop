@@ -5,20 +5,12 @@
         <servlet-class>socialdevelop.data.model.Project</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>provaDB</servlet-name>
-        <servlet-class>socialdevelop.data.impl.provaDB</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>provaDB2</servlet-name>
         <servlet-class>socialdevelop.data.impl.provaDB2</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Progetto</servlet-name>
         <url-pattern>/Progetto</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>provaDB</servlet-name>
-        <url-pattern>/provaDB</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>provaDB2</servlet-name>

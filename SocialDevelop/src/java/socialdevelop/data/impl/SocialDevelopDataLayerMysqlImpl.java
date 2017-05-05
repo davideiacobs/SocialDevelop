@@ -161,8 +161,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             uDeveloper = connection.prepareStatement("UPDATE developer SET name=?,surname=?,username=?,mail=?,pwd=?,birthdate=?,biography=?,curriculumFile=?,curriculumText=? WHERE ID=?");
             dDeveloper = connection.prepareStatement("DELETE FROM developer WHERE ID=?");
             
-            iTask = connection.prepareStatement("INSERT INTO task (name,numCollaborators,timeInterval,description,open,project_ID) VALUES(?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-            uTask = connection.prepareStatement("UPDATE task SET name=?,numCollaborators=?,timeInterval=?,description=?,open=?,project_ID=? WHERE ID=?");
+            iTask = connection.prepareStatement("INSERT INTO task (name,numCollaborators,start,end,description,open,project_ID) VALUES(?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            uTask = connection.prepareStatement("UPDATE task SET name=?,numCollaborators=?,start=?,end=?,description=?,open=?,project_ID=? WHERE ID=?");
             dTask = connection.prepareStatement("DELETE FROM task WHERE ID=?");
             
             iMessage = connection.prepareStatement("INSERT INTO message (private,text,type,project_ID) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
@@ -217,11 +217,14 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             TaskImpl a = new TaskImpl(this);
             a.setKey(rs.getInt("ID"));
             a.setName(rs.getString("name"));
-            Timestamp ts = rs.getTimestamp("timeInterval");
-            GregorianCalendar timeInterval = new GregorianCalendar();
-            timeInterval.setTime(ts);
-            a.setTimeInterval(timeInterval);
-            //a.setTimeInterval(rs.getTimestamp("timeInterval"));
+            Timestamp ts = rs.getTimestamp("start");
+            GregorianCalendar start = new GregorianCalendar();
+            start.setTime(ts);
+            a.setStartDate(start);
+            Timestamp ts2 = rs.getTimestamp("end");
+            GregorianCalendar end = new GregorianCalendar();
+            start.setTime(ts2);
+            a.setEndDate(end);
             a.setOpen(rs.getBoolean("open"));
             a.setNumCollaborators(rs.getInt("numCollaborators"));
             a.setDescription(rs.getString("description"));   
@@ -1016,30 +1019,33 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                 }
                 uTask.setString(1, task.getName());
                 uTask.setInt(2, task.getNumCollaborators());
-                //uTask.setTimestamp(3, task.getTimeInterval());
-                Date sqldate = new Date(task.getTimeInterval().getTimeInMillis());
-                uTask.setDate(3, sqldate);
-                uTask.setString(4, task.getDescription());
-                uTask.setBoolean(5, task.isOpen());
+                Date sqldate1 = new Date(task.getStartDate().getTimeInMillis());
+                uTask.setDate(3, sqldate1);
+                Date sqldate2 = new Date(task.getEndDate().getTimeInMillis());
+                uTask.setDate(4, sqldate2);
+                uTask.setString(5, task.getDescription());
+                uTask.setBoolean(6, task.isOpen());
                 
                 if (task.getProject() != null) {
-                    uTask.setInt(3, task.getProject().getKey());
+                    uTask.setInt(7, task.getProject().getKey());
                 } else {
-                    uTask.setNull(3, java.sql.Types.INTEGER);
+                    uTask.setNull(7, java.sql.Types.INTEGER);
                 }
                 uTask.setInt(4, task.getKey());
                 uTask.executeUpdate();
             } else { //insert
                 iTask.setString(1, task.getName());
                 iTask.setInt(2, task.getNumCollaborators());
-                Date sqldate = new Date(task.getTimeInterval().getTimeInMillis());
-                iTask.setDate(3, sqldate);
-                iTask.setString(4, task.getDescription());
-                iTask.setBoolean(5, task.isOpen());                
+                Date sqldate1 = new Date(task.getStartDate().getTimeInMillis());
+                iTask.setDate(3, sqldate1);
+                Date sqldate2 = new Date(task.getEndDate().getTimeInMillis());
+                iTask.setDate(4, sqldate2);
+                iTask.setString(5, task.getDescription());
+                iTask.setBoolean(6, task.isOpen());                
                 if (task.getProject() != null) {
-                    iTask.setInt(6, task.getProject().getKey());
+                    iTask.setInt(7, task.getProject().getKey());
                 } else {
-                    iTask.setNull(6, java.sql.Types.INTEGER);
+                    iTask.setNull(7, java.sql.Types.INTEGER);
                 }
                 
                 if (iTask.executeUpdate() == 1) {
