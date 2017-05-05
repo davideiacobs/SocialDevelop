@@ -18,8 +18,9 @@ public class SkillImpl implements Skill{
     
     private int key;
     private String name;
-    private int parent_id;
-    private List<Skill> child;
+    private int parent_id; //nel caso in cui non ha padre, come parent_id avrà il suo stesso id
+    private Skill parent;
+    private List<Skill> child; //serve?? PESANTE!
     protected SocialDevelopDataLayer ownerdatalayer;
     protected boolean dirty;
     
@@ -28,6 +29,7 @@ public class SkillImpl implements Skill{
         key = 0;
         name = "";
         parent_id = 0;
+        parent = null;
         child = null;
         dirty = false;
     }
@@ -57,7 +59,7 @@ public class SkillImpl implements Skill{
     }
     
     @Override
-    public int getParent() throws DataLayerException{
+    public int getParentKey() throws DataLayerException{
         if(parent_id == 0){
             parent_id = ownerdatalayer.getParent(this.key).getKey();
         }
@@ -65,10 +67,33 @@ public class SkillImpl implements Skill{
     }
     
     @Override
-    public void setParent(int skill_id){
+    public void setParentKey(int skill_id){
         this.parent_id = skill_id;
         this.dirty = true;
     }
+    
+    
+    @Override
+    public void setParent(Skill parent) {
+        this.parent = parent;
+        this.parent_id = parent.getKey();
+        this.dirty = true;
+    }
+    
+    @Override
+    public Skill getParent() throws DataLayerException{
+        //notare come il coordinatore in relazione venga caricato solo su richiesta
+        if (parent == null && parent_id > 0) {
+            parent = ownerdatalayer.getSkill(parent_id);
+        }
+        //attenzione: il coordinatore caricato viene lagato all'oggetto in modo da non 
+        //dover venir ricaricato alle richieste successive, tuttavia, questo
+        //puo' rende i dati potenzialmente disallineati: se il coordinatore viene modificato
+        //nel DB, qui rimarrà la sua "vecchia" versione
+       
+        return parent;
+    }
+    
     
     @Override
     public void setChild(List<Skill> child){
@@ -99,7 +124,7 @@ public class SkillImpl implements Skill{
     @Override
     public void copyFrom(Skill skill) throws DataLayerException {
         key = skill.getKey();
-        parent_id = skill.getParent();
+        parent_id = skill.getParentKey();
         name = skill.getName();
         this.dirty = true;
     }

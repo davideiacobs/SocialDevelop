@@ -100,8 +100,14 @@ public class provaDB2 extends HttpServlet {
             tsk.setProjectKey(1);
             //tsk.setProject(datalayer.getProject(1));
             datalayer.storeTask(tsk);
-            sel = tsk.getName();*/
+            sel = tsk.getName();
             
+            --TEST STORE SKILL--
+            SkillImpl skl = new SkillImpl(datalayer);
+            skl.setName("python");
+            skl.setParentKey(1);
+            datalayer.storeSkill(skl);
+            sel = skl.getName();*/
             
         } catch (SQLException ex) {
             Logger.getLogger(provaDB2.class.getName()).log(Level.SEVERE, null, ex);

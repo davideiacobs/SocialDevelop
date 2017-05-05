@@ -246,7 +246,12 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             SkillImpl a = new SkillImpl(this);
             a.setKey(rs.getInt("ID"));
             a.setName(rs.getString("name"));
-            a.setParent(rs.getInt("parent_ID"));     
+            if(rs.getObject("parent_ID") != null && !rs.wasNull()){
+                a.setParentKey(rs.getInt("parent_ID"));     
+            }else{
+                a.setParentKey(-1);
+            }
+            
             return a;
         } catch (SQLException ex) {
             throw new DataLayerException("Unable to create task object form ResultSet", ex);
@@ -1091,8 +1096,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                     return;
                 }
                 uSkill.setString(1, skill.getName());
-                if(skill.getParent() != 0){
-                    uSkill.setInt(2, skill.getParent());
+                if(skill.getParent() != null){
+                    uSkill.setInt(2, skill.getParent().getKey());
                 }else{
                     uSkill.setNull(2, java.sql.Types.INTEGER);
                 }
@@ -1100,11 +1105,13 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                 uSkill.executeUpdate();
             } else { //insert
                 iSkill.setString(1, skill.getName());
-                if(skill.getParent() != 0){
-                    iSkill.setInt(2, skill.getParent());
+                if(skill.getParent() != null){
+                    iSkill.setInt(2, skill.getParent().getKey());
                 }else{
                     iSkill.setNull(2, java.sql.Types.INTEGER);
+                    skill.setParentKey(-1);
                 }
+                
                 if (iSkill.executeUpdate() == 1) {
                     try (ResultSet keys = iSkill.getGeneratedKeys()) {
                         if (keys.next()) {
@@ -1115,6 +1122,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             }
            
             if (key > 0) {
+               //getSkill(key).setParentKey(-1);
                 skill.copyFrom(getSkill(key));
             }
             skill.setDirty(false);
