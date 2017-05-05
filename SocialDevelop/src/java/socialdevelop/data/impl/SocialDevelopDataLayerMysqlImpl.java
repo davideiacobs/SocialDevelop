@@ -389,7 +389,9 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     public List<Project> getProjects(String filter) throws DataLayerException {
         List<Project> result = new ArrayList();
         try {
-            sProjectsByFilter.setString(1, filter); //setta primo parametro query a project_key
+            sProjectsByFilter.setString(1, "%" + filter + "%"); 
+            sProjectsByFilter.setString(2,  "%" + filter + "%"); 
+
             try (ResultSet rs = sProjectsByFilter.executeQuery()) {
                 while (rs.next()) {
                     result.add((Project) getProject(rs.getInt("ID")));
@@ -1257,6 +1259,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     
     
      @Override
+     //NON FUNGE!!!!!!!!!!!!!!1
     // task_ID,developer_ID,state,date,vote
     public void storeRequest(CollaborationRequest request) throws DataLayerException {
         int task_key = request.getTaskKey();

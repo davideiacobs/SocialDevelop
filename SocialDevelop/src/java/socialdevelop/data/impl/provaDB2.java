@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import socialdevelop.data.model.Message;
 import socialdevelop.data.model.Project;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 
@@ -116,7 +118,47 @@ public class provaDB2 extends HttpServlet {
             msg.setText("blablabla");
             msg.setType("commento");
             datalayer.storeMessage(msg);
-            sel = msg.getText();*/
+            sel = msg.getText();
+            
+            --TEST STORE REQUEST --> NEGATIVO--
+            CollaborationRequestImpl cr = new CollaborationRequestImpl(datalayer);
+            cr.setCollaboratorKey(1);
+            cr.setCoordinatorKey(2);
+            GregorianCalendar gc = new GregorianCalendar();
+            gc.setLenient(false);
+            gc.set(GregorianCalendar.YEAR, 2018);
+            gc.set(GregorianCalendar.MONTH, 07); //parte da 0
+            gc.set(GregorianCalendar.DATE, 28);  
+            cr.setDate(gc);
+            cr.setSender(0);
+            cr.setState(1);
+            cr.setTaskKey(1);
+            cr.setVote(-1);
+            datalayer.storeRequest(cr);
+            
+            --TEST GET PROJECT BY KEY--
+            Project prj = datalayer.getProject(2);
+            sel = prj.getName();
+            
+            --TEST GET PROJECTS (project list)--
+            List<Project> list = datalayer.getProjects();
+            for (Project item : list) {
+                sel = sel + " " + item.getName()
+            }
+            
+            --TEST GET MESSAGES BY PROJECT--
+            List<Message> list = datalayer.getMessages(1);
+            for (Message item : list) {
+                sel = sel + " " + item.getText();
+            }
+            
+            --TEST GET PROJECT BY FILTER--
+            List<Project> list = datalayer.getProjects("pro");
+            for (Project item : list) {
+                sel = sel + " " + item.getName();
+            }*/
+           
+        
                     
             
         } catch (SQLException ex) {
