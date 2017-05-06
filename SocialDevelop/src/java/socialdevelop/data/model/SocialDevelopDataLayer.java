@@ -128,5 +128,8 @@ public interface SocialDevelopDataLayer extends DataLayer {
     void storeRequest(CollaborationRequest request) throws DataLayerException;
     
     void deleteRequest(CollaborationRequest request) throws DataLayerException;
+    
+    void storeTaskHasSkill(int task_ID, int skill_ID, int type_ID, int level_min) throws DataLayerException;
+
 
 }

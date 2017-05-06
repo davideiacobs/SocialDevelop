@@ -22,7 +22,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import socialdevelop.data.model.Message;
 import socialdevelop.data.model.Project;
+import socialdevelop.data.model.Skill;
 import socialdevelop.data.model.SocialDevelopDataLayer;
+import socialdevelop.data.model.Task;
+import socialdevelop.data.model.Type;
 
 /**
  *
@@ -146,6 +149,10 @@ public class provaDB2 extends HttpServlet {
                 sel = sel + " " + item.getName()
             }
             
+            --TEST GET MESSAGE BY KEY--
+            Message msg = datalayer.getMessage(1);
+            sel = msg.getText();
+            
             --TEST GET MESSAGES BY PROJECT--
             List<Message> list = datalayer.getMessages(1);
             for (Message item : list) {
@@ -156,10 +163,34 @@ public class provaDB2 extends HttpServlet {
             List<Project> list = datalayer.getProjects("pro");
             for (Project item : list) {
                 sel = sel + " " + item.getName();
-            }*/
-           
-        
-                    
+            }
+            
+            --TEST GET TASKS BY PROJECT KEY--
+            List<Task> list = datalayer.getTasks(1);
+            for (Task item : list) {
+                sel = sel + " " + item.getName();
+            }
+            
+            --TEST GET SKILL BY KEY--
+            Skill skl = datalayer.getSkill(1);
+            sel = skl.getName();
+            
+            --TEST GET TYPE BY KEY--
+            Type type = datalayer.getType(1);
+            sel = type.getType();
+            
+            --TEST GET TASK BY KEY--
+            Task tsk = datalayer.getTask(14);
+            sel = tsk.getName();
+            
+            --TEST GET TYPE BY TASK KEY --> RETEST LATER--
+            Type type = datalayer.getTypeByTask(14);
+            sel = type.getType();*/
+            
+            String debug = "fai debug da qui";
+            datalayer.storeTaskHasSkill(14, 1, 1, 7);
+            
+                 
             
         } catch (SQLException ex) {
             Logger.getLogger(provaDB2.class.getName()).log(Level.SEVERE, null, ex);

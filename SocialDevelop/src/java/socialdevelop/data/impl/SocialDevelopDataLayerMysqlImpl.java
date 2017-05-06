@@ -50,6 +50,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     private PreparedStatement iMessage, uMessage, dMessage;
     private PreparedStatement iType, uType, dType;
     private PreparedStatement iRequest, uRequest, dRequest;
+    private PreparedStatement iTaskHasSkill, uTaskHasSkill, dTaskHasSkill;
     
     public SocialDevelopDataLayerMysqlImpl(DataSource datasource) throws SQLException, NamingException {
         super(datasource);
@@ -109,7 +110,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                                             + "WHERE skill_has_developer.skill_ID=? AND skill_has_developer.level=?");
             sDeveloperBySkill = connection.prepareStatement("SELECT developer.*, skill_has_developer.level FROM developer INNER JOIN skill_has_developer "
                                             + "ON(developer.ID = skill_has_developer.developer_ID) WHERE skill_has_developer.skill_ID=?");
-            sTasksByProject = connection.prepareStatement("SELECT * FROM task WHERE project_ID=?");
+            sTasksByProject = connection.prepareStatement("SELECT task.ID FROM task WHERE project_ID=?");
             
             sTaskByRequest = connection.prepareStatement("SELECT task.* FROM task_has_developer INNER JOIN task ON"
                                             + "(task_has_developer.task_ID = task.ID) WHERE task_has_developer.task_ID=? AND"
@@ -159,6 +160,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             uSkill = connection.prepareStatement("UPDATE skill SET name=?,parent_ID=? WHERE ID=?");
             dSkill = connection.prepareStatement("DELETE FROM skill WHERE ID=?");
             
+            
             iDeveloper = connection.prepareStatement("INSERT INTO developer (name,surname,username,mail,pwd,birthdate,biography,curriculumString) VALUES(?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             uDeveloper = connection.prepareStatement("UPDATE developer SET name=?,surname=?,username=?,mail=?,pwd=?,birthdate=?,biography=?,curriculumFile=?,curriculumText=? WHERE ID=?");
             dDeveloper = connection.prepareStatement("DELETE FROM developer WHERE ID=?");
@@ -178,6 +180,9 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             iRequest = connection.prepareStatement("INSERT INTO request (task_ID,developer_ID,state,date,vote) VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             uRequest = connection.prepareStatement("UPDATE request SET task_ID=?,developer_ID=?,state=?,date=?,vote=? WHERE task_ID=? AND developer_ID=?");
             dRequest = connection.prepareStatement("DELETE FROM request WHERE task_ID=? AND developer_ID=?");
+            
+            
+            iTaskHasSkill = connection.prepareStatement("INSERT INTO task_has_skill(task_ID,skill_ID,type_ID,level_min) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             
         } catch (SQLException ex) {
             throw new DataLayerException("Error initializing newspaper data layer", ex);
@@ -224,8 +229,9 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             start.setTime(ts);
             a.setStartDate(start);
             Timestamp ts2 = rs.getTimestamp("end");
+            //se sono permessi valori nulli bisogna fare check del resultSet
             GregorianCalendar end = new GregorianCalendar();
-            start.setTime(ts2);
+            end.setTime(ts2);
             a.setEndDate(end);
             a.setOpen(rs.getBoolean("open"));
             a.setNumCollaborators(rs.getInt("numCollaborators"));
@@ -408,7 +414,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         List<Task> result = new ArrayList();
          try {
             sTasksByProject.setInt(1, project_key);
-            try (ResultSet rs = sProjects.executeQuery()) {
+            try (ResultSet rs = sTasksByProject.executeQuery()) {
                 while (rs.next()) {
                     result.add((Task) getTask(rs.getInt("ID")));
 
@@ -1319,6 +1325,63 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             throw new DataLayerException("Unable to delete request", ex);
         }
     }
+    
+    @Override
+    public void storeTaskHasSkill(int task_ID, int skill_ID, int type_ID, int level_min) throws DataLayerException {
+        boolean flag = true;
+        try {
+            sTaskByID.setInt(1, task_ID);
+            try(ResultSet rs = sTaskByID.executeQuery()){
+                if(!rs.next()){
+                    flag = false;
+                }
+            }
+        }catch (SQLException ex) {
+            throw new DataLayerException("Unable to delete request", ex);
+        }
+        if(flag){
+            try {
+                sSkillByID.setInt(1, skill_ID);
+                try(ResultSet rs = sSkillByID.executeQuery()){
+                    if(!rs.next()){
+                        flag = false;
+                    }
+                }
+            }catch (SQLException ex) {
+                throw new DataLayerException("Unable to delete request", ex);
+            }
+            if(flag){
+                try {
+                    sTypeByID.setInt(1, type_ID);
+                    try(ResultSet rs = sTypeByID.executeQuery()){
+                        if(!rs.next()){
+                            flag = false;
+                        }
+                    }
+                }catch (SQLException ex) {
+                    throw new DataLayerException("Unable to delete request", ex);
+                }
+                //continua qui
+                try{
+                    iTaskHasSkill.setInt(1, task_ID);
+                    iTaskHasSkill.setInt(2, skill_ID);
+                    iTaskHasSkill.setInt(3, type_ID);
+                    iTaskHasSkill.setInt(4, level_min);
+                    try(ResultSet rs = iTaskHasSkill.executeQuery()){
+                    
+                    } 
+                }catch (SQLException ex) {
+                    throw new DataLayerException("Unable to insert task_has_skill", ex);
+                }
+                
+            }
+        }
+            
+    }
+    
+    
+    
+    
 }
     
     
