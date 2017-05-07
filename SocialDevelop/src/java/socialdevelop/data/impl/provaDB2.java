@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import socialdevelop.data.model.CollaborationRequest;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Message;
 import socialdevelop.data.model.Project;
@@ -125,22 +126,6 @@ public class provaDB2 extends HttpServlet {
             datalayer.storeMessage(msg);
             sel = msg.getText();
             
-            --TEST STORE REQUEST --> NEGATIVO--
-            CollaborationRequestImpl cr = new CollaborationRequestImpl(datalayer);
-            cr.setCollaboratorKey(1);
-            cr.setCoordinatorKey(2);
-            GregorianCalendar gc = new GregorianCalendar();
-            gc.setLenient(false);
-            gc.set(GregorianCalendar.YEAR, 2018);
-            gc.set(GregorianCalendar.MONTH, 07); //parte da 0
-            gc.set(GregorianCalendar.DATE, 28);  
-            cr.setDate(gc);
-            cr.setSender(0);
-            cr.setState(1);
-            cr.setTaskKey(1);
-            cr.setVote(-1);
-            datalayer.storeRequest(cr);
-            
             --TEST GET PROJECT BY KEY--
             Project prj = datalayer.getProject(2);
             sel = prj.getName();
@@ -212,17 +197,82 @@ public class provaDB2 extends HttpServlet {
                 sel = sel + " " + item.getName();
             }
             
-            --TEST STORE TASK_HAS_DEVELOPER--
+            TEST STORE TASK_HAS_DEVELOPER/COLLABORATION REQUEST--
             GregorianCalendar gc = new GregorianCalendar();
             gc.setLenient(false);
             gc.set(GregorianCalendar.YEAR, 2018);
             gc.set(GregorianCalendar.MONTH, 07); //parte da 0
             gc.set(GregorianCalendar.DATE, 28);
-            datalayer.storeTaskHasDeveloper(14, 1, 1, gc,8,2);
+            datalayer.storeCollaborationRequest(14, 2, 1, gc,8,0);
+            
             
             --TEST GET COORDINATOR BY TASK ID--
             Developer coord = datalayer.getCoordinatorByTask(14);
-            sel = coord.getName();*/
+            sel = coord.getName();
+            
+            --TEST GET TASKS BY DEVELOPER ID--
+            Map<Task,Integer> tsk = datalayer.getTasksByDeveloper(1);
+            for (Map.Entry<Task, Integer> entry : tsk.entrySet()){
+                sel = sel + " "+ entry.getKey().getName()+" "+ String.valueOf(entry.getValue());
+            }
+            
+            --TEST STORE SKILL_HAS_DEVELOPER--
+            datalayer.storeSkillHasDeveloper(18, 1, 10);
+            
+            --TEST GET COLLABORATORS BY TASK ID--
+            Map<Developer, Integer> res = datalayer.getCollaboratorsByTask(14);
+            for (Map.Entry<Developer, Integer> entry : res.entrySet()){
+                sel = sel + " "+ entry.getKey().getName()+" "+ String.valueOf(entry.getValue());
+            }
+            
+            --TEST GET DEVELOPERS BY SKILL--
+            Map<Developer,Integer> res = datalayer.getDevelopersBySkill(18);
+            for (Map.Entry<Developer, Integer> entry : res.entrySet()){
+                sel = sel + " "+ entry.getKey().getName()+" "+ String.valueOf(entry.getValue());
+            }
+            
+            --TEST GET DEVELOPERS BY SKILL KEY AND LEVEL--
+            Map<Developer,Integer> res = datalayer.getDevelopersBySkill(18,10);
+            for (Map.Entry<Developer, Integer> entry : res.entrySet()){
+                sel = sel + " "+ entry.getKey().getName()+" "+ String.valueOf(entry.getValue());
+            }
+            
+            --TEST GET SKILLS BY DEVELOPER KEY--
+            Map<Skill, Integer> res = datalayer.getSkillsByDeveloper(1);
+            for(Map.Entry<Skill, Integer> entry : res.entrySet()){
+                sel = sel + " "+ entry.getKey().getName()+" "+ String.valueOf(entry.getValue());
+            }
+            
+            --TEST GET COLLABORATORS BY PROJECT ID--
+            List<Developer> list = datalayer.getProjectCollaborators(1);
+            for (Developer item : list) {
+                sel = sel + " " + item.getName();
+            }
+            
+            --TEST GET PROJECTS BY DEVELOPER KEY--
+            List<Project> list = datalayer.getDeveloperProjects(1);
+            for (Project item : list) {
+                sel = sel + " " + item.getName();
+            }
+            
+            --TEST GET PROJECTS BY DEVELOPER KEY AND DATE--
+            GregorianCalendar gc = new GregorianCalendar();
+            gc.setLenient(false);
+            gc.set(GregorianCalendar.YEAR, 2018);
+            gc.set(GregorianCalendar.MONTH, 07); //parte da 0
+            gc.set(GregorianCalendar.DATE, 28);
+            List<Project> list = datalayer.getDeveloperProjects(1, gc);
+            for (Project item : list) {
+                sel = sel + " " + item.getName();
+            }
+            
+            --TEST GET OFFERTS BY DEVELOPER ID--
+            List<CollaborationRequest> list = datalayer.getOffertsByDeveloper(2);
+            for (CollaborationRequest item : list) {
+                sel = sel + " " + item.getCoordinatorRequest().getName();
+            }*/
+            
+            
             
             
             
