@@ -532,13 +532,13 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         Map<Skill,Integer> result = new HashMap<>();
         try{
             sSkillsByTask.setInt(1, task_key);
-            try (ResultSet rs = sSkillsByDeveloper.executeQuery()) {
+            try (ResultSet rs = sSkillsByTask.executeQuery()) {
                 while (rs.next()){
                     result.put((Skill) getSkill(rs.getInt("ID")), rs.getInt("level_min"));
                 }
             }
         }catch (SQLException ex) {
-                throw new DataLayerException("Unable to load skillByTask", ex);
+                throw new DataLayerException("Unable to load skillsByTask", ex);
             }
         return result;
     }

@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -188,8 +189,13 @@ public class provaDB2 extends HttpServlet {
             sel = type.getType();
             
             --TEST STORE TASK_HAS_SKILL--
-            datalayer.storeTaskHasSkill(14, 1, 1, 7);*/
+            datalayer.storeTaskHasSkill(14, 1, 1, 7);
             
+            --TEST GET SKILLS BY TASK--
+            Map<Skill, Integer> res = datalayer.getSkillsByTask(14);
+            for (Map.Entry<Skill, Integer> entry : res.entrySet()){
+                sel = sel + " "+ entry.getKey().getName()+" "+ String.valueOf(entry.getValue());
+            }*/
            
             
         } catch (SQLException ex) {
