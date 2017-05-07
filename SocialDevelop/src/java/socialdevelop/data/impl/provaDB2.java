@@ -183,14 +183,14 @@ public class provaDB2 extends HttpServlet {
             Task tsk = datalayer.getTask(14);
             sel = tsk.getName();
             
-            --TEST GET TYPE BY TASK KEY --> RETEST LATER--
+            --TEST GET TYPE BY TASK KEY--
             Type type = datalayer.getTypeByTask(14);
-            sel = type.getType();*/
+            sel = type.getType();
             
-            String debug = "fai debug da qui";
-            datalayer.storeTaskHasSkill(14, 1, 1, 7);
+            --TEST STORE TASK_HAS_SKILL--
+            datalayer.storeTaskHasSkill(14, 1, 1, 7);*/
             
-                 
+           
             
         } catch (SQLException ex) {
             Logger.getLogger(provaDB2.class.getName()).log(Level.SEVERE, null, ex);

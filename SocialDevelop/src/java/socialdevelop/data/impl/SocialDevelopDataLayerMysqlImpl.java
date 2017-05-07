@@ -182,7 +182,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             dRequest = connection.prepareStatement("DELETE FROM request WHERE task_ID=? AND developer_ID=?");
             
             
-            iTaskHasSkill = connection.prepareStatement("INSERT INTO task_has_skill(task_ID,skill_ID,type_ID,level_min) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            iTaskHasSkill = connection.prepareStatement("INSERT INTO task_has_skill (task_ID,skill_ID,type_ID,level_min) VALUES(?,?,?,?)");
             
         } catch (SQLException ex) {
             throw new DataLayerException("Error initializing newspaper data layer", ex);
@@ -509,8 +509,17 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sTypeByTask.setInt(1, task_key);
             try (ResultSet rs = sTypeByTask.executeQuery()) {
                 if (rs.next()){
-                    return createType(rs);
-                }
+                    try{
+                        sTypeByID.setInt(1, rs.getInt("type_ID"));
+                        try(ResultSet rs1 = sTypeByID.executeQuery()) {
+                            if (rs1.next()){
+                                return createType(rs1);
+                            }
+                        }
+                    }catch (SQLException ex) {
+                    throw new DataLayerException("Unable to load typeByTask", ex);
+                    }
+            }         
             }
         }catch (SQLException ex) {
                 throw new DataLayerException("Unable to load typeByTask", ex);
@@ -1367,9 +1376,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                     iTaskHasSkill.setInt(2, skill_ID);
                     iTaskHasSkill.setInt(3, type_ID);
                     iTaskHasSkill.setInt(4, level_min);
-                    try(ResultSet rs = iTaskHasSkill.executeQuery()){
-                    
-                    } 
+                    iTaskHasSkill.executeUpdate();  
+                        
                 }catch (SQLException ex) {
                     throw new DataLayerException("Unable to insert task_has_skill", ex);
                 }
