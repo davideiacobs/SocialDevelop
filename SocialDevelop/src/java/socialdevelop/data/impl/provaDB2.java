@@ -197,16 +197,14 @@ public class provaDB2 extends HttpServlet {
                 sel = sel + " " + item.getName();
             }
             
-            TEST STORE TASK_HAS_DEVELOPER/COLLABORATION REQUEST--
+            --TEST STORE TASK_HAS_DEVELOPER/COLLABORATION REQUEST--
             GregorianCalendar gc = new GregorianCalendar();
             gc.setLenient(false);
             gc.set(GregorianCalendar.YEAR, 2018);
             gc.set(GregorianCalendar.MONTH, 07); //parte da 0
             gc.set(GregorianCalendar.DATE, 28);
             datalayer.storeCollaborationRequest(19, 2, 1, gc,8,1);
-            
-            /*
-            
+           
             --TEST GET COORDINATOR BY TASK ID--
             Developer coord = datalayer.getCoordinatorByTask(14);
             sel = coord.getName();
@@ -303,7 +301,13 @@ public class provaDB2 extends HttpServlet {
             List<CollaborationRequest> list = datalayer.getQuestionsByCoordinator(1);
             for (CollaborationRequest item : list) {
                 sel = sel + " " + item.getCoordinatorRequest().getName();
-            }*/
+            }
+            
+            --TEST GET VOTE BY TASK AND DEVELOPER IDs--
+            int vote = datalayer.getVote(15, 1);
+            sel = String.valueOf(vote);*/
+            
+           
             
             
         } catch (SQLException ex) {
