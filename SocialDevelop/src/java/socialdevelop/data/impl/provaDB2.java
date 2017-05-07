@@ -110,7 +110,7 @@ public class provaDB2 extends HttpServlet {
             datalayer.storeTask(tsk);
             sel = tsk.getName();
             
-            --TEST STORE SKILL--
+            /*--TEST STORE SKILL--
             SkillImpl skl = new SkillImpl(datalayer);
             skl.setName("python");
             skl.setParentKey(1);
@@ -203,8 +203,9 @@ public class provaDB2 extends HttpServlet {
             gc.set(GregorianCalendar.YEAR, 2018);
             gc.set(GregorianCalendar.MONTH, 07); //parte da 0
             gc.set(GregorianCalendar.DATE, 28);
-            datalayer.storeCollaborationRequest(14, 2, 1, gc,8,0);
+            datalayer.storeCollaborationRequest(19, 2, 1, gc,8,1);
             
+            /*
             
             --TEST GET COORDINATOR BY TASK ID--
             Developer coord = datalayer.getCoordinatorByTask(14);
@@ -270,10 +271,39 @@ public class provaDB2 extends HttpServlet {
             List<CollaborationRequest> list = datalayer.getOffertsByDeveloper(2);
             for (CollaborationRequest item : list) {
                 sel = sel + " " + item.getCoordinatorRequest().getName();
+            }
+            
+            --TEST GET PUBLIC MESSAGES BY PROJECT KEY-- 
+            List<Message> list = datalayer.getPublicMessages(2);
+            for (Message item : list) {
+                sel = sel + " " + item.getKey();
+            }
+            
+            --TEST GET COLLABORATION REQUEST BY TASK AND COLLABORATOR IDs--
+            CollaborationRequest cr = datalayer.getCollaborationRequest(1, 14);
+            sel = cr.getCoordinatorRequest().getName();
+            
+            --TEST GET INVITES BY COORDINATOR ID--
+            List<CollaborationRequest> list = datalayer.getInvitesByCoordinator(1);
+            for (CollaborationRequest item : list) {
+                sel = sel + " " + item.getCoordinatorRequest().getName();
+            }
+            
+            --TEST GET PROPOSALS BY COLLABORATOR ID--
+            List<CollaborationRequest> list = datalayer.getProposalsByCollaborator(2);
+            for (CollaborationRequest item : list) {
+                sel = sel + " " + item.getCoordinatorRequest().getName();
+            }
+            
+            --TEST GET COORDINATOR BY TASK ID--
+            Developer dev = datalayer.getCoordinatorByTask(15);
+            sel = dev.getName();
+            
+            --TEST QUESTIONS BY COORDINATOR ID--
+            List<CollaborationRequest> list = datalayer.getQuestionsByCoordinator(1);
+            for (CollaborationRequest item : list) {
+                sel = sel + " " + item.getCoordinatorRequest().getName();
             }*/
-            
-            
-            
             
             
         } catch (SQLException ex) {
