@@ -51,6 +51,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     private PreparedStatement iType, uType, dType;
     private PreparedStatement iRequest, uRequest, dRequest;
     private PreparedStatement iTaskHasSkill, uTaskHasSkill, dTaskHasSkill;
+    private PreparedStatement iTaskHasDeveloper;
     
     public SocialDevelopDataLayerMysqlImpl(DataSource datasource) throws SQLException, NamingException {
         super(datasource);
@@ -84,8 +85,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                     + " FROM (task_has_developer INNER JOIN task ON (task.ID=task_has_developer.task_ID) "
                     + "WHERE developer_ID=? AND task_ID=?) INNER JOIN project ON (task.project_ID=project.ID)");
             
-            sCoordinatorByTask = connection.prepareStatement("SELECT p.coordinator_ID FROM (task AS t WHERE t.ID=?) INNER JOIN project AS p "
-                    + "ON (p.ID = task.project_ID)");
+            sCoordinatorByTask = connection.prepareStatement("SELECT p.coordinator_ID FROM (SELECT task.* FROM task WHERE task.ID=?) AS t INNER JOIN project AS p "
+                    + "ON (p.ID = t.project_ID)");
             
             sSkillByID = connection.prepareStatement("SELECT * FROM skill WHERE ID=?");
             
@@ -183,7 +184,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             
             
             iTaskHasSkill = connection.prepareStatement("INSERT INTO task_has_skill (task_ID,skill_ID,type_ID,level_min) VALUES(?,?,?,?)");
-            
+            iTaskHasDeveloper = connection.prepareStatement("INSERT INTO task_has_developer (task_ID,developer_ID,state,date,vote,sender) VALUES(?,?,?,?,?,?)");
         } catch (SQLException ex) {
             throw new DataLayerException("Error initializing newspaper data layer", ex);
         }
@@ -1386,6 +1387,48 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         }
             
     }
+    
+    @Override
+    public void storeTaskHasDeveloper(int task_ID, int developer_ID, int state, GregorianCalendar date, int vote, int sender) throws DataLayerException {
+        boolean flag = true;
+        java.sql.Date date1=new java.sql.Date(date.getTimeInMillis());
+        try {
+            sTaskByID.setInt(1, task_ID);
+            try(ResultSet rs = sTaskByID.executeQuery()){
+                if(!rs.next()){
+                    flag = false;
+                }
+            }
+        }catch (SQLException ex) {
+            throw new DataLayerException("Unable to delete request", ex);
+        }
+        if(flag){
+            try {
+                sDeveloperByID.setInt(1, developer_ID);
+                try(ResultSet rs = sDeveloperByID.executeQuery()){
+                    if(!rs.next()){
+                        flag = false;
+                    }
+                }
+            }catch (SQLException ex) {
+                throw new DataLayerException("Unable to delete request", ex);
+            }
+                //continua qui
+                try{
+                    iTaskHasDeveloper.setInt(1, task_ID);
+                    iTaskHasDeveloper.setInt(2, developer_ID);
+                    iTaskHasDeveloper.setInt(3, state);
+                    iTaskHasDeveloper.setDate(4, date1);
+                    iTaskHasDeveloper.setInt(5, vote);
+                    iTaskHasDeveloper.setInt(6, sender);
+                    iTaskHasDeveloper.executeUpdate();  
+                        
+                }catch (SQLException ex) {
+                    throw new DataLayerException("Unable to insert task_has_skill", ex);
+                }
+                
+            }
+        }
     
     
     

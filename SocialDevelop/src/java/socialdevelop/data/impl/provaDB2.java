@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Message;
 import socialdevelop.data.model.Project;
 import socialdevelop.data.model.Skill;
@@ -195,8 +196,35 @@ public class provaDB2 extends HttpServlet {
             Map<Skill, Integer> res = datalayer.getSkillsByTask(14);
             for (Map.Entry<Skill, Integer> entry : res.entrySet()){
                 sel = sel + " "+ entry.getKey().getName()+" "+ String.valueOf(entry.getValue());
-            }*/
-           
+            }
+            
+            --TEST GET DEVELOPER BY KEY--
+            Developer dev = datalayer.getDeveloper(1);
+            sel = dev.getName()+" "+dev.getSurname()+" "+dev.getUsername();
+            
+            --TEST GET PARENT SKILL BY KEY--
+            Skill skl = datalayer.getParent(18);
+            sel = skl.getName();
+            
+            --TEST GET CHILD SKILL BY KEY--
+            List<Skill> list = datalayer.getChild(1);
+             for (Skill item : list) {
+                sel = sel + " " + item.getName();
+            }
+            
+            --TEST STORE TASK_HAS_DEVELOPER--
+            GregorianCalendar gc = new GregorianCalendar();
+            gc.setLenient(false);
+            gc.set(GregorianCalendar.YEAR, 2018);
+            gc.set(GregorianCalendar.MONTH, 07); //parte da 0
+            gc.set(GregorianCalendar.DATE, 28);
+            datalayer.storeTaskHasDeveloper(14, 1, 1, gc,8,2);
+            
+            --TEST GET COORDINATOR BY TASK ID--
+            Developer coord = datalayer.getCoordinatorByTask(14);
+            sel = coord.getName();*/
+            
+            
             
         } catch (SQLException ex) {
             Logger.getLogger(provaDB2.class.getName()).log(Level.SEVERE, null, ex);
