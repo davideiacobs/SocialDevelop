@@ -93,7 +93,7 @@ public interface SocialDevelopDataLayer extends DataLayer {
     //richiede la lista delle skills del developer e cerca i task aperti che richiedono
     //tali skills
     
-    //Task getTaskByRequest(CollaborationRequest request) throws DataLayerException;
+    Task getTaskByRequest(int collaborator_key, int coordinator_key) throws DataLayerException;
         
     List<CollaborationRequest> getQuestionsByCoordinator(int coordinator_key) throws DataLayerException;
 
@@ -125,7 +125,7 @@ public interface SocialDevelopDataLayer extends DataLayer {
     
     void deleteType(Type type) throws  DataLayerException;
     
-    void storeCollaborationRequest(int task_ID, int developer_ID, int state, GregorianCalendar date, int vote, int sender) throws DataLayerException;
+    void storeTaskHasDeveloper(int task_ID, int developer_ID, int state, GregorianCalendar date, int vote, int sender) throws DataLayerException;
     
     void deleteRequest(CollaborationRequest request) throws DataLayerException;
     

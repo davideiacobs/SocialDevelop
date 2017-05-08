@@ -95,7 +95,7 @@ public class CollaborationRequestImpl implements CollaborationRequest{
     @Override
     public Task getTaskByRequest() throws DataLayerException {
         if(task == null){
-            task = ownerdatalayer.getTaskByRequest(this);
+            task = ownerdatalayer.getTaskByRequest(this.collaborator_key, this.coordinator_key);
         }
         return task;
     }
