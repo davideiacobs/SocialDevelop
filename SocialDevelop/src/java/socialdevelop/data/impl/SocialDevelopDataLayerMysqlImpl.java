@@ -18,6 +18,8 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import socialdevelop.data.model.CollaborationRequest;
@@ -50,9 +52,9 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     private PreparedStatement iMessage, uMessage, dMessage;
     private PreparedStatement iType, uType, dType;
     private PreparedStatement iRequest, uRequest, dRequest;
-    private PreparedStatement iTaskHasSkill, uTaskHasSkill, dTaskHasSkill;
-    private PreparedStatement iTaskHasDeveloper;
-    private PreparedStatement iSkillHasDeveloper;
+    private PreparedStatement iTaskHasSkill, dTaskHasSkill,uTaskHasSkill,sTaskHasSkill;
+    private PreparedStatement iTaskHasDeveloper,dTaskHasDeveloper,uTaskHasDeveloper,sTaskHasDeveloper;
+    private PreparedStatement iSkillHasDeveloper,dSkillHasDeveloper,uSkillHasDeveloper,sSkillHasDeveloper;
     
     public SocialDevelopDataLayerMysqlImpl(DataSource datasource) throws SQLException, NamingException {
         super(datasource);
@@ -172,15 +174,28 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             uType = connection.prepareStatement("UPDATE type SET type=? WHERE ID=?");
             dType = connection.prepareStatement("DELETE FROM type WHERE ID=?");
             
-            iRequest = connection.prepareStatement("INSERT INTO request (task_ID,developer_ID,state,date,vote) VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-            uRequest = connection.prepareStatement("UPDATE request SET task_ID=?,developer_ID=?,state=?,date=?,vote=? WHERE task_ID=? AND developer_ID=?");
-            dRequest = connection.prepareStatement("DELETE FROM request WHERE task_ID=? AND developer_ID=?");
+           //iRequest = connection.prepareStatement("INSERT INTO request (task_ID,developer_ID,state,date,vote) VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            //uRequest = connection.prepareStatement("UPDATE request SET task_ID=?,developer_ID=?,state=?,date=?,vote=? WHERE task_ID=? AND developer_ID=?");
+            //dRequest = connection.prepareStatement("DELETE FROM request WHERE task_ID=? AND developer_ID=?");
             
             
-            iTaskHasSkill = connection.prepareStatement("INSERT INTO task_has_skill (task_ID,skill_ID,type_ID,level_min) VALUES(?,?,?,?)");
-            iTaskHasDeveloper = connection.prepareStatement("INSERT INTO task_has_developer (task_ID,developer_ID,state,date,vote,sender) VALUES(?,?,?,?,?,?)");
-            iSkillHasDeveloper = connection.prepareStatement("INSERT INTO skill_has_developer (skill_ID,developer_ID,level) VALUES(?,?,?)");
-        
+            iTaskHasSkill = connection.prepareStatement("INSERT INTO task_has_skill (task_ID,skill_ID,type_ID,level_min) VALUES(?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+            dTaskHasSkill = connection.prepareStatement("DELETE FROM task_has_skill WHERE task_id=? AND skill_ID=? AND type_ID=?");
+            uTaskHasSkill = connection.prepareStatement("UPDATE task_has_skill SET task_ID=?,skill_ID=?,type_ID=?,level_min=? WHERE task_ID=? AND skill_ID=? AND type_ID=? ");
+            sTaskHasSkill = connection.prepareStatement("SELECT * FROM task_has_skill WHERE task_ID=? AND skill_ID=? AND type_ID=?" );
+            
+            iTaskHasDeveloper = connection.prepareStatement("INSERT INTO task_has_developer (task_ID,developer_ID,state,date,vote,sender) VALUES(?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+            dTaskHasDeveloper= connection.prepareStatement("DELETE FROM task_has_developer WHERE task_id=? AND developer_ID=?");
+            uTaskHasDeveloper = connection.prepareStatement("UPDATE task_has_developer SET task_ID=?,developer_ID=?,state=?,date=?,vote=? WHERE task_ID=? AND developer_ID=?");
+            sTaskHasDeveloper = connection.prepareStatement("SELECT * FROM task_has_developer WHERE task_ID=? AND developer_ID=?" );
+            
+            
+            iSkillHasDeveloper = connection.prepareStatement("INSERT INTO skill_has_developer (skill_ID,developer_ID,level) VALUES(?,?,?)",Statement.RETURN_GENERATED_KEYS);
+            dSkillHasDeveloper = connection.prepareStatement("DELETE FROM skill_has_developer WHERE skill_id=? AND developer_ID=?");
+            uSkillHasDeveloper = connection.prepareStatement("UPDATE skill_has_developer SET skill_ID=?,developer_ID=?,level=? WHERE skill_ID=? AND developer_ID=?");
+            sSkillHasDeveloper = connection.prepareStatement("SELECT * FROM skill_has_developer WHERE skill_id=? AND developer_ID=?" );
+            
+            
         } catch (SQLException ex) {
             throw new DataLayerException("Error initializing newspaper data layer", ex);
         }
@@ -859,7 +874,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         return -1;
     }
     
-    @Override
+    /* @Override
     public Task getTaskByRequest(CollaborationRequest request) throws DataLayerException{
         int developer_key = request.getCollaboratorKey();
         int task_key = request.getTaskKey();
@@ -876,7 +891,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         }
         return null;
     }
-    
+    */
     
     @Override
     public void storeProject(Project project) throws DataLayerException {
@@ -1274,44 +1289,72 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     public void storeCollaborationRequest(int task_ID, int developer_ID, int state, GregorianCalendar date, int vote, int sender) throws DataLayerException {
         boolean flag = true;
         java.sql.Date date1=new java.sql.Date(date.getTimeInMillis());
+        
         try {
-            sTaskByID.setInt(1, task_ID);
-            try(ResultSet rs = sTaskByID.executeQuery()){
+            sTaskHasDeveloper.setInt(1, task_ID);
+            sTaskHasDeveloper.setInt(2, developer_ID);
+            try(ResultSet rs = sTaskHasDeveloper.executeQuery()){
                 if(!rs.next()){
-                    flag = false;
-                }
-            }
-        }catch (SQLException ex) {
-            throw new DataLayerException("Unable to delete request", ex);
-        }
-        if(flag){
-            try {
-                sDeveloperByID.setInt(1, developer_ID);
-                try(ResultSet rs = sDeveloperByID.executeQuery()){
-                    if(!rs.next()){
-                        flag = false;
+                    try {
+                        sTaskByID.setInt(1, task_ID);
+                        try(ResultSet rs1 = sTaskByID.executeQuery()){
+                            if(!rs.next()){
+                                flag = false;
+                                } 
+                            }
+                        }catch (SQLException ex) {
+                            throw new DataLayerException("Unable to select request", ex);
+                        }
+                    if(flag){
+                        try {
+                            sDeveloperByID.setInt(1, developer_ID);
+                            try(ResultSet rs2 = sDeveloperByID.executeQuery()){
+                                if(!rs.next()){
+                                    flag = false;
+                                }
+                            }
+                        }catch (SQLException ex) {
+                            throw new DataLayerException("Unable to select request", ex);
+                        }
+                            //continua qui
+                            try{
+                                iTaskHasDeveloper.setInt(1, task_ID);
+                                iTaskHasDeveloper.setInt(2, developer_ID);
+                                iTaskHasDeveloper.setInt(3, state);
+                                iTaskHasDeveloper.setDate(4, date1);
+                                iTaskHasDeveloper.setInt(5, vote);
+                                iTaskHasDeveloper.setInt(6, sender);
+                                iTaskHasDeveloper.executeUpdate();  
+
+                            }catch (SQLException ex) {
+                                throw new DataLayerException("Unable to insert task_has_dev", ex);
+                            }
+
+                        }
+                    }else{
+                        try{
+                            uTaskHasDeveloper.setInt(1, task_ID);
+                            uTaskHasDeveloper.setInt(2, developer_ID);
+                            uTaskHasDeveloper.setInt(3, state);
+                            uTaskHasDeveloper.setDate(4, date1);
+                            uTaskHasDeveloper.setInt(5, vote);
+                            uTaskHasDeveloper.setInt(6, sender);
+                            uTaskHasDeveloper.executeUpdate();
+                    }catch (SQLException ex) {
+                        throw new DataLayerException("Unable to insert task_has_dev", ex);
                     }
+
+
                 }
             }catch (SQLException ex) {
-                throw new DataLayerException("Unable to delete request", ex);
+                throw new DataLayerException("Unable to store request", ex);
             }
-                //continua qui
-                try{
-                    iTaskHasDeveloper.setInt(1, task_ID);
-                    iTaskHasDeveloper.setInt(2, developer_ID);
-                    iTaskHasDeveloper.setInt(3, state);
-                    iTaskHasDeveloper.setDate(4, date1);
-                    iTaskHasDeveloper.setInt(5, vote);
-                    iTaskHasDeveloper.setInt(6, sender);
-                    iTaskHasDeveloper.executeUpdate();  
-                        
-                }catch (SQLException ex) {
-                    throw new DataLayerException("Unable to insert task_has_dev", ex);
-                }
-                
-            }
+        }catch (SQLException ex) {
+            throw new DataLayerException("Unable to store request", ex);
         }
-    
+
+    }
+
      
     
     @Override
@@ -1333,30 +1376,25 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     public void storeTaskHasSkill(int task_ID, int skill_ID, int type_ID, int level_min) throws DataLayerException {
         boolean flag = true;
         try {
-            sTaskByID.setInt(1, task_ID);
-            try(ResultSet rs = sTaskByID.executeQuery()){
+            sTaskHasSkill.setInt(1, task_ID);
+            sTaskHasSkill.setInt(2, skill_ID);
+            sTaskHasSkill.setInt(3, type_ID);
+            try(ResultSet rs = sTaskHasSkill.executeQuery()){
                 if(!rs.next()){
-                    flag = false;
-                }
-            }
-        }catch (SQLException ex) {
-            throw new DataLayerException("Unable to delete request", ex);
-        }
-        if(flag){
-            try {
-                sSkillByID.setInt(1, skill_ID);
-                try(ResultSet rs = sSkillByID.executeQuery()){
-                    if(!rs.next()){
-                        flag = false;
-                    }
+                    try {
+                        sTaskByID.setInt(1, task_ID);
+                    try(ResultSet rs1 = sTaskByID.executeQuery()){
+                        if(!rs.next()){
+                            flag = false;
+                        }
                 }
             }catch (SQLException ex) {
                 throw new DataLayerException("Unable to delete request", ex);
             }
             if(flag){
                 try {
-                    sTypeByID.setInt(1, type_ID);
-                    try(ResultSet rs = sTypeByID.executeQuery()){
+                    sSkillByID.setInt(1, skill_ID);
+                    try(ResultSet rs2 = sSkillByID.executeQuery()){
                         if(!rs.next()){
                             flag = false;
                         }
@@ -1364,63 +1402,144 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                 }catch (SQLException ex) {
                     throw new DataLayerException("Unable to delete request", ex);
                 }
-                //continua qui
-                try{
-                    iTaskHasSkill.setInt(1, task_ID);
-                    iTaskHasSkill.setInt(2, skill_ID);
-                    iTaskHasSkill.setInt(3, type_ID);
-                    iTaskHasSkill.setInt(4, level_min);
-                    iTaskHasSkill.executeUpdate();  
-                        
-                }catch (SQLException ex) {
-                    throw new DataLayerException("Unable to insert task_has_skill", ex);
+                if(flag){
+                    try {
+                        sTypeByID.setInt(1, type_ID);
+                        try(ResultSet rs3 = sTypeByID.executeQuery()){
+                            if(!rs.next()){
+                                flag = false;
+                            }
+                        }
+                        }catch (SQLException ex) {
+                            throw new DataLayerException("Unable to delete request", ex);
+                        }
+                        //continua qui
+                    try{
+                        iTaskHasSkill.setInt(1, task_ID);
+                        iTaskHasSkill.setInt(2, skill_ID);
+                        iTaskHasSkill.setInt(3, type_ID);
+                        iTaskHasSkill.setInt(4, level_min);
+                        iTaskHasSkill.executeUpdate();  
+
+                    }catch (SQLException ex) {
+                        throw new DataLayerException("Unable to insert task_has_skill", ex);
+                        }
+
+                    }
                 }
-                
-            }
+            }else{
+                    try{
+                        uTaskHasSkill.setInt(1, task_ID);
+                        uTaskHasSkill.setInt(2, skill_ID);
+                        uTaskHasSkill.setInt(3, type_ID);
+                        uTaskHasSkill.setInt(4, level_min);
+                        uTaskHasSkill.executeUpdate(); 
+                    }catch (SQLException ex) {
+                        throw new DataLayerException("Unable to insert task_has_dev", ex);
+                    }
+                }   
+        }catch (SQLException ex) {
+            throw new DataLayerException("Unable to select request", ex);
+        } 
+    }catch (SQLException ex){
+        throw new DataLayerException("Unable to store request", ex);
         }
-            
-    }
+    }    
     
     
     @Override
     public void storeSkillHasDeveloper(int skill_ID, int developer_ID,int level) throws DataLayerException {
         boolean flag = true;
         try {
-            sSkillByID.setInt(1, skill_ID);
-            try(ResultSet rs = sSkillByID.executeQuery()){
-                if(!rs.next()){
-                    flag = false;
+            sSkillHasDeveloper.setInt(1, skill_ID);
+            sSkillHasDeveloper.setInt(2, developer_ID);
+            try(ResultSet rs = sSkillHasDeveloper.executeQuery()){
+                if(rs.next()){
+                    uSkillHasDeveloper.setInt(1, skill_ID);
+                    uSkillHasDeveloper.setInt(2, developer_ID);
+                    uSkillHasDeveloper.setInt(3, level);
+                }
+                else{
+                    try {
+                        sSkillByID.setInt(1, skill_ID);
+                        try(ResultSet rs1 = sSkillByID.executeQuery()){
+                            if(!rs.next()){
+                                flag = false;
+                            }
+                        }
+                    }catch (SQLException ex) {
+                        throw new DataLayerException("Unable to delete request", ex);
+                        }
+            if(flag){
+                try {
+                    sDeveloperByID.setInt(1, developer_ID);
+                    try(ResultSet rs2 = sDeveloperByID.executeQuery()){
+                        if(!rs.next()){
+                            flag = false;
+                        }
+                    }
+                }catch (SQLException ex) {
+                    throw new DataLayerException("Unable to delete request", ex);
+                }
+                    //continua qui
+                    try{
+                        iSkillHasDeveloper.setInt(1, skill_ID);
+                        iSkillHasDeveloper.setInt(2, developer_ID);
+                        iSkillHasDeveloper.setInt(3, level); 
+                        iSkillHasDeveloper.executeUpdate();  
+
+                    }catch (SQLException ex) {
+                        throw new DataLayerException("Unable to insert skill_has_developer", ex);
+                    }
+
                 }
             }
         }catch (SQLException ex) {
-            throw new DataLayerException("Unable to delete request", ex);
-        }
-        if(flag){
-            try {
-                sDeveloperByID.setInt(1, developer_ID);
-                try(ResultSet rs = sDeveloperByID.executeQuery()){
-                    if(!rs.next()){
-                        flag = false;
-                    }
+                    throw new DataLayerException("Unable to store request", ex);
+            }       
+        }catch (SQLException ex) {
+                    throw new DataLayerException("Unable to store request", ex);
+        }       
+    }
+    @Override
+    public void deleteTaskHasDeveloper(int task_id,int developer_id) throws DataLayerException{
+        try{
+            dTaskHasDeveloper.setInt(1, task_id);
+            dTaskHasDeveloper.setInt(2, developer_id);
+            try(ResultSet rs = dTaskHasDeveloper.executeQuery()){
+                
                 }
             }catch (SQLException ex) {
-                throw new DataLayerException("Unable to delete request", ex);
-            }
-                //continua qui
-                try{
-                    iSkillHasDeveloper.setInt(1, skill_ID);
-                    iSkillHasDeveloper.setInt(2, developer_ID);
-                    iSkillHasDeveloper.setInt(3, level); 
-                    iSkillHasDeveloper.executeUpdate();  
-                        
-                }catch (SQLException ex) {
-                    throw new DataLayerException("Unable to insert skill_has_developer", ex);
-                }
-                
-            }
+            throw new DataLayerException("Unable to delete", ex);
         }
+    }
     
+    @Override
+    public void deleteSkillHasDeveloper(int task_id,int developer_id) throws DataLayerException{
+        try{
+            dSkillHasDeveloper.setInt(1, task_id);
+            dSkillHasDeveloper.setInt(2, developer_id);
+            try(ResultSet rs = dSkillHasDeveloper.executeQuery()){
+                
+                }
+            }catch (SQLException ex) {
+            throw new DataLayerException("Unable to delete", ex);
+        }
+    }
     
+    @Override
+    public void deleteTaskHasSkill(int task_id,int skill_id,int type_ID) throws DataLayerException{
+        try{
+            dTaskHasSkill.setInt(1, task_id);
+            dTaskHasSkill.setInt(2, skill_id);
+            dTaskHasSkill.setInt(3, type_ID);
+            try(ResultSet rs =  dTaskHasSkill.executeQuery()){
+                
+                }
+            }catch (SQLException ex) {
+            throw new DataLayerException("Unable to delete", ex);
+        }
+    }
 }
     
     
