@@ -954,9 +954,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         int key = project.getKey();
         try{
             dProject.setInt(1, key);
-            try(ResultSet rs = dProject.executeQuery()){
-                
-                }
+            dProject.executeUpdate();
             }catch (SQLException ex) {
             throw new DataLayerException("Unable to store article", ex);
         }
@@ -1033,9 +1031,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         int key = developer.getKey();
         try{
             dDeveloper.setInt(1, key);
-            try(ResultSet rs = dDeveloper.executeQuery()){
-                
-                }
+            dDeveloper.executeUpdate();
             }catch (SQLException ex) {
             throw new DataLayerException("Unable to store article", ex);
         }
@@ -1106,9 +1102,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         int key = task.getKey();
         try{
             dTask.setInt(1, key);
-            try(ResultSet rs = dTask.executeQuery()){
-                
-                }
+            dTask.executeUpdate();
             }catch (SQLException ex) {
             throw new DataLayerException("Unable to store article", ex);
         }
@@ -1165,9 +1159,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         int key = skill.getKey();
         try{
             dSkill.setInt(1, key);
-            try(ResultSet rs = dSkill.executeQuery()){
-                
-                }
+            dSkill.executeUpdate();
             }catch (SQLException ex) {
             throw new DataLayerException("Unable to store article", ex);
         }
@@ -1226,9 +1218,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         int key = message.getKey();
         try{
             dMessage.setInt(1, key);
-            try(ResultSet rs = dMessage.executeQuery()){
-                
-                }
+            dMessage.executeUpdate();
+            
             }catch (SQLException ex) {
             throw new DataLayerException("Unable to store article", ex);
         }
@@ -1274,9 +1265,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         int key = type.getKey();
         try{
             dType.setInt(1, key);
-            try(ResultSet rs = dType.executeQuery()){
-                
-                }
+            dType.executeUpdate();
+  
             }catch (SQLException ex) {
             throw new DataLayerException("Unable to delete type", ex);
         }
@@ -1364,9 +1354,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         try{
             dRequest.setInt(1, task_key);
             dRequest.setInt(2, collaborator_key);
-            try(ResultSet rs = dRequest.executeQuery()){
-                
-                }
+           dRequest.executeUpdate();
             }catch (SQLException ex) {
             throw new DataLayerException("Unable to delete request", ex);
         }
@@ -1513,9 +1501,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         try{
             dTaskHasDeveloper.setInt(1, task_id);
             dTaskHasDeveloper.setInt(2, developer_id);
-            try(ResultSet rs = dTaskHasDeveloper.executeQuery()){
-                
-                }
+            dTaskHasDeveloper.executeUpdate();
             }catch (SQLException ex) {
             throw new DataLayerException("Unable to delete", ex);
         }
@@ -1526,9 +1512,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         try{
             dSkillHasDeveloper.setInt(1, task_id);
             dSkillHasDeveloper.setInt(2, developer_id);
-            try(ResultSet rs = dSkillHasDeveloper.executeQuery()){
-                
-                }
+            dSkillHasDeveloper.executeUpdate();
             }catch (SQLException ex) {
             throw new DataLayerException("Unable to delete", ex);
         }
@@ -1540,9 +1524,9 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             dTaskHasSkill.setInt(1, task_id);
             dTaskHasSkill.setInt(2, skill_id);
             dTaskHasSkill.setInt(3, type_ID);
-            try(ResultSet rs =  dTaskHasSkill.executeQuery()){
+            dTaskHasSkill.executeUpdate();
                 
-                }
+            
             }catch (SQLException ex) {
             throw new DataLayerException("Unable to delete", ex);
         }

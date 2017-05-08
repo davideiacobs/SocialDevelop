@@ -90,7 +90,7 @@ public class provaDB2 extends HttpServlet {
             
             
             -- TEST STORE TASK --
-            */TaskImpl tsk = new TaskImpl(datalayer);
+            TaskImpl tsk = new TaskImpl(datalayer);
             tsk.setName("sviluppo");
             tsk.setDescription("come andiamo");
             tsk.setNumCollaborators(8);
@@ -306,7 +306,7 @@ public class provaDB2 extends HttpServlet {
             --TEST GET VOTE BY TASK AND DEVELOPER IDs--
             int vote = datalayer.getVote(15, 1);
             sel = String.valueOf(vote);*/
-
+            
             
         } catch (SQLException ex) {
             Logger.getLogger(provaDB2.class.getName()).log(Level.SEVERE, null, ex);
