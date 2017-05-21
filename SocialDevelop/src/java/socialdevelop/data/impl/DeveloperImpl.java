@@ -10,7 +10,6 @@ import java.io.File;
 import java.util.GregorianCalendar;
 import java.util.Map;
 import socialdevelop.data.model.Developer;
-import socialdevelop.data.model.Project;
 import socialdevelop.data.model.Skill;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 import socialdevelop.data.model.Task;
