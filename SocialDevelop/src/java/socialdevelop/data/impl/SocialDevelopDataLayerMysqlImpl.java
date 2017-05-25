@@ -292,11 +292,17 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             a.setMail(rs.getString("mail"));
             a.setPwd(rs.getString("pwd"));
             a.setBiography(rs.getString("biography"));
-            GregorianCalendar birthdate = new GregorianCalendar();
             java.sql.Date date;
             date = rs.getDate("birthdate");
-            birthdate.setTime(date);
-            a.setBirthDate(birthdate);
+            if(date != null){
+                GregorianCalendar birthdate = new GregorianCalendar();
+                birthdate.setTime(date);
+                a.setBirthDate(birthdate);
+
+            }else{
+                a.setBirthDate(null);
+            }
+            
             a.setCurriculum(rs.getString("curriculumString"));
             //PROBLEMA CON FILE!!!!
             //a.setCurriculum(rs.getFile("curriculumFile"));
@@ -990,8 +996,12 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                 iDeveloper.setString(3, developer.getUsername());
                 iDeveloper.setString(4, developer.getMail());
                 iDeveloper.setString(5, developer.getPwd());
-                Date sqldate = new Date(developer.getBirthDate().getTimeInMillis());
-                iDeveloper.setDate(6, sqldate);
+                if(developer.getBirthDate()!= null){
+                    Date sqldate = new Date(developer.getBirthDate().getTimeInMillis());
+                    iDeveloper.setDate(6, sqldate);
+                }else{
+                    iDeveloper.setDate(6, null);
+                }
                 iDeveloper.setString(7, developer.getBiography());
                 //iDeveloper.setFile(8, developer.getCurriculumFile());
                 iDeveloper.setString(8, developer.getCurriculumString());
