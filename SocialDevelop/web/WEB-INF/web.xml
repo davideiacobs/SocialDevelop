@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <context-param>
+        <param-name>view.outline_template</param-name>
+        <param-value>header-footer.html</param-value>
+    </context-param>
     <servlet>
         <servlet-name>Progetto</servlet-name>
         <servlet-class>socialdevelop.data.model.Project</servlet-class>
@@ -8,13 +12,25 @@
         <servlet-name>provaDB2</servlet-name>
         <servlet-class>socialdevelop.data.impl.provaDB2</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>Progetto</servlet-name>
-        <url-pattern>/Progetto</url-pattern>
-    </servlet-mapping>
+    <servlet>
+        <servlet-name>MakeLoginReg</servlet-name>
+        <servlet-class>socialdevelop.controller.MakeLoginReg</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Home</servlet-name>
+        <servlet-class>socialdevelop.controller.Home</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>provaDB2</servlet-name>
         <url-pattern>/provaDB2</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MakeLoginReg</servlet-name>
+        <url-pattern>/MakeLoginReg</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Home</servlet-name>
+        <url-pattern>/Home</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
