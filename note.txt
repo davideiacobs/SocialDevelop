@@ -1,1 +1,2 @@
-distinguere inviti da richieste!! --> tipo in task_has_developer
+colore background: #31b8f5
+dimensioni logo: 189x60
