@@ -14,6 +14,7 @@ import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -44,7 +45,7 @@ public class Login extends SocialDevelopBaseController {
             String mail = request.getParameter("mail");
             String pwd = request.getParameter("pwd");
             String pwd2 = request.getParameter("pwd2");
-            
+            String bday = request.getParameter("birthdate");
             //SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer)request.getAttribute("datalayer");
             //socialdevelopdatalayer è null
             SocialDevelopDataLayer datalayer = new SocialDevelopDataLayerMysqlImpl(ds);
@@ -56,12 +57,18 @@ public class Login extends SocialDevelopBaseController {
                 dev.setUsername(username);
                 dev.setMail(mail);
                 dev.setPwd(pwd);
+                GregorianCalendar gc = new GregorianCalendar();
+                gc.setLenient(false);
+                gc.set(GregorianCalendar.YEAR, Integer.valueOf(bday.split("/")[2]));
+                gc.set(GregorianCalendar.MONTH, Integer.valueOf(bday.split("/")[1])-1); //parte da 0
+                gc.set(GregorianCalendar.DATE, Integer.valueOf(bday.split("/")[0]));
+                dev.setBirthDate(gc);
                 datalayer.storeDeveloper(dev);
-                
+                request.setAttribute("username", username);
                 request.setAttribute("page_title", username+", ");
                 request.setAttribute("page_subtitle", "Benvenuto in SocialDevelop!");
                 TemplateResult res = new TemplateResult(getServletContext());
-                res.activate(null,request, response);  
+                res.activate("completa_registrazione.html",request, response);  
             }else{
                 //errore e torna sulla stessa pagina
             }
