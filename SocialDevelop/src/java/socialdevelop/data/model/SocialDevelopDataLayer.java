@@ -140,5 +140,7 @@ public interface SocialDevelopDataLayer extends DataLayer {
     void deleteTaskHasDeveloper(int skill_ID, int developer_ID) throws DataLayerException;
     
     int getDeveloperByUsername(String username) throws DataLayerException;
-}
 
+    int getDeveloperByMail(String mail) throws DataLayerException;
+
+}

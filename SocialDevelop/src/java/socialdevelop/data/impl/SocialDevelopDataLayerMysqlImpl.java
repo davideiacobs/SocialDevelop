@@ -46,7 +46,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     private PreparedStatement sProjectsByDeveloperIDandDate, sInvitesByCoordinatorID, sProposalsByCollaboratorID;
     private PreparedStatement sOffertsByDeveloperID, sCoordinatorByTask, sTasksByDeveloper, sChildBySkill,sPublicMessagesByProject;
     private PreparedStatement sTypeByID, iProject, uProject, dProject;
-    private PreparedStatement iDeveloper, uDeveloper, dDeveloper, sDeveloperByUsername;
+    private PreparedStatement iDeveloper, uDeveloper, dDeveloper, sDeveloperByUsername, sDeveloperByMail;
     private PreparedStatement iSkill, uSkill, dSkill;
     private PreparedStatement iTask, uTask, dTask;
     private PreparedStatement iMessage, uMessage, dMessage;
@@ -77,6 +77,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sDeveloperByID = connection.prepareStatement("SELECT * FROM developer WHERE ID=?");
             
             sDeveloperByUsername = connection.prepareStatement("SELECT developer.ID FROM developer WHERE username=?");
+            
+            sDeveloperByMail = connection.prepareStatement("SELECT developer.ID FROM developer WHERE mail=?");
             
             sMessagesByProject = connection.prepareStatement("SELECT ID FROM message WHERE project_ID=?");
             
@@ -597,7 +599,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     public int getDeveloperByUsername(String username) throws DataLayerException{
         try{
             sDeveloperByUsername.setString(1, username);
-            try(ResultSet rs = sDeveloperByID.executeQuery()){
+            try(ResultSet rs = sDeveloperByUsername.executeQuery()){
                 if(rs.next()){
                 return rs.getInt("ID");
                 }
@@ -607,6 +609,22 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             }
         return 0;
     }
+    
+    @Override
+    public int getDeveloperByMail(String mail) throws DataLayerException{
+        try{
+            sDeveloperByMail.setString(1, mail);
+            try(ResultSet rs = sDeveloperByMail.executeQuery()){
+                if(rs.next()){
+                return rs.getInt("ID");
+                }
+            }
+        }catch (SQLException ex) {
+                throw new DataLayerException("Unable to load developer", ex);
+            }
+        return 0;
+    }
+    
     
     @Override
     public Map<Developer,Integer> getCollaboratorsByTask(int task_key) throws DataLayerException{

@@ -14,23 +14,26 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import socialdevelop.data.model.SocialDevelopDataLayer;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author iacobs
  */
-public class Home extends SocialDevelopBaseController {
+public class Index extends SocialDevelopBaseController {
     
     
     private void action_home(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException {
-           
-            RequestDispatcher view = request.getRequestDispatcher("templates/home.html");
-            view.forward(request, response);
             
+            HttpSession s = request.getSession(true);
+            if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
+                response.sendRedirect("MyProfile");
+            }else{
+                RequestDispatcher view = request.getRequestDispatcher("templates/index.html");
+                view.forward(request, response);
+            }
     }
     
     

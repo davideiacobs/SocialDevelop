@@ -156,33 +156,27 @@
               <div class="col-md-6">
              <div class="gt_lgin_tab_wrap home_background_login">
             <ul class="gt_login_link"  data-tabs="tabs">
-              <li class="active"><a data-toggle="tab" href="#register">Sign Up</a></li>
-              <li><a data-toggle="tab" href="#login">Sign In</a></li>
+              <li><a data-toggle="tab" href="#register">Sign Up</a></li>
+              <li class="active"><a data-toggle="tab" href="#login">Sign In</a></li>
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="login">
                 <div class="gt_login_des_wrap default_width">
-                    <form id="login">
+                    <form id="login" action="Login" method="post">
                   <div class="gt_login_field">
-                    <input type="text" placeholder="Your Email/Username..">
+                    <input type="text" name="username" id="mail-username" placeholder="Your Email/Username..">
                     <label><i class="fa fa-user-circle"></i></label>
                   </div>
                   <div class="gt_login_field">
-                    <input type="text" placeholder="Your Password">
+                    <input type="text" name="pwd" id="pwd" placeholder="Your Password">
                     <label><i class="fa fa-lock"></i></label>
                   </div>
-                  <div class="gt_login_field">
-                    <input type="text" placeholder="Confrim password">
-                    <label><i class="fa fa-lock"></i></label>
-                  </div>
+                  
                   <div class="gt_login_radio_btn">
                     <input id="2" type="checkbox">
                     <label for="2"><span></span>Keep Me logged In</label>
                   </div>
-                  <div class="gt_login_radio_btn">
-                    <input id="1" type="checkbox">
-                    <label for="1"><span></span>Forget Password</label>
-                  </div>
+                  
                   <div class="gt_login_field">
                     <input type="submit" value="Submit">
                   </div>
@@ -204,7 +198,7 @@
               </div>
               <div class="tab-pane" id="register">
                 <div class="gt_login_des_wrap default_width">
-                  <form id="registrati" action="Login" method="post">
+                  <form id="registrati" action="Signup" method="post">
                   <div class="gt_login_field">
                     <input type="text" name="first_name" placeholder="First Name">
                     <label><i class="fa fa-user"></i></label>

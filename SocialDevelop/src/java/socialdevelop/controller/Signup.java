@@ -1,16 +1,18 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Signup.java
+ *
+ * Questo esempio mostra come utilizzare le sessioni per autenticare un utente
+ * 
+ * This example shows how to use sessions to authenticate the user
+ *
  */
 package socialdevelop.controller;
+
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
-import it.univaq.f4i.iw.framework.security.SecurityLayer;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
@@ -20,55 +22,64 @@ import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
+import socialdevelop.data.impl.DeveloperImpl;
 import socialdevelop.data.impl.SocialDevelopDataLayerMysqlImpl;
-import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 
 /**
  *
- * @author david
+ * @author Ingegneria del Web
+ * @version
  */
-public class Login extends SocialDevelopBaseController {
+public class Signup extends SocialDevelopBaseController {
     
-    @Resource(name = "jdbc/mydb")
+      @Resource(name = "jdbc/mydb")
     private DataSource ds;
    
-     private void action_login(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, DataLayerException, SQLException, NamingException {
+     private void action_registrati(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, DataLayerException, SQLException, NamingException {
             
-            String mail_username = request.getParameter("username");
+            String name = request.getParameter("first_name");
+            String surname = request.getParameter("second_name");
+            String username = request.getParameter("username");
+            String mail = request.getParameter("mail");
             String pwd = request.getParameter("pwd");
+            String pwd2 = request.getParameter("pwd2");
+            String bday = request.getParameter("birthdate");
             //SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer)request.getAttribute("datalayer");
             //socialdevelopdatalayer è null
             SocialDevelopDataLayer datalayer = new SocialDevelopDataLayerMysqlImpl(ds);
             datalayer.init();
-            int dev_key = 0;
-            if(mail_username.contains("@")){
-                dev_key = datalayer.getDeveloperByMail(mail_username);
-            }else{
-                dev_key = datalayer.getDeveloperByUsername(mail_username);
-            }
-            Developer dev = datalayer.getDeveloper(dev_key);
-            if(dev.getPwd().equals(pwd)){
-                SecurityLayer.createSession(request, dev.getUsername(), dev_key);
-                request.setAttribute("username", dev.getUsername());
-                request.setAttribute("logout", "Logout");
-                request.setAttribute("page_title", dev.getUsername()+", ");
-                request.setAttribute("page_subtitle", "Welcome back in SocialDevelop!");
+            DeveloperImpl dev = new DeveloperImpl(datalayer);
+            if(pwd.equals(pwd2)){
+                dev.setName(name);
+                dev.setSurname(surname);
+                dev.setUsername(username);
+                dev.setMail(mail);
+                dev.setPwd(pwd);
+                GregorianCalendar gc = new GregorianCalendar();
+                gc.setLenient(false);
+                gc.set(GregorianCalendar.YEAR, Integer.valueOf(bday.split("/")[2]));
+                gc.set(GregorianCalendar.MONTH, Integer.valueOf(bday.split("/")[1])-1); //parte da 0
+                gc.set(GregorianCalendar.DATE, Integer.valueOf(bday.split("/")[0]));
+                dev.setBirthDate(gc);
+                datalayer.storeDeveloper(dev);
+                request.setAttribute("username", username);
+                request.setAttribute("page_title", username+", ");
+                request.setAttribute("page_subtitle", "Welcome in SocialDevelop!");
                 TemplateResult res = new TemplateResult(getServletContext());
-                res.activate(null,request, response);
-            } else {
-                //action_error(request, response);
+                res.activate("completa_registrazione.html",request, response);  
+            }else{
+                //errore e torna sulla stessa pagina
             }
-            
-            
     }
     
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException {
         try {
-            action_login(request, response);
+            action_registrati(request, response);
         } catch (IOException ex) {
             Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
         } catch (TemplateManagerException ex) {

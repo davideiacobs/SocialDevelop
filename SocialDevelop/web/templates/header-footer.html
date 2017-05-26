@@ -15,6 +15,11 @@
   <!-- Responsive CSS -->
   <link href="css/responsive.css" rel="stylesheet">
   <link href="css/login-register.css" rel="stylesheet">
+  <link href="css/chosen.min.css" rel="stylesheet">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/typography.css" rel="stylesheet">
+  <link href="css/svg-style.css" rel="stylesheet">
+  <link href="css/dashboard.css" rel="stylesheet">
 
   </head>
 
@@ -24,12 +29,13 @@
     <!--Header Wrap Start-->
     <header>
       <div class="gt_top_wrap gt_bg_3 default_width">
-          <div class="container">
-            
-            <div class="gt_login_element">
-              <a href="#"><i class="icon-lock"></i>Login &#38; Register</a>
+          <div class="container">          
+            <div class="gt_login_element">               
+                <a href=${logout!"MakeLoginReg"}><i class="icon-lock"></i>${logout!"Login & Register"}</a>
             </div>
-          </div>
+            <div class="gt_login_element">
+                <a href="MyProfile"><i class="icon-people"></i>My Profile</a>
+            </div> 
       </div>
       <div class="gt_menu_bg default_width">
           <div class="container">
@@ -103,11 +109,11 @@
                       <li><a href="shop-detail.html">Shop Detail</a></li>
                     </ul>
                   </li>
-                  <li class="active"><a href="javascript:avoid(0);">Pages</a>
+                  <li><a href="javascript:avoid(0);">Pages</a>
                     <ul>
                       <li><a href="javascript:avoid(0);">404 Pages</a>
                         <ul>
-                          <li class="active"><a href="404-page.html">404 01</a></li>
+                          <li><a href="404-page.html">404 01</a></li>
                           <li><a href="404-page-2.html">404 02</a></li>
                         </ul>
                       </li>
