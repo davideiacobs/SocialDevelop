@@ -1483,7 +1483,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     }    
     
     @Override 
-    public void storeImg(Part file_to_upload, File uploaded_file, String sdigest) throws DataLayerException{
+    public void storeFile(Part file_to_upload, File uploaded_file, String sdigest) throws DataLayerException{
         try{ 
             iImg.setString(1, file_to_upload.getSubmittedFileName());
             iImg.setLong(2, file_to_upload.getSize());

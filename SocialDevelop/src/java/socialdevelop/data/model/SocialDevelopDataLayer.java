@@ -145,6 +145,6 @@ public interface SocialDevelopDataLayer extends DataLayer {
 
     int getDeveloperByMail(String mail) throws DataLayerException;
     
-    void storeImg(Part file_to_upload, File uploaded_file, String sdigest) throws DataLayerException;
+    void storeFile(Part file_to_upload, File uploaded_file, String sdigest) throws DataLayerException;
         
 }

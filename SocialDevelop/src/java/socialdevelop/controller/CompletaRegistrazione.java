@@ -36,40 +36,46 @@ public class CompletaRegistrazione extends SocialDevelopBaseController {
      @Resource(name = "jdbc/mydb")
     private DataSource ds;
      
-     private void completa_reg(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, NamingException, NoSuchAlgorithmException, Exception {
-
-        int fileID = 0;
-        String bio = request.getParameter("biography");
-        Part file_to_upload = request.getPart("foto-profilo");
-
-        //vogliamo creare il digest sha-1 del file
-        MessageDigest md = MessageDigest.getInstance("SHA-1");
-        //creiamo un nuovo file (con nome univoco) e copiamoci il file scaricato
-        File uploaded_file = File.createTempFile("upload_", "", new File(getServletContext().getInitParameter("extra-images.directory")));
-        InputStream is = file_to_upload.getInputStream(); 
-             OutputStream os = new FileOutputStream(uploaded_file);
+     private String getDigest (Part file_to_upload, File uploaded_file) throws IOException, NoSuchAlgorithmException{
+            InputStream is = file_to_upload.getInputStream(); 
+            OutputStream os = new FileOutputStream(uploaded_file);
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
             byte[] buffer = new byte[1024];
             int read;
             while ((read = is.read(buffer)) > 0) {
                 //durante la copia, aggreghiamo i byte del file nel digest sha-1
-                //while copying, we aggregate the file bytes in the sha-1 digest
                 md.update(buffer, 0, read);
                 os.write(buffer, 0, read);
             }
-        
+            //covertiamo il digest in una stringa
+            byte[] digest = md.digest();
+            String sdigest = "";
+            for (byte b : digest) {
+                sdigest += String.valueOf(b);
+            }
+            return sdigest;
+     }
+     
+     private void completa_reg(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, NamingException, NoSuchAlgorithmException, Exception {
 
-        //get the file digest as a string
-        //covertiamo il digest in una stringa
-        byte[] digest = md.digest();
-        String sdigest = "";
-        for (byte b : digest) {
-            sdigest += String.valueOf(b);
-        }
+        int fileID = 0;
+        String bio = request.getParameter("biography");
+        Part foto_to_upload = request.getPart("foto-profilo");
+        Part curriculum_to_upload = request.getPart("curriculum-pdf");
+        
+        //vogliamo creare il digest sha-1 del file
+        //MessageDigest md = MessageDigest.getInstance("SHA-1");
+        //creiamo un nuovo file (con nome univoco) e copiamoci il file scaricato
+        File uploaded_foto = File.createTempFile("upload_foto", "", new File(getServletContext().getInitParameter("extra-images.directory")));
+        File uploaded_curriculum = File.createTempFile("upload_curriculum", "", new File(getServletContext().getInitParameter("curriculums.directory")));
+
+        String digest_foto = getDigest(foto_to_upload, uploaded_foto);
+        String digest_curriculum = getDigest(curriculum_to_upload, uploaded_curriculum);
         
         SocialDevelopDataLayer datalayer = new SocialDevelopDataLayerMysqlImpl(ds);
         datalayer.init();
-        datalayer.storeImg(file_to_upload, uploaded_file, sdigest);
-        
+        datalayer.storeFile(foto_to_upload, uploaded_foto, digest_foto);
+        datalayer.storeFile(curriculum_to_upload, uploaded_curriculum, digest_curriculum);
     }
     
     @Override
