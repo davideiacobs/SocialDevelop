@@ -7,15 +7,17 @@
                 <span class="gt_hdg_right"></span>
             </div>
             <!--Heading Wrap End-->
-            <form class="gt_contact_form" id="contact-form" action="#" method="post">
+                <form class="gt_contact_form" id="contact-form" action="CompletaRegistrazione" method="post" enctype="multipart/form-data">
               <!--<div class="col-md-4">
                   <div class="gt_contact_us_field">
                       <input class="c_ph" type="text" placeholder="Your Name" id="name" name="contact-name" required>
                   </div>
               </div>-->
+              <input type="file" id="foto-profilo" name="foto-profilo" accept="image/*">
+              <input type="file" id="curriculum-pdf" name="curriculum-pdf" accept="application/pdf"> 
               <div class="col-md-12">
                   <div class="gt_contact_us_field">
-                      <textarea class="gt_c_bg" name="biography" id="biography" placeholder="Biography" required></textarea>
+                      <textarea class="gt_c_bg" name="biography" id="biography" placeholder="Biography"></textarea>
                   </div>
               </div>
                <div class="col-md-6">

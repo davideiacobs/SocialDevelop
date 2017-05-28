@@ -67,7 +67,7 @@ public class Signup extends SocialDevelopBaseController {
                 datalayer.storeDeveloper(dev);
                 request.setAttribute("username", username);
                 request.setAttribute("page_title", username+", ");
-                request.setAttribute("page_subtitle", "Welcome in SocialDevelop!");
+                request.setAttribute("page_subtitle", "Complete your profile!");
                 TemplateResult res = new TemplateResult(getServletContext());
                 res.activate("completa_registrazione.html",request, response);  
             }else{

@@ -7,6 +7,7 @@ package socialdevelop.data.impl;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
 import it.univaq.f4i.iw.framework.data.DataLayerMysqlImpl;
+import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,9 +19,8 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.NamingException;
+import javax.servlet.http.Part;
 import javax.sql.DataSource;
 import socialdevelop.data.model.CollaborationRequest;
 import socialdevelop.data.model.Developer;
@@ -51,7 +51,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     private PreparedStatement iTask, uTask, dTask;
     private PreparedStatement iMessage, uMessage, dMessage;
     private PreparedStatement iType, uType, dType;
-    private PreparedStatement iRequest, uRequest, dRequest;
+    private PreparedStatement iRequest, uRequest, dRequest, iImg;
     private PreparedStatement iTaskHasSkill, dTaskHasSkill,uTaskHasSkill,sTaskHasSkill;
     private PreparedStatement iTaskHasDeveloper,dTaskHasDeveloper,uTaskHasDeveloper,sTaskHasDeveloper;
     private PreparedStatement iSkillHasDeveloper,dSkillHasDeveloper,uSkillHasDeveloper,sSkillHasDeveloper;
@@ -198,6 +198,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             uSkillHasDeveloper = connection.prepareStatement("UPDATE skill_has_developer SET skill_ID=?,developer_ID=?,level=? WHERE skill_ID=? AND developer_ID=?");
             sSkillHasDeveloper = connection.prepareStatement("SELECT * FROM skill_has_developer WHERE skill_id=? AND developer_ID=?" );
             
+            iImg = connection.prepareStatement("INSERT INTO files (name,size,localfile,digest,type) VALUES (?,?,?,?,?)");
             
         } catch (SQLException ex) {
             throw new DataLayerException("Error initializing newspaper data layer", ex);
@@ -1480,6 +1481,20 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         throw new DataLayerException("Unable to store request", ex);
         }
     }    
+    
+    @Override 
+    public void storeImg(Part file_to_upload, File uploaded_file, String sdigest) throws DataLayerException{
+        try{ 
+            iImg.setString(1, file_to_upload.getSubmittedFileName());
+            iImg.setLong(2, file_to_upload.getSize());
+            iImg.setString(3, uploaded_file.getName());
+            iImg.setString(4, sdigest);
+            iImg.setString(5, file_to_upload.getContentType());
+            iImg.executeUpdate();
+        }catch (SQLException ex){
+            throw new DataLayerException("Unable to store img", ex);
+        }
+    }
     
     
     @Override

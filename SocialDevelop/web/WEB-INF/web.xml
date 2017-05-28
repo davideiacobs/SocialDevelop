@@ -4,6 +4,11 @@
         <param-name>view.outline_template</param-name>
         <param-value>header-footer.html</param-value>
     </context-param>
+    <context-param>
+        <param-name>extra-images.directory</param-name>
+        <!-- Tomcat must have write permissions on this folder -->
+        <param-value>C:\Users\david\Desktop\SocialDevelop\SocialDevelop\web\extra-images</param-value>
+    </context-param>
     <servlet>
         <servlet-name>Progetto</servlet-name>
         <servlet-class>socialdevelop.data.model.Project</servlet-class>
@@ -40,6 +45,19 @@
         <servlet-name>MyProfile</servlet-name>
         <servlet-class>socialdevelop.controller.MyProfile</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CompletaRegistrazione</servlet-name>
+        <servlet-class>socialdevelop.controller.CompletaRegistrazione</servlet-class>
+        <multipart-config>
+            <!--
+            <location>/tmp</location> temporary files location (DEF: "") -->
+            <max-file-size>20848820</max-file-size>
+            <!-- max size of accepted uploadd (DEF: unlimited!) -->
+            <max-request-size>418018841</max-request-size>
+            <!-- max size of multipart requests (may contain more files or data) (DEF: ulimited!) -->
+            <!-- <file-size-threshold>1048576</file-size-threshold> max size of files to hold in memory (without writing to temporary disk file) (DEF: 0) -->
+        </multipart-config>
+    </servlet>
     <servlet-mapping>
         <servlet-name>provaDB2</servlet-name>
         <url-pattern>/provaDB2</url-pattern>
@@ -71,6 +89,10 @@
     <servlet-mapping>
         <servlet-name>MyProfile</servlet-name>
         <url-pattern>/MyProfile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CompletaRegistrazione</servlet-name>
+        <url-pattern>/CompletaRegistrazione</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

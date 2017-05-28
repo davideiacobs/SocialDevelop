@@ -7,9 +7,11 @@ package socialdevelop.data.model;
 
 import it.univaq.f4i.iw.framework.data.DataLayer;
 import it.univaq.f4i.iw.framework.data.DataLayerException;
+import java.io.File;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.http.Part;
 
 /**
  *
@@ -142,5 +144,7 @@ public interface SocialDevelopDataLayer extends DataLayer {
     int getDeveloperByUsername(String username) throws DataLayerException;
 
     int getDeveloperByMail(String mail) throws DataLayerException;
-
+    
+    void storeImg(Part file_to_upload, File uploaded_file, String sdigest) throws DataLayerException;
+        
 }
