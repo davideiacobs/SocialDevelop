@@ -7,6 +7,8 @@ package socialdevelop.controller;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
+import it.univaq.f4i.iw.framework.result.TemplateResult;
+import it.univaq.f4i.iw.framework.security.SecurityLayer;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -25,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import socialdevelop.data.impl.SocialDevelopDataLayerMysqlImpl;
+import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 
 /**
@@ -57,27 +60,52 @@ public class CompletaRegistrazione extends SocialDevelopBaseController {
      }
      
      private void completa_reg(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, NamingException, NoSuchAlgorithmException, Exception {
-
-        int fileID = 0;
+        
         String bio = request.getParameter("biography");
+        String username = request.getParameter("username");
+        
+        String curriculum = request.getParameter("curriculum");
+        
         Part foto_to_upload = request.getPart("foto-profilo");
         Part curriculum_to_upload = request.getPart("curriculum-pdf");
         
-        //vogliamo creare il digest sha-1 del file
-        //MessageDigest md = MessageDigest.getInstance("SHA-1");
-        //creiamo un nuovo file (con nome univoco) e copiamoci il file scaricato
-        File uploaded_foto = File.createTempFile("upload_foto", "", new File(getServletContext().getInitParameter("extra-images.directory")));
-        File uploaded_curriculum = File.createTempFile("upload_curriculum", "", new File(getServletContext().getInitParameter("curriculums.directory")));
-
-        String digest_foto = getDigest(foto_to_upload, uploaded_foto);
-        String digest_curriculum = getDigest(curriculum_to_upload, uploaded_curriculum);
-        
         SocialDevelopDataLayer datalayer = new SocialDevelopDataLayerMysqlImpl(ds);
         datalayer.init();
-        datalayer.storeFile(foto_to_upload, uploaded_foto, digest_foto);
-        datalayer.storeFile(curriculum_to_upload, uploaded_curriculum, digest_curriculum);
+        int dev_key = datalayer.getDeveloperByUsername(username);
+        Developer dev = datalayer.getDeveloper(dev_key);
+        
+        File uploaded_foto;
+        File uploaded_curriculum;
+        int foto_key = 0;
+        int curriculum_key = 0;
+        
+        if(foto_to_upload != null){
+            uploaded_foto = File.createTempFile("foto_profilo", "", new File(getServletContext().getInitParameter("extra-images.directory")));
+            String digest_foto = getDigest(foto_to_upload, uploaded_foto);
+            foto_key = datalayer.storeFile(foto_to_upload, uploaded_foto, digest_foto);
+            dev.setFoto(foto_key);
+        }
+        if(curriculum_to_upload != null){
+            uploaded_curriculum = File.createTempFile("curriculum", ".pdf", new File(getServletContext().getInitParameter("curriculums.directory")));
+            String digest_curriculum = getDigest(curriculum_to_upload, uploaded_curriculum);
+            curriculum_key = datalayer.storeFile(curriculum_to_upload, uploaded_curriculum, digest_curriculum);
+            dev.setCurriculum(curriculum_key);
+        }
+        if( (curriculum != null && !curriculum.equals("")) || (bio != null && !bio.equals("")) ){
+            dev.setCurriculum(curriculum);
+            dev.setBiography(bio);
+        }
+        datalayer.storeDeveloper(dev);
+        request.setAttribute("username", dev.getUsername());
+        request.setAttribute("pwd", dev.getPwd());
+        SecurityLayer.createSession(request, dev.getUsername(), dev_key);
+        request.setAttribute("username", dev.getUsername());
+        request.setAttribute("logout", "Logout");
+        TemplateResult res = new TemplateResult(getServletContext());
+        res.activate("MyProfile",request, response);
     }
     
+     
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException {

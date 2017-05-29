@@ -4,7 +4,7 @@
               <div class="gt_d_author_wrap">
                 <div class="gt_d_author_pic">
                   <figure>
-                    <img src="extra-images/testimonial-01.png" alt="">
+                    <img src=${foto_profilo} alt="">
                   </figure>
                 </div>
                 <div class="gt_d_author_pic_des">
@@ -14,10 +14,8 @@
                   <label>Age: ${age}</label>
                 </div>
                 <div class="gt_d_author_sbj">
-                  <h6>Program</h6>
-                  <span>Bachelors of Science, Nursing</span>
-                  <h6>Semester</h6>
-                  <span>4th Semester</span>
+                  <h6>Email</h6>
+                  <span>${mail}</span>
                 </div>
               </div>
               <div class="gt-usser-account-list">
@@ -40,9 +38,7 @@
           <div class="col-md-8">
             <div class="gt_d_classes_wrap default_width mb20">
               <div class="gt_d_profile_wrap default_width">
-                <figure>
-                  <img src="extra-images/profile-img-01.jpg" alt="">
-                </figure>
+                
                 <div class="gt_d_profile_detail">
                   <ul>
                     <li>
@@ -61,25 +57,27 @@
                       <span>Email Address:</span>
                       <p>${mail}</p>
                     </li>
-                    <li>
-                      <span>Program:</span>
-                      <p>Bachelors of Science, Nursing</p>
-                    </li>
-                    <li>
-                      <span>Department:</span>
-                      <p>School of Nursing</p>
-                    </li>
-                    <li>
-                      <span>Student ID:</span>
-                      <p>12345</p>
-                    </li>
                   </ul>
                 </div>
               </div>
               <div class="gt_d_about_author default_width">
                 <h4 class="gt_d_title">About ${username}</h4>
                 <p class="d_bold"> ${bio} </p></div>
-              <h4 class="gt_d_title">Courses</h4>
+                
+             <#if curriculum_pdf!=0>
+                <h4 class="gt_d_title">Curriculum</h4>
+                <form method="get" action="DownloadCurriculum">
+                    <input type="submit" value="download">
+                    <input type="text" name="curriculum_pdf" class="hidden" value=${curriculum_pdf} >
+                </form>
+                 <!-- qui mettere un altro input file per fare l'upload di un nuovo 
+                    pdf (e anche una text area nel caso in cui si volesse scriverlo) .
+                    Se viene inserito un nuovo curriculum si può richiamare direttamente
+                    la servlet CompletaRegistrazione (dovrebbe fungere)-->
+             </#if>
+             
+             
+            <h4 class="gt_d_title">Courses</h4>
               <div class="gt_d_courses_wrap default_width mb20">
                 <figure>
                   <img src="extra-images/courses-01.jpg" alt="">

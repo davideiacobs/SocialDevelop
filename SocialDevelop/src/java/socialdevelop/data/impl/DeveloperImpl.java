@@ -6,7 +6,6 @@
 package socialdevelop.data.impl;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
-import java.io.File;
 import java.util.GregorianCalendar;
 import java.util.Map;
 import socialdevelop.data.model.Developer;
@@ -29,7 +28,8 @@ public class DeveloperImpl implements Developer {
     private GregorianCalendar birthdate;
     private String biography;
     private String curriculumString;
-    private File curriculumFile;
+    private int curriculumFile;
+    private int foto;
     private Map<Skill,Integer> skills;
     protected SocialDevelopDataLayer ownerdatalayer;
     protected boolean dirty;
@@ -42,10 +42,11 @@ public class DeveloperImpl implements Developer {
         username = "";
         pwd = "";
         mail = "";
+        foto = 0;
         birthdate = null;
         biography = "";
         curriculumString = "";
-        curriculumFile = null;
+        curriculumFile = 0;
         skills = null;
         dirty = false;
     }
@@ -133,7 +134,7 @@ public class DeveloperImpl implements Developer {
     }
     
     @Override
-    public void setCurriculum(File curriculum){
+    public void setCurriculum(int curriculum){
         this.curriculumFile = curriculum;
         this.dirty = true;
     }
@@ -145,7 +146,7 @@ public class DeveloperImpl implements Developer {
     }
     
     @Override
-    public File getCurriculumFile(){
+    public int getCurriculumFile(){
         return curriculumFile;
     }
     
@@ -205,6 +206,16 @@ public class DeveloperImpl implements Developer {
     protected void setKey(int key) {
         this.key = key;
     }
+    
+    @Override
+    public void setFoto(int foto){
+        this.foto = foto;
+    }
+    
+    @Override
+    public int getFoto(){
+        return foto;
+    }
       
     @Override
     public void copyFrom(Developer developer) throws DataLayerException {
@@ -218,6 +229,7 @@ public class DeveloperImpl implements Developer {
         biography = developer.getBiography();
         curriculumFile = developer.getCurriculumFile();
         curriculumString = developer.getCurriculumString();
+        foto = developer.getFoto();
         this.dirty = true;
     }
 }

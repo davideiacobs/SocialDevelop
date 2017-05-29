@@ -6,11 +6,11 @@
 package socialdevelop.controller;
 
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
+import it.univaq.f4i.iw.framework.result.TemplateResult;
 import it.univaq.f4i.iw.framework.security.SecurityLayer;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,8 +24,10 @@ public class Logout extends SocialDevelopBaseController {
     
     private void action_logout(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException {
             SecurityLayer.disposeSession(request);
-            RequestDispatcher view = request.getRequestDispatcher("templates/index.html");
-            view.forward(request, response);
+            request.setAttribute("slider", "hidden");
+            request.setAttribute("home_background", "home_background");
+            TemplateResult res = new TemplateResult(getServletContext());
+            res.activate("index.html",request, response);
             
     }
     

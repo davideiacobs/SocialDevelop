@@ -5,14 +5,11 @@
  */
 package socialdevelop.controller;
 
-import it.univaq.f4i.iw.framework.data.DataLayerException;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,8 +28,12 @@ public class Index extends SocialDevelopBaseController {
             if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
                 response.sendRedirect("MyProfile");
             }else{
-                RequestDispatcher view = request.getRequestDispatcher("templates/index.html");
-                view.forward(request, response);
+                request.setAttribute("slider", "hidden");
+                request.setAttribute("home_background", "home_background");
+                TemplateResult res = new TemplateResult(getServletContext());
+                res.activate("index.html",request, response);
+                //RequestDispatcher view = request.getRequestDispatcher("templates/index.html");
+                //view.forward(request, response);
             }
     }
     

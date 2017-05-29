@@ -48,11 +48,15 @@ public interface Developer {
     
     String getBiography();
       
-    void setCurriculum(File curriculum);
+    void setCurriculum(int curriculum);
     
     void setCurriculum(String curriculum);
     
-    File getCurriculumFile();
+    int getCurriculumFile();
+    
+    int getFoto();
+    
+    void setFoto(int foto);
     
     String getCurriculumString();
     

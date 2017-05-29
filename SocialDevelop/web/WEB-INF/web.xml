@@ -4,15 +4,23 @@
         <param-name>view.outline_template</param-name>
         <param-value>header-footer.html</param-value>
     </context-param>
+    <!-- davide windows
     <context-param>
         <param-name>extra-images.directory</param-name>
-        <!-- Tomcat must have write permissions on this folder -->
         <param-value>C:\Users\david\Desktop\SocialDevelop\SocialDevelop\web\extra-images</param-value>
     </context-param>
     <context-param>
         <param-name>curriculums.directory</param-name>
-        <!-- Tomcat must have write permissions on this folder -->
         <param-value>C:\Users\david\Desktop\SocialDevelop\SocialDevelop\web\curriculums</param-value>
+    </context-param>-->
+    <!-- davide ubuntu-->
+    <context-param>
+        <param-name>extra-images.directory</param-name>
+        <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/extra-images</param-value>
+    </context-param>
+    <context-param>
+        <param-name>curriculums.directory</param-name>
+        <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/curriculums</param-value>
     </context-param>
     <servlet>
         <servlet-name>Progetto</servlet-name>
@@ -63,6 +71,10 @@
             <!-- <file-size-threshold>1048576</file-size-threshold> max size of files to hold in memory (without writing to temporary disk file) (DEF: 0) -->
         </multipart-config>
     </servlet>
+    <servlet>
+        <servlet-name>DownloadCurriculum</servlet-name>
+        <servlet-class>socialdevelop.controller.DownloadCurriculum</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>provaDB2</servlet-name>
         <url-pattern>/provaDB2</url-pattern>
@@ -98,6 +110,10 @@
     <servlet-mapping>
         <servlet-name>CompletaRegistrazione</servlet-name>
         <url-pattern>/CompletaRegistrazione</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DownloadCurriculum</servlet-name>
+        <url-pattern>/DownloadCurriculum</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -6,6 +6,7 @@
 package socialdevelop.controller;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
+import it.univaq.f4i.iw.framework.result.HTMLResult;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import it.univaq.f4i.iw.framework.security.SecurityLayer;
@@ -33,7 +34,25 @@ public class Login extends SocialDevelopBaseController {
     
     @Resource(name = "jdbc/mydb")
     private DataSource ds;
-   
+    
+    private void action_error(HttpServletRequest request, HttpServletResponse response, String problem) throws TemplateManagerException {
+        if(problem.equals("pwd")){
+            //password errata  
+            request.setAttribute("error_pwd", "password is not correct");
+        }else{
+            if(problem.equals("user")){
+                //username/mail errata
+                request.setAttribute("error_user", "username/mail is not correct");
+                
+            }
+        }
+        request.setAttribute("slider", "hidden");
+        request.setAttribute("home_background", "home_background");
+        TemplateResult res = new TemplateResult(getServletContext());
+        res.activate("index.html",request, response);
+    }
+    
+    
      private void action_login(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, DataLayerException, SQLException, NamingException {
             
             String mail_username = request.getParameter("username");
@@ -49,16 +68,22 @@ public class Login extends SocialDevelopBaseController {
                 dev_key = datalayer.getDeveloperByUsername(mail_username);
             }
             Developer dev = datalayer.getDeveloper(dev_key);
-            if(dev.getPwd().equals(pwd)){
-                SecurityLayer.createSession(request, dev.getUsername(), dev_key);
-                request.setAttribute("username", dev.getUsername());
-                request.setAttribute("logout", "Logout");
-                request.setAttribute("page_title", dev.getUsername()+", ");
-                request.setAttribute("page_subtitle", "Welcome back in SocialDevelop!");
-                TemplateResult res = new TemplateResult(getServletContext());
-                res.activate(null,request, response);
-            } else {
-                //action_error(request, response);
+            if(dev!=null){
+                if(dev.getPwd().equals(pwd)){
+                    SecurityLayer.createSession(request, dev.getUsername(), dev_key);
+                    request.setAttribute("username", dev.getUsername());
+                    request.setAttribute("logout", "Logout");
+                    request.setAttribute("page_title", dev.getUsername()+", ");
+                    request.setAttribute("page_subtitle", "Welcome back in SocialDevelop!");
+                    TemplateResult res = new TemplateResult(getServletContext());
+                    res.activate(null,request, response);
+                } else {
+                    //password errata
+                    action_error(request, response, "pwd");
+                }
+            }else{
+                //mail o username errato
+                action_error(request, response, "user");
             }
             
             
