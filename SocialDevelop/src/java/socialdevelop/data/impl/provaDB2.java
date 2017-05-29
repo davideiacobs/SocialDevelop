@@ -56,6 +56,9 @@ public class provaDB2 extends HttpServlet {
             SocialDevelopDataLayer datalayer = new SocialDevelopDataLayerMysqlImpl(ds);
             datalayer.init();
             
+      
+            System.out.println(1);
+            
             /*
             -- TEST STORE TYPE -- 
             TypeImpl type = new TypeImpl(datalayer);

@@ -42,7 +42,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     private PreparedStatement sProjectByID, sTaskByID, sProjects, sDeveloperByID, sSkillByID, sRequestByID;
     private PreparedStatement sProjectsByFilter, sSkillsByTask, sSkillsByDeveloper, sQuestionsByCoordinatorID; 
     private PreparedStatement sCollaboratorsByTask, sVoteByTaskandDeveloper, sTypeByTask, sMessagesByProject;
-    private PreparedStatement sDeveloperBySkillWithLevel, sDeveloperBySkill, sTasksByProject, sTaskByRequest ;
+    private PreparedStatement sDeveloperBySkillWithLevel, sDeveloperBySkill, sTasksByProject, sTaskByRequest,scTaskByProjectID ;
     private PreparedStatement sParentBySkill, sMessageByID, sCollaboratorsByProjectID, sProjectsByDeveloperID;
     private PreparedStatement sProjectsByDeveloperIDandDate, sInvitesByCoordinatorID, sProposalsByCollaboratorID;
     private PreparedStatement sOffertsByDeveloperID, sCoordinatorByTask, sTasksByDeveloper, sChildBySkill,sPublicMessagesByProject;
@@ -72,6 +72,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sProjectByID = connection.prepareStatement("SELECT * FROM project WHERE ID=?");
             
             sTaskByID = connection.prepareStatement("SELECT * FROM task WHERE ID=?");
+            
+            scTaskByProjectID =connection.prepareStatement("SELECT COUNT(*) AS n FROM task WHERE project_ID=?");
             
             sTypeByID = connection.prepareStatement("SELECT * FROM type WHERE ID=?");
             
@@ -202,6 +204,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             iImg = connection.prepareStatement("INSERT INTO files (name,size,localfile,digest,type) VALUES (?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
             sFileByID = connection.prepareStatement("SELECT * FROM files WHERE ID=?");
             
+            
         } catch (SQLException ex) {
             throw new DataLayerException("Error initializing newspaper data layer", ex);
         }
@@ -226,6 +229,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             a.setName(rs.getString("name"));
             a.setDescription(rs.getString("description"));
             a.setCoordinatorKey(rs.getInt("coordinator_ID"));
+            //a.setTasks(getTasks(a.getKey()));
+            //a.setCoordinator(getDeveloper(a.getCoordinatorKey()));
             return a;
         } catch (SQLException ex) {
             throw new DataLayerException("Unable to create project object form ResultSet", ex);
@@ -248,9 +253,12 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             a.setStartDate(start);
             Timestamp ts2 = rs.getTimestamp("end");
             //se sono permessi valori nulli bisogna fare check del resultSet
+            if(ts2 != null)
+            {
             GregorianCalendar end = new GregorianCalendar();
             end.setTime(ts2);
             a.setEndDate(end);
+            }
             a.setOpen(rs.getBoolean("open"));
             a.setNumCollaborators(rs.getInt("numCollaborators"));
             a.setDescription(rs.getString("description"));   
@@ -431,6 +439,21 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             throw new DataLayerException("Unable to load project by ID", ex);
         }
         return null;
+    }
+    
+     @Override
+    public int getNumberTaskByProjectID(int project_key) throws DataLayerException {
+        try {
+            scTaskByProjectID.setInt(1, project_key); //setta primo parametro query a project_key
+            try (ResultSet rs = scTaskByProjectID.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt('n') ;
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DataLayerException("Unable to load project by ID", ex);
+        }
+        return 0;
     }
     
     @Override

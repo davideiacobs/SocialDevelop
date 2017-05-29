@@ -1,0 +1,47 @@
+          <div class="row">
+            <div class="col-md-4">
+                <button type="button" class="btn btn-default">Crea Progetto</button>
+            </div>
+            <div class="col-md-12">
+                <div class="gt_aside_search default_width mb30">
+                    <form>
+                      <input type="text" placeholder="Search Here">
+                      <button><i class="fa fa-search"></i></button>
+                    </form>
+                  </div>
+            </div>
+            <!--List Wrap Start-->
+            <div class="col-md-12">
+                <#list listaprogetti as progetto>
+                
+              <div class="gt_event_grid gt_event_list default_width mb30">
+                  <div class="gt_event_grid_des default_width">
+                  <h6>${progetto.name}</h6>
+                  </div>
+                <div class="gt_d_author_pic">
+                  <figure>
+                    <img src=${fotoCoordinatore} alt="">
+                  </figure>
+                </div>
+                  <p>${nomeCoordinatore}</p>
+                <div class="gt_event_grid_des default_width">
+                  <p>${progetto.description}</p>
+                  <a href="#">Piu Informazioni</a>
+                </div>
+                <div class="gt_event_counter">
+                  <ul class="countdown">
+                    <li>
+                      <span class="days">${ntask}</span>
+                      <p class="days_ref">Task</p>
+                    </li>
+                    <li>
+                      <span class="hours">${collaboratoriTot}</span>
+                      <p class="hours_ref">Collaboratori</p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+                </#list>
+            </div>
+            <!--List Wrap Start-->
+            <!--Aside Wrap End-->

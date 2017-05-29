@@ -51,6 +51,8 @@ public interface SocialDevelopDataLayer extends DataLayer {
         
     Map<Developer,Integer> getCollaboratorsByTask(int task_key) throws DataLayerException;
     
+    int getNumberTaskByProjectID(int project_key) throws DataLayerException;
+            
     int getVote(int task_key, int developer_key) throws DataLayerException;
     
     Type getType(int type_key) throws DataLayerException;
