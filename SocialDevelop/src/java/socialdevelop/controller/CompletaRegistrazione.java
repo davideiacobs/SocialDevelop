@@ -98,7 +98,6 @@ public class CompletaRegistrazione extends SocialDevelopBaseController {
         datalayer.storeDeveloper(dev);
         request.setAttribute("username", dev.getUsername());
         request.setAttribute("pwd", dev.getPwd());
-        SecurityLayer.createSession(request, dev.getUsername(), dev_key);
         request.setAttribute("username", dev.getUsername());
         request.setAttribute("logout", "Logout");
         TemplateResult res = new TemplateResult(getServletContext());

@@ -12,6 +12,7 @@ package socialdevelop.controller;
 import it.univaq.f4i.iw.framework.data.DataLayerException;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
+import it.univaq.f4i.iw.framework.security.SecurityLayer;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.GregorianCalendar;
@@ -68,6 +69,9 @@ public class Signup extends SocialDevelopBaseController {
                 request.setAttribute("username", username);
                 request.setAttribute("page_title", username+", ");
                 request.setAttribute("page_subtitle", "Complete your profile!");
+                request.setAttribute("username", dev.getUsername());
+                request.setAttribute("logout", "Logout");
+                SecurityLayer.createSession(request, dev.getUsername(), dev.getKey());
                 TemplateResult res = new TemplateResult(getServletContext());
                 res.activate("completa_registrazione.html",request, response);  
             }else{
