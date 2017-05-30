@@ -56,7 +56,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     private PreparedStatement iTaskHasSkill, dTaskHasSkill,uTaskHasSkill,sTaskHasSkill;
     private PreparedStatement iTaskHasDeveloper,dTaskHasDeveloper,uTaskHasDeveloper,sTaskHasDeveloper;
     private PreparedStatement iSkillHasDeveloper,dSkillHasDeveloper,uSkillHasDeveloper,sSkillHasDeveloper;
-    private PreparedStatement sProjectByTask;
+    private PreparedStatement sProjectByTask, sCurrentTasksByDeveloper, sEndedTasksByDeveloper;
     public SocialDevelopDataLayerMysqlImpl(DataSource datasource) throws SQLException, NamingException {
         super(datasource);
     }
@@ -104,7 +104,12 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sSkillsByTask = connection.prepareStatement("SELECT skill.ID,task_has_skill.level_min FROM skill INNER JOIN task_has_skill ON"
                                     + "(skill.ID = task_has_skill.skill_ID) WHERE task_has_skill.task_ID=?");
             sSkillsByDeveloper = connection.prepareStatement("SELECT skill_ID, level FROM skill_has_developer WHERE developer_ID=?");
-            sTasksByDeveloper = connection.prepareStatement("SELECT task_ID,vote FROM task_has_developer WHERE developer_ID=? AND state=1");
+            
+            sTasksByDeveloper = connection.prepareStatement("SELECT task_ID,vote FROM task_has_developer WHERE developer_ID=? AND state>0");
+            
+            sCurrentTasksByDeveloper = connection.prepareStatement("SELECT task_ID,vote FROM task_has_developer WHERE developer_ID=? AND state=1");
+            
+            sEndedTasksByDeveloper = connection.prepareStatement("SELECT task_ID,vote FROM task_has_developer WHERE developer_ID=? AND state=2");
             
             //sRequestByTask = connection.prepareStatement("SELECT * FROM task_has_developer WHERE task_ID=?");
             
@@ -651,6 +656,38 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         try{
             sTasksByDeveloper.setInt(1, developer_key);
             try(ResultSet rs = sTasksByDeveloper.executeQuery()) {
+                while (rs.next()){
+                   result.put((Task) getTask(rs.getInt("task_ID")), rs.getInt("vote"));
+                }
+            }
+        }catch (SQLException ex) {
+                throw new DataLayerException("Unable to load taskByDev", ex);
+            }
+        return result;
+    }
+    
+    @Override
+    public Map<Task, Integer> getCurrentTasksByDeveloper(int developer_key) throws DataLayerException{
+        Map<Task, Integer> result = new HashMap<>();
+        try{
+            sCurrentTasksByDeveloper.setInt(1, developer_key);
+            try(ResultSet rs = sCurrentTasksByDeveloper.executeQuery()) {
+                while (rs.next()){
+                   result.put((Task) getTask(rs.getInt("task_ID")), rs.getInt("vote"));
+                }
+            }
+        }catch (SQLException ex) {
+                throw new DataLayerException("Unable to load taskByDev", ex);
+            }
+        return result;
+    }
+    
+    @Override
+    public Map<Task, Integer> getEndedTasksByDeveloper(int developer_key) throws DataLayerException{
+        Map<Task, Integer> result = new HashMap<>();
+        try{
+            sEndedTasksByDeveloper.setInt(1, developer_key);
+            try(ResultSet rs = sEndedTasksByDeveloper.executeQuery()) {
                 while (rs.next()){
                    result.put((Task) getTask(rs.getInt("task_ID")), rs.getInt("vote"));
                 }
@@ -1449,7 +1486,6 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                         }catch (SQLException ex) {
                             throw new DataLayerException("Unable to select request", ex);
                         }
-                            //continua qui
                             try{
                                 iTaskHasDeveloper.setInt(1, task_ID);
                                 iTaskHasDeveloper.setInt(2, developer_ID);

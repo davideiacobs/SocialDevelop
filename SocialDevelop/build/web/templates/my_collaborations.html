@@ -37,36 +37,74 @@
          
 <!--Classes List Wrap Start-->
           <div class="col-md-8">
+            <!--current collaborations-->
            <div class="gt_d_classes_wrap default_width">
               <div class="gt_d_fav_courses default_width">
                 <ul class="gt_d_fav_hdg">
-                  <li>My Collaborations</li>
+                  <li>Current Collaborations</li>
                   <li>Grade</li>
                 </ul>
  
                <ul class="gt-shortlisted">
                    
                <#list tasksList?keys as task>
-               <#assign x = 0>
                <li>
 
-                    <div class="gt-text">
-                        <ul> 
+                    <div class="gt-text grade-padding">
+                      
                             <h5><a href="#">${task.project.name?cap_first}</a></h5>
-                          <li>Task: ${task.name?cap_first} </li>
-                          <li>Grade: ${tasksList?values[x]!"Not Assigned"}</li>
-                          <li>Task Description: &nbsp;${task.description?cap_first}</li>
-                      </ul>
-                        <span class="gt-user-name gt-color"><em>By</em> ${coordinators[task?index].username?cap_first} - ${coordinators[task?index].mail}</span>
-                      </div>
-          
+                            <p>Task: ${task.name?cap_first}</p>
+                            <#if tasksList?values[task?index] != -1>
+                            <h4 id="grade-right"> ${tasksList?values[task?index]!"-"}/10</h4>
+                            <#else>
+                            <h4 id="grade-right"> -/10</h4>
+                            </#if>
+                            <p>Start Date: ${task.getStartDate().time?date!"-"} &nbsp; - &nbsp; End Date: ${task.getEndDate().time?date!"-"}</p>
+                            
+                          <p>Task Description: &nbsp;${task.description?cap_first}</p>
                   
-                  <#assign x++>
+                        <span><em>Project Coordinator: &nbsp;</em> ${coordinators[task?index].username?cap_first} - ${coordinators[task?index].mail}</span>
+                      </div>
                 </li>
+            
                 </#list>   
                 </ul>
                  
                 
               </div>
            </div>
+          <!--ended collaborations-->
+          <div class="gt_d_classes_wrap default_width">
+              <div class="gt_d_fav_courses default_width">
+                <ul class="gt_d_fav_hdg">
+                  <li>Ended Collaborations</li>
+                  <li>Grade</li>
+                </ul>
+ 
+               <ul class="gt-shortlisted">
+                   
+               <#list tasksListEnded?keys as taskEnded>
+               <li>
+
+                    <div class="gt-text grade-padding">
+                      
+                            <h5><a href="#">${taskEnded.project.name?cap_first}</a></h5>
+                            <p>Task: ${taskEnded.name?cap_first}</p>
+                            <#if tasksListEnded?values[taskEnded?index] != -1>
+                            <h4 id="grade-right"> ${tasksListEnded?values[taskEnded?index]!"-"}/10</h4>
+                            <#else>
+                            <h4 id="grade-right"> -/10</h4>
+                            </#if> 
+                            <p>Start Date: ${taskEnded.getStartDate().time?date!"-"} &nbsp; - &nbsp; End Date: ${taskEnded.getEndDate().time?date!"-"}</p>
+                            <p>Task Description: &nbsp;${taskEnded.description?cap_first}</p>
+                  
+                        <span><em>Project Coordinator: &nbsp;</em> ${coordinatorsEnded[taskEnded?index].username?cap_first} - ${coordinatorsEnded[taskEnded?index].mail}</span>
+                      </div>
+                </li>
+                </#list>   
+                </ul>
+                 
+                
+              </div>
+           </div>   
           </div>

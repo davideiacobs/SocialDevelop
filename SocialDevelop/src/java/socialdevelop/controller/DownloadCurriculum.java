@@ -6,6 +6,7 @@
 package socialdevelop.controller;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
+import it.univaq.f4i.iw.framework.result.FailureResult;
 import it.univaq.f4i.iw.framework.result.StreamResult;
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +25,13 @@ import socialdevelop.data.model.SocialDevelopDataLayer;
  * @author iacobs
  */
 public class DownloadCurriculum extends SocialDevelopBaseController {
+    
+    private void action_error(HttpServletRequest request, HttpServletResponse response) {
+        if (request.getAttribute("exception") != null) {
+            (new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request, response);
+        }
+    }
+    
     
     private void action_download(HttpServletRequest request, HttpServletResponse response) throws IOException, DataLayerException, SQLException, NamingException {
         StreamResult result = new StreamResult(getServletContext());
@@ -54,13 +62,17 @@ public class DownloadCurriculum extends SocialDevelopBaseController {
         try {
             action_download(request, response);
         } catch (IOException ex) {
-            Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
+           request.setAttribute("exception", ex);
+            action_error(request, response);  
         } catch (DataLayerException ex) {
-            Logger.getLogger(DownloadCurriculum.class.getName()).log(Level.SEVERE, null, ex);
+           request.setAttribute("exception", ex);
+            action_error(request, response);  
         } catch (SQLException ex) {
-            Logger.getLogger(DownloadCurriculum.class.getName()).log(Level.SEVERE, null, ex);
+           request.setAttribute("exception", ex);
+            action_error(request, response);  
         } catch (NamingException ex) {
-            Logger.getLogger(DownloadCurriculum.class.getName()).log(Level.SEVERE, null, ex);
+           request.setAttribute("exception", ex);
+            action_error(request, response);  
         }
         
     }

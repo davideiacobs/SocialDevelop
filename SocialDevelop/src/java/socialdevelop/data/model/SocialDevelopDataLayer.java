@@ -154,4 +154,8 @@ public interface SocialDevelopDataLayer extends DataLayer {
     Files getFile(int key) throws DataLayerException;
     
     Project getProjectByTask(int task_key) throws DataLayerException;
+    
+    Map<Task, Integer> getEndedTasksByDeveloper(int developer_key) throws DataLayerException;
+    
+    Map<Task, Integer> getCurrentTasksByDeveloper(int developer_key) throws DataLayerException;
 }

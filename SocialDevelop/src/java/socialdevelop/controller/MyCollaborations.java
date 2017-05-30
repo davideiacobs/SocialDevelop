@@ -6,6 +6,7 @@
 package socialdevelop.controller;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
+import it.univaq.f4i.iw.framework.result.FailureResult;
 import it.univaq.f4i.iw.framework.result.StreamResult;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
@@ -36,8 +37,12 @@ import socialdevelop.data.model.Task;
  */
 public class MyCollaborations extends SocialDevelopBaseController {
     
-    @Resource(name = "jdbc/mydb")
-    private DataSource ds;
+    private void action_error(HttpServletRequest request, HttpServletResponse response) {
+        if (request.getAttribute("exception") != null) {
+            (new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request, response);
+        }
+    }
+    
     
     
     private void getImg(HttpServletRequest request, HttpServletResponse response, Developer dev) throws IOException, SQLException, DataLayerException, NamingException {
@@ -76,7 +81,7 @@ public class MyCollaborations extends SocialDevelopBaseController {
                 getImg(request, response, dev);
                 
                 //recupero task a cui ha partecipato o sta partecipando (in cima quelli a cui sta partecipando
-                Map<Task, Integer> tasks = datalayer.getTasksByDeveloper(dev.getKey());
+                Map<Task, Integer> tasks = datalayer.getCurrentTasksByDeveloper(dev.getKey());
                 List<Developer> coordinators = new ArrayList();
                 //recupero progetto e coordinatore
                 for(Map.Entry<Task, Integer> entry : tasks.entrySet()){
@@ -85,8 +90,21 @@ public class MyCollaborations extends SocialDevelopBaseController {
                     entry.getKey().setProject(p);
                     coordinators.add(c);   
                 }
+                
+                Map<Task, Integer> tasksEnded = datalayer.getEndedTasksByDeveloper(dev.getKey());
+                List<Developer> coordinatorsEnded = new ArrayList();
+                //recupero progetto e coordinatore
+                for(Map.Entry<Task, Integer> entryEnded : tasksEnded.entrySet()){
+                    Project pEnded = datalayer.getProjectByTask(entryEnded.getKey().getKey());
+                    Developer cEnded = datalayer.getDeveloper(pEnded.getCoordinatorKey());
+                    entryEnded.getKey().setProject(pEnded);
+                    coordinatorsEnded.add(cEnded);   
+                }
+                
                 request.setAttribute("tasksList", tasks);
                 request.setAttribute("coordinators", coordinators);
+                request.setAttribute("tasksListEnded", tasksEnded);
+                request.setAttribute("coordinatorsEnded", coordinatorsEnded);
                 TemplateResult res = new TemplateResult(getServletContext());
                 res.activate("my_collaborations.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare
                 
@@ -104,16 +122,20 @@ public class MyCollaborations extends SocialDevelopBaseController {
         try {
             action_mycollaborations(request, response);
         } catch (IOException ex) {
-            Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("exception", ex);
+            action_error(request, response);
         } catch (TemplateManagerException ex) {
-            Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("exception", ex);
+            action_error(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(MyProfile.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("exception", ex);
+            action_error(request, response);
         } catch (NamingException ex) {
-            Logger.getLogger(MyProfile.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("exception", ex);
+            action_error(request, response);
         } catch (DataLayerException ex) {
-            Logger.getLogger(MyProfile.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            request.setAttribute("exception", ex);
+            action_error(request, response);        }
         
     }
 

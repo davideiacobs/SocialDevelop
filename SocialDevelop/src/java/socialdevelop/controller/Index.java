@@ -5,6 +5,7 @@
  */
 package socialdevelop.controller;
 
+import it.univaq.f4i.iw.framework.result.FailureResult;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.IOException;
@@ -20,6 +21,13 @@ import javax.servlet.http.HttpSession;
  * @author iacobs
  */
 public class Index extends SocialDevelopBaseController {
+    
+    private void action_error(HttpServletRequest request, HttpServletResponse response) {
+        if (request.getAttribute("exception") != null) {
+            (new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request, response);
+        }
+    }
+    
     
     
     private void action_home(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException {
@@ -43,9 +51,11 @@ public class Index extends SocialDevelopBaseController {
         try {
             action_home(request, response);
         } catch (IOException ex) {
-            Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
+           request.setAttribute("exception", ex);
+            action_error(request, response);  
         } catch (TemplateManagerException ex) {
-            Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
+           request.setAttribute("exception", ex);
+            action_error(request, response);  
         }
         
     }

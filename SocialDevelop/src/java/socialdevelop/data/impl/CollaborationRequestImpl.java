@@ -27,7 +27,7 @@ public class CollaborationRequestImpl implements CollaborationRequest{
     private Developer collaborator;
     private int collaborator_key;
     private GregorianCalendar date;
-    private int state;
+    private int state; //0 in attesa, 1 confermata, 2 completata
     private int sender; //0 se inviata da coordinator, 1 se inviata da collaborator
     private int vote;
     

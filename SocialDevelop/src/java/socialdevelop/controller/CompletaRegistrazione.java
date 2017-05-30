@@ -6,6 +6,7 @@
 package socialdevelop.controller;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
+import it.univaq.f4i.iw.framework.result.FailureResult;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.File;
@@ -32,7 +33,12 @@ import socialdevelop.data.model.SocialDevelopDataLayer;
  */
 public class CompletaRegistrazione extends SocialDevelopBaseController {
     
-    
+    private void action_error(HttpServletRequest request, HttpServletResponse response) {
+        if (request.getAttribute("exception") != null) {
+            (new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request, response);
+        }
+    }
+        
      private String getDigest (Part file_to_upload, File uploaded_file) throws IOException, NoSuchAlgorithmException{
             InputStream is = file_to_upload.getInputStream(); 
             OutputStream os = new FileOutputStream(uploaded_file);
@@ -105,18 +111,24 @@ public class CompletaRegistrazione extends SocialDevelopBaseController {
         try {
             completa_reg(request, response);
         } catch (IOException ex) {
-            Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("exception", ex);
+            action_error(request, response);
         } catch (TemplateManagerException ex) {
-            Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("exception", ex);
+            action_error(request, response);        
         } catch (DataLayerException ex) {
-             Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (SQLException ex) {
-              Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
-          } catch (NamingException ex) {
-              Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
-          } catch (Exception ex) { 
-             Logger.getLogger(CompletaRegistrazione.class.getName()).log(Level.SEVERE, null, ex);
-         } 
+           request.setAttribute("exception", ex);
+            action_error(request, response);  
+        } catch (SQLException ex) {
+           request.setAttribute("exception", ex);
+            action_error(request, response);  
+        } catch (NamingException ex) {
+           request.setAttribute("exception", ex);
+            action_error(request, response);  
+        } catch (Exception ex) { 
+           request.setAttribute("exception", ex);
+            action_error(request, response);  
+        } 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

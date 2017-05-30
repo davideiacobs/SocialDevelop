@@ -6,6 +6,8 @@
 package socialdevelop.controller;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
+import it.univaq.f4i.iw.framework.result.FailureResult;
+import it.univaq.f4i.iw.framework.result.HTMLResult;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import it.univaq.f4i.iw.framework.security.SecurityLayer;
@@ -26,7 +28,14 @@ import socialdevelop.data.model.SocialDevelopDataLayer;
  */
 public class Login extends SocialDevelopBaseController {
     
-    private void action_error(HttpServletRequest request, HttpServletResponse response, String problem) throws TemplateManagerException {
+    private void action_error(HttpServletRequest request, HttpServletResponse response) {
+        if (request.getAttribute("exception") != null) {
+            (new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request, response);
+        }
+    }
+    
+    
+    private void login_error(HttpServletRequest request, HttpServletResponse response, String problem) throws TemplateManagerException {
         if(problem.equals("pwd")){
             //password errata  
             request.setAttribute("error_pwd", "password is not correct");
@@ -67,11 +76,11 @@ public class Login extends SocialDevelopBaseController {
                     res.activate(null,request, response);
                 } else {
                     //password errata
-                    action_error(request, response, "pwd");
+                    login_error(request, response, "pwd");
                 }
             }else{
                 //mail o username errato
-                action_error(request, response, "user");
+                login_error(request, response, "user");
             }
             
             
@@ -83,15 +92,20 @@ public class Login extends SocialDevelopBaseController {
         try {
             action_login(request, response);
         } catch (IOException ex) {
-            Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
+             request.setAttribute("exception", ex);
+            action_error(request, response);
         } catch (TemplateManagerException ex) {
-            Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
+             request.setAttribute("exception", ex);
+            action_error(request, response);
         } catch (DataLayerException ex) {
-             Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
+             request.setAttribute("exception", ex);
+            action_error(request, response);
          } catch (SQLException ex) {
-              Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
+               request.setAttribute("exception", ex);
+            action_error(request, response);
           } catch (NamingException ex) {
-              Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
+               request.setAttribute("exception", ex);
+            action_error(request, response);
           }
     }
 
