@@ -14,15 +14,15 @@
         <param-value>C:\Users\david\Desktop\SocialDevelop\SocialDevelop\web\curriculums</param-value>
     </context-param>-->
     <!-- davide ubuntu-->
-    <!-- <context-param>
+    <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/extra-images</param-value>
     </context-param>
     <context-param>
         <param-name>curriculums.directory</param-name>
         <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/curriculums</param-value>
-    </context-param>-->
-    <!--Manuel -->
+    </context-param>
+    <!--Manuel 
     <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>/Users/manuel/Desktop/GIT/SocialDevelop/SocialDevelop/web/extra-images</param-value>
@@ -30,7 +30,7 @@
     <context-param>
         <param-name>curriculums.directory</param-name>
         <param-value>/Users/manuel/Desktop/GIT/SocialDevelop/SocialDevelop/web/curriculums</param-value>
-    </context-param>
+    </context-param>-->
     <servlet>
         <servlet-name>Progetto</servlet-name>
         <servlet-class>socialdevelop.data.model.Project</servlet-class>
@@ -70,6 +70,10 @@
     <servlet>
         <servlet-name>List_project</servlet-name>
         <servlet-class>socialdevelop.controller.List_project</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MyCollaborations</servlet-name>
+        <servlet-class>socialdevelop.controller.MyCollaborations</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CompletaRegistrazione</servlet-name>
@@ -127,6 +131,10 @@
     <servlet-mapping>
         <servlet-name>CompletaRegistrazione</servlet-name>
         <url-pattern>/CompletaRegistrazione</url-pattern>
+    </servlet-mapping>
+     <servlet-mapping>
+        <servlet-name>MyCollaborations</servlet-name>
+        <url-pattern>/MyCollaborations</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DownloadCurriculum</servlet-name>
