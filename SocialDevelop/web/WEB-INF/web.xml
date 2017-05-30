@@ -4,7 +4,7 @@
         <param-name>view.outline_template</param-name>
         <param-value>header-footer.html</param-value>
     </context-param>
-    <!-- davide windows
+    <!-- davide windows-->
     <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>C:\Users\david\Desktop\SocialDevelop\SocialDevelop\web\extra-images</param-value>
@@ -12,16 +12,16 @@
     <context-param>
         <param-name>curriculums.directory</param-name>
         <param-value>C:\Users\david\Desktop\SocialDevelop\SocialDevelop\web\curriculums</param-value>
-    </context-param>-->
+    </context-param>
     <!-- davide ubuntu-->
-    <context-param>
+    <!--<context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/extra-images</param-value>
     </context-param>
     <context-param>
         <param-name>curriculums.directory</param-name>
         <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/curriculums</param-value>
-    </context-param>
+    </context-param>-->
     <!--Manuel 
     <context-param>
         <param-name>extra-images.directory</param-name>

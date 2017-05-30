@@ -12,18 +12,17 @@
             </div>
             <!--List Wrap Start-->
             <div class="col-md-12">
-                <#list listaprogetti as progetto>
-                
+              <#list listaprogetti as progetto>
               <div class="gt_event_grid gt_event_list default_width mb30">
                   <div class="gt_event_grid_des default_width">
                   <h6>${progetto.name}</h6>
                   </div>
                 <div class="gt_d_author_pic">
                   <figure>
-                    <img src=${fotoCoordinatore} alt="">
+                    <img src=${fotoCoordinatore[progetto?index]} alt="">
                   </figure>
                 </div>
-                  <p>${nomeCoordinatore}</p>
+                  <p>${progetto.coordinator.getName()}</p>
                 <div class="gt_event_grid_des default_width">
                   <p>${progetto.description}</p>
                   <a href="#">Piu Informazioni</a>
@@ -31,11 +30,11 @@
                 <div class="gt_event_counter">
                   <ul class="countdown">
                     <li>
-                      <span class="days">${ntask}</span>
+                      <span class="days">${ntask[progetto?index]}</span>
                       <p class="days_ref">Task</p>
                     </li>
                     <li>
-                      <span class="hours">${collaboratoriTot}</span>
+                      <span class="hours">${ncollaboratori[progetto?index]}</span>
                       <p class="hours_ref">Collaboratori</p>
                     </li>
                   </ul>

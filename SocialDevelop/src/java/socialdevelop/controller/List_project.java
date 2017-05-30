@@ -48,27 +48,33 @@ public class List_project extends HttpServlet {
                 request.setAttribute("listaprogetti", pro);
                 Files foto = null ;
                 Developer coordinatore ;
+                int ncollaboratori[] = new int[pro.size()];
+                int ntask[] = new int[pro.size()];
+                String fotos[] = new String[pro.size()];
+                //String collaborators[] = new String[pro.size()];
+                int count = 0;
                 for(Project progetto : pro){
                     coordinatore=datalayer.getDeveloper(progetto.getCoordinatorKey());
                     List <Task> tasks = datalayer.getTasks(progetto.getKey());
-                    int ncollaboratoritot = 0 ;
+                    ncollaboratori[count] = 0;
                     for(Task task : tasks){
-                        ncollaboratoritot+=task.getNumCollaborators();
+                        ncollaboratori[count]+=task.getNumCollaborators();
                     }
-                    request.setAttribute("ntask", tasks.size());
-                    request.setAttribute("collaboratoriTot", ncollaboratoritot);
+                    ntask[count] = tasks.size();
                     progetto.setCoordinator(coordinatore);
                     int foto_key=coordinatore.getFoto();
                     if(foto_key != 0){
                         foto = datalayer.getFile(foto_key);
-                        request.setAttribute("fotoCoordinatore", "extra-images/" + foto.getLocalFile());
+                        fotos[count] = "extra-images/" + foto.getLocalFile();
                     }else{
-                        request.setAttribute("fotoCoordinatore", "extra-images/foto_profilo_default.png");             
+                        fotos[count] = "extra-images/foto_profilo_default.png";
                     }
-                    request.setAttribute("nomeCoordinatore", coordinatore.getName());
-                    }
-                
-                 TemplateResult res = new TemplateResult(getServletContext());
+                    count ++;
+                }
+                request.setAttribute("ntask", ntask);
+                request.setAttribute("ncollaboratori", ncollaboratori);
+                request.setAttribute("fotoCoordinatore", fotos);
+                TemplateResult res = new TemplateResult(getServletContext());
                 res.activate("project_list.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare 
     }
     

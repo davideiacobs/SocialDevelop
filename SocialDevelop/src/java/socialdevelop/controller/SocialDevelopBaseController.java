@@ -1,12 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package socialdevelop.controller;
 
+
+import it.univaq.f4i.iw.framework.data.DataLayerException;
 import it.univaq.f4i.iw.framework.result.FailureResult;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,17 +17,16 @@ import socialdevelop.data.model.SocialDevelopDataLayer;
 
 /**
  *
- * @author iacobs
+ * @author Giuseppe Della Penna
  */
 public abstract class SocialDevelopBaseController extends HttpServlet {
 
     @Resource(name = "jdbc/mydb")
     private DataSource ds;
-    
+
     protected abstract void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException;
 
-    protected void processBaseRequest(HttpServletRequest request, HttpServletResponse response){
-
+    private void processBaseRequest(HttpServletRequest request, HttpServletResponse response) {
         //WARNING: never declare DB-related objects including references to Connection and Statement (as our data layer)
         //as class variables of a servlet. Since servlet instances are reused, concurrent requests may conflict on such
         //variables leading to unexpected results. To always have different connections and statements on a per-request
@@ -45,7 +43,6 @@ public abstract class SocialDevelopBaseController extends HttpServlet {
         }
     }
 
-   
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -58,6 +55,4 @@ public abstract class SocialDevelopBaseController extends HttpServlet {
         processBaseRequest(request, response);
     }
 
-  
-  
 }

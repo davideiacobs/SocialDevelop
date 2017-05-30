@@ -36,7 +36,7 @@ import socialdevelop.data.model.SocialDevelopDataLayer;
  */
 public class Signup extends SocialDevelopBaseController {
     
-      @Resource(name = "jdbc/mydb")
+    @Resource(name = "jdbc/mydb")
     private DataSource ds;
    
      private void action_registrati(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, DataLayerException, SQLException, NamingException {
