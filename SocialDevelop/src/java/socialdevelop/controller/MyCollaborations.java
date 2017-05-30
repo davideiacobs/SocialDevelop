@@ -11,7 +11,9 @@ import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,9 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
-import socialdevelop.data.impl.SocialDevelopDataLayerMysqlImpl;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Files;
+import socialdevelop.data.model.Project;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 import socialdevelop.data.model.Task;
 
@@ -58,8 +60,7 @@ public class MyCollaborations extends SocialDevelopBaseController {
             request.setAttribute("page_title", "My Profile");
             request.setAttribute("page_subtitle", "manage your data");
             if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
-                SocialDevelopDataLayer datalayer = new SocialDevelopDataLayerMysqlImpl(ds);
-                datalayer.init();
+                SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
                 Developer dev = datalayer.getDeveloper((int) s.getAttribute("userid"));
                 request.setAttribute("username", dev.getUsername());
                 request.setAttribute("fullname", dev.getName()+" "+dev.getSurname());
@@ -76,8 +77,16 @@ public class MyCollaborations extends SocialDevelopBaseController {
                 
                 //recupero task a cui ha partecipato o sta partecipando (in cima quelli a cui sta partecipando
                 Map<Task, Integer> tasks = datalayer.getTasksByDeveloper(dev.getKey());
+                List<Developer> coordinators = new ArrayList();
+                //recupero progetto e coordinatore
+                for(Map.Entry<Task, Integer> entry : tasks.entrySet()){
+                    Project p = datalayer.getProjectByTask(entry.getKey().getKey());
+                    Developer c = datalayer.getDeveloper(p.getCoordinatorKey());
+                    entry.getKey().setProject(p);
+                    coordinators.add(c);   
+                }
                 request.setAttribute("tasksList", tasks);
-                
+                request.setAttribute("coordinators", coordinators);
                 TemplateResult res = new TemplateResult(getServletContext());
                 res.activate("my_collaborations.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare
                 
@@ -109,39 +118,7 @@ public class MyCollaborations extends SocialDevelopBaseController {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+   
     @Override
     public String getServletInfo() {
         return "Short description";

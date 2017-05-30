@@ -56,7 +56,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     private PreparedStatement iTaskHasSkill, dTaskHasSkill,uTaskHasSkill,sTaskHasSkill;
     private PreparedStatement iTaskHasDeveloper,dTaskHasDeveloper,uTaskHasDeveloper,sTaskHasDeveloper;
     private PreparedStatement iSkillHasDeveloper,dSkillHasDeveloper,uSkillHasDeveloper,sSkillHasDeveloper;
-    
+    private PreparedStatement sProjectByTask;
     public SocialDevelopDataLayerMysqlImpl(DataSource datasource) throws SQLException, NamingException {
         super(datasource);
     }
@@ -119,6 +119,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                                             + "ON(developer.ID = skill_has_developer.developer_ID) WHERE skill_has_developer.skill_ID=?");
             sTasksByProject = connection.prepareStatement("SELECT task.ID FROM task WHERE project_ID=?");
             
+            sProjectByTask = connection.prepareStatement("SELECT task.project_ID FROM task WHERE ID=?");
+                    
             sTaskByRequest = connection.prepareStatement("SELECT task.ID FROM ((SELECT task_has_skill.* FROM task_has_skill WHERE task_has_skill.collaborator_ID=?) AS ths" +
                         "INNER JOIN task AS t ON (ths.task_ID = t.ID) INNER JOIN project AS p ON (t.project_ID = p.ID)) WHERE p.coordinator_ID=?)");
             
@@ -854,6 +856,21 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                 throw new DataLayerException("Unable to load projects by developer and date", ex);
             }
         return result;
+     }
+     
+     @Override
+     public Project getProjectByTask(int task_key) throws DataLayerException{
+         try{
+             sProjectByTask.setInt(1,task_key);
+             try(ResultSet rs = sProjectByTask.executeQuery()){
+                 if(rs.next()){
+                     return (Project) getProject(rs.getInt("project_ID"));
+                 }
+             }
+         }catch (SQLException ex) {
+                throw new DataLayerException("Unable to load projects by developer and date", ex);
+            }
+         return null;
      }
      
     @Override

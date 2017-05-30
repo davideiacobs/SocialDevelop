@@ -152,4 +152,6 @@ public interface SocialDevelopDataLayer extends DataLayer {
     int storeFile(Part file_to_upload, File uploaded_file, String sdigest) throws DataLayerException;
         
     Files getFile(int key) throws DataLayerException;
+    
+    Project getProjectByTask(int task_key) throws DataLayerException;
 }

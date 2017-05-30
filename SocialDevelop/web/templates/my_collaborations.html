@@ -34,143 +34,40 @@
           </div>
           <!-- Dashboard Side Bar Wrap End -->
 
-          <!--Classes List Wrap Start-->
+         
+<!--Classes List Wrap Start-->
           <div class="col-md-8">
-            <div class="gt_d_classes_wrap default_width mb20">
-              
-              
-            <h4 class="gt_d_title">My Current Collaborations</h4>
-              <div class="gt_d_courses_wrap default_width mb20">
-               
+           <div class="gt_d_classes_wrap default_width">
+              <div class="gt_d_fav_courses default_width">
+                <ul class="gt_d_fav_hdg">
+                  <li>My Collaborations</li>
+                  <li>Grade</li>
+                </ul>
+ 
+               <ul>
+                   
                <#list tasksList?keys as task>
                <#assign x = 0>
-                ${task.getName()} ${tasksList?values[x]} <br/>
-                <#assign x++>
-                </#list>     
+               <li>
 
-                <div class="gt_d_classes_des">
-                  <h6><a href="#">Character Designer for 2D</a></h6>
-                  <ul>
-                    <li>
-                      <ul class="gt_rating_star">
-                        <li>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                        </li>
+                    <div class="gt-text">
+                     
+                      <h5><a href="#">${task.project.name?cap_first}</a></h5>
+                      <ul>
+                          <li>Task: ${task.name?cap_first} </li>
+                          <li>Grade: ${tasksList?values[x]!"Not Assigned"}</li>
+                          <li>Task Description: &nbsp;${task.description?cap_first}</li>
                       </ul>
-                    </li>
-                    <li>View Course - Expires : 22 June 2016</li>
-                  </ul>
-                  <p>Cras nec arcu quis libero semper tristique in at velit. Nunc volutpat mattis erat, vel varius dolor fringilla hendrerit. Morbi aliquam orci nulla</p>
-                </div>
-                    
-                    
-                
+                        <span class="gt-user-name gt-color"><em>By</em> ${coordinators[task?index].username?cap_first} - ${coordinators[task?index].mail}</span>
+                      </div>
+          
                   
-                  <figure>
-                  <img src="extra-images/courses-01.jpg" alt="">
-                  <figcaption class="gt_listing_rating">
-                    Paid
-                  </figcaption>
-                </figure>
-                <div class="gt_d_classes_des">
-                  <h6><a href="#">Character Designer for 2D Animation</a></h6>
-                  <ul>
-                    <li>
-                      <ul class="gt_rating_star">
-                        <li>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>View Course - Expires : 22 June 2016</li>
-                  </ul>
-                  <p>Cras nec arcu quis libero semper tristique in at velit. Nunc volutpat mattis erat, vel varius dolor fringilla hendrerit. Morbi aliquam orci nulla</p>
-                </div>
+                  <#assign x++>
+                </li>
+                </#list>   
+                </ul>
+                 
+                
               </div>
-              <div class="gt_d_courses_wrap default_width mb20">
-                <figure>
-                  <img src="extra-images/courses-02.jpg" alt="">
-                  <figcaption class="gt_listing_rating">
-                    Paid
-                  </figcaption>
-                </figure>
-                <div class="gt_d_classes_des">
-                  <h6><a href="#">Character Designer for 2D Animation</a></h6>
-                  <ul>
-                    <li>
-                      <ul class="gt_rating_star">
-                        <li>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>View Course - Expires : 22 June 2016</li>
-                  </ul>
-                  <p>Cras nec arcu quis libero semper tristique in at velit. Nunc volutpat mattis erat, vel varius dolor fringilla hendrerit. Morbi aliquam orci nulla</p>
-                </div>
-              </div>
-              <div class="gt_d_courses_wrap default_width mb20">
-                <figure>
-                  <img src="extra-images/courses-03.jpg" alt="">
-                  <figcaption class="gt_listing_rating">
-                    Paid
-                  </figcaption>
-                </figure>
-                <div class="gt_d_classes_des">
-                  <h6><a href="#">Character Designer for 2D Animation</a></h6>
-                  <ul>
-                    <li>
-                      <ul class="gt_rating_star">
-                        <li>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>View Course - Expires : 22 June 2016</li>
-                  </ul>
-                  <p>Cras nec arcu quis libero semper tristique in at velit. Nunc volutpat mattis erat, vel varius dolor fringilla hendrerit. Morbi aliquam orci nulla</p>
-                </div>
-              </div>
-              <div class="gt_d_courses_wrap default_width">
-                <figure>
-                  <img src="extra-images/courses-04.jpg" alt="">
-                  <figcaption class="gt_listing_rating">
-                    Paid
-                  </figcaption>
-                </figure>
-                <div class="gt_d_classes_des">
-                  <h6><a href="#">Character Designer for 2D Animation</a></h6>
-                  <ul>
-                    <li>
-                      <ul class="gt_rating_star">
-                        <li>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                          <a href="#"><i class="fa fa-star"></i></a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>View Course - Expires : 22 June 2016</li>
-                  </ul>
-                  <p>Cras nec arcu quis libero semper tristique in at velit. Nunc volutpat mattis erat, vel varius dolor fringilla hendrerit. Morbi aliquam orci nulla</p>
-                </div>
-              </div>
-            </div>
+           </div>
+          </div>

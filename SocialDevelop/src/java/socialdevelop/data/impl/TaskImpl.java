@@ -6,7 +6,6 @@
 package socialdevelop.data.impl;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
-import java.sql.Timestamp;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import socialdevelop.data.model.Task;

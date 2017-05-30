@@ -18,15 +18,11 @@ import java.sql.SQLException;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.Resource;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
 import socialdevelop.data.impl.DeveloperImpl;
-import socialdevelop.data.impl.SocialDevelopDataLayerMysqlImpl;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 
 /**
@@ -35,9 +31,6 @@ import socialdevelop.data.model.SocialDevelopDataLayer;
  * @version
  */
 public class Signup extends SocialDevelopBaseController {
-    
-    //@Resource(name = "jdbc/mydb")
-    //private DataSource ds;
    
      private void action_registrati(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, DataLayerException, SQLException, NamingException {
             
@@ -49,9 +42,6 @@ public class Signup extends SocialDevelopBaseController {
             String pwd2 = request.getParameter("pwd2");
             String bday = request.getParameter("birthdate");
             SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer)request.getAttribute("datalayer");
-            //socialdevelopdatalayer è null
-            //SocialDevelopDataLayer datalayer = new SocialDevelopDataLayerMysqlImpl(ds);
-            //datalayer.init();
             DeveloperImpl dev = new DeveloperImpl(datalayer);
             if(pwd.equals(pwd2)){
                 dev.setName(name);
