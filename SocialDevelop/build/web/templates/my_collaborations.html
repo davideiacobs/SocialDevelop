@@ -44,16 +44,15 @@
                   <li>Grade</li>
                 </ul>
  
-               <ul>
+               <ul class="gt-shortlisted">
                    
                <#list tasksList?keys as task>
                <#assign x = 0>
                <li>
 
                     <div class="gt-text">
-                     
-                      <h5><a href="#">${task.project.name?cap_first}</a></h5>
-                      <ul>
+                        <ul> 
+                            <h5><a href="#">${task.project.name?cap_first}</a></h5>
                           <li>Task: ${task.name?cap_first} </li>
                           <li>Grade: ${tasksList?values[x]!"Not Assigned"}</li>
                           <li>Task Description: &nbsp;${task.description?cap_first}</li>

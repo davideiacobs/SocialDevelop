@@ -39,7 +39,6 @@ public class List_project extends SocialDevelopBaseController {
                 Files foto = null ;
                 Developer coordinatore ;
                 int ncollaboratori[] = new int[pro.size()];
-                int ntask[] = new int[pro.size()];
                 String fotos[] = new String[pro.size()];
                 int count = 0;
                 for(Project progetto : pro){
@@ -49,7 +48,6 @@ public class List_project extends SocialDevelopBaseController {
                     for(Task task : tasks){
                         ncollaboratori[count]+=task.getNumCollaborators();
                     }
-                    ntask[count] = tasks.size();
                     progetto.setCoordinator(coordinatore);
                     int foto_key=coordinatore.getFoto();
                     if(foto_key != 0){
@@ -60,7 +58,6 @@ public class List_project extends SocialDevelopBaseController {
                     }
                     count ++;
                 }
-                request.setAttribute("ntask", ntask);
                 request.setAttribute("ncollaboratori", ncollaboratori);
                 request.setAttribute("fotoCoordinatore", fotos);
                 TemplateResult res = new TemplateResult(getServletContext());
