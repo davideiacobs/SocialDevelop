@@ -1,0 +1,73 @@
+   <!-- Dashboard Side Bar Wrap Start -->
+          <div class="col-md-4">
+            <div class="gt-user-sidebar">
+              <div class="gt_d_author_wrap">
+                <div class="gt_d_author_pic">
+                  <figure>
+                    <img src=${foto_profilo} alt="">
+                  </figure>
+                </div>
+                <div class="gt_d_author_pic_des">
+                  <h5>${username}</h5>
+                  <span class="gt_hdg_span"></span>
+                  <p>${fullname}</p>
+                  <label>Age: ${age}</label>
+                </div>
+                <div class="gt_d_author_sbj">
+                  <h6>Email</h6>
+                  <span>${mail}</span>
+                </div>
+              </div>
+              <div class="gt-usser-account-list">
+                <ul>
+                  <li><a href="MyProfile"><i class="fa fa-user-circle-o gt-color"></i>My Profile</a></li>
+                  <li class="active"><a href="MyCollaborations"><i class="icon-book gt-color"></i>My Collaborations</a></li>
+                  <li><a href="dashboard-classes.html"><i class="icon-clock-1 gt-color"></i>Classes</a></li>
+                  <li><a href="dashboard-fav-courses.html"><i class="fa fa-heart gt-color"></i>My Favorites</a></li>
+                  <li><a href="report%26achievement.html"><i class="icon-business gt-color"></i>Report &#38; Achievement</a></li>
+                  <li><a href="profile-setting.html"><i class="icon-three gt-color"></i>Profile Setting</a></li>
+                  <li><a href="privacy-setting.html"><i class="icon-lock gt-color"></i>Privacy Setting</a></li>
+                </ul>
+                <a href="Logout" class="gt-logout"><i class="icon-arrows-2 gt-color"></i>Logout</a>
+              </div>
+            </div>
+          </div>
+          <!-- Dashboard Side Bar Wrap End -->
+
+         
+<!--Classes List Wrap Start-->
+          <div class="col-md-8">
+           <div class="gt_d_classes_wrap default_width">
+              <div class="gt_d_fav_courses default_width">
+                <ul class="gt_d_fav_hdg">
+                  <li>My Collaborations</li>
+                  <li>Grade</li>
+                </ul>
+ 
+               <ul>
+                   
+               <#list tasksList?keys as task>
+               <#assign x = 0>
+               <li>
+
+                    <div class="gt-text">
+                     
+                      <h5><a href="#">${task.project.name?cap_first}</a></h5>
+                      <ul>
+                          <li>Task: ${task.name?cap_first} </li>
+                          <li>Grade: ${tasksList?values[x]!"Not Assigned"}</li>
+                          <li>Task Description: &nbsp;${task.description?cap_first}</li>
+                      </ul>
+                        <span class="gt-user-name gt-color"><em>By</em> ${coordinators[task?index].username?cap_first} - ${coordinators[task?index].mail}</span>
+                      </div>
+          
+                  
+                  <#assign x++>
+                </li>
+                </#list>   
+                </ul>
+                 
+                
+              </div>
+           </div>
+          </div>

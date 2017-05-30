@@ -1,0 +1,83 @@
+   <!-- Dashboard Side Bar Wrap Start -->
+          <div class="col-md-4">
+            <div class="gt-user-sidebar">
+              <div class="gt_d_author_wrap">
+                <div class="gt_d_author_pic">
+                  <figure>
+                    <img src=${foto_profilo} alt="">
+                  </figure>
+                </div>
+                <div class="gt_d_author_pic_des">
+                  <h5>${username}</h5>
+                  <span class="gt_hdg_span"></span>
+                  <p>${fullname}</p>
+                  <label>Age: ${age}</label>
+                </div>
+                <div class="gt_d_author_sbj">
+                  <h6>Email</h6>
+                  <span>${mail}</span>
+                </div>
+              </div>
+              <div class="gt-usser-account-list">
+                <ul>
+                  <li class="active"><a href="MyProfile"><i class="fa fa-user-circle-o gt-color"></i>My Profile</a></li>
+                  <li><a href="MyCollaborations"><i class="icon-book gt-color"></i>My Collaborations</a></li>
+                  <li><a href="dashboard-classes.html"><i class="icon-clock-1 gt-color"></i>Classes</a></li>
+                  <li><a href="dashboard-fav-courses.html"><i class="fa fa-heart gt-color"></i>My Favorites</a></li>
+                  <li><a href="report%26achievement.html"><i class="icon-business gt-color"></i>Report &#38; Achievement</a></li>
+                  <li><a href="profile-setting.html"><i class="icon-three gt-color"></i>Profile Setting</a></li>
+                  <li><a href="privacy-setting.html"><i class="icon-lock gt-color"></i>Privacy Setting</a></li>
+                </ul>
+                <a href="Logout" class="gt-logout"><i class="icon-arrows-2 gt-color"></i>Logout</a>
+              </div>
+            </div>
+          </div>
+          <!-- Dashboard Side Bar Wrap End -->
+
+          <!--Classes List Wrap Start-->
+          <div class="col-md-8">
+            <div class="gt_d_classes_wrap default_width mb20">
+              <div class="gt_d_profile_wrap default_width">
+                <figure>
+                  <img src=${foto_profilo} alt="">
+                </figure>
+                <div class="gt_d_profile_detail">
+                  <ul>
+                    <li>
+                      <span>Username:</span>
+                      <p>${username}</p>
+                    </li>
+                    <li>
+                      <span>Full Name:</span>
+                      <p>${fullname}</p>
+                    </li>
+                    <li>
+                      <span>Age:</span>
+                      <p>${age}</p>
+                    </li>
+                    <li>
+                      <span>Email Address:</span>
+                      <p>${mail}</p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="gt_d_about_author default_width">
+                <h4 class="gt_d_title">About ${username}</h4>
+                <p class="d_bold"> ${bio} </p></div>
+                
+             <#if curriculum_pdf!=0>
+                <h4 class="gt_d_title">Curriculum</h4>
+                <form method="get" action="DownloadCurriculum">
+                    <input type="submit" value="download">
+                    <input type="text" name="curriculum_pdf" class="hidden" value=${curriculum_pdf} >
+                </form>
+                 <!-- qui mettere un altro input file per fare l'upload di un nuovo 
+                    pdf (e anche una text area nel caso in cui si volesse scriverlo) .
+                    Se viene inserito un nuovo curriculum si può richiamare direttamente
+                    la servlet CompletaRegistrazione (dovrebbe fungere)-->
+             </#if>
+             
+             
+            </div>
+            </div>
