@@ -36,8 +36,8 @@ import socialdevelop.data.model.SocialDevelopDataLayer;
  */
 public class Signup extends SocialDevelopBaseController {
     
-    @Resource(name = "jdbc/mydb")
-    private DataSource ds;
+    //@Resource(name = "jdbc/mydb")
+    //private DataSource ds;
    
      private void action_registrati(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, DataLayerException, SQLException, NamingException {
             
@@ -48,10 +48,10 @@ public class Signup extends SocialDevelopBaseController {
             String pwd = request.getParameter("pwd");
             String pwd2 = request.getParameter("pwd2");
             String bday = request.getParameter("birthdate");
-            //SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer)request.getAttribute("datalayer");
+            SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer)request.getAttribute("datalayer");
             //socialdevelopdatalayer è null
-            SocialDevelopDataLayer datalayer = new SocialDevelopDataLayerMysqlImpl(ds);
-            datalayer.init();
+            //SocialDevelopDataLayer datalayer = new SocialDevelopDataLayerMysqlImpl(ds);
+            //datalayer.init();
             DeveloperImpl dev = new DeveloperImpl(datalayer);
             if(pwd.equals(pwd2)){
                 dev.setName(name);
@@ -98,31 +98,7 @@ public class Signup extends SocialDevelopBaseController {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     */
+    
     public String getServletInfo() {
         return "Short description";
     }
