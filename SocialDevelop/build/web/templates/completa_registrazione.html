@@ -1,44 +1,120 @@
-            <!--Heading Wrap Start-->
-            <div class="gt_hdg_1 default_width">
-              <h3>Completa il tuo profilo</h3>
-              <p>Aggiungi informazioni dettagliate, inserisci le tue skills e inizia a collaborare!</p>
-                <span class="gt_hdg_left"></span>
-                <i class="icon-school"></i>
-                <span class="gt_hdg_right"></span>
-            </div>
-            <!--Heading Wrap End-->
-                <form class="gt_contact_form" id="contact-form" action="CompletaRegistrazione" method="post" enctype="multipart/form-data">
-              <!--<div class="col-md-4">
-                  <div class="gt_contact_us_field">
-                      <input class="c_ph" type="text" placeholder="Your Name" id="name" name="contact-name" required>
+    <div class="gt_breadcrumb_bg default_width">
+      <div class="container">
+
+      <!-- BODY -->
+        
+          <div class="gt_content_wrap">
+      <!--Classes Wrap Start-->
+            <section class="gt_courses_bg">
+              <form class="gt_contact_form" id="contact-form" action="CompletaRegistrazione" method="post" enctype="multipart/form-data">
+              <div class="row">             
+                <div class="container">
+                  <div class="col-md-8">
+          <!--Advance Search Wrap Start-->
+                    <div class="gt_advacnce_search_wrap default_width">
+                      <div class="gt_aside2_hdg mb30 gt_aside_category title-add-skill"> <!-- gt_aside_category -->
+                        <h5>Add Skills</h5>
+                      </div>
+                      <div class="add-skill"><!-- gt_advacnce_search_wrap default_width -->
+                        <div class="gt_explore_search gt_clas_search select-skill"> <!-- gt_aside_field -->         
+                          <select class="find_course_search">
+                            <option>Select Skill</option>
+                            <option>2</option>
+                          </select>
+                        </div>
+                        <div class="gt_explore_search gt_clas_search select-skill">            
+                          <select class="find_course_search">
+                            <option>Level</option>
+                            <option>2</option>
+                          </select>
+                        </div>
+                        <div class="gt_explore_search gt_clas_search select-skill">            
+                          <select class="find_course_search">
+                            <option>Level</option>
+                            <option>3</option>
+                          </select>
+                        </div>
+                        <div class="gt_explore_search gt_clas_search select-skill">                          
+                            <input id ="add-button" type="submit" value="Add">
+                        </div>
+                      </div>
+                      <div class="lista-skill gt_aside_category">
+                        <ul>
+                          <li><a>Business &#38; Management</a><a id="skill-level">10</a>
+                            <span><button type="button" class="btn btn-default btn-sm remove-skill-button">
+                            <span class="glyphicon glyphicon-remove"></span></button></span></li>
+                          <li><a>Business &#38; Management</a><a id="skill-level">10</a>
+                            <span><button type="button" class="btn btn-default btn-sm remove-skill-button">
+                            <span class="glyphicon glyphicon-remove"></span></button></span></li>
+                          <li><a>Business &#38; Management</a><a id="skill-level">10</a>
+                            <span><button type="button" class="btn btn-default btn-sm remove-skill-button">
+                            <span class="glyphicon glyphicon-remove"></span></button></span></li>
+                          <li><a>Business &#38; Management</a><a id="skill-level">10</a>
+                            <span><button type="button" class="btn btn-default btn-sm remove-skill-button">
+                            <span class="glyphicon glyphicon-remove"></span></button></span></li>
+                        </ul>
+                      </div>
+                    </div>   
+                  </div>                    
+                  <div class="col-md-4 col-sm-8">
+                    <div class="form-group upload-pic" id="profile-center">
+                      
+                        <label for="upload-profile-pictures">Profile Picture</label>
+                        <img src="extra-images/profilo.png">
+                        <input type="file" id="foto-profilo" name="foto-profilo" accept="image/*">
+                      
+                    </div>
                   </div>
-              </div>-->
-              <input type="file" id="foto-profilo" name="foto-profilo" accept="image/*">
-              <input type="file" id="curriculum-pdf" name="curriculum-pdf" accept="application/pdf"> 
-              <div class="col-md-12">
-                  <div class="gt_contact_us_field">
-                      <textarea class="gt_c_bg" name="biography" id="biography" placeholder="Biography"></textarea>
-                  </div>
+                </div>
               </div>
-              <div class="col-md-12">
-                  <div class="gt_contact_us_field">
-                      <textarea class="gt_c_bg" name="curriculum" id="curriculum" placeholder="Write here you curriculum"></textarea>
-                  </div>
-              </div>
-               <div class="col-md-6">
-                  <div class="gt_contact_us_field">
-                      <input id="skip" type="submit" value="skip" name="skip">
-                  </div>
-                  <!--Alert Message-->
-                  <div id="contact-result">
-                  </div>
-              </div>
-              <div class="col-md-6">
-                  <div class="gt_contact_us_field">
-                      <input id="submit" type="submit" value="submit" name="submit">
-                  </div>
-                  <div id="contact-result">
-                  </div>
-              </div>
-              <input type="text" value=${username} name="username" class="hidden">
-            </form>
+              <div class="gt_event_tab default_width">
+                <label id="label-curriculum">Scrivi il tuo Curriculum o caricalo in formato PDF</label>
+                  <div class="gt_event_inside_tab default_width">
+                    <ul data-tabs="tabs">
+                      <li class="active"><a data-toggle="tab" href="#time_schedule">Scrivi CV</a></li>
+                      <li><a data-toggle="tab" href="#google_map">Carica CV in PDF</a></li>
+                    </ul>
+                    <!--Event Tab List Start-->
+                    <div class="tab-content">
+                      <div class="tab-pane active" id="time_schedule">
+                        <div class="gt_event_time_schdule default_width">
+                          <textarea name="curriculum" id="curriculum" placeholder="Write here you curriculum"></textarea>
+                        </div>
+                      </div>
+                      <div class="tab-pane" id="google_map">
+                        <div class="gt_event_map default_width">
+                          <div class="map-canvas" id="map-canvas">
+                          <input type="file" id="curriculum-pdf" name="curriculum-pdf" accept="application/pdf">
+                          </div>
+                        </div>
+                      </div>
+                      </div>
+                    </div>
+                    </div>
+
+                    <div class="tab-pane active" id="login">
+                <div class="gt_login_des_wrap default_width">
+                     <div class="gt_login_field completa-reg-submit">
+                         <input id="completa-reg-submit submit" type="submit" value="Submit" name="submit">
+                  </div></div></div>
+                  <input type="text" value=${username} name="username" class="hidden">
+</form>
+            </section>
+          </div>
+
+        
+
+
+
+
+      
+      
+      
+
+
+
+
+
+      </div>
+    </div>
+    <!--Breadcrumb Wrap End -->

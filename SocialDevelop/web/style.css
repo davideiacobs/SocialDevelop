@@ -1619,3 +1619,20 @@ ul.gt_rating_start li a {display: inline-block;}
 .gt_index3_register>ul>li>p{color: #ffffff;font-size: 14px;font-weight: 14px;}
 .gt_index3_register>a{border-radius: 30px;text-transform: uppercase;font-weight: 600;font-size: 16px;display: inline-block;padding: 10px 25px;color: #ffffff;margin-top: 15px;}
 .gt_index3_register>a:hover{background-color: #181818;}
+/*
+	  ==============================================================
+		   completa-registrazione
+	  ==============================================================
+*/
+#profile-center{display: block; width: 260px; margin:0 auto;}
+#skill-level{display: inline; padding-left: 20px;}
+.title-add-skill{margin-bottom: 15px !important;}
+.select-skill{min-width: 20% !important; margin-right: 18px !important;margin-bottom: 15px !important;}
+#add-button{border-radius: 5px !important;}
+.upload-pic>form>input[type="file"]{height: 30px;cursor: pointer; margin-top: 18px; margin-bottom: 30px;}
+#label-curriculum{padding-bottom: 20px;}
+.remove-skill-button{border:0px;}
+.add-skill{}
+.lista-skill>ul>li>a{cursor: inherit;}
+.completa-reg-submit{margin-top: 50px;}
+.completa-reg-submit input[type="submit"]{display: block;width: 300px !important;margin: 0 auto;}

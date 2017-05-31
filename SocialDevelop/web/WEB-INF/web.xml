@@ -14,14 +14,14 @@
         <param-value>C:\Users\david\Desktop\SocialDevelop\SocialDevelop\web\curriculums</param-value>
     </context-param>-->
     <!-- davide ubuntu-->
-    <context-param>
+    <!-- <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/extra-images</param-value>
     </context-param>
     <context-param>
         <param-name>curriculums.directory</param-name>
         <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/curriculums</param-value>
-    </context-param>
+    </context-param> -->
     <!--Manuel 
     <context-param>
         <param-name>extra-images.directory</param-name>
@@ -31,6 +31,15 @@
         <param-name>curriculums.directory</param-name>
         <param-value>/Users/manuel/Desktop/GIT/SocialDevelop/SocialDevelop/web/curriculums</param-value>
     </context-param>-->
+    <!-- Luca -->
+    <context-param>
+        <param-name>extra-images.directory</param-name>
+        <param-value>C:\Users\Win8.1\Documents\Luca\SocialDevelop\SocialDevelop\SocialDevelop\web\extra-images</param-value>
+    </context-param>
+    <context-param>
+        <param-name>curriculums.directory</param-name>
+        <param-value>C:\Users\Win8.1\Documents\Luca\SocialDevelop\SocialDevelop\SocialDevelop\web\curriculums</param-value>
+    </context-param>
     <servlet>
         <servlet-name>Progetto</servlet-name>
         <servlet-class>socialdevelop.data.model.Project</servlet-class>
