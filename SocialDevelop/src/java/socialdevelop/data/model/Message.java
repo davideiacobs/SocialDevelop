@@ -41,4 +41,13 @@ public interface Message {
     boolean isDirty();
     
      void copyFrom(Message message) throws DataLayerException;
+     
+      
+    Developer getDeveloper() throws DataLayerException;
+    
+    void setDeveloper(Developer dev);
+    
+    int getDeveloperKey();
+    
+    void setDeveloperKey(int dev_key);
 }

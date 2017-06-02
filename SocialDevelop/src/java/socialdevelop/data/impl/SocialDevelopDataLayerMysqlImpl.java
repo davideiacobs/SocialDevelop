@@ -41,7 +41,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     //NB: sRequestByID --> ID è inteso come coppia collaborator_key-task_key)
     private PreparedStatement sProjectByID, sTaskByID, sProjects, sDeveloperByID, sSkillByID, sRequestByID;
     private PreparedStatement sProjectsByFilter, sSkillsByTask, sSkillsByDeveloper, sQuestionsByCoordinatorID; 
-    private PreparedStatement sCollaboratorsByTask, sVoteByTaskandDeveloper, sTypeByTask, sMessagesByProject;
+    private PreparedStatement sCollaboratorsByTask, sVoteByTaskandDeveloper, sTypeByTask, sMessagesByProject, sDeveloperByMessage;
     private PreparedStatement sDeveloperBySkillWithLevel, sDeveloperBySkill, sTasksByProject, sTaskByRequest,scTaskByProjectID ;
     private PreparedStatement sParentBySkill, sMessageByID, sCollaboratorsByProjectID, sProjectsByDeveloperID;
     private PreparedStatement sProjectsByDeveloperIDandDate, sInvitesByCoordinatorID, sProposalsByCollaboratorID;
@@ -86,6 +86,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sMessagesByProject = connection.prepareStatement("SELECT ID FROM message WHERE project_ID=?");
             
             sMessageByID = connection.prepareStatement("SELECT * FROM message WHERE ID=?");
+            
+            sDeveloperByMessage = connection.prepareStatement("SELECT m.developer_ID FROM message AS m WHERE m.ID=?");
             
             sPublicMessagesByProject= connection.prepareStatement("SELECT ID FROM message WHERE project_ID=? and private=0");
             
@@ -544,6 +546,21 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             }
         } catch (SQLException ex) {
             throw new DataLayerException("Unable to load message by ID", ex);
+        }
+        return null;
+    }
+    
+    @Override
+    public Developer getDeveloperByMessage(int message_key) throws DataLayerException{
+        try{
+            sDeveloperByMessage.setInt(1, message_key);
+            try(ResultSet rs = sDeveloperByMessage.executeQuery()) {
+                if(rs.next()){
+                    return createDeveloper(rs);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DataLayerException("unable to load developer by message_id", ex);
         }
         return null;
     }

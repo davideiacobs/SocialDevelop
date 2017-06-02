@@ -158,4 +158,6 @@ public interface SocialDevelopDataLayer extends DataLayer {
     Map<Task, Integer> getEndedTasksByDeveloper(int developer_key) throws DataLayerException;
     
     Map<Task, Integer> getCurrentTasksByDeveloper(int developer_key) throws DataLayerException;
+    
+    Developer getDeveloperByMessage(int message_key) throws DataLayerException;
 }

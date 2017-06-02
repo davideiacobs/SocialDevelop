@@ -1634,5 +1634,7 @@ ul.gt_rating_start li a {display: inline-block;}
 .remove-skill-button{border:0px;}
 .add-skill{}
 .lista-skill>ul>li>a{cursor: inherit;}
+.gt_explore_search input[type="button"],.gt_explore_search button{border-radius: 30px;color: #fff;text-transform: uppercase;padding: 13px 30px;border: 0px;font-weight: 700;background-color: #31b8f5 !important;}
 .completa-reg-submit{margin-top: 50px;}
 .completa-reg-submit input[type="submit"]{display: block;width: 300px !important;margin: 0 auto;}
+.gt_event_tab2{padding-top: 15px;padding-bottom : 15px; padding-left:0px; padding-right:15px;}

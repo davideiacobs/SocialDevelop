@@ -55,4 +55,5 @@ public interface Project  {
     boolean isDirty();
     
     void copyFrom(Project project) throws DataLayerException;
+   
 }

@@ -11,11 +11,6 @@
                   <h5>${username}</h5>
                   <span class="gt_hdg_span"></span>
                   <p>${fullname}</p>
-                  <label>Age: ${age}</label>
-                </div>
-                <div class="gt_d_author_sbj">
-                  <h6>Email</h6>
-                  <span>${mail}</span>
                 </div>
               </div>
               <div class="gt-usser-account-list">
@@ -62,21 +57,43 @@
                   </ul>
                 </div>
               </div>
-              <div class="gt_d_about_author default_width">
-                <h4 class="gt_d_title">About ${username}</h4>
-                <p class="d_bold"> ${bio} </p></div>
                 
-             <#if curriculum_pdf!=0>
-                <h4 class="gt_d_title">Curriculum</h4>
-                <form method="get" action="DownloadCurriculum">
-                    <input type="submit" value="download">
-                    <input type="text" name="curriculum_pdf" class="hidden" value=${curriculum_pdf} >
-                </form>
-                 <!-- qui mettere un altro input file per fare l'upload di un nuovo 
-                    pdf (e anche una text area nel caso in cui si volesse scriverlo) .
-                    Se viene inserito un nuovo curriculum si può richiamare direttamente
-                    la servlet CompletaRegistrazione (dovrebbe fungere)-->
-             </#if>
+             
+             
+             <div class="gt_event_tab2 default_width">
+                  <div class="gt_event_inside_tab default_width">
+                    <ul data-tabs="tabs">
+                      <li class="active"><a data-toggle="tab" href="#time_schedule">About ${username}</a></li>
+                      <li><a data-toggle="tab" href="#google_map">CV</a></li>
+                    </ul>
+                    <!--Event Tab List Start-->
+                    <div class="tab-content">
+                      <div class="tab-pane active" id="time_schedule">
+                        <div class="gt_event_map default_width">
+                            <p> ${bio} </p>
+                        </div>                        
+                      </div>
+                  
+                      <div class="tab-pane" id="google_map">
+                        <div class="gt_event_map default_width">
+                           <#if curriculum_pdf!=0>
+                            <form method="get" action="DownloadCurriculum">
+                               <label id="download">Downaload your CV in PDF!</label>
+                             <input type="submit" id="download" value="download">
+                             <input type="text" name="curriculum_pdf" class="hidden" value=${curriculum_pdf} >
+                            </form> 
+                           <#else>
+                            <#if curriculum!="">
+                            <p> ${curriculum}</p>
+                            </#if>
+                           </#if>
+                        </div>
+                      </div>
+                      </div>
+                    </div>
+                    </div>
+               
+            
              
              
             </div>

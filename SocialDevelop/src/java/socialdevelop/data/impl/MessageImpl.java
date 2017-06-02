@@ -6,6 +6,7 @@
 package socialdevelop.data.impl;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
+import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Message;
 import socialdevelop.data.model.Project;
 import socialdevelop.data.model.SocialDevelopDataLayer;
@@ -22,6 +23,8 @@ public class MessageImpl implements Message{
     private String type;
     private Project project;
     private int project_key;
+    private int developer_key;
+    private Developer developer;
     protected SocialDevelopDataLayer ownerdatalayer;
     protected boolean dirty;
     
@@ -33,6 +36,8 @@ public class MessageImpl implements Message{
         project_key = 0;
         isPrivate = false;
         type = "";
+        developer = null;
+        developer_key = 0;
         dirty = false;
     }
 
@@ -85,6 +90,33 @@ public class MessageImpl implements Message{
     public int getProjectKey(){
         return project_key;
     }
+    
+    @Override 
+    public Developer getDeveloper() throws DataLayerException{
+        if(developer == null && developer_key > 0) {
+            developer = ownerdatalayer.getDeveloper(developer_key);
+        }
+        return developer;
+    }
+    
+    @Override
+    public void setDeveloper(Developer developer){
+        this.developer = developer;
+        this.developer_key = developer.getKey();
+        this.dirty = true;
+    }
+    
+    @Override
+    public void setDeveloperKey(int developer_key){
+        this.developer = null;
+        this.developer_key = developer_key;
+        this.dirty = true;
+    }
+    
+    @Override 
+    public int getDeveloperKey(){
+        return developer_key;
+    }
     @Override
     public boolean isPrivate() {
         return isPrivate;
@@ -128,6 +160,7 @@ public class MessageImpl implements Message{
         text = message.getText();
         type = message.getType();
         project_key = message.getProjectKey();
+        developer_key = message.getDeveloperKey();
         this.dirty = true;
     }
 }
