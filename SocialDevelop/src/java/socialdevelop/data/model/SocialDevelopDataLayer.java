@@ -8,6 +8,7 @@ package socialdevelop.data.model;
 import it.univaq.f4i.iw.framework.data.DataLayer;
 import it.univaq.f4i.iw.framework.data.DataLayerException;
 import java.io.File;
+import java.sql.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
@@ -160,4 +161,6 @@ public interface SocialDevelopDataLayer extends DataLayer {
     Map<Task, Integer> getCurrentTasksByDeveloper(int developer_key) throws DataLayerException;
     
     Developer getDeveloperByMessage(int message_key) throws DataLayerException;
+    
+    Date getDateOfTaskByProject(int project_key) throws DataLayerException;
 }

@@ -6,10 +6,10 @@
 package socialdevelop.controller;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
-import it.univaq.f4i.iw.framework.result.FailureResult;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
@@ -29,12 +29,6 @@ import socialdevelop.data.model.Task;
  * @author manuel
  */
 public class List_project extends SocialDevelopBaseController {
-     
-    private void action_error(HttpServletRequest request, HttpServletResponse response) {
-        if (request.getAttribute("exception") != null) {
-            (new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request, response);
-        }
-    }
     
    
      private void action_listproject(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
@@ -44,14 +38,18 @@ public class List_project extends SocialDevelopBaseController {
                 List<Project> pro = datalayer.getProjects();
                 request.setAttribute("listaprogetti", pro);
                 Files foto = null ;
+                Date startdate[] = new Date[pro.size()];
                 Developer coordinatore ;
                 int ncollaboratori[] = new int[pro.size()];
                 String fotos[] = new String[pro.size()];
                 int count = 0;
+                int c = 0;
+                startdate[c] = null;
                 for(Project progetto : pro){
                     coordinatore=datalayer.getDeveloper(progetto.getCoordinatorKey());
                     List <Task> tasks = datalayer.getTasks(progetto.getKey());
                     ncollaboratori[count] = 0;
+                    startdate[c] = datalayer.getDateOfTaskByProject(progetto.getKey());
                     for(Task task : tasks){
                         ncollaboratori[count]+=task.getNumCollaborators();
                     }
@@ -64,7 +62,9 @@ public class List_project extends SocialDevelopBaseController {
                         fotos[count] = "extra-images/foto_profilo_default.png";
                     }
                     count ++;
+                    c++;
                 }
+                request.setAttribute("inizioprogetto", startdate);
                 request.setAttribute("ncollaboratori", ncollaboratori);
                 request.setAttribute("fotoCoordinatore", fotos);
                 TemplateResult res = new TemplateResult(getServletContext());
@@ -78,21 +78,16 @@ public class List_project extends SocialDevelopBaseController {
         try {
             action_listproject(request, response);
         } catch (IOException ex) {
-           request.setAttribute("exception", ex);
-            action_error(request, response);  
+            Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
         } catch (TemplateManagerException ex) {
-           request.setAttribute("exception", ex);
-            action_error(request, response);  
+            Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
         } catch (DataLayerException ex) {
-           request.setAttribute("exception", ex);
-            action_error(request, response);  
-        } catch (SQLException ex) {
-            request.setAttribute("exception", ex);
-            action_error(request, response); 
-        } catch (NamingException ex) {
-            request.setAttribute("exception", ex);
-            action_error(request, response);
-        }
+             Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
+         } catch (SQLException ex) {
+              Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
+          } catch (NamingException ex) {
+              Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
+          }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

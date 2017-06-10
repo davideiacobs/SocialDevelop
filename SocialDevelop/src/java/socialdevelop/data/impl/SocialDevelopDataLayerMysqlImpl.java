@@ -57,6 +57,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     private PreparedStatement iTaskHasDeveloper,dTaskHasDeveloper,uTaskHasDeveloper,sTaskHasDeveloper;
     private PreparedStatement iSkillHasDeveloper,dSkillHasDeveloper,uSkillHasDeveloper,sSkillHasDeveloper;
     private PreparedStatement sProjectByTask, sCurrentTasksByDeveloper, sEndedTasksByDeveloper;
+    private PreparedStatement sDateOfTaskByProject;
     public SocialDevelopDataLayerMysqlImpl(DataSource datasource) throws SQLException, NamingException {
         super(datasource);
     }
@@ -212,7 +213,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             
             iImg = connection.prepareStatement("INSERT INTO files (name,size,localfile,digest,type) VALUES (?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
             sFileByID = connection.prepareStatement("SELECT * FROM files WHERE ID=?");
-            
+            sDateOfTaskByProject = connection.prepareStatement("SELECT start FROM task AS t INNER JOIN project as p ON t.project_ID = p.ID WHERE p.ID = ? ORDER BY start LIMIT 1");
             
         } catch (SQLException ex) {
             throw new DataLayerException("Error initializing newspaper data layer", ex);
@@ -1751,6 +1752,23 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             }catch (SQLException ex) {
             throw new DataLayerException("Unable to delete", ex);
         }
+    }
+    @Override
+    public Date getDateOfTaskByProject(int project_key) throws DataLayerException {
+        try {
+     
+            sDateOfTaskByProject.setInt(1, project_key); 
+            try (ResultSet rs = sDateOfTaskByProject.executeQuery()) {
+                if (rs.next()) {
+                    java.sql.Date date;
+                    date = rs.getDate("start");
+                    return date;
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DataLayerException("Unable to load skill by ID", ex);
+        }
+        return null;
     }
 }
     

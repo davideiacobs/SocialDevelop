@@ -22,12 +22,31 @@ and open the template in the editor.
 .title_project{
    margin-left: 20%;
    text-align: center;
+}  
+.projectDescription{
+    padding-bottom: 0%;
+    word-wrap: break-word;
 }
-
-#grade-right{
-    float:right;
+.projectCoordinator{
+    background-color: #31b8f5;
 }
-
-.grade-padding{
-    padding-right:3% !important;  
+.projects{
+    padding-top:5%; 
+}
+#findByKeyWord{
+    padding-bottom: 4% !important;
+    padding-top: 2% !important;
+    width:100% !important;
+}
+#submitsearch{
+    padding-top: 2%;
+}
+.description_project{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.piu_info{
+    padding-top: 1%;
+    padding-left: 50%;
 }

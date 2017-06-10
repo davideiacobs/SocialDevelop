@@ -13,7 +13,7 @@
         <param-name>curriculums.directory</param-name>
         <param-value>C:\Users\david\Desktop\SocialDevelop\SocialDevelop\web\curriculums</param-value>
     </context-param>-->
-    <!-- davide ubuntu-->
+    <!-- davide ubuntu
     <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/extra-images</param-value>
@@ -21,8 +21,8 @@
     <context-param>
         <param-name>curriculums.directory</param-name>
         <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/curriculums</param-value>
-    </context-param>
-    <!--Manuel 
+    </context-param> 
+  -->
     <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>/Users/manuel/Desktop/GIT/SocialDevelop/SocialDevelop/web/extra-images</param-value>
@@ -83,6 +83,10 @@
     <servlet>
         <servlet-name>MyCollaborations</servlet-name>
         <servlet-class>socialdevelop.controller.MyCollaborations</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchProject</servlet-name>
+        <servlet-class>socialdevelop.controller.SearchProject</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CompletaRegistrazione</servlet-name>
@@ -148,6 +152,10 @@
     <servlet-mapping>
         <servlet-name>DownloadCurriculum</servlet-name>
         <url-pattern>/DownloadCurriculum</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchProject</servlet-name>
+        <url-pattern>/SearchProject</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

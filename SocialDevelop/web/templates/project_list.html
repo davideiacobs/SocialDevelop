@@ -1,51 +1,47 @@
-          <div class="row">
+        <div class="row">
             <div class="col-md-4 create_project">
                 <button type="button" class="btn btn-default">Crea Progetto</button>
             </div>
             <div class="col-md-12">
-                <div class="gt_aside_search default_width mb30">
-                    <form>
-                      <input type="text" placeholder="Search Here">
-                      <button><i class="fa fa-search"></i></button>
-                    </form>
-                  </div>
-            </div>
-            <!--List Wrap Start-->
-            <div class="col-md-12">
-                <#list listaprogetti as progetto>
-                
-              <div class="gt_event_grid gt_event_list default_width mb30">
-                  <div class="gt_event_grid_des default_width title_project">
-                  <h6>${progetto.name?cap_first}</h6>
-                  </div>
-                  <div class="col-md-3">
-                <div class="gt_d_author_pic">
-                  <figure>
-                    <img src=${fotoCoordinatore[progetto?index]} alt="">
-                  </figure>
+                <div class="gt_course_search default_width find_project">
+                <form id="findByKeyWord" action="SearchProject" method="post">
+                    <input type="search" name="keyWord" placeholder="Cerca Progetto">
+                    <a id="submitsearch"><i class="fa fa-search"></i></a>
+                </form>
+              </div>
+        </div>
+
+            
+        <div class="row projects">
+            <#list listaprogetti as progetto>
+            <div class="col-md-4">
+            <div class="owl-item cloned" style="width: 380px; margin-right: 0px;"><div class="item">
+              <div class="gt_courses_wrap default_width">
+                <figure>
+                  <figcaption class="gt_course_img_des">
+                    <div class="gt_course_des_holder projectCoordinator">
+                      <div class="gt_course_author">
+                        <img src=${fotoCoordinatore[progetto?index]} alt="">
+                        <a href="#"><i class="fa fa-user">${progetto.coordinator.name?cap_first}</i></a>
+                      </div>
+                    </div>
+                    <div class="gt_course_cat gt_bg_4">New</div>
+                  </figcaption>
+                </figure>
+                <div class="gt_course_des projectDescription default_width">
+                  <span> Data Inizio: ${inizioprogetto[progetto?index]} </span>
+                  <h5><a href="#">${progetto.name?cap_first}</a></h5>
+                  <p class="description_project" >${progetto.description}</p>
                 </div>
-                <div class="gt_d_author_pic_des">
-                  <p>${progetto.coordinator.name?cap_first}</p>
+                <div class="gt_event_grid_des default_width piu_info">
+                    <a href="#">Più informazioni</a>
+                </div>
+                <div class="gt_course_bottom default_width">
+                  <h5>${progetto.tasks?size}<span>Task</span></h5>
+                    <a href="#"><h5>${ncollaboratori[progetto?index]}<span>Collaboratori</span></h5></a>
+                  
                 </div>
               </div>
-                <div class="gt_event_grid_des default_width">
-                  <span>${progetto.description}</span>
-                  <a href="#">Piu Informazioni</a>
-                </div>
-                <div class="gt_event_counter">
-                  <ul class="countdown">
-                    <li>
-                      <span class="days">${progetto.tasks?size}</span>
-                      <p class="days_ref">Task</p>
-                    </li>
-                    <li>
-                      <span class="hours">${ncollaboratori[progetto?index]}</span>
-                      <p class="hours_ref">Collaboratori</p>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-                </#list>
+            </div></div>
             </div>
-            <!--List Wrap Start-->
-            <!--Aside Wrap End-->
+            </#list>
