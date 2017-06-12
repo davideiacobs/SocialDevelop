@@ -17,6 +17,7 @@ import it.univaq.f4i.iw.framework.security.SecurityLayer;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -24,6 +25,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import socialdevelop.data.impl.DeveloperImpl;
+import socialdevelop.data.model.Skill;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 
 /**
@@ -64,11 +66,14 @@ public class Signup extends SocialDevelopBaseController {
                 gc.set(GregorianCalendar.DATE, Integer.valueOf(bday.split("/")[0]));
                 dev.setBirthDate(gc);
                 datalayer.storeDeveloper(dev);
-                request.setAttribute("username", username);
+                int key = datalayer.getDeveloperByUsername(username);
+                request.setAttribute("userid", key);
                 request.setAttribute("page_title", username+", ");
                 request.setAttribute("page_subtitle", "Complete your profile!");
                 request.setAttribute("username", dev.getUsername());
                 request.setAttribute("logout", "Logout");
+                List<Skill> skills = datalayer.getSkillsParentList();
+                request.setAttribute("skills", skills);
                 SecurityLayer.createSession(request, dev.getUsername(), dev.getKey());
                 TemplateResult res = new TemplateResult(getServletContext());
                 res.activate("completa_registrazione.html",request, response);  

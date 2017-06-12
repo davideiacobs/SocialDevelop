@@ -59,15 +59,29 @@ public class CompletaRegistrazione extends SocialDevelopBaseController {
      
      private void completa_reg(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, NamingException, NoSuchAlgorithmException, Exception {
         
+        SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
+        
         String bio = request.getParameter("biography");
         String username = request.getParameter("username");
-        
+        //int developer_key = datalayer.getDeveloperByUsername(username);
         String curriculum = request.getParameter("curriculum");
+        
+        /*String skills = request.getParameter("skills");
+        
+        String[] skill_level = skills.split(",");
+        
+        
+        
+        for(int i=0;i<skill_level.length;i++){
+            int s = Integer.parseInt(skill_level[i].split(":")[0]);
+            int l = Integer.parseInt(skill_level[i].split(":")[1]);
+            datalayer.storeSkillHasDeveloper(s,developer_key , l);
+        }
+        */
+        
         
         Part foto_to_upload = request.getPart("foto-profilo");
         Part curriculum_to_upload = request.getPart("curriculum-pdf");
-        
-        SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
 
         int dev_key = datalayer.getDeveloperByUsername(username);
         Developer dev = datalayer.getDeveloper(dev_key);

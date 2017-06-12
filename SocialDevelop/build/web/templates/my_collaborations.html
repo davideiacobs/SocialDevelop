@@ -46,14 +46,15 @@
                <li>
 
                     <div class="gt-text grade-padding">
-                      
+                         
                             <h5><a href="#">${task.project.name?cap_first}</a></h5>
                             <p>Task: ${task.name?cap_first}</p>
-                            <#if tasksList?values[task?index] != -1>
-                            <h4 id="grade-right"> ${tasksList?values[task?index]!"-"}/10</h4>
+                            <!--<#if tasksList?values[task?index] != -1>
+                            <h4 id="grade-right"> ${tasksList?values[task?index]!"-"} <i class="fa fa-star"></i></h4>
                             <#else>
-                            <h4 id="grade-right"> -/10</h4>
-                            </#if>
+                            <h4 id="grade-right"> - </h4>
+                            </#if>-->
+                            <h4 id="grade-right"> n.c. </h4>
                             <p>Start Date: ${task.getStartDate().time?date!"-"} &nbsp; - &nbsp; End Date: ${task.getEndDate().time?date!"-"}</p>
                             
                           <p>Task Description: &nbsp;${task.description?cap_first}</p>
@@ -86,9 +87,9 @@
                             <h5><a href="#">${taskEnded.project.name?cap_first}</a></h5>
                             <p>Task: ${taskEnded.name?cap_first}</p>
                             <#if tasksListEnded?values[taskEnded?index] != -1>
-                            <h4 id="grade-right"> ${tasksListEnded?values[taskEnded?index]!"-"}/10</h4>
+                            <h4 id="grade-right"> ${tasksListEnded?values[taskEnded?index]!"-"} <i class="fa fa-star"></i></h4>
                             <#else>
-                            <h4 id="grade-right"> -/10</h4>
+                            <h4 id="grade-right"> - </h4>
                             </#if> 
                             <p>Start Date: ${taskEnded.getStartDate().time?date!"-"} &nbsp; - &nbsp; End Date: ${taskEnded.getEndDate().time?date!"-"}</p>
                             <p>Task Description: &nbsp;${taskEnded.description?cap_first}</p>

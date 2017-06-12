@@ -23,6 +23,16 @@ and open the template in the editor.
    margin-left: 20%;
    text-align: center;
 }  
+
+#grade-right{
+    float:right;
+}
+
+.grade-padding{
+    padding-right:3% !important; 
+}
+
+
 .projectDescription{
     padding-bottom: 0%;
     word-wrap: break-word;

@@ -1,0 +1,187 @@
+    <!--Main Content Wrap Start-->
+    <div class="container">
+        
+    <div class="row ">
+        
+          
+            <div class="col-md-8">
+              <div class="gt_event_detail_wrap bg_white default_width">
+
+                <div class="gt_event_detail_des default_width ">
+                  <div class="gt_event_detail_hdg">
+                    <h2>${projectname?cap_first}</h2>
+                    <p>${projectdescr?cap_first}</p>
+                  </div>
+                
+                </div>
+                <div class="gt_cd_mata_wrap default_width">
+                    <ul>
+                        <li>
+                            <figure>
+                                <img src="${coordinatorpic}" alt="">
+                            </figure>
+                            <div class="gt_course_meta_des">
+                                <h6>Project Coordinator</h6>
+                                <span><a href="#">${coordinatorusername}</a></span>
+                                
+                            </div>
+                        </li>
+                        
+                        <li>
+                            <i class="icon-cup"></i>
+                            <div class="gt_course_meta_des">
+                                <h6>Project Progress</h6>
+                                <span>${percProg} %</span>
+                            </div>
+                        </li>
+                        
+                        <li>
+                            <i class="icon-people"></i>
+                            <div class="gt_course_meta_des">
+                                <h6>Project Collaborators</h6>
+                                <span>${numCollaborators}</span>
+                            </div>
+                        </li>
+                  
+                    </ul>
+                </div>
+             
+
+                <#list tasks as task>
+
+                <div class="gt_cd_des_wrap default_width mb20">
+                  <h4>${task.name}</h4>
+                  
+                  <p>${task.description}</p>
+                      
+                      
+                    <div class="gt_course_dur_list mb20">
+                      <i class="icon-clock-1"></i>
+                      <span>Task Duration : ${daysleft}  days left</span>
+                    </div>
+                        
+                    <div class="gt_course_dur_list mb20">
+                      <i class="icon-student"></i>
+                      <span>Developers Nedeed : ${collaborators}</span>
+                    </div>
+                  
+                  
+                    <div class="gt_course_dur_list mb20">
+                      <i class="icon-classroom-with-students-group-and-the-teacher" ></i>
+                      <span> Status : ${task.open?then('Open','Close')} </span>
+                    </div>
+                   
+                  
+                        
+
+                    <div class="accor_outer_wrap mb20">
+                      <div class="ct_accord_list ">
+                        <div class="accord_hdg" >
+                          <h6>Skill Requested</h6>
+                          <span class="fa fa-minus-circle"></span>
+                        </div>
+                          
+                        <div class="accord_des">  
+                        <#list skillsList as skill,value>
+                            <p>${skill.name} - ${value}</p>
+                        </#list>
+                        </div>
+                        
+                                  
+                                
+                      </div>
+                    </div>
+                    
+                    <div class="gt_explore_search gt_clas_search">
+                      <form>
+                          <input  type="submit" value="JOIN THE TASK">
+                      </form>
+                    </div>
+                  </div>
+
+                </#list>
+
+                
+                <!--Comment Wrap End-->
+              </div>
+              <!--Comment Wrap Start-->
+                <div class="gt_comment_list_wrap gt_detail_hdg ">
+              
+                  <h5><span>${mex_number}</span>Comments</h5>
+                  <#list messages as message>
+                    <ul>
+                      <li>
+                        <div class="gt_comment_wrap">
+                          <figure>
+                            <img src="${userpic}" alt="No image avalaible">
+                          </figure>
+                          <div class="gt_comment_des">
+                            <h6><a>${username}</a></h6>
+                        
+                            <p>${text}</p>
+                          </div>
+                        </div>
+                      </li>
+                  
+                  
+                    </ul>
+                  </#list>
+                </div>
+              
+              <div class="gt_post_comment_wrap gt_detail_hdg">
+                <h5>Post Your Comments</h5>
+                <form class="gt_contact_form" id="contact-form" action="http://2goodtheme.net/edu-skill/layout/assets/sendmail.php" method="post">
+                  <div class="col-md-6">
+                      <div class="gt_contact_us_field">
+                          <input class="c_ph" type="text" placeholder="Your Name" id="name" name="contact-name" required="">
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="gt_contact_us_field">
+                          <input class="c_ph" type="text" placeholder="Email Adress:" id="email" name="contact-email" required="">
+                      </div>
+                  </div>
+                  <div class="col-md-12">
+                      <div class="gt_contact_us_field">
+                          <textarea class="gt_c_bg" name="contact-message" id="message" placeholder="Message" required=""></textarea>
+                      </div>
+                  </div>
+                  <div class="col-md-12">
+                      <div class="gt_contact_us_field">
+                          <input id="submit-message" type="submit" value="submit" name="submit_msg">
+                      </div>
+                      <!--Alert Message-->
+                      <div id="contact-result">
+                      </div>
+                  </div>
+                </form>
+              </div>
+
+            </div>
+        <aside class="col-md-4">
+            
+                
+              <div class="gt_aside_hdg gt_featured_course_list default_width mb30">
+                <h6>Task List</h6>
+                <ul class="gt_checkbox_list">
+                  <#list tasks as task>
+                    <li>
+                      <input id="checknox${task?index}" type="checkbox">
+                      <label for="checknox${task?index}"><span></span>${task.name}</label>
+                    </li>
+                  </#list>
+                </ul>
+                <div class="gt_explore_search gt_clas_search">
+                  <form>
+                    <input type="submit" value="JOIN THE TASK">
+                  </form>
+                </div>
+              </div> 
+            
+        </aside>
+            </div>
+
+          
+         
+    </div>
+  

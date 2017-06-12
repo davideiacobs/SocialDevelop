@@ -5,14 +5,14 @@
         <param-value>header-footer.html</param-value>
     </context-param>
     <!-- davide windows-->
-    <!--<context-param>
+    <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>C:\Users\david\Desktop\SocialDevelop\SocialDevelop\web\extra-images</param-value>
     </context-param>
     <context-param>
         <param-name>curriculums.directory</param-name>
         <param-value>C:\Users\david\Desktop\SocialDevelop\SocialDevelop\web\curriculums</param-value>
-    </context-param>-->
+    </context-param>
     <!-- davide ubuntu
     <context-param>
         <param-name>extra-images.directory</param-name>
@@ -22,7 +22,8 @@
         <param-name>curriculums.directory</param-name>
         <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/curriculums</param-value>
     </context-param> 
-  -->
+    -->
+    <!--manuel
     <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>/Users/manuel/Desktop/GIT/SocialDevelop/SocialDevelop/web/extra-images</param-value>
@@ -105,6 +106,18 @@
         <servlet-name>DownloadCurriculum</servlet-name>
         <servlet-class>socialdevelop.controller.DownloadCurriculum</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MySkills</servlet-name>
+        <servlet-class>socialdevelop.controller.MySkills</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>addSkill</servlet-name>
+        <servlet-class>socialdevelop.controller.addSkill</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>rmSkill</servlet-name>
+        <servlet-class>socialdevelop.controller.rmSkill</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>provaDB2</servlet-name>
         <url-pattern>/provaDB2</url-pattern>
@@ -145,7 +158,7 @@
         <servlet-name>CompletaRegistrazione</servlet-name>
         <url-pattern>/CompletaRegistrazione</url-pattern>
     </servlet-mapping>
-     <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>MyCollaborations</servlet-name>
         <url-pattern>/MyCollaborations</url-pattern>
     </servlet-mapping>
@@ -156,6 +169,18 @@
     <servlet-mapping>
         <servlet-name>SearchProject</servlet-name>
         <url-pattern>/SearchProject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MySkills</servlet-name>
+        <url-pattern>/MySkills</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>addSkill</servlet-name>
+        <url-pattern>/addSkill</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>rmSkill</servlet-name>
+        <url-pattern>/rmSkill</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
