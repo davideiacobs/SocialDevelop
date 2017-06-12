@@ -4,7 +4,7 @@
         <param-name>view.outline_template</param-name>
         <param-value>header-footer.html</param-value>
     </context-param>
-    <!-- davide windows
+    <!-- davide windows -->
     <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>C:\Users\david\Desktop\SocialDevelop\SocialDevelop\web\extra-images</param-value>
@@ -13,7 +13,7 @@
         <param-name>curriculums.directory</param-name>
         <param-value>C:\Users\david\Desktop\SocialDevelop\SocialDevelop\web\curriculums</param-value>
     </context-param>
-     davide ubuntu
+    <!-- davide ubuntu
     <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/extra-images</param-value>
@@ -22,7 +22,7 @@
         <param-name>curriculums.directory</param-name>
         <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/curriculums</param-value>
     </context-param> 
-    manuel -->
+    
     <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>/Users/manuel/Desktop/GIT/SocialDevelop/SocialDevelop/web/extra-images</param-value>
@@ -30,8 +30,8 @@
     <context-param>
         <param-name>curriculums.directory</param-name>
         <param-value>/Users/manuel/Desktop/GIT/SocialDevelop/SocialDevelop/web/curriculums</param-value>
-    </context-param>--&gt;
-    <!-- Luca 
+    </context-param>
+     Luca 
     <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>C:\Users\Win8.1\Documents\Luca\SocialDevelop\SocialDevelop\SocialDevelop\web\extra-images</param-value>
@@ -109,6 +109,10 @@
         <servlet-name>MySkills</servlet-name>
         <servlet-class>socialdevelop.controller.MySkills</servlet-class>
     </servlet>
+     <servlet>
+        <servlet-name>MyProjects</servlet-name>
+        <servlet-class>socialdevelop.controller.MyProjects</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>addSkill</servlet-name>
         <servlet-class>socialdevelop.controller.addSkill</servlet-class>
@@ -156,6 +160,10 @@
     <servlet-mapping>
         <servlet-name>MyProfile</servlet-name>
         <url-pattern>/MyProfile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MyProjects</servlet-name>
+        <url-pattern>/MyProjects</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CompletaRegistrazione</servlet-name>
