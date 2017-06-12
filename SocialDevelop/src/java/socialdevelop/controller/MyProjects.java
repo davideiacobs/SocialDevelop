@@ -87,6 +87,7 @@ public class MyProjects extends SocialDevelopBaseController {
                 int c = 0;
                 startdate[c] = null;
                 enddate[c] = null;
+                //controllare se la lista non è vuota!!!
                 for(Project progetto : projects){
                     
                     List <Task> tasks = datalayer.getTasks(progetto.getKey());
