@@ -406,6 +406,9 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             a.setText(rs.getString("text"));
             a.setPrivate(rs.getBoolean("private"));
             a.setType(rs.getString("type"));
+            a.setDeveloperKey(rs.getInt("developer_id"));
+            a.setProjectKey(rs.getInt("project_ID"));
+            
             
             return a;
         } catch (SQLException ex) {

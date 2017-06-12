@@ -22,7 +22,15 @@
         <param-name>curriculums.directory</param-name>
         <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/curriculums</param-value>
     </context-param> 
-    
+    Andrea
+    <context-param>
+        <param-name>extra-images.directory</param-name>
+        <param-value>C:\Users\Andrea\Desktop\InWeb local\SocialDevelop\SocialDevelop\web\extra-images</param-value>
+    </context-param>
+    <context-param>
+        <param-name>curriculums.directory</param-name>
+        <param-value>C:\Users\Andrea\Desktop\InWeb local\SocialDevelop\SocialDevelop\web\curriculums</param-value>
+    </context-param>
     <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>/Users/manuel/Desktop/GIT/SocialDevelop/SocialDevelop/web/extra-images</param-value>
@@ -109,6 +117,10 @@
         <servlet-name>MySkills</servlet-name>
         <servlet-class>socialdevelop.controller.MySkills</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Project_Detail</servlet-name>
+        <servlet-class>socialdevelop.controller.Project_Detail</servlet-class>
+    </servlet>
      <servlet>
         <servlet-name>MyProjects</servlet-name>
         <servlet-class>socialdevelop.controller.MyProjects</servlet-class>
@@ -128,6 +140,10 @@
     <servlet-mapping>
         <servlet-name>provaDB2</servlet-name>
         <url-pattern>/provaDB2</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Project_Detail</servlet-name>
+        <url-pattern>/Project_Detail</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>List_project</servlet-name>

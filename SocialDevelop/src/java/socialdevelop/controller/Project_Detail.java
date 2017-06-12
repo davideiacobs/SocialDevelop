@@ -109,10 +109,10 @@ public class Project_Detail extends SocialDevelopBaseController {
                 
                 request.setAttribute("percProg", percProg);
                 request.setAttribute("numCollaborators", collaborators.size());
-                List <Message> messages = datalayer.getMessages(project.getKey());
                 
                 
-                request.setAttribute("mex_number",messages.size());
+                
+                
                 boolean m  = false;
                 
                 if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0){
@@ -122,42 +122,42 @@ public class Project_Detail extends SocialDevelopBaseController {
                         
                     }
                 }
-                /*for (Message message : messages){
+                
+                    List <Message> messages = new ArrayList();
+                
+                if(m){
+                    
+                    messages = datalayer.getMessages(project.getKey());
+                }
+                else{
+                    messages = datalayer.getPublicMessages(project.getKey());
+                }
+                
+                request.setAttribute("mex_number",messages.size());
+                request.setAttribute("messages", messages);
+                
+                for (Message message : messages){
                     
                     Developer dev2 = message.getDeveloper();
                     foto_key=dev2.getFoto();
                             
-                    if (message.isPrivate()){
-                        if (m){
-                            if(foto_key != 0){
-                                Files foto = datalayer.getFile(foto_key);
-                                request.setAttribute("coordinatorpic", "extra-images/" + foto.getLocalFile());
-                            }
-                            else{
-                                request.setAttribute("coordinatorpic", "extra-images/foto_profilo_default.png");
-                            }
-                            
-                            request.setAttribute("username", dev2.getUsername());
-                            request.setAttribute("text", message.getText());
-                            //insert only private messages
-                        }
-                    }
-                    else{
-                        if(foto_key != 0){
-                                Files foto = datalayer.getFile(foto_key);
-                                request.setAttribute("coordinatorpic", "extra-images/" + foto.getLocalFile());
-                            }
-                            else{
-                                request.setAttribute("coordinatorpic", "extra-images/foto_profilo_default.png");
-                            }
+                    
                         
+                        if(foto_key != 0){
+                            Files foto = datalayer.getFile(foto_key);
+                            request.setAttribute("coordinatorpic", "extra-images/" + foto.getLocalFile());
+                        }
+                        else{
+                            request.setAttribute("coordinatorpic", "extra-images/foto_profilo_default.png");
+                        }
+                            
                         request.setAttribute("username", dev2.getUsername());
                         request.setAttribute("text", message.getText());
-                        // insert only public messages here
-                    }
+                            //insert only private messages
+                        
                     
                     
-                }  */    
+                }     
                 
                 Developer coordinator=datalayer.getDeveloper(project.getCoordinatorKey());
                 foto_key=coordinator.getFoto();
@@ -176,7 +176,7 @@ public class Project_Detail extends SocialDevelopBaseController {
                
            
                 TemplateResult res = new TemplateResult(getServletContext());
-                res.activate("project_detail.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare 
+                res.activate("project_detail.html",request, response);  
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
