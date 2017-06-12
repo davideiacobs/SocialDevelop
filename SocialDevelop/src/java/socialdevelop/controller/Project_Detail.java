@@ -6,10 +6,10 @@
 package socialdevelop.controller;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
+import it.univaq.f4i.iw.framework.result.FailureResult;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.IOException;
-import static java.lang.Integer.parseInt;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,11 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.annotation.Resource;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -41,17 +39,18 @@ import socialdevelop.data.model.Task;
  *
  * @author Andrea
  */
-//@WebServlet(name = "Project_Detail", urlPatterns = {"/Project_Detail"})
+
 public class Project_Detail extends SocialDevelopBaseController {
-    @Resource(name = "jdbc/mydb")
-    private DataSource ds;
     
-    private void action_project(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
-                SocialDevelopDataLayer datalayer = new SocialDevelopDataLayerMysqlImpl(ds);
-                datalayer.init();
-                
-                
-                
+    private void action_error(HttpServletRequest request, HttpServletResponse response) {
+        if (request.getAttribute("exception") != null) {
+            (new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request, response);
+        }
+    }
+    
+    private void action_project(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {    
+        
+                SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");           
                 HttpSession s = request.getSession(true);
                 Project project = datalayer.getProject(1);
                 request.setAttribute("page_title", "Project" + " " + project.getName());
@@ -74,14 +73,21 @@ public class Project_Detail extends SocialDevelopBaseController {
                     request.setAttribute("collaborators", task.getNumCollaborators());
                     GregorianCalendar start = task.getStartDate();
                     GregorianCalendar end = task.getEndDate();
-                    Date startDate = start.getTime();
-                    Date endDate = end.getTime();
-                    long startTime = startDate.getTime();
-                    long endTime = endDate.getTime();
-                    long diffTime = endTime - startTime;
-                    long diffDays = diffTime / (1000 * 60 * 60 * 24);
-                    request.setAttribute("daysleft",diffDays);
-                    
+                    Date startDate = new Date();
+                    Date endDate = new Date();
+                    if(startDate!=null){
+                        startDate = start.getTime();
+                    }
+                    if(endDate!=null){
+                        endDate = end.getTime();
+                    }
+                    if(startDate!=null && endDate!=null){
+                        long startTime = startDate.getTime();
+                        long endTime = endDate.getTime();
+                        long diffTime = endTime - startTime;
+                        long diffDays = diffTime / (1000 * 60 * 60 * 24);
+                        request.setAttribute("daysleft",diffDays);
+                    }
                     
                     Map <Skill, Integer> skillsList = datalayer.getSkillsByTask(task.getKey());
                     request.setAttribute("skillsList", skillsList);
@@ -202,8 +208,21 @@ public class Project_Detail extends SocialDevelopBaseController {
         try{
             action_project(request,response);
         }
-        catch (IOException | TemplateManagerException | SQLException | NamingException | DataLayerException ex) {
-            Logger.getLogger(Project_Detail.class.getName()).log(Level.SEVERE, null, ex);
+        catch (IOException ex) {
+            request.setAttribute("exception", ex);
+            action_error(request, response);
+        } catch (TemplateManagerException ex) {
+            request.setAttribute("exception", ex);
+            action_error(request, response);
+        } catch (SQLException ex) {
+            request.setAttribute("exception", ex);
+            action_error(request, response);
+        } catch (NamingException ex) {
+            request.setAttribute("exception", ex);
+            action_error(request, response);
+        } catch (DataLayerException ex) {
+            request.setAttribute("exception", ex);
+            action_error(request, response);
         }
         }
     }

@@ -26,7 +26,7 @@ import socialdevelop.data.model.SocialDevelopDataLayer;
  *
  * @author david
  */
-public class MyProfile extends SocialDevelopBaseController {
+public class UpdateProfile extends SocialDevelopBaseController {
     
     private void action_error(HttpServletRequest request, HttpServletResponse response) {
         if (request.getAttribute("exception") != null) {
@@ -50,28 +50,27 @@ public class MyProfile extends SocialDevelopBaseController {
     
     
     
-    private void action_myprofile(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
+    private void action_updprofile(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
             HttpSession s = request.getSession(true);
             request.setAttribute("page_title", "My Profile");
             request.setAttribute("page_subtitle", "manage your data");
             if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
                 SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer)request.getAttribute("datalayer");
                 Developer dev = datalayer.getDeveloper((int) s.getAttribute("userid"));
-                request.setAttribute("username", dev.getUsername());
-                request.setAttribute("fullname", dev.getName()+" "+dev.getSurname());
                 long currentTime = System.currentTimeMillis();
                 Calendar now = Calendar.getInstance();
                 now.setTimeInMillis(currentTime);
-                request.setAttribute("age", now.get(Calendar.YEAR) - dev.getBirthDate().get(Calendar.YEAR));
+                 //Get difference between years
                 request.setAttribute("bio", dev.getBiography());
-                request.setAttribute("mail", dev.getMail());
+                request.setAttribute("username", dev.getUsername());
+                request.setAttribute("fullname", dev.getName()+" "+dev.getSurname());
                 request.setAttribute("curriculum", dev.getCurriculumString());
                 request.setAttribute("curriculum_pdf", dev.getCurriculumFile());
                 request.setAttribute("logout", "Logout");
                 request.setAttribute("datalayer", datalayer);
                 getImg(request, response, dev);
                 TemplateResult res = new TemplateResult(getServletContext());
-                res.activate("myprofile.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare
+                res.activate("update_profile.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare
             }else{
                  response.sendRedirect("index");
             }
@@ -84,7 +83,7 @@ public class MyProfile extends SocialDevelopBaseController {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException{
         
         try {
-            action_myprofile(request, response);
+            action_updprofile(request, response);
         } catch (IOException ex) {
             request.setAttribute("exception", ex);
             action_error(request, response);

@@ -22,6 +22,7 @@ import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 
@@ -29,7 +30,7 @@ import socialdevelop.data.model.SocialDevelopDataLayer;
  *
  * @author david
  */
-public class CompletaRegistrazione extends SocialDevelopBaseController {
+public class UpdateProfileSubmit extends SocialDevelopBaseController {
     
     private void action_error(HttpServletRequest request, HttpServletResponse response) {
         if (request.getAttribute("exception") != null) {
@@ -57,20 +58,18 @@ public class CompletaRegistrazione extends SocialDevelopBaseController {
             return sdigest;
      }
      
-     private void completa_reg(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, NamingException, NoSuchAlgorithmException, Exception {
+     private void conferma_upd(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, NamingException, NoSuchAlgorithmException, Exception {
         
         SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
-        
+        HttpSession s = request.getSession(true);
         String bio = request.getParameter("biography");
-        String username = request.getParameter("username");
-        //int developer_key = datalayer.getDeveloperByUsername(username);
+        
         String curriculum = request.getParameter("curriculum");
         
         Part foto_to_upload = request.getPart("foto-profilo");
         Part curriculum_to_upload = request.getPart("curriculum-pdf");
 
-        int dev_key = datalayer.getDeveloperByUsername(username);
-        Developer dev = datalayer.getDeveloper(dev_key);
+        Developer dev = datalayer.getDeveloper((Integer) s.getAttribute("userid"));
         
         File uploaded_foto;
         File uploaded_curriculum;
@@ -88,18 +87,17 @@ public class CompletaRegistrazione extends SocialDevelopBaseController {
             String digest_curriculum = getDigest(curriculum_to_upload, uploaded_curriculum);
             curriculum_key = datalayer.storeFile(curriculum_to_upload, uploaded_curriculum, digest_curriculum);
             dev.setCurriculum(curriculum_key);
+            dev.setCurriculum("");
         }
-        if( (curriculum != null && !curriculum.equals("")) || (bio != null && !bio.equals("")) ){
-            dev.setCurriculum(curriculum);
-            dev.setBiography(bio);
+        if(curriculum != null && curriculum_to_upload==null && curriculum_to_upload.getSize()>0 && !curriculum.equals("") ){
+            dev.setCurriculum(curriculum); 
         }
+        dev.setBiography(bio);
         datalayer.storeDeveloper(dev);
-        request.setAttribute("username", dev.getUsername());
-        request.setAttribute("pwd", dev.getPwd());
-        request.setAttribute("username", dev.getUsername());
-        request.setAttribute("logout", "Logout");
+        request.setAttribute("logout", "Logout");   
+        
         TemplateResult res = new TemplateResult(getServletContext());
-        res.activate("MyProfile",request, response);
+        res.activate("myprofile.html",request, response);
     }
     
      
@@ -107,7 +105,7 @@ public class CompletaRegistrazione extends SocialDevelopBaseController {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException {
         try {
-            completa_reg(request, response);
+            conferma_upd(request, response);
         } catch (IOException ex) {
             request.setAttribute("exception", ex);
             action_error(request, response);

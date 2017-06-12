@@ -406,10 +406,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             a.setText(rs.getString("text"));
             a.setPrivate(rs.getBoolean("private"));
             a.setType(rs.getString("type"));
-            a.setDeveloperKey(rs.getInt("developer_id"));
             a.setProjectKey(rs.getInt("project_ID"));
-            
-            
+            a.setDeveloperKey(rs.getInt("developer_ID"));
             return a;
         } catch (SQLException ex) {
             throw new DataLayerException("Unable to create message object form ResultSet", ex);

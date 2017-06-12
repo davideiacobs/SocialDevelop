@@ -60,3 +60,15 @@ and open the template in the editor.
     padding-top: 1%;
     padding-left: 50%;
 }
+
+.btn-upd{
+    width:100%
+}
+
+.btn-upd-foto{
+    text-align:center;
+}
+
+.btn-upd-cv{
+    text-align: left !important;
+}
