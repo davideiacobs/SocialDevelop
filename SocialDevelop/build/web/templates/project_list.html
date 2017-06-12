@@ -1,6 +1,6 @@
         <div class="row">
             <div class="col-md-4 create_project">
-                <button type="button" class="btn btn-default">Crea Progetto</button>
+                <a href="CreateProject" type="button" class="btn btn-default" >Crea Progetto</a>
             </div>
             <div class="col-md-12">
                 <div class="gt_course_search default_width find_project">
@@ -11,37 +11,41 @@
               </div>
         </div>
 
-            
         <div class="row projects">
-            <#list listaprogetti as progetto>
-            <div class="col-md-4">
-            <div class="owl-item cloned" style="width: 380px; margin-right: 0px;"><div class="item">
-              <div class="gt_courses_wrap default_width">
-                <figure>
-                  <figcaption class="gt_course_img_des">
-                    <div class="gt_course_des_holder projectCoordinator">
-                      <div class="gt_course_author">
-                        <img src=${fotoCoordinatore[progetto?index]} alt="">
-                        <a href="#">${progetto.coordinator.name?cap_first}</i></a>
-                      </div>
+            <#if listaprogetti?size != 0>
+                <#list listaprogetti as progetto>
+                <div class="col-md-4">
+                <div class="owl-item cloned" style="width: 380px; margin-right: 0px;"><div class="item">
+                  <div class="gt_courses_wrap default_width">
+                    <figure>
+                      <figcaption class="gt_course_img_des">
+                        <div class="gt_course_des_holder projectCoordinator">
+                          <div class="gt_course_author">
+                            <img src=${fotoCoordinatore[progetto?index]} alt="">
+                            <a href="#">${progetto.coordinator.name?cap_first}</i></a>
+                          </div>
+                        </div>
+                        <div class="gt_course_cat gt_bg_4">New</div>
+                      </figcaption>
+                    </figure>
+                    <div class="gt_course_des projectDescription default_width">
+                      <span> Data Inizio: ${inizioprogetto[progetto?index]} </span>
+                      <h5><a href="#">${progetto.name?cap_first}</a></h5>
+                      <p class="description_project" >${progetto.description}</p>
                     </div>
-                    <div class="gt_course_cat gt_bg_4">New</div>
-                  </figcaption>
-                </figure>
-                <div class="gt_course_des projectDescription default_width">
-                  <span> Data Inizio: ${inizioprogetto[progetto?index]} </span>
-                  <h5><a href="#">${progetto.name?cap_first}</a></h5>
-                  <p class="description_project" >${progetto.description}</p>
+                    <div class="gt_event_grid_des default_width piu_info">
+                        <a href="#">Pi&uacute; informazioni</a>
+                    </div>
+                    <div class="gt_course_bottom default_width">
+                      <h5>${progetto.tasks?size}<span>Task</span></h5>
+                        <a href="#"><h5>${ncollaboratori[progetto?index]}<span>Collaboratori</span></h5></a>
+
+                    </div>
+                  </div>
+                </div></div>
                 </div>
-                <div class="gt_event_grid_des default_width piu_info">
-                    <a href="#">Pi&uacute; informazioni</a>
-                </div>
-                <div class="gt_course_bottom default_width">
-                  <h5>${progetto.tasks?size}<span>Task</span></h5>
-                    <a href="#"><h5>${ncollaboratori[progetto?index]}<span>Collaboratori</span></h5></a>
-                  
-                </div>
-              </div>
-            </div></div>
-            </div>
-            </#list>
+                </#list>
+            <#else>
+                <h1>${nontrovato}</h1>
+        </div>
+            </#if>

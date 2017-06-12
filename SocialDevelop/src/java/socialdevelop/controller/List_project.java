@@ -18,6 +18,7 @@ import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Files;
 import socialdevelop.data.model.Project;
@@ -32,43 +33,53 @@ public class List_project extends SocialDevelopBaseController {
     
    
      private void action_listproject(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
-            request.setAttribute("page_title", "Progetti disponibili");
-            request.setAttribute("page_subtitle", "Progetti");
-                SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
-                List<Project> pro = datalayer.getProjects();
+        HttpSession s = request.getSession(true);
+        request.setAttribute("page_title", "Progetti disponibili");
+        request.setAttribute("page_subtitle", "Progetti");
+        if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
+                request.setAttribute("logout", "Logout");
+            }
+        SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
+        List<Project> pro = datalayer.getProjects();
+            if (pro.size()!=0) {
+               request.setAttribute("listaprogetti", pro);
+               Files foto = null ;
+               Date startdate[] = new Date[pro.size()];
+               Developer coordinatore ;
+               int ncollaboratori[] = new int[pro.size()];
+               String fotos[] = new String[pro.size()];
+               int count = 0;
+               int c = 0;
+               startdate[c] = null;
+               for(Project progetto : pro){
+                   coordinatore=datalayer.getDeveloper(progetto.getCoordinatorKey());
+                   List <Task> tasks = datalayer.getTasks(progetto.getKey());
+                   ncollaboratori[count] = 0;
+                   startdate[c] = datalayer.getDateOfTaskByProject(progetto.getKey());
+                   for(Task task : tasks){
+                       ncollaboratori[count]+=task.getNumCollaborators();
+                   }
+                   progetto.setCoordinator(coordinatore);
+                   int foto_key=coordinatore.getFoto();
+                   if(foto_key != 0){
+                       foto = datalayer.getFile(foto_key);
+                       fotos[count] = "extra-images/" + foto.getLocalFile();
+                   }else{
+                       fotos[count] = "extra-images/foto_profilo_default.png";
+                   }
+                   count ++;
+                   c++;
+               }
+               request.setAttribute("inizioprogetto", startdate);
+               request.setAttribute("ncollaboratori", ncollaboratori);
+               request.setAttribute("fotoCoordinatore", fotos); 
+            }
+            else{
                 request.setAttribute("listaprogetti", pro);
-                Files foto = null ;
-                Date startdate[] = new Date[pro.size()];
-                Developer coordinatore ;
-                int ncollaboratori[] = new int[pro.size()];
-                String fotos[] = new String[pro.size()];
-                int count = 0;
-                int c = 0;
-                startdate[c] = null;
-                for(Project progetto : pro){
-                    coordinatore=datalayer.getDeveloper(progetto.getCoordinatorKey());
-                    List <Task> tasks = datalayer.getTasks(progetto.getKey());
-                    ncollaboratori[count] = 0;
-                    startdate[c] = datalayer.getDateOfTaskByProject(progetto.getKey());
-                    for(Task task : tasks){
-                        ncollaboratori[count]+=task.getNumCollaborators();
-                    }
-                    progetto.setCoordinator(coordinatore);
-                    int foto_key=coordinatore.getFoto();
-                    if(foto_key != 0){
-                        foto = datalayer.getFile(foto_key);
-                        fotos[count] = "extra-images/" + foto.getLocalFile();
-                    }else{
-                        fotos[count] = "extra-images/foto_profilo_default.png";
-                    }
-                    count ++;
-                    c++;
-                }
-                request.setAttribute("inizioprogetto", startdate);
-                request.setAttribute("ncollaboratori", ncollaboratori);
-                request.setAttribute("fotoCoordinatore", fotos);
-                TemplateResult res = new TemplateResult(getServletContext());
-                res.activate("project_list.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare 
+             request.setAttribute("nontrovato","Nessun progetto trovato");
+            }
+           TemplateResult res = new TemplateResult(getServletContext());
+           res.activate("project_list.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare 
     }
     
     

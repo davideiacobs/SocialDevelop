@@ -1,0 +1,43 @@
+<div class="row">
+    <form method="post" action="Create_Project">
+        <div class="col-md-12">
+            <div class="gt_course_search default_width">
+                <input type="text" name="nameProject" placeholder="Nome Progetto">
+            </div>
+        </div>
+    <div class="gt_privacy_field default_width mb20">
+        <textarea class="c_ph" placeholder="Descrizione Progetto"></textarea>
+    </div>  
+        
+    <div class="add-skill"><!-- gt_advacnce_search_wrap default_width -->
+        <div class="gt_explore_search gt_clas_search select-skill"> <!-- gt_aside_field -->         
+            <select id="select-skill" class="find_course_search">
+                <option>Select Skill</option>
+                <!--<option>2</option>-->
+                <#list skills as skill>
+                    <option value="${skill.key}">${skill.name}</option>
+                </#list>
+            </select>
+        </div>
+        <div class="gt_explore_search gt_clas_search select-skill">            
+          <select class="find_course_search">
+            <option>Select Skill</option>
+            <option>2</option>
+          </select>
+        </div>
+        <div class="gt_explore_search gt_clas_search select-skill">            
+          <select id="select-level" class="find_course_search">
+            <option>Level</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+        <div class="gt_explore_search gt_clas_search select-skill">                          
+            <input id ="add-button" type="button" class="add-button add-skill-btn" value="Add">
+        </div>
+    </div>
+    </form>
+</div>

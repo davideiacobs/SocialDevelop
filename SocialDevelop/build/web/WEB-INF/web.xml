@@ -4,7 +4,7 @@
         <param-name>view.outline_template</param-name>
         <param-value>header-footer.html</param-value>
     </context-param>
-    <!-- davide windows-->
+    <!-- davide windows
     <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>C:\Users\david\Desktop\SocialDevelop\SocialDevelop\web\extra-images</param-value>
@@ -13,7 +13,7 @@
         <param-name>curriculums.directory</param-name>
         <param-value>C:\Users\david\Desktop\SocialDevelop\SocialDevelop\web\curriculums</param-value>
     </context-param>
-    <!-- davide ubuntu
+     davide ubuntu
     <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/extra-images</param-value>
@@ -22,8 +22,7 @@
         <param-name>curriculums.directory</param-name>
         <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/curriculums</param-value>
     </context-param> 
-    -->
-    <!--manuel
+    manuel -->
     <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>/Users/manuel/Desktop/GIT/SocialDevelop/SocialDevelop/web/extra-images</param-value>
@@ -31,7 +30,7 @@
     <context-param>
         <param-name>curriculums.directory</param-name>
         <param-value>/Users/manuel/Desktop/GIT/SocialDevelop/SocialDevelop/web/curriculums</param-value>
-    </context-param>-->
+    </context-param>--&gt;
     <!-- Luca 
     <context-param>
         <param-name>extra-images.directory</param-name>
@@ -118,6 +117,10 @@
         <servlet-name>rmSkill</servlet-name>
         <servlet-class>socialdevelop.controller.rmSkill</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateProject</servlet-name>
+        <servlet-class>socialdevelop.controller.CreateProject</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>provaDB2</servlet-name>
         <url-pattern>/provaDB2</url-pattern>
@@ -181,6 +184,10 @@
     <servlet-mapping>
         <servlet-name>rmSkill</servlet-name>
         <url-pattern>/rmSkill</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateProject</servlet-name>
+        <url-pattern>/CreateProject</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
