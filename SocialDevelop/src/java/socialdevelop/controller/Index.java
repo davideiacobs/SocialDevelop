@@ -36,6 +36,8 @@ public class Index extends SocialDevelopBaseController {
             if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
                 response.sendRedirect("MyProfile");
             }else{
+                String act_url = request.getRequestURI();
+                s.setAttribute("previous_url", act_url);
                 request.setAttribute("slider", "hidden");
                 request.setAttribute("home_background", "home_background");
                 TemplateResult res = new TemplateResult(getServletContext());

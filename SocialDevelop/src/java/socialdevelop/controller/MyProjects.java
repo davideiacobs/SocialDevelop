@@ -79,7 +79,7 @@ public class MyProjects extends SocialDevelopBaseController {
                 //recupero progetti gestiti dall'utente (progetti dei quali è il coordinatore)
                 
                 List<Project> projects = datalayer.getProjectsByCoordinator(dev.getKey());
-                
+                if(projects.size()!=0){
                 Date startdate[] = new Date[projects.size()];
                 Date enddate[] = new Date[projects.size()];
                 int ncollaboratori[] = new int[projects.size()];
@@ -87,7 +87,7 @@ public class MyProjects extends SocialDevelopBaseController {
                 int c = 0;
                 startdate[c] = null;
                 enddate[c] = null;
-                //controllare se la lista non è vuota!!!
+                
                 for(Project progetto : projects){
                     
                     List <Task> tasks = datalayer.getTasks(progetto.getKey());
@@ -113,7 +113,9 @@ public class MyProjects extends SocialDevelopBaseController {
                 request.setAttribute("ncollaboratori", ncollaboratori);
                 request.setAttribute("startdate", startdate);
                 request.setAttribute("enddate", enddate);
-                
+                }else{
+                    request.setAttribute("projects", projects);
+                }
                 TemplateResult res = new TemplateResult(getServletContext());
                 res.activate("my_projects.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare
                 

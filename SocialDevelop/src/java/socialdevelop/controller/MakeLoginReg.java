@@ -9,11 +9,10 @@ import it.univaq.f4i.iw.framework.result.FailureResult;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -28,16 +27,22 @@ public class MakeLoginReg extends SocialDevelopBaseController {
     }
     
     private void action_login_reg(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException {
-      
-            request.setAttribute("page_title", "Join");
-            request.setAttribute("page_subtitle", "SocialDevelop!");
-            //verrà usato automaticamente il template di outline spcificato tra i context parameters
-            //the outlne template specified through the context parameters will be added by the TemplateResult to the specified template
-            TemplateResult res = new TemplateResult(getServletContext());
-            //aggiungiamo al template un wrapper che ci permette di chiamare la funzione stripSlashes
-            //add to the template a wrapper object that allows to call the stripslashes function
-            res.activate("login-register.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare
-       
+            
+            HttpSession s = request.getSession(true);
+            if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
+                response.sendRedirect("MyProfile");
+            }else{
+                request.setAttribute("page_title", "Join");
+                request.setAttribute("page_subtitle", "SocialDevelop!");
+                String act_url = request.getRequestURI();
+                s.setAttribute("previous_url", act_url);
+                //verrà usato automaticamente il template di outline spcificato tra i context parameters
+                //the outlne template specified through the context parameters will be added by the TemplateResult to the specified template
+                TemplateResult res = new TemplateResult(getServletContext());
+                //aggiungiamo al template un wrapper che ci permette di chiamare la funzione stripSlashes
+                //add to the template a wrapper object that allows to call the stripslashes function
+                res.activate("login-register.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare
+            }         
     }
     
     

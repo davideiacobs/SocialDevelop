@@ -59,45 +59,57 @@ public class UpdateProfileSubmit extends SocialDevelopBaseController {
      }
      
      private void conferma_upd(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, NamingException, NoSuchAlgorithmException, Exception {
-        
-        SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
         HttpSession s = request.getSession(true);
-        String bio = request.getParameter("biography");
-        
-        String curriculum = request.getParameter("curriculum");
-        
-        Part foto_to_upload = request.getPart("foto-profilo");
-        Part curriculum_to_upload = request.getPart("curriculum-pdf");
+        String u = (String) s.getAttribute("previous_url");
+        if(s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0){
+            if(s.getAttribute("previous_url") != null && u.equals("/socialdevelop/UpdateProfile")){
+                SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
 
-        Developer dev = datalayer.getDeveloper((Integer) s.getAttribute("userid"));
-        
-        File uploaded_foto;
-        File uploaded_curriculum;
-        int foto_key = 0;
-        int curriculum_key = 0;
-        
-        if(foto_to_upload != null && foto_to_upload.getSize() > 0){
-            uploaded_foto = File.createTempFile("foto_profilo", "", new File(getServletContext().getInitParameter("extra-images.directory")));
-            String digest_foto = getDigest(foto_to_upload, uploaded_foto);
-            foto_key = datalayer.storeFile(foto_to_upload, uploaded_foto, digest_foto);
-            dev.setFoto(foto_key);
+                String bio = request.getParameter("biography");
+
+                String curriculum = request.getParameter("curriculum");
+
+                Part foto_to_upload = request.getPart("foto-profilo");
+                Part curriculum_to_upload = request.getPart("curriculum-pdf");
+
+                Developer dev = datalayer.getDeveloper((Integer) s.getAttribute("userid"));
+
+                File uploaded_foto;
+                File uploaded_curriculum;
+                int foto_key = 0;
+                int curriculum_key = 0;
+
+                if(foto_to_upload != null && foto_to_upload.getSize() > 0){
+                    uploaded_foto = File.createTempFile("foto_profilo", "", new File(getServletContext().getInitParameter("extra-images.directory")));
+                    String digest_foto = getDigest(foto_to_upload, uploaded_foto);
+                    foto_key = datalayer.storeFile(foto_to_upload, uploaded_foto, digest_foto);
+                    dev.setFoto(foto_key);
+                }
+                if(curriculum_to_upload != null && curriculum_to_upload.getSize() > 0){
+                    uploaded_curriculum = File.createTempFile("curriculum", ".pdf", new File(getServletContext().getInitParameter("curriculums.directory")));
+                    String digest_curriculum = getDigest(curriculum_to_upload, uploaded_curriculum);
+                    curriculum_key = datalayer.storeFile(curriculum_to_upload, uploaded_curriculum, digest_curriculum);
+                    dev.setCurriculum(curriculum_key);
+                    dev.setCurriculum("");
+                    curriculum = "";     
+                }else{
+                    dev.setCurriculum(0);
+                    dev.setCurriculum(curriculum); 
+                }
+                dev.setBiography(bio);
+                datalayer.storeDeveloper(dev);
+                request.setAttribute("logout", "Logout");   
+               
+                response.sendRedirect("MyProfile");
+                //TemplateResult res = new TemplateResult(getServletContext());
+                //res.activate("myprofile.html",request, response);
+            }else{
+                response.sendRedirect("UpdateProfile");
+            } 
+            s.removeAttribute("previous_url");
+        }else{
+            response.sendRedirect("index");
         }
-        if(curriculum_to_upload != null && curriculum_to_upload.getSize() > 0){
-            uploaded_curriculum = File.createTempFile("curriculum", ".pdf", new File(getServletContext().getInitParameter("curriculums.directory")));
-            String digest_curriculum = getDigest(curriculum_to_upload, uploaded_curriculum);
-            curriculum_key = datalayer.storeFile(curriculum_to_upload, uploaded_curriculum, digest_curriculum);
-            dev.setCurriculum(curriculum_key);
-            dev.setCurriculum("");
-        }
-        if(curriculum != null && curriculum_to_upload==null && curriculum_to_upload.getSize()>0 && !curriculum.equals("") ){
-            dev.setCurriculum(curriculum); 
-        }
-        dev.setBiography(bio);
-        datalayer.storeDeveloper(dev);
-        request.setAttribute("logout", "Logout");   
-        
-        TemplateResult res = new TemplateResult(getServletContext());
-        res.activate("myprofile.html",request, response);
     }
     
      

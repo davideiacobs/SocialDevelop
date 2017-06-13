@@ -41,12 +41,12 @@
                   <li>My Projects</li>
                   <li>Complete</li>
                 </ul>
- 
-               <ul class="gt-shortlisted">
-                   
+               
+               <ul class="gt-shortlisted"> 
+               <#if projects?size!=0>    
                <#list projects as project>
                <li>
-
+                    
                     <div class="gt-text grade-padding">
                             <h4 id="grade-right"> ${perc[project?index]}%</h4>
                             <h5><a href="#">${project.name?cap_first}</a></h5>
@@ -61,9 +61,11 @@
                 </li>
                
             
-                </#list>   
+                </#list> 
+                <#else>
+                <h4>You are not the coordinator of any project</h4>
+                </#if>
                 </ul>
-                 
                 
               </div>
            </div>
