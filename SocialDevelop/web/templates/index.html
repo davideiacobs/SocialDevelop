@@ -4,24 +4,24 @@
               <div class="col-md-6">
              <div class="gt_lgin_tab_wrap home_background_login">
             <ul class="gt_login_link"  data-tabs="tabs">
-              <li><a data-toggle="tab" href="#register">Sign Up</a></li>
-              <li class="active"><a data-toggle="tab" href="#login">Sign In</a></li>
+                <li class=<#if active=="register">"active"<#else>""</#if>><a data-toggle="tab" href="#register">Sign Up</a></li>
+                <li class=<#if active=="login">"active"<#else>""</#if>><a data-toggle="tab" href="#login">Sign In</a></li>              
             </ul>
             <div class="tab-content">
-              <div class="tab-pane active" id="login">
+              <div class=<#if active=="login">"tab-pane active"<#else>"tab-pane"</#if> id="login">
                 <div class="gt_login_des_wrap default_width">
                     <form id="login" action="Login" method="post">
-                   
+                  <p class=${hidden_login_all!"hidden"} style="color:#cc171e;">${error_login_all}</p> 
                   <div class="gt_login_field">
                     <input type="text" name="username" id="mail-username" placeholder="Your Email/Username..">
                     <label><i class="fa fa-user-circle"></i></label>
                   </div>
-                  <p style="color:#cc171e;">${error_user}</p>           
+                  <p class=${hidden_login_user!"hidden"} style="color:#cc171e;">${error_user}</p>           
                   <div class="gt_login_field">
                     <input type="password" name="pwd" id="pwd" placeholder="Your Password">
                     <label><i class="fa fa-lock"></i></label>
                   </div>
-                   <p style="color:#cc171e;">${error_pwd}</p>   
+                   <p class=${hidden_login_pwd!"hidden"} style="color:#cc171e;">${error_pwd}</p>   
                   <div class="gt_login_radio_btn">
                     <input id="2" type="checkbox">
                     <label for="2"><span></span>Keep Me logged In</label>
@@ -46,9 +46,10 @@
                   </div>
                 </div>
               </div>
-              <div class="tab-pane" id="register">
+              <div class=<#if active=="register">"tab-pane active"<#else>"tab-pane"</#if> id="register">
                 <div class="gt_login_des_wrap default_width">
                   <form id="registrati" action="Signup" method="post">
+                  <p class=${hidden_register_all!"hidden"} style="color:#cc171e;">${error_register_all}</p> 
                   <div class="gt_login_field">
                     <input type="text" name="first_name" placeholder="First Name">
                     <label><i class="fa fa-user"></i></label>
@@ -60,6 +61,7 @@
                   <div class="gt_login_field">
                     <input type="text" name="username" placeholder="Username">
                     <label><i class="fa fa-user-circle"></i></label>
+                    <p class=${hidden_register_username!"hidden"} style="color:#cc171e;">${error_username}</p> 
                   </div>
                   <div class="gt_login_field">
                     <input type="text" pattern="\d{1,2}/\d{1,2}/\d{4}" name="birthdate" placeholder="Birthdate dd/mm/yyyy" />
@@ -68,6 +70,7 @@
                   <div class="gt_login_field">
                     <input type="email" name="mail" placeholder="Your Email Address">
                     <label><i class="fa fa-envelope"></i></label>
+                    <p class=${hidden_register_email!"hidden"} style="color:#cc171e;">${error_email}</p> 
                   </div>
                   <div class="gt_login_field">
                     <input type="password" name="pwd" placeholder="Your Password">
@@ -76,6 +79,7 @@
                   <div class="gt_login_field">
                     <input type="password" name="pwd2" placeholder="Confirm password">
                     <label><i class="icon-lock"></i></label>
+                    <p class=${hidden_register_pwd!"hidden"} style="color:#cc171e;">${error_pwd}</p> 
                   </div>
                   <div class="gt_login_field">
                     <input type="submit" value="Submit">

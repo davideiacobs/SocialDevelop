@@ -72,3 +72,7 @@ and open the template in the editor.
 .btn-upd-cv{
     text-align: left !important;
 }
+
+#a.hidden{
+    display:none;
+}

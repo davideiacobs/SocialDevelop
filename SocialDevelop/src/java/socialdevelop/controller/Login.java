@@ -32,33 +32,10 @@ public class Login extends SocialDevelopBaseController {
         }
     }
     
-    
-    private void login_error(HttpServletRequest request, HttpServletResponse response, String problem) throws TemplateManagerException, IOException {
-       
-        
-        
-                if(problem.equals("pwd")){
-                    //password errata  
-                    request.setAttribute("error_pwd", "password is not correct");
-                }else{
-                    if(problem.equals("user")){
-                        //username/mail errata
-                        request.setAttribute("error_user", "username/mail is not correct");
-
-                    }
-                }
-                request.setAttribute("slider", "hidden");
-                request.setAttribute("home_background", "home_background");
-                //response.sendRedirect("index");
-                TemplateResult res = new TemplateResult(getServletContext());
-                res.activate("index.html",request, response);
-                
-    }
-    
-    
-     private void action_login(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, DataLayerException, SQLException, NamingException {
+    private void action_login(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, DataLayerException, SQLException, NamingException {
             HttpSession s = request.getSession(true);
             String u = (String) s.getAttribute("previous_url");
+            
             if(s.getAttribute("previous_url") != null && (u.equals("/socialdevelop/index") || u.equals("/socialdevelop/MakeLoginReg"))){
                 String mail_username = request.getParameter("username");
                 String pwd = request.getParameter("pwd");
@@ -82,19 +59,24 @@ public class Login extends SocialDevelopBaseController {
                             res.activate(null,request, response);
                         } else {
                             //password errata
-                            login_error(request, response, "pwd");
+                            s.setAttribute("problem", "login_pwd");
+                            response.sendRedirect("index");
                         }
                     }else{
                         //mail o username errato
-                        login_error(request, response, "user");
+                        s.setAttribute("problem", "login_user");
+                        response.sendRedirect("index");
                     }
                 }else{
-                    login_error(request, response, "user");
+                    s.setAttribute("problem", "login_all");
+                    response.sendRedirect("index");
                 }
+                
             }else{
                 response.sendRedirect("index");
             }
-            s.removeAttribute("previous_url");
+            String act_url = request.getRequestURI();
+            s.setAttribute("previous_url", act_url);
             
     }
     
