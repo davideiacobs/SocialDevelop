@@ -99,6 +99,7 @@ public class CompletaRegistrazione extends SocialDevelopBaseController {
                     dev.setBiography(bio);
                 }
                 datalayer.storeDeveloper(dev);
+                datalayer.destroy();
                 request.setAttribute("username", dev.getUsername());
                 request.setAttribute("pwd", dev.getPwd());
                 request.setAttribute("username", dev.getUsername());

@@ -70,6 +70,7 @@ public class MyProfile extends SocialDevelopBaseController {
                 request.setAttribute("logout", "Logout");
                 request.setAttribute("datalayer", datalayer);
                 getImg(request, response, dev);
+                datalayer.destroy();
                 TemplateResult res = new TemplateResult(getServletContext());
                 res.activate("myprofile.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare
             }else{

@@ -85,6 +85,7 @@ public class Signup extends SocialDevelopBaseController {
                                 request.setAttribute("logout", "Logout");
                                 List<Skill> skills = datalayer.getSkillsParentList();
                                 request.setAttribute("skills", skills);
+                                datalayer.destroy();
                                 SecurityLayer.createSession(request, dev.getUsername(), dev.getKey());
                                 TemplateResult res = new TemplateResult(getServletContext());
                                 res.activate("completa_registrazione.html",request, response);  

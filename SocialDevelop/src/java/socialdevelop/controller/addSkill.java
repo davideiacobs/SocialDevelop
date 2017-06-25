@@ -39,7 +39,7 @@ public class addSkill extends SocialDevelopBaseController {
         int level = Integer.parseInt(skill_level.split(":")[1]);
         
         int ret = datalayer.storeSkillHasDeveloper(skill,developer_key,level);
-        
+        datalayer.destroy();
         response.setContentType("text/plain"); 
         response.setCharacterEncoding("UTF-8"); 
         PrintWriter out = response.getWriter();

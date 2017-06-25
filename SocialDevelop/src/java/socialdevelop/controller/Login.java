@@ -48,6 +48,8 @@ public class Login extends SocialDevelopBaseController {
                         dev_key = datalayer.getDeveloperByUsername(mail_username);
                     }
                     Developer dev = datalayer.getDeveloper(dev_key);
+                    datalayer.destroy();
+
                     if(dev!=null){
                         if(dev.getPwd().equals(pwd)){
                             SecurityLayer.createSession(request, dev.getUsername(), dev_key);

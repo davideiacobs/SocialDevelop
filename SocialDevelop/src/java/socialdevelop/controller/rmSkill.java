@@ -39,7 +39,7 @@ public class rmSkill extends SocialDevelopBaseController {
         
         
         int ret = datalayer.deleteSkillHasDeveloper(skill,developer_key);
-        
+        datalayer.destroy();
         response.setContentType("text/plain"); 
         response.setCharacterEncoding("UTF-8"); 
         PrintWriter out = response.getWriter();

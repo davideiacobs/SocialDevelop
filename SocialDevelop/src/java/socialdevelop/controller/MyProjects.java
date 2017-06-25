@@ -107,7 +107,7 @@ public class MyProjects extends SocialDevelopBaseController {
                     c++;
                 }
                 
-                
+                datalayer.destroy();
                 request.setAttribute("perc", perc);
                 request.setAttribute("projects", projects);
                 request.setAttribute("ncollaboratori", ncollaboratori);

@@ -17,16 +17,11 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.annotation.Resource;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
-import socialdevelop.data.impl.SocialDevelopDataLayerMysqlImpl;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Files;
 import socialdevelop.data.model.Message;
@@ -174,7 +169,7 @@ public class Project_Detail extends SocialDevelopBaseController {
                 else{
                     request.setAttribute("coordinatorpic", "extra-images/foto_profilo_default.png");
                 }
-                
+                datalayer.destroy();
                 String name = coordinator.getName().substring(0,1).toUpperCase() + coordinator.getName().substring(1);
                 String surname =coordinator.getSurname().substring(0,1).toUpperCase() + coordinator.getSurname().substring(1);
                 request.setAttribute("coordinatorusername",name+ " " + surname) ;

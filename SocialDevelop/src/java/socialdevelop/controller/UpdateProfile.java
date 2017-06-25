@@ -71,7 +71,7 @@ public class UpdateProfile extends SocialDevelopBaseController {
                 getImg(request, response, dev);
                 String act_url = request.getRequestURI();
                 s.setAttribute("previous_url", act_url);
-                
+                datalayer.destroy();
                 TemplateResult res = new TemplateResult(getServletContext());
                 res.activate("update_profile.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare
             }else{

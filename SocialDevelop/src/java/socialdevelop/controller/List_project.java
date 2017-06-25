@@ -78,6 +78,7 @@ public class List_project extends SocialDevelopBaseController {
                 request.setAttribute("listaprogetti", pro);
              request.setAttribute("nontrovato","Nessun progetto trovato");
             }
+           datalayer.destroy();
            TemplateResult res = new TemplateResult(getServletContext());
            res.activate("project_list.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare 
     }

@@ -70,6 +70,7 @@ public class SearchProject extends SocialDevelopBaseController {
                 count ++;
                 c++;
             }
+            datalayer.destroy();
             request.setAttribute("inizioprogetto", startdate);
             request.setAttribute("ncollaboratori", ncollaboratori);
             request.setAttribute("fotoCoordinatore", fotos); 

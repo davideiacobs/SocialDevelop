@@ -8,7 +8,6 @@ package socialdevelop.controller;
 import it.univaq.f4i.iw.framework.data.DataLayerException;
 import it.univaq.f4i.iw.framework.result.FailureResult;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
-import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -98,11 +97,9 @@ public class UpdateProfileSubmit extends SocialDevelopBaseController {
                 }
                 dev.setBiography(bio);
                 datalayer.storeDeveloper(dev);
+                datalayer.destroy();
                 request.setAttribute("logout", "Logout");   
-               
                 response.sendRedirect("MyProfile");
-                //TemplateResult res = new TemplateResult(getServletContext());
-                //res.activate("myprofile.html",request, response);
             }else{
                 response.sendRedirect("UpdateProfile");
             } 
