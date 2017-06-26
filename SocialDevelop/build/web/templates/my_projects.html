@@ -1,0 +1,72 @@
+   <!-- Dashboard Side Bar Wrap Start -->
+          <div class="col-md-4">
+            <div class="gt-user-sidebar">
+              <div class="gt_d_author_wrap">
+                <div class="gt_d_author_pic">
+                  <figure>
+                    <img src=${foto_profilo} alt="">
+                  </figure>
+                </div>
+                <div class="gt_d_author_pic_des">
+                  <h5>${username}</h5>
+                  <span class="gt_hdg_span"></span>
+                  <p>${fullname}</p>
+                </div>
+              </div>
+              <div class="gt-usser-account-list">
+                <ul>
+                  <li><a href="MyProfile"><i class="fa fa-user-circle-o gt-color"></i>My Profile</a></li>
+                  <li class="active"><a href="MyProjects"><i class="fa fa-code gt-color"></i>My Projects</a></li>
+                  <li><a href="MyCollaborations"><i class="fa fa-handshake-o gt-color"></i>My Collaborations</a></li>
+                  <li><a href="MySkills"><i class="icon-book gt-color"></i>My Skills</a></li>
+                  <li><a href="UpdateProfile"><i class="fa fa-upload"></i>Update Profile</a></li>
+                  <li><a href="dashboard-classes.html"><i class="icon-clock-1 gt-color"></i>Classes</a></li>
+                  <li><a href="dashboard-fav-courses.html"><i class="fa fa-heart gt-color"></i>My Favorites</a></li>
+                  <li><a href="report%26achievement.html"><i class="icon-business gt-color"></i>Report &#38; Achievement</a></li>
+                  <li><a href="profile-setting.html"><i class="icon-three gt-color"></i>Profile Setting</a></li>
+                  <li><a href="privacy-setting.html"><i class="icon-lock gt-color"></i>Privacy Setting</a></li>
+                </ul>
+                <a href="Logout" class="gt-logout"><i class="icon-arrows-2 gt-color"></i>Logout</a>
+              </div>
+            </div>
+          </div>
+          <!-- Dashboard Side Bar Wrap End -->
+
+         
+<!--Classes List Wrap Start-->
+          <div class="col-md-8">
+            <div class="gt_d_classes_wrap default_width">
+              <div class="gt_d_fav_courses default_width gt_courses_wrap">
+                <ul class="gt_d_fav_hdg">
+                  <li>My Projects</li>
+                  <li>Complete</li>
+                </ul>
+               
+               <ul class="gt-shortlisted"> 
+               <#if projects?size!=0>    
+               <#list projects as project>
+               <li>
+                    
+                    <div class="gt-text grade-padding">
+                            <h4 id="grade-right"> ${perc[project?index]}%</h4>
+                            <h5><a href="#">${project.name?cap_first}</a></h5>
+                            
+                            <p class="description_project">${project.description?cap_first}</p>
+                            <p>Start Date: ${startdate[project?index]} &nbsp; - &nbsp; End Date: ${enddate[project?index]}</p>    
+                    </div>
+                    <div class="gt_course_bottom default_width">
+                    <h5>${project.tasks?size}<span>Task</span></h5>
+                    <a href="#"><h5>${ncollaboratori[project?index]}<span>Collaboratori</span></h5></a>                  
+                </div>
+                </li>
+               
+            
+                </#list> 
+                <#else>
+                <h4>You are not the coordinator of any project</h4>
+                </#if>
+                </ul>
+                
+              </div>
+           </div>
+          </div>

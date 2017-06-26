@@ -56,8 +56,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     private PreparedStatement iTaskHasSkill, dTaskHasSkill,uTaskHasSkill,sTaskHasSkill;
     private PreparedStatement iTaskHasDeveloper,dTaskHasDeveloper,uTaskHasDeveloper,sTaskHasDeveloper;
     private PreparedStatement iSkillHasDeveloper,dSkillHasDeveloper,uSkillHasDeveloper,sSkillHasDeveloper;
-    private PreparedStatement sProjectByTask, sCurrentTasksByDeveloper, sEndedTasksByDeveloper;
-    private PreparedStatement sDateOfTaskByProject;
+    private PreparedStatement sProjectByTask, sCurrentTasksByDeveloper, sEndedTasksByDeveloper,sProjectsByCoordinator;
+    private PreparedStatement sDateOfTaskByProject,sEndDateOfTaskByProject;
     public SocialDevelopDataLayerMysqlImpl(DataSource datasource) throws SQLException, NamingException {
         super(datasource);
     }
@@ -71,6 +71,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             //precompiliamo tutte le query utilizzate
 
             sProjectByID = connection.prepareStatement("SELECT * FROM project WHERE ID=?");
+            
+            sProjectsByCoordinator = connection.prepareStatement("SELECT ID from project WHERE coordinator_ID=?");
             
             sTaskByID = connection.prepareStatement("SELECT * FROM task WHERE ID=?");
             
@@ -218,7 +220,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             iImg = connection.prepareStatement("INSERT INTO files (name,size,localfile,digest,type) VALUES (?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
             sFileByID = connection.prepareStatement("SELECT * FROM files WHERE ID=?");
             sDateOfTaskByProject = connection.prepareStatement("SELECT start FROM task AS t INNER JOIN project as p ON t.project_ID = p.ID WHERE p.ID = ? ORDER BY start LIMIT 1");
-            
+            sEndDateOfTaskByProject = connection.prepareStatement("SELECT MAX(end) AS maxend FROM task AS t INNER JOIN project as p ON t.project_ID = p.ID WHERE p.ID = ? LIMIT 1");
+
         } catch (SQLException ex) {
             throw new DataLayerException("Error initializing newspaper data layer", ex);
         }
@@ -403,7 +406,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             a.setText(rs.getString("text"));
             a.setPrivate(rs.getBoolean("private"));
             a.setType(rs.getString("type"));
-            
+            a.setProjectKey(rs.getInt("project_ID"));
+            a.setDeveloperKey(rs.getInt("developer_ID"));
             return a;
         } catch (SQLException ex) {
             throw new DataLayerException("Unable to create message object form ResultSet", ex);
@@ -504,6 +508,24 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         }
         return result; //restituisce in result tutti gli oggetti Project esistenti
     }
+    
+    @Override
+    public List<Project> getProjectsByCoordinator(int coordinator_key) throws DataLayerException{
+         List<Project> result = new ArrayList();
+         try{
+             sProjectsByCoordinator.setInt(1,coordinator_key);
+         
+            try (ResultSet rs = sProjectsByCoordinator.executeQuery()) {
+                while (rs.next()) {
+                    result.add((Project) getProject(rs.getInt("ID")));
+                }
+            }
+         } catch (SQLException ex) {
+            throw new DataLayerException("Unable to load projects by coordinator key", ex);
+        }
+        return result; //restituisce in result tutti gli oggetti Project di cui il coordinatore è quello indicato
+    }
+    
     
     @Override
     public List<Project> getProjects(String filter) throws DataLayerException {
@@ -1796,6 +1818,26 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             throw new DataLayerException("Unable to delete", ex);
         }
     }
+    
+    
+    @Override
+    public Date getEndDateOfTaskByProject(int project_key) throws DataLayerException {
+        try {
+     
+            sEndDateOfTaskByProject.setInt(1, project_key); 
+            try (ResultSet rs = sEndDateOfTaskByProject.executeQuery()) {
+                if (rs.next()) {
+                    java.sql.Date date;
+                    date = rs.getDate("maxend");
+                    return date;
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DataLayerException("Unable to load maxend by ID", ex);
+        }
+        return null;
+    }
+    
     @Override
     public Date getDateOfTaskByProject(int project_key) throws DataLayerException {
         try {
@@ -1813,6 +1855,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         }
         return null;
     }
+    
 }
     
     

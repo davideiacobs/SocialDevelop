@@ -36,6 +36,8 @@ public interface SocialDevelopDataLayer extends DataLayer {
     
     Project getProject(int project_key) throws DataLayerException;
     
+    List<Project> getProjectsByCoordinator(int coordinator_key) throws DataLayerException;
+    
     List<Project> getProjects() throws DataLayerException;
     
     List<Project> getProjects(String filtro) throws DataLayerException;
@@ -167,4 +169,6 @@ public interface SocialDevelopDataLayer extends DataLayer {
     List<Skill> getSkillsParentList() throws DataLayerException;
     
     int getSkillByName(String name) throws DataLayerException ;
+    
+    Date getEndDateOfTaskByProject(int project_key) throws DataLayerException;
 }

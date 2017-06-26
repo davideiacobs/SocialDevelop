@@ -4,16 +4,16 @@
         <param-name>view.outline_template</param-name>
         <param-value>header-footer.html</param-value>
     </context-param>
-    <!-- davide windows
+    <!-- davide windows -->
     <context-param>
         <param-name>extra-images.directory</param-name>
-        <param-value>C:\Users\david\Desktop\SocialDevelop\SocialDevelop\web\extra-images</param-value>
+        <param-value>C:\Users\david\Desktop\SocialDevelop\SocialDevelop\SocialDevelop\web\extra-images</param-value>
     </context-param>
     <context-param>
         <param-name>curriculums.directory</param-name>
-        <param-value>C:\Users\david\Desktop\SocialDevelop\SocialDevelop\web\curriculums</param-value>
+        <param-value>C:\Users\david\Desktop\SocialDevelop\SocialDevelop\SocialDevelop\web\curriculums</param-value>
     </context-param>
-     davide ubuntu
+    <!-- davide ubuntu
     <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/extra-images</param-value>
@@ -22,7 +22,7 @@
         <param-name>curriculums.directory</param-name>
         <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/curriculums</param-value>
     </context-param> 
-    manuel -->
+    
     <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>/Users/manuel/Desktop/GIT/SocialDevelop/SocialDevelop/web/extra-images</param-value>
@@ -30,8 +30,8 @@
     <context-param>
         <param-name>curriculums.directory</param-name>
         <param-value>/Users/manuel/Desktop/GIT/SocialDevelop/SocialDevelop/web/curriculums</param-value>
-    </context-param>--&gt;
-    <!-- Luca 
+    </context-param>
+     Luca 
     <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>C:\Users\Win8.1\Documents\Luca\SocialDevelop\SocialDevelop\SocialDevelop\web\extra-images</param-value>
@@ -55,6 +55,10 @@
     <servlet>
         <servlet-name>Index</servlet-name>
         <servlet-class>socialdevelop.controller.Index</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Project_Detail</servlet-name>
+        <servlet-class>socialdevelop.controller.Project_Detail</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Signup</servlet-name>
@@ -110,6 +114,10 @@
         <servlet-class>socialdevelop.controller.MySkills</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>MyProjects</servlet-name>
+        <servlet-class>socialdevelop.controller.MyProjects</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>addSkill</servlet-name>
         <servlet-class>socialdevelop.controller.addSkill</servlet-class>
     </servlet>
@@ -120,6 +128,23 @@
     <servlet>
         <servlet-name>CreateProject</servlet-name>
         <servlet-class>socialdevelop.controller.CreateProject</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateProfile</servlet-name>
+        <servlet-class>socialdevelop.controller.UpdateProfile</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateProfileSubmit</servlet-name>
+        <servlet-class>socialdevelop.controller.UpdateProfileSubmit</servlet-class>
+        <multipart-config>
+            <!--
+            <location>/tmp</location> temporary files location (DEF: "") -->
+            <max-file-size>20848820</max-file-size>
+            <!-- max size of accepted uploadd (DEF: unlimited!) -->
+            <max-request-size>418018841</max-request-size>
+            <!-- max size of multipart requests (may contain more files or data) (DEF: ulimited!) -->
+            <!-- <file-size-threshold>1048576</file-size-threshold> max size of files to hold in memory (without writing to temporary disk file) (DEF: 0) -->
+        </multipart-config>
     </servlet>
     <servlet-mapping>
         <servlet-name>provaDB2</servlet-name>
@@ -158,6 +183,10 @@
         <url-pattern>/MyProfile</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>MyProjects</servlet-name>
+        <url-pattern>/MyProjects</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>CompletaRegistrazione</servlet-name>
         <url-pattern>/CompletaRegistrazione</url-pattern>
     </servlet-mapping>
@@ -172,6 +201,10 @@
     <servlet-mapping>
         <servlet-name>SearchProject</servlet-name>
         <url-pattern>/SearchProject</url-pattern>
+    </servlet-mapping>
+     <servlet-mapping>
+        <servlet-name>Project_Detail</servlet-name>
+        <url-pattern>/Project_Detail</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>MySkills</servlet-name>
@@ -188,6 +221,14 @@
     <servlet-mapping>
         <servlet-name>CreateProject</servlet-name>
         <url-pattern>/CreateProject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateProfile</servlet-name>
+        <url-pattern>/UpdateProfile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateProfileSubmit</servlet-name>
+        <url-pattern>/UpdateProfileSubmit</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -62,7 +62,6 @@ public class MyProfile extends SocialDevelopBaseController {
                 long currentTime = System.currentTimeMillis();
                 Calendar now = Calendar.getInstance();
                 now.setTimeInMillis(currentTime);
-                 //Get difference between years
                 request.setAttribute("age", now.get(Calendar.YEAR) - dev.getBirthDate().get(Calendar.YEAR));
                 request.setAttribute("bio", dev.getBiography());
                 request.setAttribute("mail", dev.getMail());
@@ -71,8 +70,7 @@ public class MyProfile extends SocialDevelopBaseController {
                 request.setAttribute("logout", "Logout");
                 request.setAttribute("datalayer", datalayer);
                 getImg(request, response, dev);
-                //Files foto_profilo = datalayer.getFile(dev.getFoto());
-                //request.setAttribute("foto_profilo", "extra-images/" + foto_profilo.getLocalFile());
+                datalayer.destroy();
                 TemplateResult res = new TemplateResult(getServletContext());
                 res.activate("myprofile.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare
             }else{

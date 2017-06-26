@@ -51,6 +51,7 @@ public class CreateProject extends SocialDevelopBaseController {
          for(Map.Entry<Skill, Integer> sl : skills_level.entrySet()){
             skill_input = skill_input+String.valueOf(sl.getKey().getKey())+":"+String.valueOf(sl.getValue())+",";                       
         }
+         datalayer.destroy();
         request.setAttribute("skill-input", skill_input);
         TemplateResult res = new TemplateResult(getServletContext());
         res.activate("project_list.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare 

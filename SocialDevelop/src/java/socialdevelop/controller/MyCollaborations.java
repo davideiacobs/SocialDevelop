@@ -16,15 +16,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.annotation.Resource;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Files;
 import socialdevelop.data.model.Project;
@@ -100,7 +96,7 @@ public class MyCollaborations extends SocialDevelopBaseController {
                     entryEnded.getKey().setProject(pEnded);
                     coordinatorsEnded.add(cEnded);   
                 }
-                
+                datalayer.destroy();
                 request.setAttribute("tasksList", tasks);
                 request.setAttribute("coordinators", coordinators);
                 request.setAttribute("tasksListEnded", tasksEnded);
@@ -111,6 +107,7 @@ public class MyCollaborations extends SocialDevelopBaseController {
             }else{
                  response.sendRedirect("index");
             }
+            
            
     }
     

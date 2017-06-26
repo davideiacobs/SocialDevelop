@@ -7,18 +7,16 @@ package socialdevelop.controller;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
 import it.univaq.f4i.iw.framework.result.FailureResult;
-import it.univaq.f4i.iw.framework.result.HTMLResult;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import it.univaq.f4i.iw.framework.security.SecurityLayer;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 
@@ -34,55 +32,53 @@ public class Login extends SocialDevelopBaseController {
         }
     }
     
-    
-    private void login_error(HttpServletRequest request, HttpServletResponse response, String problem) throws TemplateManagerException {
-        if(problem.equals("pwd")){
-            //password errata  
-            request.setAttribute("error_pwd", "password is not correct");
-        }else{
-            if(problem.equals("user")){
-                //username/mail errata
-                request.setAttribute("error_user", "username/mail is not correct");
-                
-            }
-        }
-        request.setAttribute("slider", "hidden");
-        request.setAttribute("home_background", "home_background");
-        TemplateResult res = new TemplateResult(getServletContext());
-        res.activate("index.html",request, response);
-    }
-    
-    
-     private void action_login(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, DataLayerException, SQLException, NamingException {
+    private void action_login(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, DataLayerException, SQLException, NamingException {
+            HttpSession s = request.getSession(true);
+            String u = (String) s.getAttribute("previous_url");
             
-            String mail_username = request.getParameter("username");
-            String pwd = request.getParameter("pwd");
-            SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
-            int dev_key = 0;
-            if(mail_username.contains("@")){
-                dev_key = datalayer.getDeveloperByMail(mail_username);
-            }else{
-                dev_key = datalayer.getDeveloperByUsername(mail_username);
-            }
-            Developer dev = datalayer.getDeveloper(dev_key);
-            if(dev!=null){
-                if(dev.getPwd().equals(pwd)){
-                    SecurityLayer.createSession(request, dev.getUsername(), dev_key);
-                    request.setAttribute("username", dev.getUsername());
-                    request.setAttribute("logout", "Logout");
-                    request.setAttribute("page_title", dev.getUsername()+", ");
-                    request.setAttribute("page_subtitle", "Welcome back in SocialDevelop!");
-                    TemplateResult res = new TemplateResult(getServletContext());
-                    res.activate(null,request, response);
-                } else {
-                    //password errata
-                    login_error(request, response, "pwd");
+            if(s.getAttribute("previous_url") != null && (u.equals("/socialdevelop/index") || u.equals("/socialdevelop/MakeLoginReg"))){
+                String mail_username = request.getParameter("username");
+                String pwd = request.getParameter("pwd");
+                if(mail_username != null && !mail_username.equals("") && pwd != null && !pwd.equals("")){
+                    SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
+                    int dev_key = 0;
+                    if(mail_username.contains("@")){
+                        dev_key = datalayer.getDeveloperByMail(mail_username);
+                    }else{
+                        dev_key = datalayer.getDeveloperByUsername(mail_username);
+                    }
+                    Developer dev = datalayer.getDeveloper(dev_key);
+                    datalayer.destroy();
+
+                    if(dev!=null){
+                        if(dev.getPwd().equals(pwd)){
+                            SecurityLayer.createSession(request, dev.getUsername(), dev_key);
+                            request.setAttribute("username", dev.getUsername());
+                            request.setAttribute("logout", "Logout");
+                            request.setAttribute("page_title", dev.getUsername()+", ");
+                            request.setAttribute("page_subtitle", "Welcome back in SocialDevelop!");
+                            TemplateResult res = new TemplateResult(getServletContext());
+                            res.activate(null,request, response);
+                        } else {
+                            //password errata
+                            s.setAttribute("problem", "login_pwd");
+                            response.sendRedirect("index");
+                        }
+                    }else{
+                        //mail o username errato
+                        s.setAttribute("problem", "login_user");
+                        response.sendRedirect("index");
+                    }
+                }else{
+                    s.setAttribute("problem", "login_all");
+                    response.sendRedirect("index");
                 }
+                
             }else{
-                //mail o username errato
-                login_error(request, response, "user");
+                response.sendRedirect("index");
             }
-            
+            String act_url = request.getRequestURI();
+            s.setAttribute("previous_url", act_url);
             
     }
     
