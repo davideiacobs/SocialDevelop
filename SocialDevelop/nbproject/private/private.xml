@@ -11,6 +11,12 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/src/java/socialdevelop/controller/SocialDevelopBaseController.java</file>
+            <file>file:/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/src/java/socialdevelop/controller/CreateProject.java</file>
+            <file>file:/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/templates/completa_registrazione.html</file>
+            <file>file:/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/templates/create_project.html</file>
+            <file>file:/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/templates/manage_skills.html</file>
+        </group>
     </open-files>
 </project-private>

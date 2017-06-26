@@ -10,6 +10,7 @@ import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -17,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import socialdevelop.data.model.Skill;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 
 /**
@@ -35,6 +37,18 @@ public class CreateProject extends SocialDevelopBaseController {
         }
         
         SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
+        //recupero skills che non hanno figli
+        List<Skill> skills = datalayer.getSkillsParentList();
+        //ora recuperiamo per ognuna di esse le skills figlie
+        if(skills!=null){
+            for(Skill skill : skills){
+                List<Skill> child = datalayer.getChild(skill.getKey());
+                if(child!=null){
+                    skill.setChild(child);
+                }
+            }
+        }
+        request.setAttribute("skills", skills);
         /*List<Skill> skills = datalayer.getSkillsParentList();
         request.setAttribute("skills", skills);
         Map<Skill, Integer> skills_level = datalayer.getSkillsByDeveloper((int) s.getAttribute("userid"));

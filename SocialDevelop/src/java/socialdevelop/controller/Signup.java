@@ -93,8 +93,7 @@ public class Signup extends SocialDevelopBaseController {
                                             skill.setChild(child);
                                         }
                                     }
-                                }
-                                 request.setAttribute("skills", skills);
+                                }                    
                                 request.setAttribute("skills", skills);
                                 datalayer.destroy();
                                 SecurityLayer.createSession(request, dev.getUsername(), dev.getKey());
