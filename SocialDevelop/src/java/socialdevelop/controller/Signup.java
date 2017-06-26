@@ -17,9 +17,7 @@ import it.univaq.f4i.iw.framework.security.SecurityLayer;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -85,17 +83,7 @@ public class Signup extends SocialDevelopBaseController {
                                 request.setAttribute("page_subtitle", "Complete your profile!");
                                 request.setAttribute("username", dev.getUsername());
                                 request.setAttribute("logout", "Logout");
-                                //recupero skills che non hanno figli
                                 List<Skill> skills = datalayer.getSkillsParentList();
-                                //ora recuperiamo per ognuna di esse le skills figlie
-                                if(skills!=null){
-                                    for(Skill skill : skills){                                   
-                                        List<Skill> child = datalayer.getChild(skill.getKey());
-                                        if(child!=null){
-                                            skill.setChild(child);
-                                        }
-                                    }
-                                }
                                 request.setAttribute("skills", skills);
                                 datalayer.destroy();
                                 SecurityLayer.createSession(request, dev.getUsername(), dev.getKey());

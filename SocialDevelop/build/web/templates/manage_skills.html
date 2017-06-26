@@ -43,18 +43,17 @@
                           <select id="select-skill" class="find_course_search">
                             <option>Select Skill</option>
                             <!--<option>2</option>-->
-                            <!--<#list skills as skill>
-                            <option value="${skill.key}">${skill.name}</option>
-                            </#list>-->
                             <#list skills as skill>
                             <option value="${skill.key}">${skill.name}</option>
-                             <#list skill.child as child>
-                             <option value="${child.key}"> - ${child.name}</option>
-                             </#list>
                             </#list>
                           </select>
                         </div>
-                        
+                        <div class="gt_explore_search gt_clas_search select-skill">            
+                          <select class="find_course_search">
+                            <option>Select Skill</option>
+                            <option>2</option>
+                          </select>
+                        </div>
                         <div class="gt_explore_search gt_clas_search select-skill">            
                           <select id="select-level" class="find_course_search">
                             <option>Level</option>

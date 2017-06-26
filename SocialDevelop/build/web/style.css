@@ -1627,7 +1627,7 @@ ul.gt_rating_start li a {display: inline-block;}
 #profile-center{display: block; width: 260px; margin:0 auto;}
 #skill-level{display: inline; padding-left: 20px;}
 .title-add-skill{margin-bottom: 15px !important;}
-.select-skill{z-index: 999; min-width: 20% !important; margin-right: 18px !important;margin-bottom: 15px !important;}
+.select-skill{min-width: 20% !important; margin-right: 18px !important;margin-bottom: 15px !important;}
 #add-button{border-radius: 5px !important;}
 .upload-pic>form>input[type="file"]{height: 30px;cursor: pointer; margin-top: 18px; margin-bottom: 30px;}
 #label-curriculum{padding-bottom: 20px;}
