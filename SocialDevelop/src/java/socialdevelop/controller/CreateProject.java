@@ -9,10 +9,7 @@ import it.univaq.f4i.iw.framework.data.DataLayerException;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -20,12 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import socialdevelop.data.model.Developer;
-import socialdevelop.data.model.Files;
-import socialdevelop.data.model.Project;
-import socialdevelop.data.model.Skill;
 import socialdevelop.data.model.SocialDevelopDataLayer;
-import socialdevelop.data.model.Task;
 
 /**
  *
@@ -43,7 +35,7 @@ public class CreateProject extends SocialDevelopBaseController {
         }
         
         SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
-        List<Skill> skills = datalayer.getSkillsParentList();
+        /*List<Skill> skills = datalayer.getSkillsParentList();
         request.setAttribute("skills", skills);
         Map<Skill, Integer> skills_level = datalayer.getSkillsByDeveloper((int) s.getAttribute("userid"));
         request.setAttribute("skills_level", skills_level);
@@ -53,8 +45,9 @@ public class CreateProject extends SocialDevelopBaseController {
         }
          datalayer.destroy();
         request.setAttribute("skill-input", skill_input);
+        */
         TemplateResult res = new TemplateResult(getServletContext());
-        res.activate("project_list.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare 
+        res.activate("create_project.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare 
     }
     
     
