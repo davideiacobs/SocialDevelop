@@ -83,7 +83,18 @@ public class Signup extends SocialDevelopBaseController {
                                 request.setAttribute("page_subtitle", "Complete your profile!");
                                 request.setAttribute("username", dev.getUsername());
                                 request.setAttribute("logout", "Logout");
+                                //recupero skills che non hanno figli
                                 List<Skill> skills = datalayer.getSkillsParentList();
+                                //ora recuperiamo per ognuna di esse le skills figlie
+                                if(skills!=null){
+                                    for(Skill skill : skills){                                   
+                                        List<Skill> child = datalayer.getChild(skill.getKey());
+                                        if(child!=null){
+                                            skill.setChild(child);
+                                        }
+                                    }
+                                }
+                                 request.setAttribute("skills", skills);
                                 request.setAttribute("skills", skills);
                                 datalayer.destroy();
                                 SecurityLayer.createSession(request, dev.getUsername(), dev.getKey());

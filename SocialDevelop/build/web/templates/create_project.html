@@ -1,0 +1,158 @@
+<div class="gt_contact_form_wrap default_width add-project-page">
+          <!-- POP-UP -->
+            <div id="popup1" class="overlay">
+              <div class="popup">
+                <a class="close" href="#">×</a>
+                  <div class="content">
+                    <form class="gt_contact_form" id="contact-form" action="" method="post">
+                        <div class="col-md-4">
+                            <div class="gt_contact_us_field nome-progetto prova-float">
+                                <label>Nome del Task:</label>
+                                <input class="c_ph" type="text" placeholder="Your Name" id="name" name="contact-name" required>
+                            </div>
+                        </div>
+
+                      <div class="col-md-4">
+                          <div class="gt_contact_us_field nome-progetto">
+                              <label>Data inizio</label>
+                              <input class="c_ph" type="text" placeholder="Email Adress:" id="email" name="contact-email" required>
+                          </div>
+                      </div>
+                      <div class="col-md-4">
+                          <div class="gt_contact_us_field nome-progetto">
+                              <label>Data fine</label>
+                              <input class="c_ph" type="text" placeholder="Phone Number" id="subject" name="contact-subject" required>
+                          </div>
+                      </div>
+                      <div class="col-md-12">
+                          <div class="gt_contact_us_field nome-progetto">
+                              <label>Inserisci una breve descrizione del task</label>
+                              <textarea class="gt_c_bg" name="contact-message" id="message" placeholder="Message" required></textarea>
+                          </div>
+                      </div>
+                                            <div class="col-md-4">
+                          <div class="gt_contact_us_field nome-progetto prova-clear">
+                              <label>Numero collaboratori richiesti</label>
+                              <input class="c_ph" type="text" placeholder="Phone Number" id="subject" name="contact-subject" required>
+                          </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="add-skill"><!-- gt_advacnce_search_wrap default_width -->
+                        <div class="gt_explore_search gt_clas_search select-skill"> <!-- gt_aside_field -->      
+                        <label>Seleziona le skill richieste e il livello minimo</label> 
+
+                          <select id="select-skill" class="find_course_search">
+                            <option>Select Skill</option>
+                            <!--<option>2</option>-->
+                            <#list skills as skill>
+                            <option value="${skill.key}">${skill.name}</option>
+                            </#list>
+                          </select>
+
+                        <div class="gt_explore_search gt_clas_search select-skill">            
+                          <select id="select-level" class="find_course_search">
+                            <option>Level</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                          </select>
+                        </div>
+                        <div class="gt_explore_search gt_clas_search select-skill">                          
+                            <input id ="add-button" type="button" class="add-button add-skill-btn" value="Add">
+                        </div>
+                        </div>
+                        <div class="lista-skill gt_aside_category">
+                        <ul>
+                          <li><a>Business &#38; Management</a><a id="skill-level">10</a>
+                            <span><button type="button" class="btn btn-default btn-sm remove-skill-button">
+                            <span class="glyphicon glyphicon-remove"></span></button></span></li>
+                          <li><a>Business &#38; Management</a><a id="skill-level">10</a>
+                            <span><button type="button" class="btn btn-default btn-sm remove-skill-button">
+                            <span class="glyphicon glyphicon-remove"></span></button></span></li>
+                          <li><a>Business &#38; Management</a><a id="skill-level">10</a>
+                            <span><button type="button" class="btn btn-default btn-sm remove-skill-button">
+                            <span class="glyphicon glyphicon-remove"></span></button></span></li>
+                          <li><a>Business &#38; Management</a><a id="skill-level">10</a>
+                            <span><button type="button" class="btn btn-default btn-sm remove-skill-button">
+                            <span class="glyphicon glyphicon-remove"></span></button></span></li>
+                        </ul>
+                      </div>
+                      </div>
+                      </div>
+                      <div class="col-md-12">
+                          <div class="gt_contact_us_field">
+                              <input id="submit-message" type="submit" value="submit" name="submit_msg">
+                          </div>
+                          <!--Alert Message-->
+                          <div id="contact-result">
+                          </div>
+                      </div>
+                    </form>
+                  </div>
+              </div>
+            </div> <!-- FINE POP-UP -->
+            <!--Heading Wrap Start-->
+            <div class="gt_hdg_1 default_width">
+              <h3>Get in touch with us</h3>
+              <p>Aenean commodo ligal geate dolor. Aenan massa. Loren ipsum dolor sit amet,color<br>tetuer adiois elit, aliquam eget nibh etibra</p>
+                <span class="gt_hdg_left"></span>
+                <i class="icon-school"></i>
+                <span class="gt_hdg_right"></span>
+            </div>
+            <!--Heading Wrap End-->
+            <form class="gt_contact_form" id="contact-form" action="http://2goodtheme.net/edu-skill/layout/assets/sendmail.php" method="post">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="gt_contact_us_field nome-progetto">
+                    <label>Nome del Progetto:</label>
+                    <input class="c_ph" type="text" placeholder="Your Name" id="name" name="contact-name" required>
+                  </div>
+                  <div class="col-md-8"></div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                    <div class="gt_contact_us_field nome-progetto">
+                      <label>Inserisci una descrizione del progetto</label>
+                      <textarea class="gt_c_bg" name="contact-message" id="message" placeholder="Message" required></textarea>
+                    </div>
+                </div>
+              </div>
+              <!--   AGGIUNGI TASK   -->
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="add-task-box">
+                  <a class="add-task" href="#popup1">Add Task</a>
+                </div>
+                </div>
+              </div>
+          
+
+              <div class="col-md-12">
+                  <div class="gt_contact_us_field">
+                      <input id="submit-message" type="submit" value="submit" name="submit_msg">
+                  </div>
+                  <!--Alert Message-->
+                  <div id="contact-result">
+                  </div>
+              </div>
+            </form>
+          </div>
+<div id="popup1" class="overlay">
+  <div class="popup">
+    <h2>Here i am</h2>
+    <a class="close" href="#">×</a>
+    <div class="content">
+      Thanks for pop me out of that button, but now i'm done so you can close this window.
+    </div>
+  </div>
+</div>
+
+        
+          
+
+
+      </div>
+    </div>

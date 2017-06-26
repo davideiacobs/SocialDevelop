@@ -42,6 +42,10 @@ $(".add-skill-btn").on("click",function(){
     var level = $("#select-level option:selected").val();
     var skill_level = skill.val()+":"+level;
     var userid = $("#userid").val();
+    var skill_text = skill.text();
+    if(skill_text.indexOf("-")>=0){
+        skill_text = skill_text.split("-")[1];
+    }
     $.ajax({
           datatype: 'text/plain',
           type: 'post',
@@ -52,9 +56,9 @@ $(".add-skill-btn").on("click",function(){
           },
           success: function (response) {
               if(response == 1){
-              $(".list-skill").prepend("<li><a class='skill-name' >"+skill.text()+"&nbsp;</a><a id='skill-level'>"+level+"</a>\n\
-            <span><button onclick='remove_skill(this)' type='button' id='rm-skill-btn' class='btn btn-default btn-sm remove-skill-button rm-skill-btn'><span class='glyphicon glyphicon-remove'></span></button></span></li>");   
-            }
+                $(".list-skill").prepend("<li><a class='skill-name' >"+skill_text+"&nbsp;</a><a id='skill-level'>"+level+"</a>\n\
+             <span><button onclick='remove_skill(this)' type='button' id='rm-skill-btn' class='btn btn-default btn-sm remove-skill-button rm-skill-btn'><span class='glyphicon glyphicon-remove'></span></button></span></li>");   
+              }
          }
         });
     

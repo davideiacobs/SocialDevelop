@@ -73,8 +73,17 @@ public class MySkills extends SocialDevelopBaseController {
                 request.setAttribute("datalayer", datalayer);
                 getImg(request, response, dev);
                 
-                List<Skill> skills = datalayer.getSkillsParentList();
-                request.setAttribute("skills", skills);
+                 List<Skill> skills = datalayer.getSkillsParentList();
+                //ora recuperiamo per ognuna di esse le skills figlie
+                if(skills!=null){
+                    for(Skill skill : skills){
+                        List<Skill> child = datalayer.getChild(skill.getKey());
+                        if(child!=null){
+                            skill.setChild(child);
+                        }
+                    }
+                }
+                 request.setAttribute("skills", skills);
                 Map<Skill, Integer> skills_level = datalayer.getSkillsByDeveloper((int) s.getAttribute("userid"));
                 request.setAttribute("skills_level", skills_level);
                 String skill_input = "";
