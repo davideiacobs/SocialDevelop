@@ -81,7 +81,7 @@ $(".add-skill-to-task-btn").on("click",function(){
         if(skill_text.indexOf("-")>=0){
             skill_text = skill_text.split("-")[1];
         }
-        var input_skills = $(".input-skills").val();
+        //var input_skills = $(".input-skills").val();
         var flag = false;
         //controlliamo se la skill selezionata è già presente nella lista
         var check =  $('a.skill-name:contains("'+skill_text+'")').length;
@@ -90,12 +90,18 @@ $(".add-skill-to-task-btn").on("click",function(){
         }
         //se non lo è aggiungiamo sia all'input nascosto che alla lista
         if(!flag){
-            if(input_skills!=""){
+            /*if(input_skills!=""){
                 $(".input-skills").val(input_skills + ";" + skill_level);
             }else{
                $(".input-skills").val(skill_level);
+            }*/
+            /*if(input_skills!=""){
+                $(".input-skills").val(input_skills + ";" + skill_text+":"+level);
+            }else{
+                $(".input-skills").val(skill_text+":"+level);
             }
-            $(".list-skill").prepend("<li><a class='skill-name' >"+skill_text+"&nbsp;</a>\n\
+            console.log($(".input-skills").val());
+            */$(".list-skill").prepend("<li><a class='skill-name' >"+skill_text+"&nbsp;</a>\n\
             <a id='skill-level'>"+level+"</a>\n\
             <span><button onclick='remove_skill_from_task(this)' \n\
             type='button' id='rm-skill-from-task-btn' class='btn btn-default btn-sm \n\
@@ -109,8 +115,62 @@ $(".add-skill-to-task-btn").on("click",function(){
 
 function remove_skill_from_task(param){
    var skill = $.trim($(param).parent().parent().children("a.skill-name").text());
+   console.log(skill);
    var rm = $(param).parent().parent("li");
    rm.remove();
-   //rimuovere il valore corrispondente dall'input nascosto
- }              
+ }          
+ 
+function reset_popup(){
+    $(".list-skill").empty();
+    $("#task_name").val("");
+    $("#start_date").val("");
+    $("#end_date").val("");
+    $("#task_descr").text("");
+    ("#num_collaborators").val("");
+}
 
+
+$("a.add-task").on("click", function(){
+    $("#popup1").removeClass("hidden");
+    reset_popup();
+}); 
+
+
+function aggiungi_task(name,start,end,descr,ncoll, skill_level){
+    $(".task-aggiunti").append("<li><div class='gt-text grade-padding'>\n\
+                                <p>Task: "+name+"</p>\n\
+                                <p>Start Date: "+start+" &nbsp; - &nbsp; End Date: "+end+"</p>\n\
+                                <p>Description: "+descr+"</p>\n\
+                                <p>Collaborators: "+ncoll+"</p>\n\
+                                <p id='append_here_"+name+"'>Skills Richieste: </p>");
+    var i = 0;
+    for(i;i<skill_level.length;i++){
+        var skill_name = skill_level[i].split(":")[0];
+        var level = skill_level[i].split(":")[1];
+        $("#append_here_"+name).append(skill_name+"("+level+") ; ");
+    }
+    
+}
+    
+$("#submit-task").on("click", function(){
+   var task_name = $("#task_name").val();
+   var start_date = $("#start_date").val();
+   var end_date = $("#end_date").val();
+   var task_descr = $("#task_descr").val();
+   console.log(task_descr);
+   var num_collaborators = $("#num_collaborators").val();
+   
+   var skill_level = [];
+   //recuperiamo ora la lista delle skill e dei livelli inseriti
+   $(".list-skill").children("li").each(function (){
+       var skill_name = $.trim($(this).children("a.skill-name").text());
+       var level = $.trim($(this).children("a#skill-level").text());
+       skill_level.push(skill_name+":"+level);
+       
+   });
+   console.log(skill_level);
+   $("#popup1").addClass("hidden");
+   
+   aggiungi_task(task_name,start_date,end_date,task_descr, num_collaborators, skill_level);
+   
+});

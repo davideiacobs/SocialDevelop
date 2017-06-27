@@ -2,38 +2,38 @@
           <!-- POP-UP -->
             <div id="popup1" class="overlay">
               <div class="popup">
-                <a class="close" href="#">×</a>
+                <a class="close close-tab" href="#">×</a>
                   <div class="content">
-                    <form class="gt_contact_form" id="contact-form" action="" method="post">
+                    <form class="gt_contact_form" id="contact-form" action="#" method="post">
                         <div class="col-md-4">
                             <div class="gt_contact_us_field nome-progetto prova-float">
                                 <label>Nome del Task:</label>
-                                <input class="c_ph" type="text" placeholder="Your Name" id="name" name="contact-name" required>
+                                <input class="c_ph" type="text" placeholder="Task name" id="task_name" name="task_name" required>
                             </div>
                         </div>
 
                       <div class="col-md-4">
                           <div class="gt_contact_us_field nome-progetto">
                               <label>Data inizio</label>
-                              <input class="c_ph" type="text" placeholder="Email Adress:" id="email" name="contact-email" required>
+                              <input class="c_ph" type="text" placeholder="Start date" id="start_date" name="start_date" required>
                           </div>
                       </div>
                       <div class="col-md-4">
                           <div class="gt_contact_us_field nome-progetto">
                               <label>Data fine</label>
-                              <input class="c_ph" type="text" placeholder="Phone Number" id="subject" name="contact-subject" required>
+                              <input class="c_ph" type="text" placeholder="End date" id="end_date" name="end_date" required>
                           </div>
                       </div>
                       <div class="col-md-12">
                           <div class="gt_contact_us_field nome-progetto">
                               <label>Inserisci una breve descrizione del task</label>
-                              <textarea class="gt_c_bg" name="contact-message" id="message" placeholder="Message" required></textarea>
+                              <textarea class="gt_c_bg" name="task_descr" id="task_descr" placeholder="Task description" required></textarea>
                           </div>
                       </div>
-                                            <div class="col-md-4">
+                     <div class="col-md-4">
                           <div class="gt_contact_us_field nome-progetto prova-clear">
                               <label>Numero collaboratori richiesti</label>
-                              <input class="c_ph" type="text" placeholder="Phone Number" id="subject" name="contact-subject" required>
+                              <input class="c_ph" type="text" placeholder="Collaborators" id="num_collaborators" name="num_collaborators" required>
                           </div>
                       </div>
                       <div class="col-md-12">
@@ -69,30 +69,20 @@
                         <div class="lista-skill gt_aside_category">
                             
                         <ul class="list-skill">
-                          <li><a>Business &#38; Management</a><a id="skill-level">10</a>
-                            <span><button type="button" class="btn btn-default btn-sm remove-skill-button">
-                            <span class="glyphicon glyphicon-remove"></span></button></span></li>
-                          <li><a>Business &#38; Management</a><a id="skill-level">10</a>
-                            <span><button type="button" class="btn btn-default btn-sm remove-skill-button">
-                            <span class="glyphicon glyphicon-remove"></span></button></span></li>
-                          <li><a>Business &#38; Management</a><a id="skill-level">10</a>
-                            <span><button type="button" class="btn btn-default btn-sm remove-skill-button">
-                            <span class="glyphicon glyphicon-remove"></span></button></span></li>
-                          <li><a>Business &#38; Management</a><a id="skill-level">10</a>
-                            <span><button type="button" class="btn btn-default btn-sm remove-skill-button">
-                            <span class="glyphicon glyphicon-remove"></span></button></span></li>
+                          <!--contenuto = lista skill selezionate -->
                         </ul>
                       </div>
                       </div>
                       </div>
                       <div class="col-md-12">
                           <div class="gt_contact_us_field">
-                              <input id="submit-message" type="submit" value="submit" name="submit_msg">
+                              <input id="submit-task" type="button" value="submit" name="submit_task">
                           </div>
                           <!--Alert Message-->
                           <div id="contact-result">
                           </div>
                       </div>
+                        <input type="text" class="input-skills"/>
                     </form>
                   </div>
               </div>
@@ -111,7 +101,7 @@
                 <div class="col-md-4">
                   <div class="gt_contact_us_field nome-progetto">
                     <label>Nome del Progetto:</label>
-                    <input class="c_ph" type="text" placeholder="Your Name" id="name" name="contact-name" required>
+                    <input class="c_ph" type="text" placeholder="Project name" id="project_name" name="contact-name" required>
                   </div>
                   <div class="col-md-8"></div>
                 </div>
@@ -120,10 +110,22 @@
                 <div class="col-md-12">
                     <div class="gt_contact_us_field nome-progetto">
                       <label>Inserisci una descrizione del progetto</label>
-                      <textarea class="gt_c_bg" name="contact-message" id="message" placeholder="Message" required></textarea>
+                      <textarea class="gt_c_bg" name="contact-message" id="project_descr" placeholder="Description" required></textarea>
                     </div>
                 </div>
               </div>
+                <!--LISTA TASK AGGIUNTI -->
+                <div class="gt_d_fav_courses default_width">
+                <ul class="gt_d_fav_hdg">
+                  <li>Task Aggiunti</li>
+                  
+                </ul>
+ 
+               <ul class="gt-shortlisted task-aggiunti">
+              
+                </ul>
+              </div>
+                <!-- fine lista task aggiunti -->
               <!--   AGGIUNGI TASK   -->
               <div class="row">
                 <div class="col-md-12">
@@ -153,7 +155,7 @@
     </div>
   </div>
 </div>
-<input type="text" class="hidden input-skills"/>
+
         
           
 
