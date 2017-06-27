@@ -126,13 +126,52 @@ function remove_task(param){
 }
 
 
+function reload_task(name,start,end,descr,coll,skills){
+    $("#task_name").val(name);
+    $("#start_date").val(start);
+    $("#end_date").val(end);
+    $("#task_descr").val(descr);
+    $("#num_collaborators").val(coll);
+
+    var i=0;
+    var skl = skills.split(";");
+    for(i;i<skl.length-1;i++){
+        var splitted = skl[i].split("(");
+        var skill_text = splitted[0];
+        var level = splitted[1].split(")")[0];
+        $(".list-skill").prepend("<li><a class='skill-name' >"+skill_text+"&nbsp;</a>\n\
+            <a id='skill-level'>"+level+"</a>\n\
+            <span><button onclick='remove_skill_from_task(this)' \n\
+            type='button' id='rm-skill-from-task-btn' class='btn btn-default btn-sm \n\
+            remove-skill-from-task-button rm-skill-from-task-btn'><span class='glyphicon\n\
+             glyphicon-remove'></span></button></span></li>");   
+    }
+    
+}
+
+
+function update_task(param){
+   
+    var name = $.trim($(param).siblings("p#name").text().split(":")[1]);
+    var start = $.trim($(param).siblings("p#start-end").text().split(":")[1].split("-")[0]);
+    var end = $.trim($(param).siblings("p#start-end").text().split("-")[1].split(":")[1]);
+    var descr = $.trim($(param).siblings("p#descr").text().split(":")[1]);
+    var coll = $.trim($(param).siblings("p#coll").text().split(":")[1]);
+    var skills = $.trim($(param).siblings("p.skills").text().split(":")[1]);
+    $(param).parent("div").parent("li").remove();
+    $("a.add-task").trigger("click");
+    reload_task(name,start,end,descr,coll,skills);
+    
+    
+}
+
 function aggiungi_task(name,start,end,descr,ncoll, skill_level){
     $(".task-aggiunti").append("<li><div class='gt-text grade-padding'>\n\
-                                <p>Task: "+name+"</p>\n\
-                                <p>Start Date: "+start+" &nbsp; - &nbsp; End Date: "+end+"</p>\n\
-                                <p>Description: "+descr+"</p>\n\
-                                <p>Collaborators: "+ncoll+"</p>\n\
-                                <p id='append_here_"+name+"'>Skills Richieste: </p>\n\
+                                <p id='name'>Task: "+name+"</p>\n\
+                                <p id='start-end'>Start Date: "+start+" &nbsp; - &nbsp; End Date: "+end+"</p>\n\
+                                <p id='descr'>Description: "+descr+"</p>\n\
+                                <p id='coll'>Collaborators: "+ncoll+"</p>\n\
+                                <p id='append_here_"+name+"' class='skills'>Skills Richieste: </p>\n\
                                 <input type='button' value='Update' id='update-skill' onclick='update_task(this)'/>\n\
                                 <input type='button' value='Delete' id='delete-skill' onclick='remove_task(this)' /></div></li>");
     var i = 0;
