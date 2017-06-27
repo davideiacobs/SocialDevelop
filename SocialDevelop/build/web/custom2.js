@@ -165,9 +165,10 @@ function update_task(param){
     
 }
 
-function aggiungi_task(name,start,end,descr,ncoll, skill_level){
+function aggiungi_task(name,start,end,descr,ncoll, skill_level, tipo){
     $(".task-aggiunti").append("<li><div class='gt-text grade-padding'>\n\
                                 <p id='name'>Task: "+name+"</p>\n\
+                                <p id='tipo'>Type: "+tipo+"</p>\n\
                                 <p id='start-end'>Start Date: "+start+" &nbsp; - &nbsp; End Date: "+end+"</p>\n\
                                 <p id='descr'>Description: "+descr+"</p>\n\
                                 <p id='coll'>Collaborators: "+ncoll+"</p>\n\
@@ -185,45 +186,104 @@ function aggiungi_task(name,start,end,descr,ncoll, skill_level){
     
 $("#submit-task").on("click", function(){
     $("input").each(function(){
-       $(this).removeClass("req"); 
+        $(this).removeClass("req"); 
     });
     var task_name = $("#task_name").val();
     var start_date = $("#start_date").val();
     var end_date = $("#end_date").val();
     var task_descr = $("#task_descr").val();
     var num_collaborators = $("#num_collaborators").val();
+    var tipo = $("#select-type option:selected").text();
     var skill_level = [];
     if(task_name!=""){
-        if(start_date != ""){
-            if(end_date != ""){
-                if(task_descr != ""){
-                    if(num_collaborators != ""){
-                        if($(".list-skill").children("li").length>0){
-                            //recuperiamo ora la lista delle skill e dei livelli inseriti
-                            $(".list-skill").children("li").each(function (){
-                                var skill_name = $.trim($(this).children("a.skill-name").text());
-                                var level = $.trim($(this).children("a#skill-level").text());
-                                skill_level.push(skill_name+":"+level);
-                            });
-                            $("#popup1").addClass("hidden");
-                            aggiungi_task(task_name,start_date,end_date,task_descr, num_collaborators, skill_level);
+        if(tipo!=""){
+            if(start_date != "" && !isNaN(Date.parse(start_date)) ){   
+                if(end_date != "" && !isNaN(Date.parse(end_date))){
+                    if(task_descr != ""){
+                        if(num_collaborators != ""){
+                            if($(".list-skill").children("li").length>0){
+                                //recuperiamo ora la lista delle skill e dei livelli inseriti
+                                $(".list-skill").children("li").each(function (){
+                                    var skill_name = $.trim($(this).children("a.skill-name").text());
+                                    var level = $.trim($(this).children("a#skill-level").text());
+                                    skill_level.push(skill_name+":"+level);
+                                });
+                                $("#popup1").addClass("hidden");
+                                aggiungi_task(task_name,start_date,end_date,task_descr, num_collaborators, skill_level,tipo);
+                            }else{
+                                $(".skills-err").addClass("req-list");
+                                $("#select-skill").focus();
+                            }
                         }else{
-                            $(".skills-err").addClass("req-list");
+                            $("#num_collaborators").addClass("req");
+                            $("#num_collaborators").focus();
                         }
                     }else{
-                        $("#num_collaborators").addClass("req");
+                        $("#task_descr").addClass("req");
+                        $("#task_descr").focus();
                     }
                 }else{
-                    $("#task_descr").addClass("req");
-                    
+                    $("#end_date").addClass("req");
+                    $("#end_date").focus();
                 }
             }else{
-                $("#end_date").addClass("req");
+                $("#start_date").addClass("req");
+                $("#start_date").focus();
             }
         }else{
-            $("#start_date").addClass("req");
+            $(".type-err").addClass("req-list");
+            $("#select-type").focus();
         }
     }else{
         $("#task_name").addClass("req");
+        $("#task_name").focus();
     }
 });
+
+
+
+
+$("#submit-project").on("click", function(){
+   $("#tasks").val("");
+   var c = $(".task-aggiunti").children("li").length;
+   var i=0;
+   for(i=0;i<c;i++){
+       var task = $(".task-aggiunti").children("li")[i];
+       var name = $.trim($(task).children().children("p#name").text().split(":")[1]);
+       var tipo = $.trim($(task).children().children("p#tipo").text().split(":")[1]);
+       var start = $.trim($(task).children().children("p#start-end").text().split(":")[1].split("-")[0]);
+       var end = $.trim($(task).children().children("p#start-end").text().split("-")[1].split(":")[1]);
+       var descr = $.trim($(task).children().children("p#descr").text().split(":")[1]);
+       var coll = $.trim($(task).children().children("p#coll").text().split(":")[1]);
+       var skills = $.trim($(task).children().children("p.skills").text().split(":")[1]);
+       if($("#tasks").val()==""){
+           $("#tasks").val(name+"#"+start+"#"+end+"#"+descr+"#"+coll+"#"+skills+"#"+tipo+"@");
+       }else{
+           $("#tasks").val(skills+name+"#"+start+"#"+end+"#"+descr+"#"+coll+"#"+skills+"#"+tipo+"@");
+       }
+       console.log($("#tasks").val());
+   }
+    
+});
+
+
+
+$("#select-type").on("change", function(){
+    $("#select-skill option").removeClass("hidden");
+    $(".list-skill").empty();
+    $("#select-skill").val("");
+    var type_id = $("#select-type option:selected").val();
+    $("#select-skill option").not("."+type_id).addClass("hidden");
+});
+
+
+$(function(){
+  $(".add-project-form")[0].reset();
+  $(".add-task-form")[0].reset();
+});
+
+
+window.onbeforeunload = function() {
+  $(".add-project-form")[0].reset();
+  $(".add-task-form")[0].reset();
+};

@@ -5,11 +5,22 @@
             <a class="close close-tab" href="#">×</a>
             <div class="content">
                 <form class="gt_contact_form add-task-form" id="contact-form" action="" method="post">
-                    <div class="col-md-4">
+                    <div class="col-md-9">
                         <div class="gt_contact_us_field nome-progetto prova-float">
                             <label id="label-pop">Task Name</label>
                             <input class="c_ph" type="text" placeholder="Task name" id="task_name" name="task_name">
                         </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label id="label-pop" class="type-err">Select type</label> 
+                            <div class="gt_explore_search gt_clas_search select-skill fullWidth">   
+                                <select id="select-type" class="form-control">
+                                    <option value="">Select Type</option>
+                                    <#list types as type>
+                                        <option value="${type.key}">${type.type}</option>
+                                    </#list>
+                                </select>
+                            </div>
                     </div>
                     <div class="col-md-4">
                         <div class="gt_contact_us_field nome-progetto">
@@ -41,19 +52,19 @@
                         <div class="add-skill">
                             <label id="label-pop" class="skills-err">Select skills and level required</label> 
                             <div class="gt_explore_search gt_clas_search select-skill">   
-                                <select id="select-skill" class="find_course_search">
+                                <select id="select-skill" class="form-control">
                                     <option value="">Select Skill</option>
                                         
                                     <#list skills as skill>
-                                    <option value="${skill.key}">${skill.name}</option>
+                                    <option class="${skill.type_key} hidden" value="${skill.key}">${skill.name}</option>
                                     <#list skill.child as child>
-                                    <option value="${child.key}"> - ${child.name}</option>
+                                    <option class="${skill.type_key} hidden" value="${child.key}"> - ${child.name}</option>
                                     </#list>
                                     </#list>
                                 </select>
                             </div>
                             <div class="gt_explore_search gt_clas_search select-skill">            
-                                <select id="select-level" class="find_course_search">
+                                <select id="select-level" class="form-control" >
                                     <option value="">Level</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -94,12 +105,12 @@
         <span class="gt_hdg_right"></span>
     </div>
     <!--Heading Wrap End-->
-    <form class="gt_contact_form" id="contact-form" action="http://2goodtheme.net/edu-skill/layout/assets/sendmail.php" method="post">
+    <form class="gt_contact_form add-project-form" id="contact-form" action="InsertProject" method="post">
         <div class="row">
             <div class="col-md-4">
                 <div class="gt_contact_us_field nome-progetto">
                     <label>Nome del Progetto:</label>
-                    <input class="c_ph" type="text" placeholder="Project name" id="project_name" name="contact-name" required>
+                    <input class="c_ph" type="text" placeholder="Project name" id="project_name" name="project_name" required>
                 </div>
                 <div class="col-md-8"></div>
             </div>
@@ -108,7 +119,7 @@
             <div class="col-md-12">
                 <div class="gt_contact_us_field nome-progetto">
                     <label>Inserisci una descrizione del progetto</label>
-                    <textarea class="gt_c_bg" name="contact-message" id="project_descr" placeholder="Description" required></textarea>
+                    <textarea class="gt_c_bg" name="project_descr" id="project_descr" placeholder="Description" required></textarea>
                 </div>
             </div>
         </div>
@@ -131,11 +142,12 @@
         </div>
         <div class="col-md-12">
             <div class="gt_contact_us_field">
-                <input id="submit-message" type="submit" value="submit" name="submit_msg">
+                <input id="submit-project" type="submit" value="submit" name="submit_project">
             </div>
             <!--Alert Message-->
             <div id="contact-result">
             </div>
         </div>
+        <input id="tasks" name="tasks" type="text" class=""/>
     </form>
 </div>

@@ -33,6 +33,7 @@ public class TaskImpl implements Task{
     private boolean open;
     private int numCollaborators;
     private String description;
+    private int type_key;
     private Type type;
     private Map<Skill, Integer> skills;
     private Map<Developer, Integer> collaborators;
@@ -52,6 +53,7 @@ public class TaskImpl implements Task{
         numCollaborators = 0;
         description = "";
         type = null;
+        type_key = 0;
         skills = null;
         collaborators = null;
         dirty = false;
@@ -166,6 +168,17 @@ public class TaskImpl implements Task{
     public void setType(Type type){
         this.type = type;
         this.dirty = true;
+    }
+    
+    @Override
+    public void setType_key(int type_key){
+        this.type_key = type_key;
+        this.dirty = true;
+    }
+    
+    @Override
+    public int getType_key(){
+        return type_key;
     }
     
     @Override
@@ -284,6 +297,7 @@ public class TaskImpl implements Task{
         end = task.getEndDate();
         description = task.getDescription();
         open = task.isOpen();
+        type_key = task.getType_key();
         this.dirty = true;
     }
 }

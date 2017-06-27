@@ -89,3 +89,12 @@ and open the template in the editor.
 .req-list{
     color:red;
 }
+
+.fullWidth{
+    width:100% !important;
+}
+
+
+.hidden{
+    display:none !important;
+}

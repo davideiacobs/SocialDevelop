@@ -21,7 +21,7 @@
     <context-param>
         <param-name>curriculums.directory</param-name>
         <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/curriculums</param-value>
-    </context-param> 
+    </context-param>
     <!-- Manuel
     <context-param>
         <param-name>extra-images.directory</param-name>
@@ -146,6 +146,10 @@
             <!-- <file-size-threshold>1048576</file-size-threshold> max size of files to hold in memory (without writing to temporary disk file) (DEF: 0) -->
         </multipart-config>
     </servlet>
+    <servlet>
+        <servlet-name>InsertProject</servlet-name>
+        <servlet-class>socialdevelop.controller.InsertProject</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>provaDB2</servlet-name>
         <url-pattern>/provaDB2</url-pattern>
@@ -202,7 +206,7 @@
         <servlet-name>SearchProject</servlet-name>
         <url-pattern>/SearchProject</url-pattern>
     </servlet-mapping>
-     <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>Project_Detail</servlet-name>
         <url-pattern>/Project_Detail</url-pattern>
     </servlet-mapping>
@@ -229,6 +233,10 @@
     <servlet-mapping>
         <servlet-name>UpdateProfileSubmit</servlet-name>
         <url-pattern>/UpdateProfileSubmit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InsertProject</servlet-name>
+        <url-pattern>/InsertProject</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

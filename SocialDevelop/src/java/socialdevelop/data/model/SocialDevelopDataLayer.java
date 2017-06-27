@@ -110,7 +110,7 @@ public interface SocialDevelopDataLayer extends DataLayer {
     
     CollaborationRequest getCollaborationRequest(int collaborator_key, int task_key ) throws DataLayerException;
 
-    void storeProject(Project project) throws DataLayerException;
+    int storeProject(Project project) throws DataLayerException;
     
     void deleteProject(Project project) throws DataLayerException;
     
@@ -118,7 +118,7 @@ public interface SocialDevelopDataLayer extends DataLayer {
     
     void deleteDeveloper(Developer developer) throws DataLayerException;
     
-    void storeTask(Task task) throws DataLayerException;
+    int storeTask(Task task) throws DataLayerException;
     
     void deleteTask(Task task) throws DataLayerException;
     
@@ -138,7 +138,7 @@ public interface SocialDevelopDataLayer extends DataLayer {
     
     void deleteRequest(CollaborationRequest request) throws DataLayerException;
     
-    void storeTaskHasSkill(int task_ID, int skill_ID, int type_ID, int level_min) throws DataLayerException;
+    void storeTaskHasSkill(int task_ID, int skill_ID, int level_min) throws DataLayerException;
         
     int storeSkillHasDeveloper(int skill_ID, int developer_ID,int level) throws DataLayerException;
     
@@ -171,4 +171,12 @@ public interface SocialDevelopDataLayer extends DataLayer {
     int getSkillByName(String name) throws DataLayerException ;
     
     Date getEndDateOfTaskByProject(int project_key) throws DataLayerException;
+    
+    Type getTypeBySkill(int skill_key) throws DataLayerException;
+    
+    List<Skill> getSkillsByType(int type_key) throws DataLayerException;
+
+    List<Type> getTypes () throws DataLayerException;
+    
+    int getTypeByName(String name) throws DataLayerException;
 }

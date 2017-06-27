@@ -9,6 +9,7 @@ import it.univaq.f4i.iw.framework.data.DataLayerException;
 import java.util.List;
 import socialdevelop.data.model.Skill;
 import socialdevelop.data.model.SocialDevelopDataLayer;
+import socialdevelop.data.model.Type;
 
 /**
  *
@@ -20,6 +21,8 @@ public class SkillImpl implements Skill{
     private String name;
     private int parent_id; //nel caso in cui non ha padre, come parent_id avrà il suo stesso id
     private Skill parent;
+    private int type_key;
+    private Type type;
     private List<Skill> child; //serve?? PESANTE!
     protected SocialDevelopDataLayer ownerdatalayer;
     protected boolean dirty;
@@ -27,6 +30,8 @@ public class SkillImpl implements Skill{
     public SkillImpl(SocialDevelopDataLayer ownerdatalayer) {
         this.ownerdatalayer = ownerdatalayer;
         key = 0;
+        type_key = 0;
+        type = null;
         name = "";
         parent_id = 0;
         parent = null;
@@ -48,6 +53,33 @@ public class SkillImpl implements Skill{
     public void setName(String name){
         this.name = name;
         this.dirty = true;
+    }
+    
+    @Override
+    public void setType_key(int type_key){
+        this.type_key = type_key;
+        this.dirty = true;
+    }
+    
+    @Override
+    public int getType_key(){
+        return type_key;
+    }
+    
+    @Override
+    public void setType(Type t){
+        this.type = t;
+        this.type_key = t.getKey();
+        this.dirty = true;
+    }
+    
+    
+    @Override
+    public Type getType() throws DataLayerException{
+        if(type == null){
+            type = ownerdatalayer.getTypeBySkill(this.key);
+        }
+        return type;
     }
     
     @Override
@@ -124,6 +156,7 @@ public class SkillImpl implements Skill{
     @Override
     public void copyFrom(Skill skill) throws DataLayerException {
         key = skill.getKey();
+        type_key = skill.getType_key();
         parent_id = skill.getParentKey();
         name = skill.getName();
         this.dirty = true;

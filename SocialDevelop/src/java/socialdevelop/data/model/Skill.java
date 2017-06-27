@@ -40,6 +40,14 @@ public interface Skill {
 
     boolean isDirty();
     
+    void setType_key(int type_key);
+    
+    int getType_key();
+    
+   Type getType() throws DataLayerException;
+   
+   void setType(Type t);
+    
    void copyFrom(Skill skill) throws DataLayerException;
 
 }

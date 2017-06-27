@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import socialdevelop.data.model.Skill;
 import socialdevelop.data.model.SocialDevelopDataLayer;
+import socialdevelop.data.model.Type;
 
 /**
  *
@@ -38,7 +39,12 @@ public class CreateProject extends SocialDevelopBaseController {
         
         SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
         //recupero skills che non hanno figli
+        List<Type> types = datalayer.getTypes();
+        if(types!=null){
+            request.setAttribute("types", types);
+        }
         List<Skill> skills = datalayer.getSkillsParentList();
+        
         //ora recuperiamo per ognuna di esse le skills figlie
         if(skills!=null){
             for(Skill skill : skills){
@@ -47,19 +53,9 @@ public class CreateProject extends SocialDevelopBaseController {
                     skill.setChild(child);
                 }
             }
-        }
         request.setAttribute("skills", skills);
-        /*List<Skill> skills = datalayer.getSkillsParentList();
-        request.setAttribute("skills", skills);
-        Map<Skill, Integer> skills_level = datalayer.getSkillsByDeveloper((int) s.getAttribute("userid"));
-        request.setAttribute("skills_level", skills_level);
-        String skill_input = "";
-         for(Map.Entry<Skill, Integer> sl : skills_level.entrySet()){
-            skill_input = skill_input+String.valueOf(sl.getKey().getKey())+":"+String.valueOf(sl.getValue())+",";                       
         }
-         datalayer.destroy();
-        request.setAttribute("skill-input", skill_input);
-        */
+        datalayer.destroy();
         TemplateResult res = new TemplateResult(getServletContext());
         res.activate("create_project.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare 
     }

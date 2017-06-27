@@ -57,6 +57,10 @@ public interface Task {
     
     void setEndDate(GregorianCalendar end);
     
+    void setType_key(int type_key);
+    
+    int getType_key();
+    
     void setType(Type type);
     
     Type getTypeByTask() throws DataLayerException;
@@ -90,6 +94,7 @@ public interface Task {
     boolean isDirty();
     
     void copyFrom(Task task) throws DataLayerException;
+    
 
     
 }
