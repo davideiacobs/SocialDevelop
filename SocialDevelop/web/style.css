@@ -570,9 +570,11 @@ ul.gt_scl_icon{text-align: center;}
 .gt_contact_form_wrap.gt_index_one_contact{background-color: #f7f7f7;margin-top: 0px;}
 .gt_contact_form {float: left;width: 100%;position: relative;}
 .gt_contact_us_field {float: left;width: 100%;position: relative;text-align: center;}
-.gt_contact_us_field input[type="text"],.gt_contact_us_field input[type="email"],.gt_contact_us_field textarea {float: left;width: 100%;border: 1px solid rgba(127,127,127,0.21);border-radius: 2px;min-height: 48px;margin: 0 0 20px;padding: 8px 20px 8px 20px;border-radius: 40px;background-color: #f5f5f5;}
+.gt_contact_us_field input[type="number"],.gt_contact_us_field input[type="text"],.gt_contact_us_field input[type="email"],.gt_contact_us_field textarea {float: left;width: 100%;border: 1px solid rgba(127,127,127,0.21);border-radius: 2px;min-height: 48px;margin: 0 0 20px;padding: 8px 20px 8px 20px;border-radius: 40px;background-color: #f5f5f5;}
 .gt_contact_us_field textarea {min-height: 185px;resize: none;padding: 20px 30px;border-radius: 30px;}
 .gt_contact_us_field input[type="submit"],.gt_contact_us_field button {text-align: center;border: 0px;text-transform: uppercase;font-weight: 600;padding: 13px 50px;border: 1px solid;background-color: transparent;font-size: 15px;border-radius: 60px;}
+.gt_contact_us_field input[type="button"],.gt_contact_us_field button {margin-top:50px; margin-bottom: 50px;text-align: center;border: 0px;text-transform: uppercase;font-weight: 600;padding: 13px 50px;border: 1px solid;background-color: transparent;font-size: 15px;border-radius: 60px;}
+
 /*Hover Css*/
 .gt_contact_us_field input[type="submit"]:hover,.gt_contact_us_field button:hover {color: #fff;}
 #contact-form label.error {position: absolute;top: -16px;font-size: 11px;color: #a94442;left: 0px;}
@@ -1644,7 +1646,6 @@ ul.gt_rating_start li a {display: inline-block;}
 		   crea-progeto
 	  ==============================================================
 */
-.nome-progetto{}
 .nome-progetto>label{text-align: left; margin-left: 10px; margin-bottom: 10px;}
 .nome-task{margin-left: 10px;}
 .add-project-page{margin-bottom: 50px;}
@@ -1659,3 +1660,7 @@ ul.gt_rating_start li a {display: inline-block;}
 .popup .close:hover {color: orange;}
 .popup .content {overflow: auto;}
 /*.footer-class{z-index: 999;}*/
+.select-skill-pop{height: 100px !important;}
+#label-pop{padding-top:25px;}
+.add-skill-pop input[type="button"],.add-skill-pop button {border-radius: 30px;color:#fff;text-transform: uppercase;padding:13px 30px; border:0px;font-weight: 700;background-color: #31b8f5 !important; height:40px; line-height: 10px; }
+.select-skill a{border-radius: 5px !important;}

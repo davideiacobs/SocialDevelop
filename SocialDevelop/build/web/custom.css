@@ -77,3 +77,15 @@ and open the template in the editor.
     display:none;
 }
 
+.req {
+    border-color : red !important;
+    -moz-border-radius: 17px;
+    -webkit-border-radius: 17px;
+    -moz-box-shadow : 0 0 2px red;
+    -webkit-box-shadow: 0 0 2px red;
+}
+
+
+.req-list{
+    color:red;
+}
