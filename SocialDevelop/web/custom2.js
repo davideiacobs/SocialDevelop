@@ -244,10 +244,17 @@ $("#submit-task").on("click", function(){
 
 
 $("#submit-project").on("click", function(){
+   //azzero lavore input nascosto
    $("#tasks").val("");
+   //conto il numero di task aggiunti
    var c = $(".task-aggiunti").children("li").length;
+   console.log(c);
    var i=0;
    for(i=0;i<c;i++){
+       //controlliamo valore dell'input nascosto
+       var input_tasks = $("#tasks").val();
+       console.log(input_tasks);
+       //recuperiamo tutti i valori del task
        var task = $(".task-aggiunti").children("li")[i];
        var name = $.trim($(task).children().children("p#name").text().split(":")[1]);
        var tipo = $.trim($(task).children().children("p#tipo").text().split(":")[1]);
@@ -256,12 +263,13 @@ $("#submit-project").on("click", function(){
        var descr = $.trim($(task).children().children("p#descr").text().split(":")[1]);
        var coll = $.trim($(task).children().children("p#coll").text().split(":")[1]);
        var skills = $.trim($(task).children().children("p.skills").text().split(":")[1]);
-       if($("#tasks").val()==""){
+       
+       if(input_tasks==""){
+           //stiamo inserendo il primo task nell'input
            $("#tasks").val(name+"#"+start+"#"+end+"#"+descr+"#"+coll+"#"+skills+"#"+tipo+"@");
        }else{
-           $("#tasks").val(skills+name+"#"+start+"#"+end+"#"+descr+"#"+coll+"#"+skills+"#"+tipo+"@");
+           $("#tasks").val(input_tasks+name+"#"+start+"#"+end+"#"+descr+"#"+coll+"#"+skills+"#"+tipo+"@");
        }
-       console.log($("#tasks").val());
    }
     
 });

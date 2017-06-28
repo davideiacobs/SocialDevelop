@@ -98,9 +98,9 @@ public class MyProjects extends SocialDevelopBaseController {
                     enddate[c] = datalayer.getEndDateOfTaskByProject(progetto.getKey());
                     for (Task task : tasks){
                         if(!task.isOpen()){
-                            tasksEnded.add(task);   
-                            ncollaboratori[c]+=task.getNumCollaborators();
+                            tasksEnded.add(task);     
                         }
+                        ncollaboratori[c]+=task.getNumCollaborators();
                     
                     }
                     perc[c] = Math.round(((double)tasksEnded.size() / (double)tasks.size())*100) ;  

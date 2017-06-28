@@ -77,13 +77,16 @@ public class InsertProject extends SocialDevelopBaseController {
 //--------------------------CONTROLLARE DA QUI!!!! ------------------------------------------
                 String [] skills = thistask[5].split(";");
                 for(String skl : skills){
-                    String n = skl.split("(")[0];
-                    int l = Integer.parseInt(skl.split(")")[1]);
-                    datalayer.storeTaskHasSkill(task_key, datalayer.getSkillByName(n), l);
+                    String [] split = skl.split("\\(");
+                    //String n = split[0].replaceAll("\\s+$", "");
+                    String n = split[0].trim();
+                    int l = Integer.parseInt(split[1].split("\\)")[0]);
+                    int skill_key = datalayer.getSkillByName(n);
+                    datalayer.storeTaskHasSkill(task_key, skill_key, l);
                 }
+            }
             datalayer.destroy();
             response.sendRedirect("MyProjects");
-            }
         }else{
             response.sendRedirect("index");
         }

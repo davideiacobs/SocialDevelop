@@ -212,7 +212,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             iTaskHasSkill = connection.prepareStatement("INSERT INTO task_has_skill (task_ID,skill_ID,level_min) VALUES(?,?,?)",Statement.RETURN_GENERATED_KEYS);
             dTaskHasSkill = connection.prepareStatement("DELETE FROM task_has_skill WHERE task_id=? AND skill_ID=? AND type_ID=?");
             uTaskHasSkill = connection.prepareStatement("UPDATE task_has_skill SET task_ID=?,skill_ID=?,type_ID=?,level_min=? WHERE task_ID=? AND skill_ID=? AND type_ID=? ");
-            sTaskHasSkill = connection.prepareStatement("SELECT * FROM task_has_skill WHERE task_ID=? AND skill_ID=?" );
+            sTaskHasSkill = connection.prepareStatement("SELECT * FROM task_has_skill WHERE task_ID=? AND skill_ID=?");
             
             iTaskHasDeveloper = connection.prepareStatement("INSERT INTO task_has_developer (task_ID,developer_ID,state,date,vote,sender) VALUES(?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
             dTaskHasDeveloper= connection.prepareStatement("DELETE FROM task_has_developer WHERE task_id=? AND developer_ID=?");
@@ -1696,6 +1696,33 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     }
     
     @Override
+    public void storeTaskHasSkill(int task_key, int skill_key, int level_min) throws  DataLayerException{
+        try{
+            sTaskHasSkill.setInt(1, task_key);
+            sTaskHasSkill.setInt(2, skill_key);
+            try(ResultSet rs = sTaskHasSkill.executeQuery()){
+                if(rs.next()){
+                    //update
+                    return;
+                }
+            }
+        }catch (SQLException ex) {
+            throw new DataLayerException("Unable to load taskHasSkill", ex);
+        }
+        try{
+            iTaskHasSkill.setInt(1, task_key);
+            iTaskHasSkill.setInt(2, skill_key);
+            iTaskHasSkill.setInt(3, level_min);
+            iTaskHasSkill.executeUpdate(); 
+        }catch (SQLException ex) {
+            throw new DataLayerException("Unable to insert taskHasSkill", ex);
+        }
+    }
+    
+    
+    
+    
+    /*@Override
     public void storeTaskHasSkill(int task_ID, int skill_ID, int level_min) throws DataLayerException {
         boolean flag = true;
         try {
@@ -1768,7 +1795,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     }catch (SQLException ex){
         throw new DataLayerException("Unable to store request", ex);
         }
-    }    
+    }    */
     
     @Override 
     public int storeFile(Part file_to_upload, File uploaded_file, String sdigest) throws DataLayerException{
