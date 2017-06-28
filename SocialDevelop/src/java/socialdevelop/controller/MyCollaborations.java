@@ -26,6 +26,7 @@ import socialdevelop.data.model.Files;
 import socialdevelop.data.model.Project;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 import socialdevelop.data.model.Task;
+import socialdevelop.data.model.Type;
 
 /**
  *
@@ -81,6 +82,8 @@ public class MyCollaborations extends SocialDevelopBaseController {
                 List<Developer> coordinators = new ArrayList();
                 //recupero progetto e coordinatore
                 for(Map.Entry<Task, Integer> entry : tasks.entrySet()){
+                    //Type type = datalayer.getType(entry.getKey().getType_key());
+                    //entry.getKey().setType(type);
                     Project p = datalayer.getProjectByTask(entry.getKey().getKey());
                     Developer c = datalayer.getDeveloper(p.getCoordinatorKey());
                     entry.getKey().setProject(p);
@@ -91,6 +94,8 @@ public class MyCollaborations extends SocialDevelopBaseController {
                 List<Developer> coordinatorsEnded = new ArrayList();
                 //recupero progetto e coordinatore
                 for(Map.Entry<Task, Integer> entryEnded : tasksEnded.entrySet()){
+                    //Type type2 = datalayer.getType(entryEnded.getKey().getType_key());
+                    //entryEnded.getKey().setType(type2);
                     Project pEnded = datalayer.getProjectByTask(entryEnded.getKey().getKey());
                     Developer cEnded = datalayer.getDeveloper(pEnded.getCoordinatorKey());
                     entryEnded.getKey().setProject(pEnded);
