@@ -18,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.tomcat.websocket.server.WsFilter;
 import socialdevelop.data.model.Skill;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 import socialdevelop.data.model.Type;
@@ -30,34 +31,38 @@ public class CreateProject extends SocialDevelopBaseController {
 
      private void action_createproject(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
         HttpSession s = request.getSession(true);
-        request.setAttribute("page_title", "Crea Progetto");
-        request.setAttribute("page_subtitle", "Nuovo Progetto");
+       
         
-        if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
+        if(s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
             request.setAttribute("logout", "Logout");
-        }
-        
-        SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
-        //recupero skills che non hanno figli
-        List<Type> types = datalayer.getTypes();
-        if(types!=null){
-            request.setAttribute("types", types);
-        }
-        List<Skill> skills = datalayer.getSkillsParentList();
-        
-        //ora recuperiamo per ognuna di esse le skills figlie
-        if(skills!=null){
-            for(Skill skill : skills){
-                List<Skill> child = datalayer.getChild(skill.getKey());
-                if(child!=null){
-                    skill.setChild(child);
-                }
+            request.setAttribute("page_title", "Crea Progetto");
+            request.setAttribute("page_subtitle", "Nuovo Progetto");
+            SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
+            //recupero skills che non hanno figli
+            List<Type> types = datalayer.getTypes();
+            if(types!=null){
+                request.setAttribute("types", types);
             }
-        request.setAttribute("skills", skills);
+            List<Skill> skills = datalayer.getSkillsParentList();
+
+            //ora recuperiamo per ognuna di esse le skills figlie
+            if(skills!=null){
+                for(Skill skill : skills){
+                    List<Skill> child = datalayer.getChild(skill.getKey());
+                    if(child!=null){
+                        skill.setChild(child);
+                    }
+                }
+            request.setAttribute("skills", skills);
+            }
+            datalayer.destroy();
+            String act_url = request.getRequestURI();
+            s.setAttribute("previous_url", act_url);
+            TemplateResult res = new TemplateResult(getServletContext());
+            res.activate("create_project.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare 
+        }else{
+            response.sendRedirect("index");
         }
-        datalayer.destroy();
-        TemplateResult res = new TemplateResult(getServletContext());
-        res.activate("create_project.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare 
     }
     
     
