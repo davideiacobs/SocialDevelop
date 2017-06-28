@@ -1,0 +1,36 @@
+-coordinatore può chiudere un task quando vuole anche se mancano collaboratori
+
+-postare messaggi su un progetto (pubblici o privati) solo per loggati
+
+-backend -> inserire/modificare lista tipi task e lista skill associati ad ogni tipo
+(OPZIONALMENTE è possibile associare un task a più tipi)
+
+-utenti anonimi devono poter leggere i messaggi pubblici soltanto
+
+-ricerva sviluppatori per skill e livello
+
+-aggiungere collegamento al profilo coordinatore dalla lista referenze -IO-
+
+-modifica progetto (tutto)  -IO- (MANCA CHIUSURA TASK E GESTIONE COLLABORATORI)
+
+-RISOLVERE PROBLEMA DATA MODIFICA PROGETTO -IO-
+
+-visualizzare sviluppatori adatti ai task (dopo la creazione del progetto)
+
+-inviare proposta collaborazione relativa a un task
+
+-pannello inviti coordinatore
+
+-pannello proposte sviluppatori
+
+-pannello delle offerte
+
+-pannello delle domande
+
+-email
+
+-escludere sviluppatore da un task
+
+-valutare sviluppatore a fine progetto
+
+

@@ -1395,7 +1395,12 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                 } else {
                     uTask.setNull(7, java.sql.Types.INTEGER);
                 }
-                uTask.setInt(4, task.getKey());
+               /* if(task.getTypeByTask() != null){
+                    uTask.setInt(8, task.getType_key());
+                }else{
+                    uTask.setNull(8, java.sql.Types.INTEGER);
+                }*/
+                uTask.setInt(8, task.getKey());
                 uTask.executeUpdate();
             } else { //insert
                 iTask.setString(1, task.getName());
@@ -1411,7 +1416,13 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                 } else {
                     iTask.setNull(7, java.sql.Types.INTEGER);
                 }
-                iTask.setInt(8, task.getType_key());
+                if(task.getTypeByTask() != null){
+                    iTask.setInt(8, task.getType_key());
+                }else{
+                    iTask.setNull(8, java.sql.Types.INTEGER);
+                }
+                
+              
                 
                 if (iTask.executeUpdate() == 1) {
                     try (ResultSet keys = iTask.getGeneratedKeys()) {
@@ -1428,7 +1439,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             }
             task.setDirty(false);
         } catch (SQLException ex) {
-            throw new DataLayerException("Unable to store article", ex);
+            throw new DataLayerException("Unable to store task", ex);
         }
         return key;
     }

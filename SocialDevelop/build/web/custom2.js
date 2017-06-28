@@ -1,3 +1,7 @@
+var flagUpdate = false;
+var updatedElement;
+
+
 $( "#submitsearch" ).click(function() {
     $(this).closest('#findByKeyWord').submit();
 });
@@ -109,6 +113,7 @@ function remove_skill_from_task(param){
     rm.remove();
 }          
  
+ 
 function reset_popup(){
     $(".list-skill").empty();
     $(".add-task-form")[0].reset();
@@ -117,6 +122,7 @@ function reset_popup(){
 
 $("a.add-task").on("click", function(){
     $("#popup1").removeClass("hidden");
+    //$("#popup1").css("display","block")
     reset_popup();
 }); 
 
@@ -146,26 +152,32 @@ function reload_task(name,start,end,descr,coll,skills){
             remove-skill-from-task-button rm-skill-from-task-btn'><span class='glyphicon\n\
              glyphicon-remove'></span></button></span></li>");   
     }
+    //cancellare vecchio li solo quando si clicca submit e non nella funzione update_task!!!
     
 }
 
 
 function update_task(param){
-   
+    flagUpdate = true;
     var name = $.trim($(param).siblings("p#name").text().split(":")[1]);
     var start = $.trim($(param).siblings("p#start-end").text().split(":")[1].split("-")[0]);
     var end = $.trim($(param).siblings("p#start-end").text().split("-")[1].split(":")[1]);
     var descr = $.trim($(param).siblings("p#descr").text().split(":")[1]);
     var coll = $.trim($(param).siblings("p#coll").text().split(":")[1]);
     var skills = $.trim($(param).siblings("p.skills").text().split(":")[1]);
-    $(param).parent("div").parent("li").remove();
+    //$(param).parent("div").parent("li").remove();
+    updatedElement = $(param).parent("div").parent("li");
     $("a.add-task").trigger("click");
+    document.location.href = $("a.add-task").attr("href");
     reload_task(name,start,end,descr,coll,skills);
-    
-    
 }
 
 function aggiungi_task(name,start,end,descr,ncoll, skill_level, tipo){
+    if(flagUpdate==true){
+        updatedElement.remove();
+        flagUpdate=false;
+    }
+    
     $(".task-aggiunti").append("<li><div class='gt-text grade-padding'>\n\
                                 <p id='name'>Task: "+name+"</p>\n\
                                 <p id='tipo'>Type: "+tipo+"</p>\n\

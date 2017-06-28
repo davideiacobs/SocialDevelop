@@ -167,8 +167,10 @@ public class ProjectImpl implements Project {
         return dirty;
     }
     
-    protected void setKey(int key) {
+    @Override
+    public void setKey(int key) {
         this.key = key;
+        this.dirty = true;
     }
     
     

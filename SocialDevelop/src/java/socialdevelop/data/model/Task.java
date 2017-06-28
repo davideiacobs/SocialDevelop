@@ -95,6 +95,6 @@ public interface Task {
     
     void copyFrom(Task task) throws DataLayerException;
     
-
+    void setKey(int key);
     
 }

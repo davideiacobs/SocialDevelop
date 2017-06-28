@@ -55,7 +55,11 @@
                             <h5><a href="#">${project.name?cap_first}</a></h5>
                             
                             <p class="description_project">${project.description?cap_first}</p>
-                            <p>Start Date: ${startdate[project?index]} &nbsp; - &nbsp; End Date: ${enddate[project?index]}</p>    
+                            <p>Start Date: ${startdate[project?index]} &nbsp; - &nbsp; End Date: ${enddate[project?index]}</p> 
+                            <div class="view-update">
+                            <a href="Project_Detail" class="btn btn-default" role="button">View</a>
+                            <a href="UpdateProject?n=${project.key}" class="btn btn-default" role="button">Update</a>
+                            </div>
                     </div>
                     <div class="gt_course_bottom default_width">
                     <h5>${project.tasks?size}<span>Task</span></h5>
