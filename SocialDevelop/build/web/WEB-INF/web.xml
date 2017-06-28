@@ -150,6 +150,10 @@
         <servlet-name>InsertProject</servlet-name>
         <servlet-class>socialdevelop.controller.InsertProject</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FindDeveloper</servlet-name>
+        <servlet-class>socialdevelop.controller.FindDeveloper</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>provaDB2</servlet-name>
         <url-pattern>/provaDB2</url-pattern>
@@ -237,6 +241,10 @@
     <servlet-mapping>
         <servlet-name>InsertProject</servlet-name>
         <url-pattern>/InsertProject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FindDeveloper</servlet-name>
+        <url-pattern>/FindDeveloper</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
