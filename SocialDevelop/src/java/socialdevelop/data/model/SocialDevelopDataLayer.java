@@ -142,7 +142,7 @@ public interface SocialDevelopDataLayer extends DataLayer {
         
     int storeSkillHasDeveloper(int skill_ID, int developer_ID,int level) throws DataLayerException;
     
-    void deleteTaskHasSkill(int task_ID, int skill_ID, int type_ID) throws DataLayerException;
+    void deleteTaskHasSkill(int task_ID, int skill_ID) throws DataLayerException;
         
     int deleteSkillHasDeveloper(int skill_ID, int developer_ID) throws DataLayerException;
     
@@ -179,4 +179,6 @@ public interface SocialDevelopDataLayer extends DataLayer {
     List<Type> getTypes () throws DataLayerException;
     
     int getTypeByName(String name) throws DataLayerException;
+    
+    void deleteSkillsFromTask(int task_id) throws DataLayerException;
 }

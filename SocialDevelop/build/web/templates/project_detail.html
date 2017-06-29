@@ -1,20 +1,13 @@
-    <!--Main Content Wrap Start-->
-    <div class="container">
-        
-    <div class="row ">
-        
-          
-            <div class="col-md-8">
-              <div class="gt_event_detail_wrap bg_white default_width">
-
-                <div class="gt_event_detail_des default_width ">
-                  <div class="gt_event_detail_hdg">
+<!--Main Content Wrap Start-->
+<div class="container">
+    <!--PROJECT CARD-->
+    <div class="row project-card">        
+        <div class="">
+            <div class="col-md-8 project-detail">
+                <div class="project-title">
                     <h2>${projectname?cap_first}</h2>
-                    <p>${projectdescr?cap_first}</p>
-                  </div>
-                
                 </div>
-                <div class="gt_cd_mata_wrap default_width">
+                <div class="gt_cd_mata_wrap default_width project-info">
                     <ul>
                         <li>
                             <figure>
@@ -22,166 +15,158 @@
                             </figure>
                             <div class="gt_course_meta_des">
                                 <h6>Project Coordinator</h6>
-                                <span><a href="#">${coordinatorusername}</a></span>
-                                
+                                <span><a href="DeveloperProfile?n=${coordinator.key}">${coordinator.username?cap_first}</a></span>
                             </div>
                         </li>
-                        
                         <li>
                             <i class="icon-cup"></i>
                             <div class="gt_course_meta_des">
                                 <h6>Project Closed</h6>
                                 <span>${percProg} %</span>
                             </div>
-                        </li>
-                        
+                        </li> 
                         <li>
                             <i class="icon-people"></i>
                             <div class="gt_course_meta_des">
                                 <h6>Project Collaborators</h6>
-                                <span>${numCollaborators}</span>
+                                <span>${nProjectCollaborators}</span>
                             </div>
                         </li>
-                  
                     </ul>
                 </div>
-             
-
-                <#list tasks as task>
-
-                <div class="gt_cd_des_wrap default_width mb20">
-                  <h4>${task.name}</h4>
-                  
-                  <p>${task.description}</p>
-                      
-                      
-                    <div class="gt_course_dur_list mb20">
-                      <i class="icon-clock-1"></i>
-                      <span>Task Duration : ${daysleft}  days left</span>
-                    </div>
-                        
-                    <div class="gt_course_dur_list mb20">
-                      <i class="icon-student"></i>
-                      <span>Developers Nedeed : ${collaborators}</span>
-                    </div>
-                  
-                  
-                    <div class="gt_course_dur_list mb20">
-                      <i class="icon-classroom-with-students-group-and-the-teacher" ></i>
-                      <span> Status : ${task.open?then('Open','Close')} </span>
-                    </div>
-                   
-                  
-                        
-
-                    <div class="accor_outer_wrap mb20">
-                      <div class="ct_accord_list ">
-                        <div class="accord_hdg" >
-                          <h6>Skill Requested</h6>
-                          <span class="fa fa-minus-circle"></span>
-                        </div>
-                          
-                        <div class="accord_des">  
-                        <#list skillsList as skill,value>
-                            <p>${skill.name} - ${value}</p>
-                        </#list>
-                        </div>
-                        
-                                  
-                                
-                      </div>
-                    </div>
-                    
-                    <div class="gt_explore_search gt_clas_search">
-                      <form>
-                          <input  type="submit" value="JOIN THE TASK">
-                      </form>
-                    </div>
-                  </div>
-
-                </#list>
-
-                
-                <!--Comment Wrap End-->
-              </div>
-              <!--Comment Wrap Start-->
-                <div class="gt_comment_list_wrap gt_detail_hdg ">
-              
-                  <h5><span>${mex_number}</span>Comments</h5>
-                  <#list messages as message>
-                    <ul>
-                      <li>
-                        <div class="gt_comment_wrap">
-                          <figure>
-                            <img src="${userpic}" alt="No image avalaible">
-                          </figure>
-                          <div class="gt_comment_des">
-                            <h6><a>${username}</a></h6>
-                        
-                            <p>${text}</p>
-                          </div>
-                        </div>
-                      </li>
-                  
-                  
-                    </ul>
-                  </#list>
+                <div class="project-descr">
+                    <p>${projectdescr?cap_first}</p>
                 </div>
-              
-              <div class="gt_post_comment_wrap gt_detail_hdg">
-                <h5>Post Your Comments</h5>
-                <form class="gt_contact_form" id="contact-form" action="http://2goodtheme.net/edu-skill/layout/assets/sendmail.php" method="post">
-                  <div class="col-md-6">
-                      <div class="gt_contact_us_field">
-                          <input class="c_ph" type="text" placeholder="Your Name" id="name" name="contact-name" required="">
-                      </div>
-                  </div>
-                  <div class="col-md-6">
-                      <div class="gt_contact_us_field">
-                          <input class="c_ph" type="text" placeholder="Email Adress:" id="email" name="contact-email" required="">
-                      </div>
-                  </div>
-                  <div class="col-md-12">
-                      <div class="gt_contact_us_field">
-                          <textarea class="gt_c_bg" name="contact-message" id="message" placeholder="Message" required=""></textarea>
-                      </div>
-                  </div>
-                  <div class="col-md-12">
-                      <div class="gt_contact_us_field">
-                          <input id="submit-message" type="submit" value="submit" name="submit_msg">
-                      </div>
-                      <!--Alert Message-->
-                      <div id="contact-result">
-                      </div>
-                  </div>
-                </form>
-              </div>
-
             </div>
-        <aside class="col-md-4">
-            
-                
-              <div class="gt_aside_hdg gt_featured_course_list default_width mb30">
-                <h6>Task List</h6>
-                <ul class="gt_checkbox_list">
-                  <#list tasks as task>
-                    <li>
-                      <input id="checknox${task?index}" type="checkbox">
-                      <label for="checknox${task?index}"><span></span>${task.name}</label>
-                    </li>
-                  </#list>
+        </div>
+        <div class="col-md-4">
+            <div class="gt_cd_des_wrap border_bottom default_width project-card-task">
+                <h4>Tasks</h4>
+                <ul>
+                    <#list tasks as task>
+                    <li><a href="#${task.key}"> ${task.name} </a></li>
+                    </#list>
                 </ul>
-                <div class="gt_explore_search gt_clas_search">
-                  <form>
-                    <input type="submit" value="JOIN THE TASK">
-                  </form>
-                </div>
-              </div> 
-            
-        </aside>
             </div>
-
-          
-         
+        </div>
+        <div class="col-md-12 show-msg">
+            <a href="#show-msg"><p>Show Message</p></a>
+        </div>
     </div>
-  
+    
+    
+    <div class="row">         <!--LIST OF TASKS-->  
+        <div class="gt_hdg_1 default_width">
+            <h3>List of tasks</h3>
+            <span class="gt_hdg_left"></span>
+            <span class="gt_hdg_right"></span></div></div>
+    
+    <#list tasks as task>
+    <div class="row task-card"><a name="${task.key}"></a>
+        <div class="">
+            <div class="task-title ">
+                <h4>${task.name}</h4>
+            </div>
+            <div class="col-md-7">
+                <div class="col-md-12 gt_course_dur_list task-detail">
+                    <i class="fa fa-tasks"></i>
+                    <span>Type: ${tasks_types[task?index].type}</span>
+                </div>   
+                <div class="col-md-6 gt_course_dur_list task-detail">
+                    <i class="icon-clock-1"></i>
+                    <span>Start Date: ${task.getStartDate().time?date?string.short}</span>
+                </div>    
+                <div class="col-md-6 gt_course_dur_list task-detail">
+                    <i class="icon-clock-1"></i>
+                    <span>End Date: ${task.getEndDate().time?date?string.short}</span>
+                </div>    
+                <div class="col-md-6 gt_course_dur_list task-detail">
+                    <i class="icon-student"></i>
+                    <span>Number of Collaborators: ${task.numCollaborators}</span>
+                </div>
+                <div class="col-md-6 gt_course_dur_list mb20">
+                    <i class="icon-classroom-with-students-group-and-the-teacher" ></i>
+                    <span> Status: ${task.open?then('Open','Close')} </span>
+                </div>
+                <div class="default_width mb20">
+                    <p>${task.description}</p>
+                </div>           
+            </div>
+            <div class="col-md-5 task-card-right"> 
+                <div class="gt_cd_des_wrap border_bottom default_width skill-required">
+                    <h5>Skills Required</h5>
+                    <ul>
+                        <#list skills[task?index] as key,value>
+                        <li>${key.name}&nbsp;(${value}/10)</li>
+                        </#list>
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+        <div class="row join-task">
+            <div class="col-md-7"></div>
+            <div class="col-md-5">
+                <form>
+                    <input type="submit" value="JOIN THE TASK">
+                </form>
+            </div>
+        </div>
+    </div>
+    </#list>
+    
+    <!--Comment Wrap Start-->
+    <div class="gt_comment_list_wrap gt_detail_hdg msg-project"><a name="show-msg"></a>
+        
+        <h5><span>${mex_number}</span>Comments</h5>
+        <#list messages as message>
+        <ul>
+            <li>
+                <div class="gt_comment_wrap">
+                    <figure>
+                        <img src="${foto_msg[message?index]}" alt="No image avalaible">
+                    </figure>
+                    <div class="gt_comment_des">
+                        <h6><a>${by[message?index].username}</a></h6>
+                        
+                        <p>${message.text}</p>
+                    </div>
+                </div>
+            </li>
+            
+            
+        </ul>
+        </#list>
+    </div>
+    <#if userid??>
+    <div class="gt_post_comment_wrap gt_detail_hdg">
+        <h5>Post Your Comments</h5>
+        <form class="gt_contact_form" id="contact-form" action="http://2goodtheme.net/edu-skill/layout/assets/sendmail.php" method="post">
+            <div class="col-md-6">
+                <div class="gt_contact_us_field">
+                    <input class="c_ph" type="text" placeholder="Your Name" id="name" name="contact-name" required="">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="gt_contact_us_field">
+                    <input class="c_ph" type="text" placeholder="Email Adress:" id="email" name="contact-email" required="">
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="gt_contact_us_field">
+                    <textarea class="gt_c_bg" name="contact-message" id="message" placeholder="Message" required=""></textarea>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="gt_contact_us_field">
+                    <input id="submit-message" type="submit" value="submit" name="submit_msg">
+                </div>
+                <!--Alert Message-->
+                <div id="contact-result">
+                </div>
+            </div>
+        </form>
+    </div>
+    </#if>
+    
+</div>

@@ -57,7 +57,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     private PreparedStatement iTaskHasDeveloper,dTaskHasDeveloper,uTaskHasDeveloper,sTaskHasDeveloper;
     private PreparedStatement iSkillHasDeveloper,dSkillHasDeveloper,uSkillHasDeveloper,sSkillHasDeveloper;
     private PreparedStatement sProjectByTask, sCurrentTasksByDeveloper, sEndedTasksByDeveloper,sProjectsByCoordinator;
-    private PreparedStatement sDateOfTaskByProject,sEndDateOfTaskByProject, sTypeBySkill;
+    private PreparedStatement sDateOfTaskByProject,sEndDateOfTaskByProject, sTypeBySkill,dSkillsFromTask;
     public SocialDevelopDataLayerMysqlImpl(DataSource datasource) throws SQLException, NamingException {
         super(datasource);
     }
@@ -210,7 +210,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             
             
             iTaskHasSkill = connection.prepareStatement("INSERT INTO task_has_skill (task_ID,skill_ID,level_min) VALUES(?,?,?)",Statement.RETURN_GENERATED_KEYS);
-            dTaskHasSkill = connection.prepareStatement("DELETE FROM task_has_skill WHERE task_id=? AND skill_ID=? AND type_ID=?");
+            dTaskHasSkill = connection.prepareStatement("DELETE FROM task_has_skill WHERE task_id=? AND skill_ID=?");
+            dSkillsFromTask = connection.prepareStatement("DELETE FROM task_has_skill WHERE task_ID=?");
             uTaskHasSkill = connection.prepareStatement("UPDATE task_has_skill SET task_ID=?,skill_ID=?,type_ID=?,level_min=? WHERE task_ID=? AND skill_ID=? AND type_ID=? ");
             sTaskHasSkill = connection.prepareStatement("SELECT * FROM task_has_skill WHERE task_ID=? AND skill_ID=?");
             
@@ -1919,12 +1920,24 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     }
     
     @Override
-    public void deleteTaskHasSkill(int task_id,int skill_id,int type_ID) throws DataLayerException{
+    public void deleteTaskHasSkill(int task_id,int skill_id) throws DataLayerException{
         try{
             dTaskHasSkill.setInt(1, task_id);
             dTaskHasSkill.setInt(2, skill_id);
-            dTaskHasSkill.setInt(3, type_ID);
+           
             dTaskHasSkill.executeUpdate();
+                
+            
+            }catch (SQLException ex) {
+            throw new DataLayerException("Unable to delete", ex);
+        }
+    }
+    
+    @Override
+    public void deleteSkillsFromTask(int task_id) throws DataLayerException{
+        try{
+            dSkillsFromTask.setInt(1, task_id);
+            dSkillsFromTask.executeUpdate();
                 
             
             }catch (SQLException ex) {

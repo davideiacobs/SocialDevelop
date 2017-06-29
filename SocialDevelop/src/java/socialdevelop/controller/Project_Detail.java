@@ -5,8 +5,10 @@
  */
 package socialdevelop.controller;
 
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import it.univaq.f4i.iw.framework.data.DataLayerException;
 import it.univaq.f4i.iw.framework.result.FailureResult;
+import it.univaq.f4i.iw.framework.result.StreamResult;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.IOException;
@@ -22,6 +24,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import socialdevelop.data.impl.DeveloperImpl;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Files;
 import socialdevelop.data.model.Message;
@@ -29,6 +32,7 @@ import socialdevelop.data.model.Project;
 import socialdevelop.data.model.Skill;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 import socialdevelop.data.model.Task;
+import socialdevelop.data.model.Type;
 
 /**
  *
@@ -43,29 +47,60 @@ public class Project_Detail extends SocialDevelopBaseController {
         }
     }
     
-    private void action_project(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {    
+    private String getImg(HttpServletRequest request, HttpServletResponse response, Developer dev) throws IOException, SQLException, DataLayerException, NamingException {
+        StreamResult result = new StreamResult(getServletContext());
         
+         SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
+         if(dev.getFoto() != 0){
+            Files foto_profilo = datalayer.getFile(dev.getFoto());
+            return "extra-images/"+foto_profilo.getLocalFile();
+         }else{
+            return "extra-images/foto_profilo_default.png";             
+         }
+        
+    }
+    
+    private void action_project(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {    
+                
                 SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");           
                 HttpSession s = request.getSession(true);
-                Project project = datalayer.getProject(1);
+                if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0){
+                    request.setAttribute("logout", "Logout");
+                }
+                int key = Integer.parseInt(request.getParameter("n")); //project_key
+                Project project = datalayer.getProject(key);
                 request.setAttribute("page_title", "Project" + " " + project.getName());
                 request.setAttribute("page_subtitle", "Check project info");
-                int foto_key;
-                Map<Developer,Integer> collaborators = new HashMap<Developer,Integer>();
                 request.setAttribute("projectname", project.getName());
                 request.setAttribute("projectdescr", project.getDescription());
-                List <Task> tasks = datalayer.getTasks(project.getKey());
-                List <Task> tasksEnded = new ArrayList();
+                List <Task> tasks = datalayer.getTasks(project.getKey()); //lista task del progetto
+                List <Task> tasksEnded = new ArrayList();  //lista di quelli terminati
+                List<Type> tasks_types = new ArrayList<>(); //lista dei tipi di ogni task
+                //ArrayList collaborators = new ArrayList(); //lista dei collaboratori di ogni task
+                int nProjectCollaborators = 0; //numero collaboratori totali task
+                ArrayList skills = new ArrayList();
                 request.setAttribute("tasks", tasks);
-                
-                
+                boolean flag = false; //serve per controllare se l'utente loggato (se c'è) è tra i collaboratori del progetto
                 for (Task task : tasks){
                     if(!task.isOpen()){
                         tasksEnded.add(task);
                     }
-                    
-                    collaborators.putAll(datalayer.getCollaboratorsByTask(task.getKey()));
-                    request.setAttribute("collaborators", task.getNumCollaborators());
+                    Type type = datalayer.getType(task.getType_key());
+                    tasks_types.add(type);
+                     if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
+                        //se l'utente è loggato controlliamo se è un collaboratore del progetto.
+                        //se lo è rendiamo visibili i messaggi privati e inoltre rendiamo visibile
+                        //il form di inserimento del messaggio
+                        int dev_key = (int) s.getAttribute("userid");
+                        Map<Developer, Integer> collaborators = datalayer.getCollaboratorsByTask(task.getKey());
+                        for(Map.Entry<Developer, Integer> m : collaborators.entrySet()){
+                           if(m.getKey().getKey() == dev_key){
+                               flag = true;
+                               request.setAttribute("userid", dev_key);
+                           }
+                        }
+                     }
+                    nProjectCollaborators += task.getNumCollaborators();
                     GregorianCalendar start = task.getStartDate();
                     GregorianCalendar end = task.getEndDate();
                     Date startDate = new Date();
@@ -83,10 +118,9 @@ public class Project_Detail extends SocialDevelopBaseController {
                         long diffDays = diffTime / (1000 * 60 * 60 * 24);
                         request.setAttribute("daysleft",diffDays);
                     }
-                    
                     Map <Skill, Integer> skillsList = datalayer.getSkillsByTask(task.getKey());
-                    request.setAttribute("skillsList", skillsList);
-                    if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
+                    skills.add(skillsList);
+                    /*if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
                         Developer dev = datalayer.getDeveloper((int) s.getAttribute("userid"));
                         Map <Skill,Integer> devSkill = dev.getSkillsByDeveloper();
                         for( Map.Entry <Skill,Integer> entryP : skillsList.entrySet()){
@@ -101,93 +135,41 @@ public class Project_Detail extends SocialDevelopBaseController {
                                 request.setAttribute("skillN", 1);
                             }
                         }
-                    }
-                    
-                    
-                
+                    }*/
                 }
+                request.setAttribute("nProjectCollaborators", nProjectCollaborators);
+                request.setAttribute("skills", skills);
+                request.setAttribute("tasks_types", tasks_types);
                 double percProg = Math.round(((double)tasksEnded.size() / (double)tasks.size())*100) ;
-                
                 request.setAttribute("percProg", percProg);
-                request.setAttribute("numCollaborators", collaborators.size());
-                
-                
-                
-                
-                boolean m  = false;
-                
-                if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0){
-                    Developer dev=datalayer.getDeveloper((int)s.getAttribute("userid"));
-                    if (collaborators.containsKey(dev)){
-                        m = true;
-                        
-                    }
-                }
-                
-                    List <Message> messages = new ArrayList();
-                
-                if(m){
-                    
+                List <Message> messages = new ArrayList();
+                if(flag){
                     messages = datalayer.getMessages(project.getKey());
                 }
                 else{
                     messages = datalayer.getPublicMessages(project.getKey());
                 }
-                
                 request.setAttribute("mex_number",messages.size());
                 request.setAttribute("messages", messages);
+                List<String> foto_msg = new ArrayList();
                 
+                List<Developer> by = new ArrayList();
                 for (Message message : messages){
-                    
                     Developer dev2 = message.getDeveloper();
-                    foto_key=dev2.getFoto();
-                            
-                    
-                        
-                        if(foto_key != 0){
-                            Files foto = datalayer.getFile(foto_key);
-                            request.setAttribute("coordinatorpic", "extra-images/" + foto.getLocalFile());
-                        }
-                        else{
-                            request.setAttribute("coordinatorpic", "extra-images/foto_profilo_default.png");
-                        }
-                            
-                        request.setAttribute("username", dev2.getUsername());
-                        request.setAttribute("text", message.getText());
-                            //insert only private messages
-                        
-                    
-                    
-                }     
-                
+                    String foto = getImg(request, response, dev2);
+                    foto_msg.add(foto);
+                    by.add(dev2);      
+                }   
+                request.setAttribute("by", by);
+                request.setAttribute("foto_msg", foto_msg);
                 Developer coordinator=datalayer.getDeveloper(project.getCoordinatorKey());
-                foto_key=coordinator.getFoto();
-                if(foto_key != 0){
-                    Files foto = datalayer.getFile(foto_key);
-                    request.setAttribute("coordinatorpic", "extra-images/" + foto.getLocalFile());
-                }
-                else{
-                    request.setAttribute("coordinatorpic", "extra-images/foto_profilo_default.png");
-                }
+                request.setAttribute("coordinator", coordinator);
+                
+                String foto2 = getImg(request, response, coordinator);
+                request.setAttribute("coordinatorpic", foto2);
                 datalayer.destroy();
-                String name = coordinator.getName().substring(0,1).toUpperCase() + coordinator.getName().substring(1);
-                String surname =coordinator.getSurname().substring(0,1).toUpperCase() + coordinator.getSurname().substring(1);
-                request.setAttribute("coordinatorusername",name+ " " + surname) ;
-                request.setAttribute("coordinatorbiography",coordinator.getBiography());
-               
-           
                 TemplateResult res = new TemplateResult(getServletContext());
                 res.activate("project_detail.html",request, response);  
-    
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     
     }
     
