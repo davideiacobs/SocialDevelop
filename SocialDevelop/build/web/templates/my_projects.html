@@ -15,14 +15,19 @@
               </div>
               <div class="gt-usser-account-list">
                 <ul>
-                  <li><a href="MyProfile"><i class="fa fa-user-circle-o gt-color"></i>My Profile</a></li>
-                  <li class="active"><a href="MyProjects"><i class="fa fa-code gt-color"></i>My Projects</a></li>
-                  <li><a href="MyCollaborations"><i class="fa fa-handshake-o gt-color"></i>My Collaborations</a></li>
-                  <li><a href="MySkills"><i class="icon-book gt-color"></i>My Skills</a></li>
-                  <li><a href="UpdateProfile"><i class="fa fa-upload"></i>Update Profile</a></li>
-                  <li><a href="CreateProject"> <i class="fa fa-plus-circle"></i>New Project</a></li>
-                </ul>
-                <a href="Logout" class="gt-logout"><i class="icon-arrows-2 gt-color"></i>Logout</a>
+                  <li><a href="<#if notmy??> DeveloperProfile?n=${id} <#else> MyProfile </#if>"><i class="fa fa-user-circle-o gt-color"></i><#if notmy??>Profile<#else>My Profile</#if></a></li>
+                  <li class="active"><a href="<#if notmy??> DeveloperProjects?n=${id} <#else> MyProjects </#if>"><i class="fa fa-code gt-color"></i><#if notmy??>Projects<#else>My Projects</#if></a></li>
+                  <li><a href="<#if notmy??> DeveloperCollaborations?n=${id} <#else> MyCollaborations </#if>"><i class="fa fa-handshake-o gt-color"></i><#if notmy??>Collaborations<#else> My Collaborations </#if></a></li>
+                  <li><a href="<#if notmy??> DeveloperSkills?n=${id} <#else> MySkills </#if>"><i class="icon-book gt-color"></i><#if notmy??>Skills<#else>My Skills</#if></a></li>
+                  <#if notmy??>
+                    </ul>
+                  <#else>
+                        <li><a href="UpdateProfile"><i class="fa fa-upload"></i>Update Profile</a></li>
+                        <li><a href="CreateProject"> <i class="fa fa-plus-circle"></i>New Project</a></li>
+
+                    </ul>
+                    <a href="Logout" class="gt-logout"><i class="icon-arrows-2 gt-color"></i>Logout</a>
+                </#if>
               </div>
             </div>
           </div>
@@ -32,16 +37,23 @@
 <!--Classes List Wrap Start-->
           <div class="col-md-8">
             <div class="gt_contact_us_field">
+                <#if notmy??>
+                <#else>
                 <form action="CreateProject">
                     <button id="create-project" type="submit" style="font-size:20px;">New Project&nbsp;
                         <i class="fa fa-plus-circle" style="font-size: 20px;"></i>
                     </button>
                 </form>
+                </#if>
             </div>
             <div class="gt_d_classes_wrap default_width">
               <div class="gt_d_fav_courses default_width gt_courses_wrap">
                 <ul class="gt_d_fav_hdg">
-                  <li>My Projects</li>
+                  <#if notmy??>
+                    <li>Projects</li>
+                  <#else>
+                    <li>My Projects</li>
+                  </#if>
                   <li>Complete</li>
                 </ul>
                
@@ -52,13 +64,16 @@
                     
                     <div class="gt-text grade-padding">
                             <h4 id="grade-right"> ${perc[project?index]}%</h4>
-                            <h5><a href="#">${project.name?cap_first}</a></h5>
+                            <h5><a href="Project_Detail?n=${project.key}">${project.name?cap_first}</a></h5>
                             
                             <p class="description_project">${project.description?cap_first}</p>
                             <p>Start Date: ${startdate[project?index]} &nbsp; - &nbsp; End Date: ${enddate[project?index]}</p> 
                             <div class="view-update">
-                            <a href="Project_Detail" class="btn btn-default" role="button">View</a>
-                            <a href="UpdateProject?n=${project.key}" class="btn btn-default" role="button">Update</a>
+                            <a href="Project_Detail?n=${project.key}" class="btn btn-default" role="button">View</a>
+                            <#if notmy??>
+                            <#else>
+                                <a href="UpdateProject?n=${project.key}" class="btn btn-default" role="button">Update</a>
+                            </#if>
                             </div>
                     </div>
                     <div class="gt_course_bottom default_width">
@@ -70,7 +85,11 @@
             
                 </#list> 
                 <#else>
-                <h4>You are not the coordinator of any project</h4>
+                    <#if notmy??>
+                        <h4>${username} does not coordinate any project</h4>
+                    <#else>
+                        <h4>You are not the coordinator of any project</h4>
+                    </#if>
                 </#if>
                 </ul>
                 

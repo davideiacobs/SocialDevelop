@@ -26,7 +26,6 @@ import socialdevelop.data.model.Files;
 import socialdevelop.data.model.Project;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 import socialdevelop.data.model.Task;
-import socialdevelop.data.model.Type;
 
 /**
  *

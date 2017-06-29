@@ -162,6 +162,22 @@
         <servlet-name>UpdateProjectSave</servlet-name>
         <servlet-class>socialdevelop.controller.UpdateProjectSave</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeveloperProfile</servlet-name>
+        <servlet-class>socialdevelop.controller.DeveloperProfile</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeveloperCollaborations</servlet-name>
+        <servlet-class>socialdevelop.controller.DeveloperCollaborations</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeveloperProjects</servlet-name>
+        <servlet-class>socialdevelop.controller.DeveloperProjects</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeveloperSkills</servlet-name>
+        <servlet-class>socialdevelop.controller.DeveloperSkills</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>provaDB2</servlet-name>
         <url-pattern>/provaDB2</url-pattern>
@@ -261,6 +277,22 @@
     <servlet-mapping>
         <servlet-name>UpdateProjectSave</servlet-name>
         <url-pattern>/UpdateProjectSave</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeveloperProfile</servlet-name>
+        <url-pattern>/DeveloperProfile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeveloperCollaborations</servlet-name>
+        <url-pattern>/DeveloperCollaborations</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeveloperProjects</servlet-name>
+        <url-pattern>/DeveloperProjects</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeveloperSkills</servlet-name>
+        <url-pattern>/DeveloperSkills</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

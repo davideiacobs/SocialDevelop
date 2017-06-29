@@ -11,11 +11,11 @@ import it.univaq.f4i.iw.framework.result.StreamResult;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +31,7 @@ import socialdevelop.data.model.Task;
  *
  * @author iacobs
  */
-public class MyProjects extends SocialDevelopBaseController {
+public class DeveloperCollaborations extends SocialDevelopBaseController {
     
     private void action_error(HttpServletRequest request, HttpServletResponse response) {
         if (request.getAttribute("exception") != null) {
@@ -56,72 +56,67 @@ public class MyProjects extends SocialDevelopBaseController {
     
     
     
-    private void action_myprojects(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
-            HttpSession s = request.getSession(true);
-            request.setAttribute("page_title", "My Projects");
-            request.setAttribute("page_subtitle", "manage your projects");
-            if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
-                SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
-                Developer dev = datalayer.getDeveloper((int) s.getAttribute("userid"));
+    private void action_devcollaborations(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
+            SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer)request.getAttribute("datalayer");
+            int dev_key = Integer.parseInt(request.getParameter("n"));
+            Developer dev = datalayer.getDeveloper(dev_key);
+            if(dev!=null){
                 request.setAttribute("username", dev.getUsername());
                 request.setAttribute("fullname", dev.getName()+" "+dev.getSurname());
                 long currentTime = System.currentTimeMillis();
                 Calendar now = Calendar.getInstance();
                 now.setTimeInMillis(currentTime);
-                 //Get difference between years
+                //Get difference between years
                 request.setAttribute("age", now.get(Calendar.YEAR) - dev.getBirthDate().get(Calendar.YEAR));
                 request.setAttribute("bio", dev.getBiography());
                 request.setAttribute("mail", dev.getMail());
                 request.setAttribute("logout", "Logout");
+                request.setAttribute("id", dev_key);
                 request.setAttribute("datalayer", datalayer);
                 getImg(request, response, dev);
                 
-                //recupero progetti gestiti dall'utente (progetti dei quali è il coordinatore)
-                
-                List<Project> projects = datalayer.getProjectsByCoordinator(dev.getKey());
-                if(projects.size()!=0){
-                    Date startdate[] = new Date[projects.size()];
-                    Date enddate[] = new Date[projects.size()];
-                    int ncollaboratori[] = new int[projects.size()];
-                    double perc[] = new double[projects.size()];
-                    int c = 0;
-                    startdate[c] = null;
-                    enddate[c] = null;
-
-                    for(Project progetto : projects){
-
-                        List <Task> tasks = datalayer.getTasks(progetto.getKey());
-                        progetto.setTasks(tasks);
-                        List <Task> tasksEnded = new ArrayList();
-                        ncollaboratori[c] = 0;
-                        startdate[c] = datalayer.getDateOfTaskByProject(progetto.getKey());
-                        enddate[c] = datalayer.getEndDateOfTaskByProject(progetto.getKey());
-                        for (Task task : tasks){
-                            if(!task.isOpen()){
-                                tasksEnded.add(task);     
-                            }
-                            ncollaboratori[c]+=task.getNumCollaborators();
-
-                        }
-                        perc[c] = Math.round(((double)tasksEnded.size() / (double)tasks.size())*100) ;  
-                        c++;
-                    }
-
-                    datalayer.destroy();
-                    request.setAttribute("perc", perc);
-                    request.setAttribute("projects", projects);
-                    request.setAttribute("ncollaboratori", ncollaboratori);
-                    request.setAttribute("startdate", startdate);
-                    request.setAttribute("enddate", enddate);
-                }else{
-                    request.setAttribute("projects", projects);
+                Map<Task, Integer> tasks = datalayer.getCurrentTasksByDeveloper(dev.getKey());
+                List<Developer> coordinators = new ArrayList();
+                //recupero progetto e coordinatore
+                for(Map.Entry<Task, Integer> entry : tasks.entrySet()){
+                    //Type type = datalayer.getType(entry.getKey().getType_key());
+                    //entry.getKey().setType(type);
+                    Project p = datalayer.getProjectByTask(entry.getKey().getKey());
+                    Developer c = datalayer.getDeveloper(p.getCoordinatorKey());
+                    entry.getKey().setProject(p);
+                    coordinators.add(c);   
                 }
+                
+                Map<Task, Integer> tasksEnded = datalayer.getEndedTasksByDeveloper(dev.getKey());
+                List<Developer> coordinatorsEnded = new ArrayList();
+                //recupero progetto e coordinatore
+                for(Map.Entry<Task, Integer> entryEnded : tasksEnded.entrySet()){
+                    //Type type2 = datalayer.getType(entryEnded.getKey().getType_key());
+                    //entryEnded.getKey().setType(type2);
+                    Project pEnded = datalayer.getProjectByTask(entryEnded.getKey().getKey());
+                    Developer cEnded = datalayer.getDeveloper(pEnded.getCoordinatorKey());
+                    entryEnded.getKey().setProject(pEnded);
+                    coordinatorsEnded.add(cEnded);   
+                }
+                datalayer.destroy();
+                HttpSession s = request.getSession(true);
+                if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
+                    request.setAttribute("logout", "Logout");
+                }  
+                request.setAttribute("tasksList", tasks);
+                request.setAttribute("coordinators", coordinators);
+                request.setAttribute("tasksListEnded", tasksEnded);
+                request.setAttribute("coordinatorsEnded", coordinatorsEnded);
+                request.setAttribute("page_title", "Developer");
+                request.setAttribute("page_subtitle", dev.getUsername());
+                request.setAttribute("notmy", "notmy");
                 TemplateResult res = new TemplateResult(getServletContext());
-                res.activate("my_projects.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare
+                res.activate("my_collaborations.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare
                 
             }else{
                  response.sendRedirect("index");
             }
+            
            
     }
     
@@ -131,7 +126,7 @@ public class MyProjects extends SocialDevelopBaseController {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException{
         
         try {
-            action_myprojects(request, response);
+            action_devcollaborations(request, response);
         } catch (IOException ex) {
             request.setAttribute("exception", ex);
             action_error(request, response);

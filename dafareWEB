@@ -1,3 +1,8 @@
+
+--GESTIONE ECCEZIONI!
+
+- stile home (bloccare background)
+
 -coordinatore può chiudere un task quando vuole anche se mancano collaboratori
 
 -postare messaggi su un progetto (pubblici o privati) solo per loggati
@@ -9,7 +14,7 @@
 
 -ricerva sviluppatori per skill e livello
 
--aggiungere collegamento al profilo coordinatore dalla lista referenze -IO-
+-aggiungere collegamento al profilo coordinatore dalla lista referenze  **FATTO**
 
 -modifica progetto (tutto)  -IO- (MANCA CHIUSURA TASK E GESTIONE COLLABORATORI)
 

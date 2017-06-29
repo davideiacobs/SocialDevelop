@@ -31,7 +31,7 @@ import socialdevelop.data.model.Task;
  *
  * @author iacobs
  */
-public class MyProjects extends SocialDevelopBaseController {
+public class DeveloperProjects extends SocialDevelopBaseController {
     
     private void action_error(HttpServletRequest request, HttpServletResponse response) {
         if (request.getAttribute("exception") != null) {
@@ -56,19 +56,17 @@ public class MyProjects extends SocialDevelopBaseController {
     
     
     
-    private void action_myprojects(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
-            HttpSession s = request.getSession(true);
-            request.setAttribute("page_title", "My Projects");
-            request.setAttribute("page_subtitle", "manage your projects");
-            if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
-                SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
-                Developer dev = datalayer.getDeveloper((int) s.getAttribute("userid"));
+    private void action_devprojects(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
+            SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer)request.getAttribute("datalayer");
+            int dev_key = Integer.parseInt(request.getParameter("n"));
+            Developer dev = datalayer.getDeveloper(dev_key);
+            if(dev!=null){
                 request.setAttribute("username", dev.getUsername());
                 request.setAttribute("fullname", dev.getName()+" "+dev.getSurname());
                 long currentTime = System.currentTimeMillis();
                 Calendar now = Calendar.getInstance();
                 now.setTimeInMillis(currentTime);
-                 //Get difference between years
+                //Get difference between years
                 request.setAttribute("age", now.get(Calendar.YEAR) - dev.getBirthDate().get(Calendar.YEAR));
                 request.setAttribute("bio", dev.getBiography());
                 request.setAttribute("mail", dev.getMail());
@@ -80,39 +78,47 @@ public class MyProjects extends SocialDevelopBaseController {
                 
                 List<Project> projects = datalayer.getProjectsByCoordinator(dev.getKey());
                 if(projects.size()!=0){
-                    Date startdate[] = new Date[projects.size()];
-                    Date enddate[] = new Date[projects.size()];
-                    int ncollaboratori[] = new int[projects.size()];
-                    double perc[] = new double[projects.size()];
-                    int c = 0;
-                    startdate[c] = null;
-                    enddate[c] = null;
-
-                    for(Project progetto : projects){
-
-                        List <Task> tasks = datalayer.getTasks(progetto.getKey());
-                        progetto.setTasks(tasks);
-                        List <Task> tasksEnded = new ArrayList();
-                        ncollaboratori[c] = 0;
-                        startdate[c] = datalayer.getDateOfTaskByProject(progetto.getKey());
-                        enddate[c] = datalayer.getEndDateOfTaskByProject(progetto.getKey());
-                        for (Task task : tasks){
-                            if(!task.isOpen()){
-                                tasksEnded.add(task);     
-                            }
-                            ncollaboratori[c]+=task.getNumCollaborators();
-
+                Date startdate[] = new Date[projects.size()];
+                Date enddate[] = new Date[projects.size()];
+                int ncollaboratori[] = new int[projects.size()];
+                double perc[] = new double[projects.size()];
+                int c = 0;
+                startdate[c] = null;
+                enddate[c] = null;
+                
+                for(Project progetto : projects){
+                    
+                    List <Task> tasks = datalayer.getTasks(progetto.getKey());
+                    progetto.setTasks(tasks);
+                    List <Task> tasksEnded = new ArrayList();
+                    ncollaboratori[c] = 0;
+                    startdate[c] = datalayer.getDateOfTaskByProject(progetto.getKey());
+                    enddate[c] = datalayer.getEndDateOfTaskByProject(progetto.getKey());
+                    for (Task task : tasks){
+                        if(!task.isOpen()){
+                            tasksEnded.add(task);     
                         }
-                        perc[c] = Math.round(((double)tasksEnded.size() / (double)tasks.size())*100) ;  
-                        c++;
+                        ncollaboratori[c]+=task.getNumCollaborators();
+                    
                     }
-
-                    datalayer.destroy();
-                    request.setAttribute("perc", perc);
-                    request.setAttribute("projects", projects);
-                    request.setAttribute("ncollaboratori", ncollaboratori);
-                    request.setAttribute("startdate", startdate);
-                    request.setAttribute("enddate", enddate);
+                    perc[c] = Math.round(((double)tasksEnded.size() / (double)tasks.size())*100) ;  
+                    c++;
+                }
+                
+                datalayer.destroy();
+                HttpSession s = request.getSession(true);
+                if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
+                    request.setAttribute("logout", "Logout");
+                }  
+                request.setAttribute("page_title", "Developer");
+                request.setAttribute("page_subtitle", dev.getUsername());
+                request.setAttribute("notmy", "notmy");
+                request.setAttribute("perc", perc);
+                request.setAttribute("projects", projects);
+                request.setAttribute("ncollaboratori", ncollaboratori);
+                request.setAttribute("startdate", startdate);
+                request.setAttribute("enddate", enddate);
+                request.setAttribute("id", dev_key);
                 }else{
                     request.setAttribute("projects", projects);
                 }
@@ -131,7 +137,7 @@ public class MyProjects extends SocialDevelopBaseController {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException{
         
         try {
-            action_myprojects(request, response);
+            action_devprojects(request, response);
         } catch (IOException ex) {
             request.setAttribute("exception", ex);
             action_error(request, response);
