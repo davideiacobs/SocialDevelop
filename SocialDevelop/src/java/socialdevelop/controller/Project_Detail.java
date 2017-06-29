@@ -5,7 +5,6 @@
  */
 package socialdevelop.controller;
 
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 import it.univaq.f4i.iw.framework.data.DataLayerException;
 import it.univaq.f4i.iw.framework.result.FailureResult;
 import it.univaq.f4i.iw.framework.result.StreamResult;
@@ -16,7 +15,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.naming.NamingException;
@@ -24,7 +22,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import socialdevelop.data.impl.DeveloperImpl;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Files;
 import socialdevelop.data.model.Message;
@@ -168,6 +165,8 @@ public class Project_Detail extends SocialDevelopBaseController {
                 String foto2 = getImg(request, response, coordinator);
                 request.setAttribute("coordinatorpic", foto2);
                 datalayer.destroy();
+                String act_url = request.getRequestURI();
+                s.setAttribute("previous_url", act_url);
                 TemplateResult res = new TemplateResult(getServletContext());
                 res.activate("project_detail.html",request, response);  
     

@@ -178,6 +178,10 @@
         <servlet-name>DeveloperSkills</servlet-name>
         <servlet-class>socialdevelop.controller.DeveloperSkills</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>postMessage</servlet-name>
+        <servlet-class>socialdevelop.controller.PostMessage</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>provaDB2</servlet-name>
         <url-pattern>/provaDB2</url-pattern>
@@ -293,6 +297,10 @@
     <servlet-mapping>
         <servlet-name>DeveloperSkills</servlet-name>
         <url-pattern>/DeveloperSkills</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>postMessage</servlet-name>
+        <url-pattern>/postMessage</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

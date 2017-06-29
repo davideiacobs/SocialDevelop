@@ -50,7 +50,7 @@
             </div>
         </div>
         <div class="col-md-12 show-msg">
-            <a href="#show-msg"><p>Show Message</p></a>
+            <a href="#show-msg"><p>Show Messages</p></a>
         </div>
     </div>
     
@@ -118,7 +118,7 @@
     <!--Comment Wrap Start-->
     <div class="gt_comment_list_wrap gt_detail_hdg msg-project"><a name="show-msg"></a>
         
-        <h5><span>${mex_number}</span>Comments</h5>
+        <h5><span>${mex_number}</span>Messages</h5>
         <#list messages as message>
         <ul>
             <li>
@@ -140,26 +140,25 @@
     </div>
     <#if userid??>
     <div class="gt_post_comment_wrap gt_detail_hdg">
-        <h5>Post Your Comments</h5>
-        <form class="gt_contact_form" id="contact-form" action="http://2goodtheme.net/edu-skill/layout/assets/sendmail.php" method="post">
-            <div class="col-md-6">
-                <div class="gt_contact_us_field">
-                    <input class="c_ph" type="text" placeholder="Your Name" id="name" name="contact-name" required="">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="gt_contact_us_field">
-                    <input class="c_ph" type="text" placeholder="Email Adress:" id="email" name="contact-email" required="">
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="gt_contact_us_field">
-                    <textarea class="gt_c_bg" name="contact-message" id="message" placeholder="Message" required=""></textarea>
+        <h5>Post Your Message</h5>
+        <form class="gt_contact_form" id="contact-form" action="postMessage" method="post">
+            <div class="col-md-3">
+            <div class="gt_privacy_field default_width mb20">
+                  <input class="c_ph" type="text" readonly="readonly" value="Privacy">
+                  <label class="switch">
+                    <input type="checkbox">
+                    <div class="slider round"><span>Private</span></div>
+                  </label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="gt_contact_us_field">
-                    <input id="submit-message" type="submit" value="submit" name="submit_msg">
+                    <textarea class="gt_c_bg" name="message" id="message" placeholder="Message" required=""></textarea>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="gt_contact_us_field">
+                    <input id="submit-message" type="submit" value="Post" name="submit_msg">
                 </div>
                 <!--Alert Message-->
                 <div id="contact-result">
