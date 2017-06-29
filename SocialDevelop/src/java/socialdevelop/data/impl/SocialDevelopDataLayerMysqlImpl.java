@@ -196,7 +196,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             uTask = connection.prepareStatement("UPDATE task SET name=?,numCollaborators=?,start=?,end=?,description=?,open=?,project_ID=? WHERE ID=?");
             dTask = connection.prepareStatement("DELETE FROM task WHERE ID=?");
             
-            iMessage = connection.prepareStatement("INSERT INTO message (private,text,type,project_ID) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            iMessage = connection.prepareStatement("INSERT INTO message (private,text,type,project_ID, developer_ID) VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             uMessage = connection.prepareStatement("UPDATE message SET private=?,text=?,type=?,project_ID=? WHERE ID=?");
             dMessage = connection.prepareStatement("DELETE FROM message WHERE ID=?");
             
@@ -1542,6 +1542,11 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                     iMessage.setInt(4, message.getProject().getKey());
                 }else{
                     iMessage.setNull(4, java.sql.Types.INTEGER);
+                }
+                if(message.getDeveloper()!=null){
+                    iMessage.setInt(5, message.getDeveloper().getKey());
+                }else{
+                    iMessage.setNull(5, java.sql.Types.INTEGER);
                 }
                 if (iMessage.executeUpdate() == 1) {
                     try (ResultSet keys = iMessage.getGeneratedKeys()) {

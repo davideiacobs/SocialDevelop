@@ -307,3 +307,15 @@ window.onbeforeunload = function() {
   $(".add-project-form")[0].reset();
   $(".add-task-form")[0].reset();
 };
+
+
+$("#private-check").on("click", function(){
+   
+   var value = $("#isPrivate").val(); 
+   if(value==0){
+       $("#isPrivate").val(1);
+   }else{
+       $("#isPrivate").val(0);
+   }
+   console.log($("#isPrivate").val())
+});

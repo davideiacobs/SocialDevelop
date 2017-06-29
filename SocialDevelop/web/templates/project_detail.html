@@ -146,7 +146,8 @@
             <div class="gt_privacy_field default_width mb20">
                   <input class="c_ph" type="text" readonly="readonly" value="Privacy">
                   <label class="switch">
-                    <input type="checkbox">
+                    <input type="checkbox" id="private-check" />
+                    <input type="text" class="hidden" id="isPrivate" name="isPrivate" value="1"/>
                     <div class="slider round"><span>Private</span></div>
                   </label>
                 </div>
@@ -164,6 +165,7 @@
                 <div id="contact-result">
                 </div>
             </div>
+            <input class="hidden" type="text" value="${projectkey}" name="project_key"/>
         </form>
     </div>
     </#if>

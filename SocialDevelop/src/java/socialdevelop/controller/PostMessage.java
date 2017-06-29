@@ -28,23 +28,39 @@ public class PostMessage extends SocialDevelopBaseController {
      private void action_postmsg(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
         HttpSession s = request.getSession(true);
         String u = (String) s.getAttribute("previous_url");
-        
         if(s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
-            if(s.getAttribute("previous_url") != null && ((String) s.getAttribute("previous_url")).split("\\?")[0].equals("/socialdevelop/Project_Detail")){
+            if(s.getAttribute("previous_url") != null && ((String) s.getAttribute("previous_url")).equals("/socialdevelop/Project_Detail")){
             
                 SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
                 int user_key = (int) s.getAttribute("userid");
                 
                 MessageImpl msg = new MessageImpl(datalayer);
                 msg.setDeveloperKey(user_key);
-                msg.setText((String) request.getAttribute("message"));
+                msg.setText(request.getParameter("message"));
+                String p = request.getParameter("isPrivate");
+                msg.setType("commento");
+                int project_key = Integer.parseInt(request.getParameter("project_key"));
+                msg.setProjectKey(project_key);
+                boolean isPrivate = true;
+                if(p.equals("0")){
+                    isPrivate = false;
+                }
+                msg.setPrivate(isPrivate);
+                datalayer.storeMessage(msg);
                 datalayer.destroy();
-                response.sendRedirect(u);
+                s.removeAttribute("previous_url");
+                response.sendRedirect(u.split("/")[2]+"?n="+project_key);
+                
             }else{
-                response.sendRedirect(u);
-            } 
+                s.removeAttribute("previous_url");
+                response.sendRedirect("index");
+                
+            }
+        }else{
+            s.removeAttribute("previous_url");
+            response.sendRedirect("index");
         }
-        response.sendRedirect("index");
+        
     }
     
     

@@ -70,6 +70,7 @@ public class Project_Detail extends SocialDevelopBaseController {
                 request.setAttribute("page_subtitle", "Check project info");
                 request.setAttribute("projectname", project.getName());
                 request.setAttribute("projectdescr", project.getDescription());
+                request.setAttribute("projectkey", key);
                 List <Task> tasks = datalayer.getTasks(project.getKey()); //lista task del progetto
                 List <Task> tasksEnded = new ArrayList();  //lista di quelli terminati
                 List<Type> tasks_types = new ArrayList<>(); //lista dei tipi di ogni task
