@@ -120,6 +120,7 @@
         
         <h5><span>${mex_number}</span>Messages</h5>
         <#list messages as message>
+        <#if message.type=="commento">
         <ul>
             <li>
                 <div class="gt_comment_wrap">
@@ -127,7 +128,7 @@
                         <img src="${foto_msg[message?index]}" alt="No image avalaible">
                     </figure>
                     <div class="gt_comment_des">
-                        <h6><a>${by[message?index].username}</a></h6>
+                        <h6><a href="DeveloperProfile?n=${by[message?index].key}">${by[message?index].username}</a></h6>
                         
                         <p>${message.text}</p>
                     </div>
@@ -136,6 +137,7 @@
             
             
         </ul>
+        </#if>
         </#list>
     </div>
     <#if userid??>
@@ -146,10 +148,10 @@
             <div class="gt_privacy_field default_width mb20">
                   <input class="c_ph" type="text" readonly="readonly" value="Privacy">
                   <label class="switch">
-                    <input type="checkbox" id="private-check" />
-                    <input type="text" class="hidden" id="isPrivate" name="isPrivate" value="1"/>
+                    <input type="checkbox" id="private-check"/>
                     <div class="slider round"><span>Private</span></div>
                   </label>
+                  <input type="text" class="hidden" id="isPrivate" name="isPrivate" value="1"/>
                 </div>
             </div>
             <div class="col-md-12">

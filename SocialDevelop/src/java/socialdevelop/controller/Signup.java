@@ -47,7 +47,7 @@ public class Signup extends SocialDevelopBaseController {
             HttpSession s = request.getSession(true);
             String u = (String) s.getAttribute("previous_url");
             if(s.getAttribute("previous_url") != null && (u.equals("/socialdevelop/index") || u.equals("/socialdevelop/MakeLoginReg"))){
-             
+
                 String name = request.getParameter("first_name");
                 String surname = request.getParameter("second_name");
                 String username = request.getParameter("username");
@@ -96,7 +96,9 @@ public class Signup extends SocialDevelopBaseController {
                                 }                    
                                 request.setAttribute("skills", skills);
                                 datalayer.destroy();
-                                SecurityLayer.createSession(request, dev.getUsername(), dev.getKey());
+                                HttpSession sess = SecurityLayer.createSession(request, dev.getUsername(), dev.getKey());
+                                String act_url = request.getRequestURI();
+                                sess.setAttribute("previous_url", act_url);
                                 TemplateResult res = new TemplateResult(getServletContext());
                                 res.activate("completa_registrazione.html",request, response);  
                             }else{
@@ -124,8 +126,7 @@ public class Signup extends SocialDevelopBaseController {
             }else{
                 response.sendRedirect("index");
             }
-            String act_url = request.getRequestURI();
-            s.setAttribute("previous_url", act_url);
+           
     }
     
     @Override

@@ -38,3 +38,12 @@
 -valutare sviluppatore a fine progetto
 
 
+
+
+
+#################################################
+MESSAGGI ->  dividere da freemarker:
+1) modificare query in modo che ordini in base al tipo
+2) seq_last_index_of in freemarker (prende l'indice dell'ultima occorrenza di un valore)
+3) fermarsi a quell'indice, salvarlo e ripartire da esso nella tipologia successiva 
+
