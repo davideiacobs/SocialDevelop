@@ -1,27 +1,36 @@
         <div class="row developerFinder">
             <p class="titleDeveloper">Cerca Sviluppatore</p>
-            <div class="col-md-4">
-                <select id="select-skill" class="find_course_search">
-                    <option>Select Skill</option>
-                    <!--<option>2</option>-->
-                    <#list skills as skill>
-                        <option value="${skill.key}">${skill.name}</option>
-                    </#list>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <select id="select-level" class="find_course_search">
-                    <option>Level</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
-            </div>
-            <div class="col-md-4 ">
-                <a href="FindDeveloper" type="button" class="btn btn-default" >Cerca Sviluppatore</a>
-            </div>
+            <form method="post" action="FindDeveloper">
+                <div class="col-md-4">
+                    <select class="skillSelect" name="skill">
+                            <option value="">Select Skill</option>
+                                <#list skills as skill>
+                                    <option class="${skill.type_key}" value="${skill.key}">${skill.name}</option>
+                                    <#list skill.child as child>
+                                        <option class="${skill.type_key}" value="${child.key}"> - ${child.name}</option>
+                                    </#list>
+                                </#list>
+                        </select>
+                </div>
+                <div class="col-md-4">
+                    <select id="select-level" class="levelSelect" name="level">
+                        <option value="">Level</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="1">6</option>
+                        <option value="2">7</option>
+                        <option value="3">8</option>
+                        <option value="4">9</option>
+                        <option value="5">10</option>
+                    </select>
+                </div>
+                <div class="col-md-4 ">
+                    <input type="submit" class="btn btn-default findDeveloper" value="Cerca Sviluppatore" >
+                </div>
+            </form>
         </div>
         <div class="row">
             <div class="col-md-4 create_project">
@@ -47,7 +56,7 @@
                         <div class="gt_course_des_holder projectCoordinator">
                           <div class="gt_course_author">
                             <img src=${fotoCoordinatore[progetto?index]} alt="">
-                            <a href="#">${progetto.coordinator.name?cap_first}</i></a>
+                            <a href="DeveloperProfile?n=${progetto.coordinator.key}">${progetto.coordinator.name?cap_first}</i></a>
                           </div>
                         </div>
                         <div class="gt_course_cat gt_bg_4">New</div>
@@ -55,14 +64,14 @@
                     </figure>
                     <div class="gt_course_des projectDescription default_width">
                       <span> Data Inizio: ${inizioprogetto[progetto?index]} </span>
-                      <h5><a href="#">${progetto.name?cap_first}</a></h5>
+                      <h5><a href="Project_Detail?n=${progetto.key}">${progetto.name?cap_first}</a></h5>
                       <p class="description_project" >${progetto.description}</p>
                     </div>
                     <div class="gt_event_grid_des default_width piu_info">
                         <a href="#">Pi&uacute; informazioni</a>
                     </div>
                     <div class="gt_course_bottom default_width">
-                      <h5>${progetto.tasks?size}<span>Task</span></h5>
+                      <h5>${ntasks[progetto?index]}<span>Task</span></h5>
                         <a href="#"><h5>${ncollaboratori[progetto?index]}<span>Collaboratori</span></h5></a>
 
                     </div>

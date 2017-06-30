@@ -9,16 +9,14 @@ import it.univaq.f4i.iw.framework.data.DataLayerException;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -31,9 +29,9 @@ import socialdevelop.data.model.SocialDevelopDataLayer;
  *
  * @author manuel
  */
-public class FindDeveloper extends SocialDevelopBaseController {
+public class SearchDeveloper extends SocialDevelopBaseController {
 
-   private void action_listproject(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
+    private void action_searchDeveloper(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
         HttpSession s = request.getSession(true);
         request.setAttribute("page_title", "Sviluppatori");
         request.setAttribute("page_subtitle", "Sviluppatori");
@@ -41,10 +39,12 @@ public class FindDeveloper extends SocialDevelopBaseController {
                 request.setAttribute("logout", "Logout");
             }
         SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
-        int skilluser = Integer.parseInt(request.getParameter("skill"));
-        int level = Integer.parseInt(request.getParameter("level"));
-        Map<Developer,Integer> devdl = datalayer.getDevelopersBySkill(skilluser,level);
-        List <Developer> dev = new ArrayList<Developer>(devdl.keySet());
+        List<Integer> developersID = datalayer.getDeveloperByUsernameLike(request.getParameter("username"));
+        List <Developer> dev = new ArrayList<Developer>();
+        for(int developerID: developersID)
+        {
+            dev.add(datalayer.getDeveloper(developerID));
+        }
             if (dev.size() != 0) {
                request.setAttribute("listasviluppatori", dev);
                Files foto = null ;
@@ -56,20 +56,20 @@ public class FindDeveloper extends SocialDevelopBaseController {
                    int foto_key=(developer).getFoto();
                    projects[count] = datalayer.getProjectCollaborators(developer.getKey()).size()+datalayer.getProjectsByCoordinator(developer.getKey()).size();
                    List<Integer> votes = new ArrayList<Integer>(datalayer.getTasksByDeveloper(developer.getKey()).values());
-                   if(votes.size()> 0)
+                   if(votes.size()!= 0)
                     {
                         int count2 = 0;
                         vote[count] = 0;
                         for (int vote1 : votes ) 
-                        {           
-                            if(vote1>=0)
+                        {
+                            if(vote1 >= 0)
                             {
-                                count2++;
-                                vote[count] = vote[count]+vote1;
+                            count2++;
+                            vote[count] = vote[count]+vote1;
                             }
                         }
                         if(count2 != 0)
-                        {
+                        {   
                             vote[count] = vote[count]/count2;
                         }
                     }
@@ -107,14 +107,13 @@ public class FindDeveloper extends SocialDevelopBaseController {
         datalayer.destroy();
         TemplateResult res = new TemplateResult(getServletContext());
         res.activate("developer_list.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare 
-    }
-    
+}
     
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException {
         try {
-            action_listproject(request, response);
+            action_searchDeveloper(request, response);
         } catch (IOException ex) {
             Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
         } catch (TemplateManagerException ex) {

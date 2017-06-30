@@ -181,4 +181,6 @@ public interface SocialDevelopDataLayer extends DataLayer {
     int getTypeByName(String name) throws DataLayerException;
     
     void deleteSkillsFromTask(int task_id) throws DataLayerException;
+    
+    List<Integer> getDeveloperByUsernameLike(String username) throws DataLayerException;
 }

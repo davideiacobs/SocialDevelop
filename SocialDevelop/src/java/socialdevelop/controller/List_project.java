@@ -22,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Files;
 import socialdevelop.data.model.Project;
+import socialdevelop.data.model.Skill;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 import socialdevelop.data.model.Task;
 
@@ -50,11 +51,13 @@ public class List_project extends SocialDevelopBaseController {
                String fotos[] = new String[pro.size()];
                int count = 0;
                int c = 0;
+               int[] ntasks=new int[pro.size()];
                startdate[c] = null;
                for(Project progetto : pro){
                    coordinatore=datalayer.getDeveloper(progetto.getCoordinatorKey());
                    List <Task> tasks = datalayer.getTasks(progetto.getKey());
                    ncollaboratori[count] = 0;
+                   ntasks[count]=tasks.size();
                    startdate[c] = datalayer.getDateOfTaskByProject(progetto.getKey());
                    for(Task task : tasks){
                        ncollaboratori[count]+=task.getNumCollaborators();
@@ -72,11 +75,23 @@ public class List_project extends SocialDevelopBaseController {
                }
                request.setAttribute("inizioprogetto", startdate);
                request.setAttribute("ncollaboratori", ncollaboratori);
-               request.setAttribute("fotoCoordinatore", fotos); 
+               request.setAttribute("fotoCoordinatore", fotos);
+               request.setAttribute("ntasks", ntasks); 
             }
             else{
                 request.setAttribute("listaprogetti", pro);
-             request.setAttribute("nontrovato","Nessun progetto trovato");
+                request.setAttribute("nontrovato","Nessun progetto trovato");
+            }
+            List<Skill> skills = datalayer.getSkillsParentList();
+            if(skills!=null)
+            {
+                for(Skill skill : skills){
+                    List<Skill> child = datalayer.getChild(skill.getKey());
+                    if(child!=null){
+                        skill.setChild(child);
+                    }
+                }
+                request.setAttribute("skills", skills);
             }
            datalayer.destroy();
            TemplateResult res = new TemplateResult(getServletContext());

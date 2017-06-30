@@ -57,7 +57,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     private PreparedStatement iTaskHasDeveloper,dTaskHasDeveloper,uTaskHasDeveloper,sTaskHasDeveloper;
     private PreparedStatement iSkillHasDeveloper,dSkillHasDeveloper,uSkillHasDeveloper,sSkillHasDeveloper;
     private PreparedStatement sProjectByTask, sCurrentTasksByDeveloper, sEndedTasksByDeveloper,sProjectsByCoordinator;
-    private PreparedStatement sDateOfTaskByProject,sEndDateOfTaskByProject, sTypeBySkill,dSkillsFromTask;
+    private PreparedStatement sDateOfTaskByProject,sEndDateOfTaskByProject, sTypeBySkill,dSkillsFromTask,sDeveloperByUsernameLike;
     public SocialDevelopDataLayerMysqlImpl(DataSource datasource) throws SQLException, NamingException {
         super(datasource);
     }
@@ -89,6 +89,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sDeveloperByID = connection.prepareStatement("SELECT * FROM developer WHERE ID=?");
             
             sDeveloperByUsername = connection.prepareStatement("SELECT developer.ID FROM developer WHERE username=?");
+            
+            sDeveloperByUsernameLike = connection.prepareStatement("SELECT developer.ID FROM developer WHERE username LIKE ?");
             
             sDeveloperByMail = connection.prepareStatement("SELECT developer.ID FROM developer WHERE mail=?");
             
@@ -136,7 +138,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sTypeByTask = connection.prepareStatement("SELECT type_ID FROM task WHERE ID=?");
             sDeveloperBySkillWithLevel = connection.prepareStatement("SELECT developer.*, skill_has_developer.level FROM developer INNER JOIN "
                                 + "skill_has_developer ON (developer.ID = skill_has_developer.developer_ID)"
-                                            + "WHERE skill_has_developer.skill_ID=? AND skill_has_developer.level=?");
+                                            + "WHERE skill_has_developer.skill_ID=? AND skill_has_developer.level>=?");
             sDeveloperBySkill = connection.prepareStatement("SELECT developer.*, skill_has_developer.level FROM developer INNER JOIN skill_has_developer "
                                             + "ON(developer.ID = skill_has_developer.developer_ID) WHERE skill_has_developer.skill_ID=?");
             sTasksByProject = connection.prepareStatement("SELECT task.ID FROM task WHERE project_ID=?");
@@ -1987,6 +1989,21 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         return null;
     }
     
+    @Override
+    public List<Integer> getDeveloperByUsernameLike(String username) throws DataLayerException{
+        List<Integer> result = new ArrayList();
+        try{
+            sDeveloperByUsernameLike.setString(1, "%" + username + "%");
+            try(ResultSet rs = sDeveloperByUsernameLike.executeQuery()){
+                while(rs.next()){
+                    result.add(rs.getInt("ID"));
+                }
+            }
+        }catch (SQLException ex) {
+                throw new DataLayerException("Unable to load developer", ex);
+            }
+        return result;
+    }
 }
     
     

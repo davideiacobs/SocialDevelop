@@ -99,7 +99,13 @@ and open the template in the editor.
     display:none !important;
 }
 
+.view-update {
+    padding-bottom:2%;
+}
 
+#submit-project {
+    margin-top:5%;
+}
 .developerFinder
 {
     border-width: 1px;
@@ -114,12 +120,4 @@ and open the template in the editor.
 }
 .singleProject{
     padding-bottom: 8%;
-}
-
-.view-update {
-    padding-bottom:2%;
-}
-
-#submit-project {
-    margin-top:5%;
 }

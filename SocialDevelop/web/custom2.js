@@ -318,3 +318,32 @@ $(".private-check").on("click", function(){
        private.val(0);
    }
 });
+
+$(".skillSelect").on("click",function(){
+        $(this).removeClass("req-list"); 
+    });
+
+    $(".levelSelect").on("click",function(){
+        $(this).removeClass("req-list"); 
+    });
+
+    $(".findDeveloper").on("click",function(event){
+         var skill_name = $(".skillSelect").val();
+         var skill_level = $(".levelSelect").val();
+         if(skill_name == "")
+            {
+                event.preventDefault();
+                $(".skillSelect").addClass("req-list");
+                $(".skillSelect").focus(); 
+            }
+            else
+            {
+                if(skill_level == "")
+                {
+                    event.preventDefault();
+                    $(".levelSelect").addClass("req-list");
+                    $(".levelSelect").focus();
+                }
+            }
+
+     });
