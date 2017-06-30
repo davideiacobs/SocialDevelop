@@ -156,6 +156,19 @@ function reload_task(name,start,end,descr,coll,skills){
     
 }
 
+function close_task(param){
+    var isOpen = $(param).parent().children("#isOpen");
+    console.log(isOpen.text());
+    if(isOpen.text()=="State: Open"){
+        isOpen.text("State: Close");
+        $(param).attr('value', 'Open Task');
+    }else{
+        isOpen.text("State: Open");
+        $(param).attr('value', 'Close Task');
+    }
+    
+}
+
 
 function update_task(param){
     flagUpdate = true;
@@ -269,18 +282,26 @@ $("#submit-project").on("click", function(){
        //recuperiamo tutti i valori del task
        var task = $(".task-aggiunti").children("li")[i];
        var name = $.trim($(task).children().children("p#name").text().split(":")[1]);
+       var isOpen = $.trim($(task).children().children("p#isOpen").text().split(":")[1]);
        var tipo = $.trim($(task).children().children("p#tipo").text().split(":")[1]);
        var start = $.trim($(task).children().children("p#start-end").text().split(":")[1].split("-")[0]);
        var end = $.trim($(task).children().children("p#start-end").text().split("-")[1].split(":")[1]);
        var descr = $.trim($(task).children().children("p#descr").text().split(":")[1]);
        var coll = $.trim($(task).children().children("p#coll").text().split(":")[1]);
        var skills = $.trim($(task).children().children("p.skills").text().split(":")[1]);
-       
-       if(input_tasks==""){
-           //stiamo inserendo il primo task nell'input
-           $("#tasks").val(name+"#"+start+"#"+end+"#"+descr+"#"+coll+"#"+skills+"#"+tipo+"@");
+       if(isOpen!="Open" && isOpen!="Close"){
+     
+            if(input_tasks==""){
+                $("#tasks").val(name+"#"+start+"#"+end+"#"+descr+"#"+coll+"#"+skills+"#"+tipo+"@");
+            }else{
+                $("#tasks").val(input_tasks+name+"#"+start+"#"+end+"#"+descr+"#"+coll+"#"+skills+"#"+tipo+"@");
+            }
        }else{
-           $("#tasks").val(input_tasks+name+"#"+start+"#"+end+"#"+descr+"#"+coll+"#"+skills+"#"+tipo+"@");
+            if(input_tasks==""){
+                $("#tasks").val(name+"#"+start+"#"+end+"#"+descr+"#"+coll+"#"+skills+"#"+tipo+"#"+isOpen+"@");
+            }else{
+                $("#tasks").val(input_tasks+name+"#"+start+"#"+end+"#"+descr+"#"+coll+"#"+skills+"#"+tipo+"#"+isOpen+"@");
+            }
        }
    }
     

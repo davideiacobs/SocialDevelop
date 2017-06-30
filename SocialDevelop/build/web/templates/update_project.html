@@ -139,6 +139,7 @@
                     <div class='gt-text grade-padding'>
                                 <p id="name">Task: ${task.name?cap_first}</p>
                                 <p id="tipo">Type: ${tasks_types[task?index].type?cap_first}</p>
+                                <p id="isOpen">State: <#if task.open==true>Open<#else>Close</#if></p>
                                 <p id="start-end">Start Date: ${task.getStartDate().time?date?string.short} &nbsp; - &nbsp; End Date: ${task.getEndDate().time?date?string.short}</p>
                                 <p id="descr">Description: ${task.description?cap_first}</p>
                                 <p id="coll">Collaborators: ${task.numCollaborators}</p>
@@ -146,6 +147,8 @@
                                 </p>
                                 <input type="button" value="Update" id="update-skill" onclick="update_task(this)"/>
                                 <input type="button" value="Delete" id="delete-skill" onclick="remove_task(this)"/>
+                                <input type="button" value="Close Task" id="close-skill" onclick="close_task(this)"/>
+
                     </div>
                 </li>
                 </#list>

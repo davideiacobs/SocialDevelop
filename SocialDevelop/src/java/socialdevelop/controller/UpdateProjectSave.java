@@ -81,6 +81,11 @@ public class UpdateProjectSave extends SocialDevelopBaseController {
                     current.setDescription(thistask[3]);
                     current.setNumCollaborators(Integer.parseInt(thistask[4]));
                     current.setType_key(datalayer.getTypeByName(thistask[6]));
+                    if(thistask[7].equals("Open")){
+                        current.setOpen(true);
+                    }else{
+                        current.setOpen(false);
+                    }
                     int task_key2 = datalayer.storeTask(current);
                     datalayer.deleteSkillsFromTask(task_key2);
                     String [] skills = thistask[5].split(";");

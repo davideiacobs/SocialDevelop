@@ -1,27 +1,32 @@
---GESTIONE ECCEZIONI!
+-postare messaggi su un progetto (pubblici o privati) solo per loggati **FATTO**
 
-- stile home (bloccare background)
+-utenti anonimi devono poter leggere i messaggi pubblici soltanto  **FATTO**
 
--coordinatore può chiudere un task quando vuole anche se mancano collaboratori
-
--postare messaggi su un progetto (pubblici o privati) solo per loggati
-
--backend -> inserire/modificare lista tipi task e lista skill associati ad ogni tipo
-(OPZIONALMENTE è possibile associare un task a più tipi)
-
--utenti anonimi devono poter leggere i messaggi pubblici soltanto
-
--ricerva sviluppatori per skill e livello
+-ricerva sviluppatori per skill e livello  **FATTO**
 
 -aggiungere collegamento al profilo coordinatore dalla lista referenze  **FATTO**
 
--modifica progetto (tutto)  -IO- (MANCA CHIUSURA TASK E GESTIONE COLLABORATORI)
+-coordinatore può chiudere un task quando vuole anche se mancano collaboratori **FATTO**
+
+------------------------------------------------------------------------------------
+
+--GESTIONE ECCEZIONI!
+
+-stile home (bloccare background)
+
+-backend -> inserire/modificare lista tipi task e lista skill associati ad ogni tipo
+
+-modifica progetto (tutto)  -IO- (GESTIONE COLLABORATORI)
 
 -RISOLVERE PROBLEMA DATA MODIFICA PROGETTO -IO-
 
 -visualizzare sviluppatori adatti ai task (dopo la creazione del progetto)
 
 -inviare proposta collaborazione relativa a un task
+
+-escludere sviluppatore da un task
+
+-valutare sviluppatore a fine progetto
 
 -pannello inviti coordinatore
 
@@ -33,8 +38,8 @@
 
 -email
 
--escludere sviluppatore da un task
+-paginazione
 
--valutare sviluppatore a fine progetto
+-togliere join task da progetti del quale l'utente è coordinatore
 
 
