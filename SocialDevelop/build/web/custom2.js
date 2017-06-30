@@ -309,13 +309,12 @@ window.onbeforeunload = function() {
 };
 
 
-$("#private-check").on("click", function(){
-   
-   var value = $("#isPrivate").val(); 
+$(".private-check").on("click", function(){
+   var private = $(this).parent().siblings(".isPrivate");
+   var value = private.val(); 
    if(value==0){
-       $("#isPrivate").val(1);
+       private.val(1);
    }else{
-       $("#isPrivate").val(0);
+       private.val(0);
    }
-   console.log($("#isPrivate").val())
 });

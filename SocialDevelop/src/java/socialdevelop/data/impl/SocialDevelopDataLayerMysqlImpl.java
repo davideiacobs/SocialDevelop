@@ -92,13 +92,13 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             
             sDeveloperByMail = connection.prepareStatement("SELECT developer.ID FROM developer WHERE mail=?");
             
-            sMessagesByProject = connection.prepareStatement("SELECT ID FROM message WHERE project_ID=?");
+            sMessagesByProject = connection.prepareStatement("SELECT ID FROM message WHERE project_ID=? ORDER BY type");
             
             sMessageByID = connection.prepareStatement("SELECT * FROM message WHERE ID=?");
             
             sDeveloperByMessage = connection.prepareStatement("SELECT m.developer_ID FROM message AS m WHERE m.ID=?");
             
-            sPublicMessagesByProject= connection.prepareStatement("SELECT ID FROM message WHERE project_ID=? and private=0");
+            sPublicMessagesByProject= connection.prepareStatement("SELECT ID FROM message WHERE project_ID=? and private=0 ORDER BY type");
             
             sProjects = connection.prepareStatement("SELECT ID FROM project");
             

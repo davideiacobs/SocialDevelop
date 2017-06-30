@@ -147,7 +147,7 @@ public class Project_Detail extends SocialDevelopBaseController {
                 else{
                     messages = datalayer.getPublicMessages(project.getKey());
                 }
-                request.setAttribute("mex_number",messages.size());
+               
                 request.setAttribute("messages", messages);
                 List<String> foto_msg = new ArrayList();
                 

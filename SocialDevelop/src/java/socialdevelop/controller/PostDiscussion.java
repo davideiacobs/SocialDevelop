@@ -23,7 +23,7 @@ import socialdevelop.data.model.SocialDevelopDataLayer;
  *
  * @author manuel
  */
-public class PostMessage extends SocialDevelopBaseController {
+public class PostDiscussion extends SocialDevelopBaseController {
 
      private void action_postmsg(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
         HttpSession s = request.getSession(true);
@@ -36,9 +36,9 @@ public class PostMessage extends SocialDevelopBaseController {
                 
                 MessageImpl msg = new MessageImpl(datalayer);
                 msg.setDeveloperKey(user_key);
-                msg.setText(request.getParameter("message"));
-                String p = request.getParameter("isPrivate");
-                msg.setType("commento");
+                msg.setText(request.getParameter("discussion"));
+                String p = request.getParameter("isPrivate-discussion");
+                msg.setType("discussione");
                 int project_key = Integer.parseInt(request.getParameter("project_key"));
                 msg.setProjectKey(project_key);
                 boolean isPrivate = true;

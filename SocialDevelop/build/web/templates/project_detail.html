@@ -59,8 +59,8 @@
         <div class="gt_hdg_1 default_width">
             <h3>List of tasks</h3>
             <span class="gt_hdg_left"></span>
-            <span class="gt_hdg_right"></span></div></div>
-    
+    <span class="gt_hdg_right"></span></div></div>
+        
     <#list tasks as task>
     <div class="row task-card"><a name="${task.key}"></a>
         <div class="">
@@ -115,61 +115,242 @@
     </div>
     </#list>
     
-    <!--Comment Wrap Start-->
-    <div class="gt_comment_list_wrap gt_detail_hdg msg-project"><a name="show-msg"></a>
+    
+    <div class="gt_event_tab default_width"><a name="show-msg"></a>
         
-        <h5><span>${mex_number}</span>Messages</h5>
-        <#list messages as message>
-        <#if message.type=="commento">
-        <ul>
-            <li>
-                <div class="gt_comment_wrap">
-                    <figure>
-                        <img src="${foto_msg[message?index]}" alt="No image avalaible">
-                    </figure>
-                    <div class="gt_comment_des">
-                        <h6><a href="DeveloperProfile?n=${by[message?index].key}">${by[message?index].username}</a></h6>
+        <div class="gt_event_inside_tab default_width">
+            <ul data-tabs="tabs">
+                <li class="active"><a data-toggle="tab" href="#annunci">Ads</a></li>
+                <li><a data-toggle="tab" href="#richieste">Requests</a></li>
+                <li><a data-toggle="tab" href="#discussioni">Discussions</a></li>
+            </ul>
+            <!--ANNUNCI-->
+            <div class="tab-content">
+                <div class="tab-pane active" id="annunci">
+                    <div class="gt_comment_list_wrap gt_detail_hdg ">  
                         
-                        <p>${message.text}</p>
+                        <#list messages as message>
+                        <#if message.type=="annuncio">
+                        <ul>
+                            <li>
+                                <div class="gt_comment_wrap">
+                                    <figure>
+                                        <img src="${foto_msg[message?index]}" alt="No image avalaible">
+                                    </figure>
+                                    <div class="gt_comment_des">
+                                        <h6><a href="DeveloperProfile?n=${by[message?index].key}">${by[message?index].username}</a></h6>
+                                        <p>${message.text}</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        </#if>
+                        </#list>
+                    </div> 
+                    
+                    <#if userid??>
+                    <div class="gt_post_comment_wrap gt_detail_hdg">
+                        <h5>Post Your Ad</h5>
+                        <form class="gt_contact_form" id="contact-form" action="PostAd" method="post">
+                            <div class="col-md-3">
+                                <div class="gt_privacy_field default_width mb20">
+                                    <input class="c_ph" type="text" readonly="readonly" value="Privacy">
+                                    <label class="switch">
+                                        <input type="checkbox" class="private-check"/>
+                                        <div class="slider round"><span>Private</span></div>
+                                    </label>
+                                    <input type="text" class="hidden isPrivate" id="isPrivate-ad" name="isPrivate-ad" value="1"/>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="gt_contact_us_field">
+                                    <textarea class="gt_c_bg" name="ad" id="ad" placeholder="Message" required=""></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="gt_contact_us_field">
+                                    <input id="submit-message" type="submit" value="Post" name="submit_ad">
+                                </div>
+                                <!--Alert Message-->
+                                <div id="contact-result">
+                                </div>
+                            </div>
+                            <input class="hidden" type="text" value="${projectkey}" name="project_key"/>
+                        </form>
                     </div>
+                    </#if>
                 </div>
-            </li>
-            
-            
-        </ul>
-        </#if>
-        </#list>
+                <!-- fine annunci -->
+                <!-- RICHIESTE -->  
+                <div class="tab-pane" id="richieste">
+                    <div class="gt_comment_list_wrap gt_detail_hdg">
+                        <#list messages as message>
+                        <#if message.type=="richiesta">
+                        <ul>
+                            <li>
+                                <div class="gt_comment_wrap">
+                                    <figure>
+                                        <img src="${foto_msg[message?index]}" alt="No image avalaible">
+                                    </figure>
+                                    <div class="gt_comment_des">
+                                        <h6><a href="DeveloperProfile?n=${by[message?index].key}">${by[message?index].username}</a></h6>
+                                        <p>${message.text}</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        </#if>
+                        </#list>
+                    </div>
+                    <#if userid??>
+                    <div class="gt_post_comment_wrap gt_detail_hdg">
+                        <h5>Post Your Request</h5>
+                        <form class="gt_contact_form" id="contact-form" action="PostRequest" method="post">
+                            <div class="col-md-3">
+                                <div class="gt_privacy_field default_width mb20">
+                                    <input class="c_ph" type="text" readonly="readonly" value="Privacy">
+                                    <label class="switch">
+                                        <input type="checkbox" class="private-check"/>
+                                        <div class="slider round"><span>Private</span></div>
+                                    </label>
+                                    <input type="text" class="hidden isPrivate" id="isPrivate-request" name="isPrivate-request" value="1"/>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="gt_contact_us_field">
+                                    <textarea class="gt_c_bg" name="request" id="request" placeholder="Message" required=""></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="gt_contact_us_field">
+                                    <input id="submit-message" type="submit" value="Post" name="submit_request">
+                                </div>
+                                <!--Alert Message-->
+                                <div id="contact-result">
+                                </div>
+                            </div>
+                            <input class="hidden" type="text" value="${projectkey}" name="project_key"/>
+                        </form>
+                    </div>
+                    </#if>
+                </div>
+                <!-- fine richieste -->
+                <!-- DISCUSSIONI -->
+                <div class="tab-pane" id="discussioni">
+                    <div class="gt_comment_list_wrap gt_detail_hdg">
+                        <#list messages as message>
+                        <#if message.type=="discussione">
+                        <ul>
+                            <li>
+                                <div class="gt_comment_wrap">
+                                    <figure>
+                                        <img src="${foto_msg[message?index]}" alt="No image avalaible">
+                                    </figure>
+                                    <div class="gt_comment_des">
+                                        <h6><a href="DeveloperProfile?n=${by[message?index].key}">${by[message?index].username}</a></h6>
+                                        <p>${message.text}</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        </#if>
+                        </#list>
+                    </div> 
+                    <#if userid??>
+                    <div class="gt_post_comment_wrap gt_detail_hdg">
+                        <h5>Post Your Discussion</h5>
+                        <form class="gt_contact_form" id="contact-form" action="PostDiscussion" method="post">
+                            <div class="col-md-3">
+                                <div class="gt_privacy_field default_width mb20">
+                                    <input class="c_ph" type="text" readonly="readonly" value="Privacy">
+                                    <label class="switch">
+                                        <input type="checkbox" class="private-check"/>
+                                        <div class="slider round"><span>Private</span></div>
+                                    </label>
+                                    <input type="text" class="hidden isPrivate" id="isPrivate-discussion" name="isPrivate-discussion" value="1"/>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="gt_contact_us_field">
+                                    <textarea class="gt_c_bg" name="discussion" id="discussion" placeholder="Message" required=""></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="gt_contact_us_field">
+                                    <input id="submit-message" type="submit" value="Post" name="submit_discussion">
+                                </div>
+                                <!--Alert Message-->
+                                <div id="contact-result">
+                                </div>
+                            </div>
+                            <input class="hidden" type="text" value="${projectkey}" name="project_key"/>
+                        </form>
+                    </div>
+                    </#if>
+                </div>
+            </div>
+        </div>
     </div>
-    <#if userid??>
-    <div class="gt_post_comment_wrap gt_detail_hdg">
-        <h5>Post Your Message</h5>
-        <form class="gt_contact_form" id="contact-form" action="postMessage" method="post">
-            <div class="col-md-3">
+</div>
+
+
+
+
+<!--Comment Wrap Start-->
+<!--
+<div class="gt_comment_list_wrap gt_detail_hdg msg-project"><a name="show-msg"></a>     
+    <h5><span>${mex_number}</span>Messages</h5>
+    <#list messages as message>
+    <#if message.type=="commento">
+    <ul>
+        <li>
+            <div class="gt_comment_wrap">
+                <figure>
+                    <img src="${foto_msg[message?index]}" alt="No image avalaible">
+                </figure>
+                <div class="gt_comment_des">
+                    <h6><a href="DeveloperProfile?n=${by[message?index].key}">${by[message?index].username}</a></h6>
+                        
+                    <p>${message.text}</p>
+                </div>
+            </div>
+        </li>
+    </ul>
+    </#if>
+    </#list>
+</div>
+    
+    
+    
+    
+<#if userid??>
+<div class="gt_post_comment_wrap gt_detail_hdg">
+    <h5>Post Your Message</h5>
+    <form class="gt_contact_form" id="contact-form" action="postMessage" method="post">
+        <div class="col-md-3">
             <div class="gt_privacy_field default_width mb20">
-                  <input class="c_ph" type="text" readonly="readonly" value="Privacy">
-                  <label class="switch">
+                <input class="c_ph" type="text" readonly="readonly" value="Privacy">
+                <label class="switch">
                     <input type="checkbox" id="private-check"/>
                     <div class="slider round"><span>Private</span></div>
-                  </label>
-                  <input type="text" class="hidden" id="isPrivate" name="isPrivate" value="1"/>
-                </div>
+                </label>
+                <input type="text" class="hidden" id="isPrivate" name="isPrivate" value="1"/>
             </div>
-            <div class="col-md-12">
-                <div class="gt_contact_us_field">
-                    <textarea class="gt_c_bg" name="message" id="message" placeholder="Message" required=""></textarea>
-                </div>
+        </div>
+        <div class="col-md-12">
+            <div class="gt_contact_us_field">
+                <textarea class="gt_c_bg" name="message" id="message" placeholder="Message" required=""></textarea>
             </div>
-            <div class="col-md-12">
-                <div class="gt_contact_us_field">
-                    <input id="submit-message" type="submit" value="Post" name="submit_msg">
-                </div>
-                <!--Alert Message-->
-                <div id="contact-result">
-                </div>
+        </div>
+        <div class="col-md-12">
+            <div class="gt_contact_us_field">
+                <input id="submit-message" type="submit" value="Post" name="submit_msg">
             </div>
-            <input class="hidden" type="text" value="${projectkey}" name="project_key"/>
-        </form>
-    </div>
-    </#if>
-    
+        </div>
+        <input class="hidden" type="text" value="${projectkey}" name="project_key"/>
+    </form>
 </div>
+</#if>
+    
+    
+-->

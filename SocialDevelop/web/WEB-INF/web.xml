@@ -179,8 +179,16 @@
         <servlet-class>socialdevelop.controller.DeveloperSkills</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>postMessage</servlet-name>
-        <servlet-class>socialdevelop.controller.PostMessage</servlet-class>
+        <servlet-name>PostAd</servlet-name>
+        <servlet-class>socialdevelop.controller.PostAd</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PostRequest</servlet-name>
+        <servlet-class>socialdevelop.controller.PostRequest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PostDiscussion</servlet-name>
+        <servlet-class>socialdevelop.controller.PostDiscussion</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>provaDB2</servlet-name>
@@ -299,8 +307,16 @@
         <url-pattern>/DeveloperSkills</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>postMessage</servlet-name>
-        <url-pattern>/postMessage</url-pattern>
+        <servlet-name>PostAd</servlet-name>
+        <url-pattern>/PostAd</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostRequest</servlet-name>
+        <url-pattern>/PostRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostDiscussion</servlet-name>
+        <url-pattern>/PostDiscussion</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
