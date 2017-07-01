@@ -73,7 +73,7 @@ public interface Task {
     
     void removeSkill(Skill skill);
     
-    Map<Developer,Integer> getCollaboratorsByTask() throws DataLayerException;
+    Map<Developer,Integer> getCollaborators() throws DataLayerException;
         
     void setCollaborators(List<Developer> listDev); 
     //al momento del setCollaborators Integer è null
@@ -96,5 +96,7 @@ public interface Task {
     void copyFrom(Task task) throws DataLayerException;
     
     void setKey(int key);
+    
+    void setCollaborators(Map<Developer, Integer> developers);
     
 }

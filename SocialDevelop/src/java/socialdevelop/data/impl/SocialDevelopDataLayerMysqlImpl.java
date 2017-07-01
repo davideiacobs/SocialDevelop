@@ -132,7 +132,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             
             //sRequestByTask = connection.prepareStatement("SELECT * FROM task_has_developer WHERE task_ID=?");
             
-            sCollaboratorsByTask = connection.prepareStatement("SELECT * FROM task_has_developer WHERE task_ID=? AND state=1");
+            sCollaboratorsByTask = connection.prepareStatement("SELECT * FROM task_has_developer WHERE task_ID=? AND state>=1");
             sVoteByTaskandDeveloper = connection.prepareStatement("SELECT vote FROM task_has_developer WHERE task_ID=? "
                                         + "AND developer_ID=?");
             sTypeByTask = connection.prepareStatement("SELECT type_ID FROM task WHERE ID=?");

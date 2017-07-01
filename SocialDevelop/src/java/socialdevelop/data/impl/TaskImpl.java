@@ -208,7 +208,7 @@ public class TaskImpl implements Task{
     }
     
     @Override
-    public Map<Developer,Integer> getCollaboratorsByTask()throws DataLayerException{
+    public Map<Developer,Integer> getCollaborators()throws DataLayerException{
         if(collaborators == null){
             collaborators = ownerdatalayer.getCollaboratorsByTask(this.key);
         }
@@ -222,6 +222,13 @@ public class TaskImpl implements Task{
             coll.put(developer, null);
         }
         this.collaborators = coll;
+        this.dirty = true;
+    }
+    
+    
+    @Override
+    public void setCollaborators(Map<Developer, Integer> developers){
+        this.collaborators = developers;
         this.dirty = true;
     }
     
@@ -255,7 +262,7 @@ public class TaskImpl implements Task{
     public boolean isFull(){
         boolean isFull = false ;
         try {
-            isFull = (numCollaborators == this.getCollaboratorsByTask().size());
+            isFull = (numCollaborators == this.getCollaborators().size());
         } catch (DataLayerException ex) {
             Logger.getLogger(TaskImpl.class.getName()).log(Level.SEVERE, null, ex);
         }

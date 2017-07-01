@@ -368,3 +368,10 @@ $(".skillSelect").on("click",function(){
             }
 
      });
+     
+     
+function remove_collaborator(dev_key){
+    console.log(dev_key);
+    
+    
+}

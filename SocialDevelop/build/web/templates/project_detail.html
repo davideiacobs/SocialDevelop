@@ -92,7 +92,8 @@
                     <p>${task.description}</p>
                 </div>           
             </div>
-            <div class="col-md-5 task-card-right"> 
+            <div class="col-md-1"></div>
+            <div class="col-md-4 task-card-right"> 
                 <div class="gt_cd_des_wrap border_bottom default_width skill-required">
                     <h5>Skills Required</h5>
                     <ul>
@@ -105,8 +106,8 @@
             </div>
         </div>
         <div class="row join-task">
-            <div class="col-md-7"></div>
-            <div class="col-md-5">
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
                 <form>
                     <input type="submit" value="JOIN THE TASK">
                 </form>
@@ -116,7 +117,7 @@
     </#list>
     
     
-    <div class="gt_event_tab default_width"><a name="show-msg"></a>
+    <div class="gt_event_tab default_width msg-project"><a name="show-msg"></a>
         
         <div class="gt_event_inside_tab default_width">
             <ul data-tabs="tabs">
@@ -127,13 +128,13 @@
             <!--ANNUNCI-->
             <div class="tab-content">
                 <div class="tab-pane active" id="annunci">
-                    <div class="gt_comment_list_wrap gt_detail_hdg ">  
+                    <div class="gt_comment_list_wrap gt_detail_hdg all-msg">  
                         
                         <#list messages as message>
                         <#if message.type=="annuncio">
                         <ul>
                             <li>
-                                <div class="gt_comment_wrap">
+                                <div class="gt_comment_wrap single-msg">
                                     <figure>
                                         <img src="${foto_msg[message?index]}" alt="No image avalaible">
                                     </figure>
@@ -183,12 +184,12 @@
                 <!-- fine annunci -->
                 <!-- RICHIESTE -->  
                 <div class="tab-pane" id="richieste">
-                    <div class="gt_comment_list_wrap gt_detail_hdg">
+                    <div class="gt_comment_list_wrap gt_detail_hdg all-msg">
                         <#list messages as message>
                         <#if message.type=="richiesta">
                         <ul>
                             <li>
-                                <div class="gt_comment_wrap">
+                                <div class="gt_comment_wrap single-msg">
                                     <figure>
                                         <img src="${foto_msg[message?index]}" alt="No image avalaible">
                                     </figure>
@@ -237,12 +238,12 @@
                 <!-- fine richieste -->
                 <!-- DISCUSSIONI -->
                 <div class="tab-pane" id="discussioni">
-                    <div class="gt_comment_list_wrap gt_detail_hdg">
+                    <div class="gt_comment_list_wrap gt_detail_hdg all-msg">
                         <#list messages as message>
                         <#if message.type=="discussione">
                         <ul>
                             <li>
-                                <div class="gt_comment_wrap">
+                                <div class="gt_comment_wrap single-msg">
                                     <figure>
                                         <img src="${foto_msg[message?index]}" alt="No image avalaible">
                                     </figure>

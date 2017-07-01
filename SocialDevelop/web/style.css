@@ -1675,7 +1675,7 @@ ul.gt_rating_start li a {display: inline-block;}
 .project-card i{color: #666666;}
 .project-card h6{color: #31b8f5;}
 .project-info {margin: 30px auto;padding: 0 0 10px 0 !important;}
-.project-card-task h4{text-align: center;}
+.project-card-task h4{}
 .project-card-task a{color: #666666;}
 .project-card-task a:hover{color: #31b8f5;}
 .project-title h2{color: #666666;font-size: 40px;}
@@ -1683,13 +1683,15 @@ ul.gt_rating_start li a {display: inline-block;}
 .join-task{}
 .join-task input[type="submit"]{display: block;width: 200px;margin: 0 auto;border-radius: 30px;color: #fff;text-transform: uppercase;padding: 13px 30px;border: 0px;font-weight: 700;background-color: #31b8f5;}
 .join-task input[type="submit"]:hover{background-color: black;}
-.task-card-right h5{text-align: center;font-weight: bold;margin: 0px auto 10px auto;color: #666666;font-size: 18px;}
+.task-card-right h5{font-weight: bold;margin: 0px auto 10px auto;color: #666666;font-size: 18px;}
 .task-title h4{font-weight: bold;text-transform: uppercase;margin: 0px 10px 35px;color: #666666;}
 .task-detail{margin-bottom: 10px;}
 .skill-required{padding: 0 !important;}
 .skill-required ul {margin-bottom: 40px;}
-.task-card p {letter-spacing: 0.2px;line-height: 24px;font-size: 14px;font-family: 'Montserrat', sans-serif;}
+.task-card p {margin-top:20px;letter-spacing: 0.2px;line-height: 24px;font-size: 14px;font-family: 'Montserrat', sans-serif;}
 .show-msg p{text-align: center;font-size: 18px;}
 .show-msg{margin-top: 30px;}
 .show-msg p:hover{color: #31b8f5;}
-.msg-project{margin-top: 60px;}
+.msg-project{margin-top: 80px;}
+.single-msg{margin-bottom: 15px; border-bottom: 1px solid #dbdbdb;padding-bottom: 15px;}
+.all-msg{padding: 20px !important;}

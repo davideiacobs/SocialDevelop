@@ -9,6 +9,7 @@ import it.univaq.f4i.iw.framework.data.DataLayerException;
 import java.util.GregorianCalendar;
 import java.util.Map;
 import socialdevelop.data.model.Developer;
+import socialdevelop.data.model.Files;
 import socialdevelop.data.model.Skill;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 import socialdevelop.data.model.Task;
@@ -30,6 +31,7 @@ public class DeveloperImpl implements Developer {
     private String curriculumString;
     private int curriculumFile;
     private int foto;
+    private Files fotoFile;
     private Map<Skill,Integer> skills;
     protected SocialDevelopDataLayer ownerdatalayer;
     protected boolean dirty;
@@ -43,6 +45,7 @@ public class DeveloperImpl implements Developer {
         pwd = "";
         mail = "";
         foto = 0;
+        fotoFile = null;
         birthdate = null;
         biography = "";
         curriculumString = "";
@@ -230,6 +233,27 @@ public class DeveloperImpl implements Developer {
         curriculumFile = developer.getCurriculumFile();
         curriculumString = developer.getCurriculumString();
         foto = developer.getFoto();
+        this.dirty = true;
+    }
+
+    /**
+     * @return the fotoFile
+     */
+    @Override
+    public Files getFotoFile() throws DataLayerException {
+        if(foto>0 && fotoFile==null){
+            this.fotoFile = ownerdatalayer.getFile(foto);
+        }
+        return fotoFile;
+    }
+
+    /**
+     * @param fotoFile the fotoFile to set
+     */
+    @Override
+    public void setFotoFile(Files fotoFile) {
+        this.fotoFile = fotoFile;
+        this.foto = fotoFile.getKey();
         this.dirty = true;
     }
 }

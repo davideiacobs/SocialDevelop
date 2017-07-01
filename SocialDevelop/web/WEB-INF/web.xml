@@ -21,7 +21,7 @@
     <context-param>
         <param-name>curriculums.directory</param-name>
         <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/curriculums</param-value>
-    </context-param> 
+    </context-param>
     <!-- Manuel 
     <context-param>
         <param-name>extra-images.directory</param-name>
@@ -194,6 +194,10 @@
         <servlet-name>PostDiscussion</servlet-name>
         <servlet-class>socialdevelop.controller.PostDiscussion</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MyCollaborators</servlet-name>
+        <servlet-class>socialdevelop.controller.MyCollaborators</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>provaDB2</servlet-name>
         <url-pattern>/provaDB2</url-pattern>
@@ -325,6 +329,10 @@
     <servlet-mapping>
         <servlet-name>SearchDeveloper</servlet-name>
         <url-pattern>/SearchDeveloper</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MyCollaborators</servlet-name>
+        <url-pattern>/MyCollaborators</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

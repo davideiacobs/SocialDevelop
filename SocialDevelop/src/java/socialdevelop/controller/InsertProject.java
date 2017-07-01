@@ -71,6 +71,7 @@ public class InsertProject extends SocialDevelopBaseController {
                     current.setNumCollaborators(Integer.parseInt(thistask[4]));
                     current.setType_key(datalayer.getTypeByName(thistask[6]));
                     int task_key = datalayer.storeTask(current);
+                    
                     String [] skills = thistask[5].split(";");
                     for(String skl : skills){
                         String [] split = skl.split("\\(");

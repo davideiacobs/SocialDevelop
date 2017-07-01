@@ -58,6 +58,10 @@ public interface Developer {
     
     void setFoto(int foto);
     
+    void setFotoFile(Files file);
+    
+    Files getFotoFile() throws DataLayerException;
+    
     String getCurriculumString();
     
     void setSkills(Map<Skill, Integer> skills);

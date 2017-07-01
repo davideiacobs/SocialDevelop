@@ -17,8 +17,8 @@
             <ul>
                 <li><a href="<#if notmy??> DeveloperProfile?n=${id} <#else> MyProfile </#if>"><i class="fa fa-user-circle-o gt-color"></i><#if notmy??>Profile<#else>My Profile</#if></a></li>
                 <li><a href="<#if notmy??> DeveloperProjects?n=${id} <#else> MyProjects </#if>"><i class="fa fa-code gt-color"></i><#if notmy??>Projects<#else>My Projects</#if></a></li>
-                <li class="active"><a href="<#if notmy??> DeveloperCollaborations?n=${id} <#else> MyCollaborations </#if>"><i class="fa fa-handshake-o gt-color"></i><#if notmy??>Collaborations<#else> My Collaborations </#if></a></li>
-                <li><a href="<#if notmy??> DeveloperSkills?n=${id} <#else> MySkills </#if>"><i class="icon-book gt-color"></i><#if notmy??>Skills<#else>My Skills</#if></a></li>
+                <li class="active"><a href="<#if notmy??>DeveloperCollaborations?n=${id} <#else>MyCollaborations </#if>"><i class="fa fa-handshake-o gt-color"></i><#if notmy??>Collaborations<#else>My Collaborations</#if></a></li>
+                <li><a href="<#if notmy??>DeveloperSkills?n=${id} <#else>MySkills </#if>"><i class="icon-book gt-color"></i><#if notmy??>Skills<#else>My Skills</#if></a></li>
                 <#if notmy??>
             </ul>
             <#else>
