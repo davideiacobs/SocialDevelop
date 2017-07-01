@@ -15,8 +15,9 @@
         </div>
         <div class="gt-usser-account-list">
             <ul>
-                <li class="active"><a href="MyProfile"><i class="fa fa-user-circle-o gt-color"></i>My Profile</a></li>
+                <li><a href="MyProfile"><i class="fa fa-user-circle-o gt-color"></i>My Profile</a></li>
                 <li><a href="MyProjects"><i class="fa fa-code gt-color"></i>My Projects</a></li>
+                <li class="active"><a href="MyCollaborators"><i class="fa fa-users gt-color"></i>My Collaborators</a></li>
                 <li><a href="MyCollaborations"><i class="fa fa-handshake-o gt-color"></i>My Collaborations</a></li>
                 <li><a href="MySkills"><i class="icon-book gt-color"></i>My Skills</a></li>
                 <li><a href="UpdateProfile"><i class="fa fa-upload"></i>Update Profile</a></li>
@@ -44,7 +45,7 @@
                         <h3>${project_task.name}</h3>
                         <!-- COLLABORATORI TASK-->
                         <#list project_task.collaborators as task_collaborator,value>
-                    <li> 
+                    <li id="${task_collaborator.key}"> 
                         <figure>
                             <#if task_collaborator.fotoFile??>
                                 <img src="extra-images/${task_collaborator.fotoFile.localFile}" alt="">
@@ -58,7 +59,7 @@
                         <!-- se il task è aperto permette di rimuovere i collaboratori-->
                         <#if project_task.open?then('Y', 'N')=="Y">
                                 <span>
-                                    <button onclick="remove_collaborator(${task_collaborator.key})" type="button" id="rm-coll-btn" class="btn btn-default btn-sm remove-coll-button rm-coll-btn">
+                                    <button onclick="remove_collaborator(${task_collaborator.key}, ${project_task.key})" type="button" id="rm-coll-btn" class="btn btn-default btn-sm remove-coll-button rm-coll-btn">
                                         <span class="glyphicon glyphicon-remove"></span>
                                     </button>   
                                 </span>
@@ -67,7 +68,7 @@
                             <#if value==-1>
                                 <span> 
                                     <label class="form-group" >Release Vote</label>
-                                    <select class="form-control">
+                                    <select class="form-control vote">
                                         <option selected value="">Select a Vote</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -75,7 +76,7 @@
                                         <option value="4">4</option>
                                         <option value="5">5</option>
                                     </select>
-                                    <button onclick="release_vote(${task_collaborator.key})" type="button"  class="btn btn-default ">
+                                    <button onclick="release_vote(${task_collaborator.key},${project_task.key},this)" type="button"  class="btn btn-default ">
                                         Vote
                                     </button>   
                                 </span>

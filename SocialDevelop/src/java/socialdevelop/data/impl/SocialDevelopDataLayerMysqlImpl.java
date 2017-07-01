@@ -15,6 +15,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -48,12 +49,12 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     private PreparedStatement sOffertsByDeveloperID, sCoordinatorByTask, sTasksByDeveloper, sChildBySkill,sPublicMessagesByProject;
     private PreparedStatement sTypeByID, iProject, uProject, dProject, sSkillByName, sTypes, sTypeByName;
     private PreparedStatement iDeveloper, uDeveloper, dDeveloper, sDeveloperByUsername, sDeveloperByMail;
-    private PreparedStatement iSkill, uSkill, dSkill;
+    private PreparedStatement iSkill, uSkill, dSkill,sSkills;
     private PreparedStatement iTask, uTask, dTask;
     private PreparedStatement iMessage, uMessage, dMessage;
     private PreparedStatement iType, uType, dType, sFileByID;
     private PreparedStatement iRequest, uRequest, dRequest, iImg;
-    private PreparedStatement iTaskHasSkill, dTaskHasSkill,uTaskHasSkill,sTaskHasSkill;
+    private PreparedStatement iTaskHasSkill, dTaskHasSkill,uTaskHasSkill,sTaskHasSkill, sCollaboratorRequestsByTask;
     private PreparedStatement iTaskHasDeveloper,dTaskHasDeveloper,uTaskHasDeveloper,sTaskHasDeveloper;
     private PreparedStatement iSkillHasDeveloper,dSkillHasDeveloper,uSkillHasDeveloper,sSkillHasDeveloper;
     private PreparedStatement sProjectByTask, sCurrentTasksByDeveloper, sEndedTasksByDeveloper,sProjectsByCoordinator;
@@ -73,6 +74,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             sProjectByID = connection.prepareStatement("SELECT * FROM project WHERE ID=?");
             
             sProjectsByCoordinator = connection.prepareStatement("SELECT ID from project WHERE coordinator_ID=?");
+            
+            sSkills = connection.prepareStatement("SELECT * FROM skill");
             
             sTaskByID = connection.prepareStatement("SELECT * FROM task WHERE ID=?");
             
@@ -133,6 +136,9 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             //sRequestByTask = connection.prepareStatement("SELECT * FROM task_has_developer WHERE task_ID=?");
             
             sCollaboratorsByTask = connection.prepareStatement("SELECT * FROM task_has_developer WHERE task_ID=? AND state>=1");
+            
+            sCollaboratorRequestsByTask = connection.prepareStatement("SELECT developer_ID FROM task_has_developer WHERE task_ID=? AND state=0");
+            
             sVoteByTaskandDeveloper = connection.prepareStatement("SELECT vote FROM task_has_developer WHERE task_ID=? "
                                         + "AND developer_ID=?");
             sTypeByTask = connection.prepareStatement("SELECT type_ID FROM task WHERE ID=?");
@@ -219,7 +225,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             
             iTaskHasDeveloper = connection.prepareStatement("INSERT INTO task_has_developer (task_ID,developer_ID,state,date,vote,sender) VALUES(?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
             dTaskHasDeveloper= connection.prepareStatement("DELETE FROM task_has_developer WHERE task_id=? AND developer_ID=?");
-            uTaskHasDeveloper = connection.prepareStatement("UPDATE task_has_developer SET task_ID=?,developer_ID=?,state=?,date=?,vote=?,sender=? WHERE task_ID=? AND developer_ID=?");
+            uTaskHasDeveloper = connection.prepareStatement("UPDATE task_has_developer SET state=?,vote=? WHERE task_ID=? AND developer_ID=?");
             sTaskHasDeveloper = connection.prepareStatement("SELECT * FROM task_has_developer WHERE task_ID=? AND developer_ID=?" );
             
             
@@ -866,6 +872,21 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     
     
     @Override
+    public List<Skill> getSkills() throws DataLayerException{
+        List<Skill> result = new ArrayList();
+        try {
+            try (ResultSet rs = sSkills.executeQuery()) {
+                while (rs.next()) {
+                    result.add((Skill) getSkill(rs.getInt("ID")));
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DataLayerException("Unable to load skills", ex);
+        }
+        return result; 
+    }
+    
+    @Override
     public Map<Developer,Integer> getCollaboratorsByTask(int task_key) throws DataLayerException{
          Map<Developer, Integer> result = new HashMap<>();
         try{
@@ -881,7 +902,24 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         return result;
     }
     
+    @Override
+    public List<Developer> getCollaboratorRequestsByTask(int task_key) throws DataLayerException{
+        List<Developer> result = new ArrayList();
+         try{
+             sCollaboratorRequestsByTask.setInt(1, task_key);
+            try(ResultSet rs = sCollaboratorRequestsByTask.executeQuery()) {
+                while (rs.next()){
+                   result.add((Developer) getDeveloper(rs.getInt("developer_ID")));
+                }
+            }
+        }catch (SQLException ex) {
+            throw new DataLayerException("Unable to load collaboratorRequestsByTask", ex);
+            }
+        return result;
+    }
     
+            
+            
     @Override
     public Map<Developer,Integer> getDevelopersBySkill(int skill_key) throws DataLayerException{
         Map<Developer,Integer> result = new HashMap<>();
@@ -1616,23 +1654,26 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     }
     
     @Override
-    public void deleteType(Type type) throws DataLayerException{
+    public int deleteType(Type type) throws DataLayerException{
         int key = type.getKey();
         try{
             dType.setInt(1, key);
-            dType.executeUpdate();
+            if(dType.executeUpdate()==1){
+                return 1;   
+            }
   
             }catch (SQLException ex) {
             throw new DataLayerException("Unable to delete type", ex);
         }
+        return 0;
     }
     
      @Override
      //task_has_developer
-    public void storeTaskHasDeveloper(int task_ID, int developer_ID, int state, GregorianCalendar date, int vote, int sender) throws DataLayerException {
+    public int storeTaskHasDeveloper(int task_ID, int developer_ID, int state, int vote, int sender) throws DataLayerException {
         boolean flag = true;
-        java.sql.Date date1=new java.sql.Date(date.getTimeInMillis());
-        
+       
+        java.sql.Date date1 = new Date(Calendar.getInstance().getTimeInMillis());
         try {
             sTaskHasDeveloper.setInt(1, task_ID);
             sTaskHasDeveloper.setInt(2, developer_ID);
@@ -1663,10 +1704,13 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                                 iTaskHasDeveloper.setInt(1, task_ID);
                                 iTaskHasDeveloper.setInt(2, developer_ID);
                                 iTaskHasDeveloper.setInt(3, state);
-                                iTaskHasDeveloper.setDate(4, date1);
+                                iTaskHasDeveloper.setDate(4, date1);         
                                 iTaskHasDeveloper.setInt(5, vote);
                                 iTaskHasDeveloper.setInt(6, sender);
-                                iTaskHasDeveloper.executeUpdate();  
+                                if(iTaskHasDeveloper.executeUpdate()==1){
+                                    return vote;
+                                } 
+                                
 
                             }catch (SQLException ex) {
                                 throw new DataLayerException("Unable to insert task_has_dev", ex);
@@ -1675,15 +1719,14 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                         }
                 }else{
                     try{
-                            uTaskHasDeveloper.setInt(1, task_ID);
-                            uTaskHasDeveloper.setInt(2, developer_ID);
-                            uTaskHasDeveloper.setInt(3, state);
-                            uTaskHasDeveloper.setDate(4, date1);
-                            uTaskHasDeveloper.setInt(5, vote);
-                            uTaskHasDeveloper.setInt(6, sender);
-                            uTaskHasDeveloper.setInt(7, task_ID);
-                            uTaskHasDeveloper.setInt(8, developer_ID);
-                            uTaskHasDeveloper.executeUpdate();
+                            
+                            uTaskHasDeveloper.setInt(1, state);
+                            uTaskHasDeveloper.setInt(2, vote);
+                            uTaskHasDeveloper.setInt(3, task_ID);
+                            uTaskHasDeveloper.setInt(4, developer_ID);
+                            if(uTaskHasDeveloper.executeUpdate()==1){
+                                return vote;
+                            }
                     }catch (SQLException ex) {
                         throw new DataLayerException("Unable to insert task_has_dev", ex);
                     }
@@ -1696,7 +1739,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         }catch (SQLException ex) {
             throw new DataLayerException("Unable to store request", ex);
         }
-
+        return -1;
     }
 
      
@@ -1903,14 +1946,16 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     }
     
     @Override
-    public void deleteTaskHasDeveloper(int task_id,int developer_id) throws DataLayerException{
+    public int deleteTaskHasDeveloper(int task_id,int developer_id) throws DataLayerException{
         try{
             dTaskHasDeveloper.setInt(1, task_id);
             dTaskHasDeveloper.setInt(2, developer_id);
-            dTaskHasDeveloper.executeUpdate();
+            if(dTaskHasDeveloper.executeUpdate()==1){
+                return 1;
+            }
             }catch (SQLException ex) {
             throw new DataLayerException("Unable to delete", ex);
-        }
+        }return 0;
     }
     
     @Override
@@ -2004,8 +2049,13 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             }
         return result;
     }
+    
+   
+
 }
     
+
+
     
 
 

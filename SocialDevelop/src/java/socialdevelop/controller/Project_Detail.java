@@ -61,11 +61,15 @@ public class Project_Detail extends SocialDevelopBaseController {
                 
                 SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");           
                 HttpSession s = request.getSession(true);
-                if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0){
-                    request.setAttribute("logout", "Logout");
-                }
                 int key = Integer.parseInt(request.getParameter("n")); //project_key
                 Project project = datalayer.getProject(key);
+                int coordinator_key = project.getCoordinatorKey();
+                if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0){
+                    request.setAttribute("logout", "Logout");
+                    
+                }
+                
+                
                 request.setAttribute("page_title", "Project" + " " + project.getName());
                 request.setAttribute("page_subtitle", "Check project info");
                 request.setAttribute("projectname", project.getName());
@@ -93,10 +97,15 @@ public class Project_Detail extends SocialDevelopBaseController {
                         Map<Developer, Integer> collaborators = datalayer.getCollaboratorsByTask(task.getKey());
                         for(Map.Entry<Developer, Integer> m : collaborators.entrySet()){
                            if(m.getKey().getKey() == dev_key){
+                               
                                flag = true;
                                request.setAttribute("userid", dev_key);
                            }
+                            
                         }
+                        if(dev_key == coordinator_key){
+                                request.setAttribute("isCoordinator", 1);
+                            }
                      }
                     nProjectCollaborators += task.getNumCollaborators();
                     GregorianCalendar start = task.getStartDate();

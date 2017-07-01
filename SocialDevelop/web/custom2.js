@@ -370,8 +370,94 @@ $(".skillSelect").on("click",function(){
      });
      
      
-function remove_collaborator(dev_key){
+function remove_collaborator(dev_key, task_key){
     console.log(dev_key);
+    $.ajax({
+        datatype: 'text/plain',
+        type: 'post',
+        url: 'removeCollaboratorFromTask',
+        data: {
+            dev_key:dev_key,
+            task_key:task_key
+        },
+        success: function (response) {
+            if(response == 1){
+               $("li#"+dev_key).empty();
+            }else{
+               
+            }
+        }
+    });
+}
+
+
+function release_vote(dev_key, task_key, param){
+    var vote = $(param).parent().children("select.vote").val();
     
+    $.ajax({
+        datatype: 'text/plain',
+        type: 'post',
+        url: 'releaseVote',
+        data: {
+            dev_key:dev_key,
+            task_key:task_key,
+            vote:vote
+        },
+        success: function (response) {
+            if(response >= 0){
+               var here = $(param).parent();
+               $(here).empty();
+               $(here).append("<h4>"+response+"<i class='fa fa-star'></i></h4>");
+            }else{
+               //il livello non è stato settato!
+            }
+        }
+    });
+}
+
+
+
+function join_task(task_key, param){
+     $.ajax({
+        datatype: 'text/plain',
+        type: 'post',
+        url: 'joinTask',
+        data: {
+            task_key:task_key
+        },
+        success: function (response) {
+            if(response==0){
+                console.log(response);
+                $(param).siblings(".join-msg").removeClass("hidden");
+                setTimeout(function(){ $(param).siblings(".join-msg").addClass("hidden"); }, 5000);
+                
+            }else{
+                console.log("quu");
+                    $(param).siblings(".join-msg").removeClass("hidden");
+                    $(param).siblings(".join-msg").text("You're already a collaborator for this task!");
+                    setTimeout(function(){ $(param).siblings(".join-msg").addClass("hidden"); }, 5000);
+                }  
+            
+        }
+    });
     
+}
+
+function remove_type(param){
+    var type = $.trim($(param).parent().parent().children("a.type-name").text());
+    
+    var rm = $(param).parent().parent("li");
+    $.ajax({
+        datatype:'text/plain',
+        type: 'post',
+        url: 'rmType',
+        data: {
+            type:type
+        },
+        success: function(response) {
+            if(response==1){
+                rm.remove();
+            }
+        }
+    });              
 }

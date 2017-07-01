@@ -107,11 +107,15 @@
         </div>
         <div class="row join-task">
             <div class="col-md-6"></div>
+            <#if userid??>
+            <#if isCoordinator??>
+            <#else>
             <div class="col-md-6">
-                <form>
-                    <input type="submit" value="JOIN THE TASK">
-                </form>
+                <input type="submit" class="join-btn" onclick="join_task(${task.key},this)" value="JOIN THE TASK">
+                <p class="join-msg hidden center">Your request has been sended!</p>
             </div>
+            </#if>
+            </#if>
         </div>
     </div>
     </#list>
@@ -295,63 +299,3 @@
 </div>
 
 
-
-
-<!--Comment Wrap Start-->
-<!--
-<div class="gt_comment_list_wrap gt_detail_hdg msg-project"><a name="show-msg"></a>     
-    <h5><span>${mex_number}</span>Messages</h5>
-    <#list messages as message>
-    <#if message.type=="commento">
-    <ul>
-        <li>
-            <div class="gt_comment_wrap">
-                <figure>
-                    <img src="${foto_msg[message?index]}" alt="No image avalaible">
-                </figure>
-                <div class="gt_comment_des">
-                    <h6><a href="DeveloperProfile?n=${by[message?index].key}">${by[message?index].username}</a></h6>
-                        
-                    <p>${message.text}</p>
-                </div>
-            </div>
-        </li>
-    </ul>
-    </#if>
-    </#list>
-</div>
-    
-    
-    
-    
-<#if userid??>
-<div class="gt_post_comment_wrap gt_detail_hdg">
-    <h5>Post Your Message</h5>
-    <form class="gt_contact_form" id="contact-form" action="postMessage" method="post">
-        <div class="col-md-3">
-            <div class="gt_privacy_field default_width mb20">
-                <input class="c_ph" type="text" readonly="readonly" value="Privacy">
-                <label class="switch">
-                    <input type="checkbox" id="private-check"/>
-                    <div class="slider round"><span>Private</span></div>
-                </label>
-                <input type="text" class="hidden" id="isPrivate" name="isPrivate" value="1"/>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="gt_contact_us_field">
-                <textarea class="gt_c_bg" name="message" id="message" placeholder="Message" required=""></textarea>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="gt_contact_us_field">
-                <input id="submit-message" type="submit" value="Post" name="submit_msg">
-            </div>
-        </div>
-        <input class="hidden" type="text" value="${projectkey}" name="project_key"/>
-    </form>
-</div>
-</#if>
-    
-    
--->

@@ -132,9 +132,9 @@ public interface SocialDevelopDataLayer extends DataLayer {
     
     void storeType(Type type) throws DataLayerException;
     
-    void deleteType(Type type) throws  DataLayerException;
+    int deleteType(Type type) throws  DataLayerException;
     
-    void storeTaskHasDeveloper(int task_ID, int developer_ID, int state, GregorianCalendar date, int vote, int sender) throws DataLayerException;
+    int storeTaskHasDeveloper(int task_ID, int developer_ID, int state, int vote, int sender) throws DataLayerException;
     
     void deleteRequest(CollaborationRequest request) throws DataLayerException;
     
@@ -146,7 +146,7 @@ public interface SocialDevelopDataLayer extends DataLayer {
         
     int deleteSkillHasDeveloper(int skill_ID, int developer_ID) throws DataLayerException;
     
-    void deleteTaskHasDeveloper(int skill_ID, int developer_ID) throws DataLayerException;
+    int deleteTaskHasDeveloper(int task_ID, int developer_ID) throws DataLayerException;
     
     int getDeveloperByUsername(String username) throws DataLayerException;
 
@@ -183,4 +183,9 @@ public interface SocialDevelopDataLayer extends DataLayer {
     void deleteSkillsFromTask(int task_id) throws DataLayerException;
     
     List<Integer> getDeveloperByUsernameLike(String username) throws DataLayerException;
+    
+    List<Developer> getCollaboratorRequestsByTask(int task_key) throws DataLayerException;
+    
+    List <Skill> getSkills() throws DataLayerException;
+   
 }

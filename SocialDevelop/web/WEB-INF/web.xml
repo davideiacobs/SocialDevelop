@@ -198,6 +198,50 @@
         <servlet-name>MyCollaborators</servlet-name>
         <servlet-class>socialdevelop.controller.MyCollaborators</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>removeCollaboratorFromTask</servlet-name>
+        <servlet-class>socialdevelop.controller.removeCollaboratorFromTask</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>releaseVote</servlet-name>
+        <servlet-class>socialdevelop.controller.releaseVote</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>joinTask</servlet-name>
+        <servlet-class>socialdevelop.controller.joinTask</servlet-class>
+    </servlet>
+      <servlet>
+        <servlet-name>BackEndType</servlet-name>
+        <servlet-class>socialdevelop.controller.BackEndType</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BackEndSkill</servlet-name>
+        <servlet-class>socialdevelop.controller.BackEndSkill</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddSkillBack</servlet-name>
+        <servlet-class>socialdevelop.controller.AddSkillBack</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateSkillBack</servlet-name>
+        <servlet-class>socialdevelop.controller.UpdateSkillBack</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>rmSkillBack</servlet-name>
+        <servlet-class>socialdevelop.controller.rmSkillBack</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>rmType</servlet-name>
+        <servlet-class>socialdevelop.controller.rmType</servlet-class>
+    </servlet>
+     <servlet>
+        <servlet-name>UpdateType</servlet-name>
+        <servlet-class>socialdevelop.controller.UpdateType</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>addType</servlet-name>
+        <servlet-class>socialdevelop.controller.addType</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>provaDB2</servlet-name>
         <url-pattern>/provaDB2</url-pattern>
@@ -333,6 +377,50 @@
     <servlet-mapping>
         <servlet-name>MyCollaborators</servlet-name>
         <url-pattern>/MyCollaborators</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>removeCollaboratorFromTask</servlet-name>
+        <url-pattern>/removeCollaboratorFromTask</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>releaseVote</servlet-name>
+        <url-pattern>/releaseVote</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>joinTask</servlet-name>
+        <url-pattern>/joinTask</url-pattern>
+    </servlet-mapping>
+        <servlet-mapping>
+        <servlet-name>addType</servlet-name>
+        <url-pattern>/addType</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BackEndType</servlet-name>
+        <url-pattern>/BackEndType</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BackEndSkill</servlet-name>
+        <url-pattern>/BackEndSkill</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddSkillBack</servlet-name>
+        <url-pattern>/AddSkillBack</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>rmSkillBack</servlet-name>
+        <url-pattern>/rmSkillBack</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateSkillBack</servlet-name>
+        <url-pattern>/UpdateSkillBack</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>rmType</servlet-name>
+        <url-pattern>/rmType</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateType</servlet-name>
+        <url-pattern>/UpdateType</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
