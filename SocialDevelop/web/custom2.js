@@ -269,41 +269,41 @@ $("#submit-task").on("click", function(){
 
 
 $("#submit-project").on("click", function(){
-   //azzero lavore input nascosto
-   $("#tasks").val("");
-   //conto il numero di task aggiunti
-   var c = $(".task-aggiunti").children("li").length;
-   console.log(c);
-   var i=0;
-   for(i=0;i<c;i++){
-       //controlliamo valore dell'input nascosto
-       var input_tasks = $("#tasks").val();
-       console.log(input_tasks);
-       //recuperiamo tutti i valori del task
-       var task = $(".task-aggiunti").children("li")[i];
-       var name = $.trim($(task).children().children("p#name").text().split(":")[1]);
-       var isOpen = $.trim($(task).children().children("p#isOpen").text().split(":")[1]);
-       var tipo = $.trim($(task).children().children("p#tipo").text().split(":")[1]);
-       var start = $.trim($(task).children().children("p#start-end").text().split(":")[1].split("-")[0]);
-       var end = $.trim($(task).children().children("p#start-end").text().split("-")[1].split(":")[1]);
-       var descr = $.trim($(task).children().children("p#descr").text().split(":")[1]);
-       var coll = $.trim($(task).children().children("p#coll").text().split(":")[1]);
-       var skills = $.trim($(task).children().children("p.skills").text().split(":")[1]);
-       if(isOpen!="Open" && isOpen!="Close"){
+    //azzero lavore input nascosto
+    $("#tasks").val("");
+    //conto il numero di task aggiunti
+    var c = $(".task-aggiunti").children("li").length;
+    console.log(c);
+    var i=0;
+    for(i=0;i<c;i++){
+        //controlliamo valore dell'input nascosto
+        var input_tasks = $("#tasks").val();
+        console.log(input_tasks);
+        //recuperiamo tutti i valori del task
+        var task = $(".task-aggiunti").children("li")[i];
+        var name = $.trim($(task).children().children("p#name").text().split(":")[1]);
+        var isOpen = $.trim($(task).children().children("p#isOpen").text().split(":")[1]);
+        var tipo = $.trim($(task).children().children("p#tipo").text().split(":")[1]);
+        var start = $.trim($(task).children().children("p#start-end").text().split(":")[1].split("-")[0]);
+        var end = $.trim($(task).children().children("p#start-end").text().split("-")[1].split(":")[1]);
+        var descr = $.trim($(task).children().children("p#descr").text().split(":")[1]);
+        var coll = $.trim($(task).children().children("p#coll").text().split(":")[1]);
+        var skills = $.trim($(task).children().children("p.skills").text().split(":")[1]);
+        if(isOpen!="Open" && isOpen!="Close"){
      
             if(input_tasks==""){
                 $("#tasks").val(name+"#"+start+"#"+end+"#"+descr+"#"+coll+"#"+skills+"#"+tipo+"@");
             }else{
                 $("#tasks").val(input_tasks+name+"#"+start+"#"+end+"#"+descr+"#"+coll+"#"+skills+"#"+tipo+"@");
             }
-       }else{
+        }else{
             if(input_tasks==""){
                 $("#tasks").val(name+"#"+start+"#"+end+"#"+descr+"#"+coll+"#"+skills+"#"+tipo+"#"+isOpen+"@");
             }else{
                 $("#tasks").val(input_tasks+name+"#"+start+"#"+end+"#"+descr+"#"+coll+"#"+skills+"#"+tipo+"#"+isOpen+"@");
             }
-       }
-   }
+        }
+    }
     
 });
 
@@ -319,55 +319,55 @@ $("#select-type").on("change", function(){
 
 
 $(function(){
-  $(".add-project-form")[0].reset();
-  $(".add-task-form")[0].reset();
+    $(".add-project-form")[0].reset();
+    $(".add-task-form")[0].reset();
 });
 
 
 window.onbeforeunload = function() {
-  $(".add-project-form")[0].reset();
-  $(".add-task-form")[0].reset();
+    $(".add-project-form")[0].reset();
+    $(".add-task-form")[0].reset();
 };
 
 
 $(".private-check").on("click", function(){
-   var private = $(this).parent().siblings(".isPrivate");
-   var value = private.val(); 
-   if(value==0){
-       private.val(1);
-   }else{
-       private.val(0);
-   }
+    var private = $(this).parent().siblings(".isPrivate");
+    var value = private.val(); 
+    if(value==0){
+        private.val(1);
+    }else{
+        private.val(0);
+    }
 });
 
 $(".skillSelect").on("click",function(){
-        $(this).removeClass("req-list"); 
-    });
+    $(this).removeClass("req-list"); 
+});
 
-    $(".levelSelect").on("click",function(){
-        $(this).removeClass("req-list"); 
-    });
+$(".levelSelect").on("click",function(){
+    $(this).removeClass("req-list"); 
+});
 
-    $(".findDeveloper").on("click",function(event){
-         var skill_name = $(".skillSelect").val();
-         var skill_level = $(".levelSelect").val();
-         if(skill_name == "")
-            {
-                event.preventDefault();
-                $(".skillSelect").addClass("req-list");
-                $(".skillSelect").focus(); 
-            }
-            else
-            {
-                if(skill_level == "")
-                {
-                    event.preventDefault();
-                    $(".levelSelect").addClass("req-list");
-                    $(".levelSelect").focus();
-                }
-            }
+$(".findDeveloper").on("click",function(event){
+    var skill_name = $(".skillSelect").val();
+    var skill_level = $(".levelSelect").val();
+    if(skill_name == "")
+    {
+        event.preventDefault();
+        $(".skillSelect").addClass("req-list");
+        $(".skillSelect").focus(); 
+    }
+    else
+    {
+        if(skill_level == "")
+        {
+            event.preventDefault();
+            $(".levelSelect").addClass("req-list");
+            $(".levelSelect").focus();
+        }
+    }
 
-     });
+});
      
      
 function remove_collaborator(dev_key, task_key){
@@ -382,7 +382,7 @@ function remove_collaborator(dev_key, task_key){
         },
         success: function (response) {
             if(response == 1){
-               $("li#"+dev_key).empty();
+                $("li#"+dev_key).empty();
             }else{
                
             }
@@ -405,11 +405,11 @@ function release_vote(dev_key, task_key, param){
         },
         success: function (response) {
             if(response >= 0){
-               var here = $(param).parent();
-               $(here).empty();
-               $(here).append("<h4>"+response+"<i class='fa fa-star'></i></h4>");
+                var here = $(param).parent();
+                $(here).empty();
+                $(here).append("<h4>"+response+"<i class='fa fa-star'></i></h4>");
             }else{
-               //il livello non è stato settato!
+                //il livello non è stato settato!
             }
         }
     });
@@ -418,7 +418,7 @@ function release_vote(dev_key, task_key, param){
 
 
 function join_task(task_key, param){
-     $.ajax({
+    $.ajax({
         datatype: 'text/plain',
         type: 'post',
         url: 'joinTask',
@@ -433,10 +433,10 @@ function join_task(task_key, param){
                 
             }else{
                 console.log("quu");
-                    $(param).siblings(".join-msg").removeClass("hidden");
-                    $(param).siblings(".join-msg").text("You're already a collaborator for this task!");
-                    setTimeout(function(){ $(param).siblings(".join-msg").addClass("hidden"); }, 5000);
-                }  
+                $(param).siblings(".join-msg").removeClass("hidden");
+                $(param).siblings(".join-msg").text("You're already a collaborator for this task!");
+                setTimeout(function(){ $(param).siblings(".join-msg").addClass("hidden"); }, 5000);
+            }  
             
         }
     });
@@ -462,4 +462,32 @@ function remove_type(param){
     });              
 }
 
+
+
+function send_request(task_key, dev_key, param){
+    $.ajax({
+        datatype: 'text/plain',
+        type: 'post',
+        url: 'sendRequest',
+        data: {
+            task_key:task_key,
+            dev_key:dev_key
+        },
+        success: function (response) {
+            if(response==-1){
+                console.log(response);
+                $(param).siblings(".join-msg").removeClass("hidden");
+                setTimeout(function(){ $(param).siblings(".join-msg").addClass("hidden"); }, 5000);
+                
+            }else{
+                console.log("error");
+                $(param).siblings(".join-msg").removeClass("hidden");
+                $(param).siblings(".join-msg").text("Something went wrong...");
+                setTimeout(function(){ $(param).siblings(".join-msg").addClass("hidden"); }, 5000);   
+            }  
+            
+        }
+    });
+    
+}
 

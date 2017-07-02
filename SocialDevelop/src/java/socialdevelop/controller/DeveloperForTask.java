@@ -9,7 +9,6 @@ import it.univaq.f4i.iw.framework.data.DataLayerException;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,13 +18,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import static jdk.nashorn.internal.objects.NativeArray.map;
 import socialdevelop.data.model.Developer;
-import socialdevelop.data.model.Files;
 import socialdevelop.data.model.Skill;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 import socialdevelop.data.model.Task;
@@ -87,8 +83,9 @@ public class DeveloperForTask extends SocialDevelopBaseController {
                     }
                         votes.put(dev.getKey(),vote2);
                         
-                        if(!devTask.contains(dev))
+                        if(!devTask.contains(dev) && dev.getKey() != ((int) s.getAttribute("userid")) )
                         {
+                            
                            devTask.add(dev);
                         }
                          

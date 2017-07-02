@@ -13,7 +13,7 @@
         <param-name>curriculums.directory</param-name>
         <param-value>C:\Users\david\Desktop\SocialDevelop\SocialDevelop\SocialDevelop\web\curriculums</param-value>
     </context-param>
-    <!- davide ubuntu 
+    <!- davide ubuntu -->
     <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/extra-images</param-value>
@@ -22,7 +22,7 @@
         <param-name>curriculums.directory</param-name>
         <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/curriculums</param-value>
     </context-param>
-     Manuel -->
+    <!-- Manuel 
     <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>/Users/manuel/Desktop/GIT/SocialDevelop/SocialDevelop/web/extra-images</param-value>
@@ -30,7 +30,7 @@
     <context-param>
         <param-name>curriculums.directory</param-name>
         <param-value>/Users/manuel/Desktop/GIT/SocialDevelop/SocialDevelop/web/curriculums</param-value>
-    </context-param> 
+    </context-param>-->
     <!-- Luca 
     <context-param>
         <param-name>extra-images.directory</param-name>
@@ -210,7 +210,7 @@
         <servlet-name>joinTask</servlet-name>
         <servlet-class>socialdevelop.controller.joinTask</servlet-class>
     </servlet>
-      <servlet>
+    <servlet>
         <servlet-name>BackEndType</servlet-name>
         <servlet-class>socialdevelop.controller.BackEndType</servlet-class>
     </servlet>
@@ -234,7 +234,7 @@
         <servlet-name>rmType</servlet-name>
         <servlet-class>socialdevelop.controller.rmType</servlet-class>
     </servlet>
-     <servlet>
+    <servlet>
         <servlet-name>UpdateType</servlet-name>
         <servlet-class>socialdevelop.controller.UpdateType</servlet-class>
     </servlet>
@@ -245,6 +245,10 @@
     <servlet>
         <servlet-name>DeveloperForTask</servlet-name>
         <servlet-class>socialdevelop.controller.DeveloperForTask</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>sendRequest</servlet-name>
+        <servlet-class>socialdevelop.controller.sendRequest</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>provaDB2</servlet-name>
@@ -394,7 +398,7 @@
         <servlet-name>joinTask</servlet-name>
         <url-pattern>/joinTask</url-pattern>
     </servlet-mapping>
-        <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>addType</servlet-name>
         <url-pattern>/addType</url-pattern>
     </servlet-mapping>
@@ -429,6 +433,10 @@
     <servlet-mapping>
         <servlet-name>DeveloperForTask</servlet-name>
         <url-pattern>/DeveloperForTask</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>sendRequest</servlet-name>
+        <url-pattern>/sendRequest</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
