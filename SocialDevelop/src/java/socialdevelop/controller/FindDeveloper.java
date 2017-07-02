@@ -9,8 +9,6 @@ import it.univaq.f4i.iw.framework.data.DataLayerException;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +42,15 @@ public class FindDeveloper extends SocialDevelopBaseController {
         int skilluser = Integer.parseInt(request.getParameter("skill"));
         int level = Integer.parseInt(request.getParameter("level"));
         Map<Developer,Integer> devdl = datalayer.getDevelopersBySkill(skilluser,level);
+        Developer currentUser = datalayer.getDeveloper((int) s.getAttribute("userid"));
+        if(devdl.keySet().contains(currentUser)){
+            devdl.remove(currentUser);
+        }
+        
+        
         List <Developer> dev = new ArrayList<Developer>(devdl.keySet());
+        
+        
             if (dev.size() != 0) {
                request.setAttribute("listasviluppatori", dev);
                Files foto = null ;
