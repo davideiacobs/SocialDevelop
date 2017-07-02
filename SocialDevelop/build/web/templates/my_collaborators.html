@@ -49,23 +49,27 @@
                          <#if project_task.collaborators?has_content>
                         <#list project_task.collaborators as task_collaborator,value>
                     <li> 
-                        <figure>
-                            <#if task_collaborator.fotoFile??>
-                                <img src="extra-images/${task_collaborator.fotoFile.localFile}" alt="">
-                            <#else>
-                                <img src="extra-images/foto_profilo_default.png" alt="">
-                            </#if>
-                        </figure>
-                        <div class="aside_fea_course_des">
-                            <h5><a href="DeveloperProfile?n=${task_collaborator.key}">${task_collaborator.username}</a></h5>
+                        <div class="col-md-9">
+                            <figure>
+                                <#if task_collaborator.fotoFile??>
+                                    <img src="extra-images/${task_collaborator.fotoFile.localFile}" alt="">
+                                <#else>
+                                    <img src="extra-images/foto_profilo_default.png" alt="">
+                                </#if>
+                            </figure>
+                            <div class="aside_fea_course_des">
+                                <h5><a href="DeveloperProfile?n=${task_collaborator.key}">${task_collaborator.username}</a></h5>
+                            </div>
                         </div>
                         <!-- se il task è aperto permette di rimuovere i collaboratori-->
                         <#if project_task.open?then('Y', 'N')=="Y">
+                            <div class="col-md-3">
                                 <span>
                                     <button onclick="remove_collaborator(${task_collaborator.key})" type="button" id="rm-coll-btn" class="btn btn-default btn-sm remove-coll-button rm-coll-btn">
                                         <span class="glyphicon glyphicon-remove"></span>
                                     </button>   
                                 </span>
+                            </div>
                         <!-- se il task è chiuso permette di rilasciare il voto ai collaboratori che non lo hanno-->
                         <#else>
                             <#if value==-1>

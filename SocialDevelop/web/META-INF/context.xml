@@ -10,7 +10,7 @@
         driverClassName="com.mysql.jdbc.Driver"
         url="jdbc:mysql://localhost:3306/mydb"
         username="root"
-        password="lebronjames1995"
+        password="root"
         maxActive="500"
         maxIdle="500"
         maxWait="10000"

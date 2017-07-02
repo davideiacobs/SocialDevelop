@@ -125,3 +125,7 @@ and open the template in the editor.
 .center{
     text-align:center;
 }
+
+.taskrow{
+    padding-bottom: 5%;
+}

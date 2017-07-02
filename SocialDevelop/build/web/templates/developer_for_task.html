@@ -1,0 +1,36 @@
+        <#list tasks as task>
+        <div class="row">
+            <h2 class="taskrow"> Task : ${task.name}</h2>
+                <#list devs[task?index] as sviluppatore>
+                <div class="col-md-4 singleProject">
+                <div class="owl-item cloned"><div class="item">
+                  <div class="gt_courses_wrap default_width">
+                    <figure>
+                      <figcaption class="gt_course_img_des">
+                        <div class="gt_course_des_holder projectCoordinator">
+                          <div class="gt_course_author">
+                              <img src="extra-images/<#if sviluppatore.fotoFile??>${sviluppatore.fotoFile.localFile}<#else>foto_profilo_default.png</#if>" alt="">
+                            <a href="DeveloperProfile?n=${sviluppatore.key}">${sviluppatore.name?cap_first} ${sviluppatore.surname?cap_first}</a>
+                          </div>
+                        </div>
+                        <div class="gt_course_cat gt_bg_4">New</div>
+                      </figcaption>
+                    </figure>
+                    <div class="gt_course_des projectDescription default_width">
+                      <h5><a href="DeveloperProfile?n=${sviluppatore.key}">${sviluppatore.username?cap_first}</a></h5>
+                      <p class="description_project2" >${sviluppatore.mail}</p>
+                    </div>
+                    <div class="gt_course_bottom default_width">
+                    <h5><#list projects as key,value><#if key == sviluppatore.key> ${value}</#if></#list><span><a href="DeveloperProjects?n=${sviluppatore.key}">Progetti</a></span></h5>
+                        <a href="DeveloperCollaborations?n=${sviluppatore.key}"><h5><#list votes as key,value><#if key == sviluppatore.key> ${value}</#if></#list><span>Voto</span></h5></a>
+                        
+                    </div>
+                      <div class="gt_course_bottom default_width">
+                          <input type="button" class="btn btn-default inviteDeveloper" value="Invita">
+                      </div>
+                  </div>
+                </div></div>
+                </div>
+                </#list>   
+        </div>
+    </#list>

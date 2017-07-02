@@ -8,6 +8,7 @@ package socialdevelop.data.impl;
 import it.univaq.f4i.iw.framework.data.DataLayerException;
 import java.util.GregorianCalendar;
 import java.util.Map;
+import java.util.Objects;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Files;
 import socialdevelop.data.model.Skill;
@@ -256,4 +257,40 @@ public class DeveloperImpl implements Developer {
         this.foto = fotoFile.getKey();
         this.dirty = true;
     }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (o == this) return true;
+        if (!(o instanceof Developer)) {
+            return false;
+        }
+
+       Developer dev = (Developer) o;
+
+        return dev.getKey() == key && dev.getName().equals(name) &&
+               dev.getSurname().equals(surname) && dev.getUsername().equals(username) && dev.getPwd().equals(pwd) 
+                && dev.getMail().equals(mail) && dev.getBirthDate().equals(birthdate) && dev.getBiography().equals(biography) &&
+                dev.getCurriculumString().equals(curriculumString) && dev.getCurriculumFile() == curriculumFile && dev.getFoto() == foto;
+                
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 67 * hash + this.key;
+        hash = 67 * hash + Objects.hashCode(this.name);
+        hash = 67 * hash + Objects.hashCode(this.surname);
+        hash = 67 * hash + Objects.hashCode(this.username);
+        hash = 67 * hash + Objects.hashCode(this.pwd);
+        hash = 67 * hash + Objects.hashCode(this.mail);
+        hash = 67 * hash + Objects.hashCode(this.birthdate);
+        hash = 67 * hash + Objects.hashCode(this.biography);
+        hash = 67 * hash + Objects.hashCode(this.curriculumString);
+        hash = 67 * hash + this.curriculumFile;
+        hash = 67 * hash + this.foto;
+        return hash;
+    }
+
+
 }

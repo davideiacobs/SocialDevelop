@@ -2050,7 +2050,24 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         return result;
     }
     
-   
+   @Override
+    public List<Developer> getDevelopersBySkillNoLevel(int skill_key, int level) throws DataLayerException{
+        List<Developer> result = new ArrayList<>();
+        try{
+            sDeveloperBySkillWithLevel.setInt(1, skill_key);
+            sDeveloperBySkillWithLevel.setInt(2, level);
+            
+            try(ResultSet rs = sDeveloperBySkillWithLevel.executeQuery()) {
+                while (rs.next()){
+                   result.add((Developer) getDeveloper(rs.getInt("ID")));
+                }
+            }
+        }catch (SQLException ex) {
+                throw new DataLayerException("Unable to load developerBySkill", ex);
+            }
+        return result;
+    }
+
 
 }
     
