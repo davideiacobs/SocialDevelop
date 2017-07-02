@@ -22,6 +22,8 @@
 
 -RISOLVERE PROBLEMA DATA MODIFICA PROGETTO -IO- **FATTO**
 
+-TASK CHIUSO NON ACCETTA ULTERIORI COLLABORATORI  **FATTO**
+
 ------------------------------------------------------------------------------------
 
 --GESTIONE ECCEZIONI!
@@ -46,7 +48,10 @@
 
 -utilizzare pagina di ricerca del template? ******DOMANDA*******
 
--TASK CHIUSO NON ACCETTA ULTERIORI COLLABORATORI
+
+
+
+
 
 -task chiuso in automatico se ci sono tutti i collaboratori oppure se lo chiude il coordinatore
 
@@ -59,4 +64,10 @@ questi non vengano aggiunti direttamente dal coordinatore.
 
 -opzionalmente, è possibile associare uno skill anche a più di
 un tipo
+
+-controllo date inizio e fino
+
+-aggiungere developerCollaborators a developerProfile
+
+-si possono rimuovere i collaboratori anche se il task è chiuso
 

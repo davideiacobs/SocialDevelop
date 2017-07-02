@@ -15,8 +15,10 @@
             <file>file:/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/src/java/socialdevelop/controller/sendRequest.java</file>
             <file>file:/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/src/java/socialdevelop/controller/joinTask.java</file>
             <file>file:/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/templates/developer_for_task.html</file>
+            <file>file:/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/templates/project_detail.html</file>
+            <file>file:/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/src/java/socialdevelop/controller/FindDeveloper.java</file>
             <file>file:/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/custom2.js</file>
-            <file>file:/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/src/java/socialdevelop/controller/DeveloperForTask.java</file>
+            <file>file:/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/src/java/socialdevelop/data/impl/SocialDevelopDataLayerMysqlImpl.java</file>
         </group>
     </open-files>
 </project-private>

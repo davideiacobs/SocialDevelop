@@ -426,8 +426,8 @@ function remove_collaborator(dev_key, task_key){
 
 
 function release_vote(dev_key, task_key, param){
-    var vote = $(param).parent().children("select.vote").val();
-    
+    var vote = $(param).parent().parent("span").children(".div_vote").children("select.vote").val();
+    console.log(vote);
     $.ajax({
         datatype: 'text/plain',
         type: 'post',
@@ -439,7 +439,7 @@ function release_vote(dev_key, task_key, param){
         },
         success: function (response) {
             if(response >= 0){
-                var here = $(param).parent();
+                var here = $(param).parent().parent();
                 $(here).empty();
                 $(here).append("<h4>"+response+"<i class='fa fa-star'></i></h4>");
             }else{

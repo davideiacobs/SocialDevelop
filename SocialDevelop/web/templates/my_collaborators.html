@@ -61,23 +61,25 @@
                                 <h5><a href="DeveloperProfile?n=${task_collaborator.key}">${task_collaborator.username}</a></h5>
                             </div>
                         </div>
-                        <!-- se il task è aperto permette di rimuovere i collaboratori-->
-                        <#if project_task.open?then('Y', 'N')=="Y">
+                        <#assign current = .now>
+                        <!-- se il task non è terminato permette di rimuovere i collaboratori-->
+                        <#if current?date < project_task.getEndDate().time?date>
                             <div class="col-md-3">
                                 <span>
-                                    <button onclick="remove_collaborator(${task_collaborator.key})" type="button" id="rm-coll-btn" class="btn btn-default btn-sm remove-coll-button rm-coll-btn">
+                                    <button onclick="remove_collaborator(${task_collaborator.key},${project_task.key})" type="button" id="rm-coll-btn" class="btn btn-default btn-sm remove-coll-button rm-coll-btn">
                                         <span class="glyphicon glyphicon-remove"></span>
                                     </button>   
                                 </span>
                             </div>
                         <!-- se il task è chiuso permette di rilasciare il voto ai collaboratori che non lo hanno-->
                         <#else>
+                            
                             <#if value==-1>
                                 
                                 <span> 
                                     <label>Release Vote</label>
-                                    <div class="select-style">
-                                        <select class="form-control">
+                                    <div class="select-style div_vote">
+                                        <select class="form-control vote">
                                             <option selected value="">Select a Vote</option>
                                             <option value="1">1</option>
                                             <option value="2">2</option>
@@ -87,7 +89,7 @@
                                         </select>
                                     </div>
                                     <div class="add-vote-btn">
-                                        <button onclick="release_vote(${task_collaborator.key})" type="button"  class="btn btn-default ">
+                                        <button onclick="release_vote(${task_collaborator.key},${project_task.key},this)" type="button"  class="btn btn-default ">
                                             Vote
                                         </button>  
                                     </div> 

@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 import javax.naming.NamingException;
@@ -54,18 +55,7 @@ public class MyCollaborators extends SocialDevelopBaseController {
         
     }
     
-    private String getCollImg(HttpServletRequest request, HttpServletResponse response, Developer dev) throws IOException, SQLException, DataLayerException, NamingException {
-        StreamResult result = new StreamResult(getServletContext());
-        
-         SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
-         if(dev.getFoto() != 0){
-            Files foto_profilo = datalayer.getFile(dev.getFoto());
-            return "extra-images/" + foto_profilo.getLocalFile();
-         }else{
-            return "extra-images/foto_profilo_default.png";             
-         }
-        
-    }
+   
     
     private void action_mycollaborators(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
             HttpSession s = request.getSession(true);
@@ -88,6 +78,7 @@ public class MyCollaborators extends SocialDevelopBaseController {
                 
                 //recupero progetti gestiti dall'utente (progetti dei quali è il coordinatore)
                 
+                
                 List<Project> projects = datalayer.getProjectsByCoordinator(dev.getKey());
                 List<List<Task>> tasks = new ArrayList();
                 
@@ -95,14 +86,11 @@ public class MyCollaborators extends SocialDevelopBaseController {
                     for(Project p : projects){
                         List<Task> project_tasks = datalayer.getTasks(p.getKey());
                         if(project_tasks!=null){
-                            //tasks.add(project_tasks);
                             List<Task> tasks2 = new ArrayList();
                             for(Task task : project_tasks){
-                                //Map<Developer, Integer> coll = new HashMap();
                                 Map<Developer,Integer> map = datalayer.getCollaboratorsByTask(task.getKey());
                                 
                                 for(Map.Entry<Developer,Integer> collaborator : map.entrySet()){
-                                    //String collImg = getCollImg(request, response, collaborator.getKey());
                                     int foto_key = collaborator.getKey().getFoto();
                                     if(foto_key>0){    
                                         collaborator.getKey().setFotoFile(datalayer.getFile(foto_key));
