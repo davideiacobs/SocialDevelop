@@ -51,7 +51,7 @@ public class joinTask extends SocialDevelopBaseController {
                 }
             }
             //controlliamo se la richiesta è tra quelle in attesa
-            if(!flag){
+            /*if(!flag){
                 List<Developer> devs = datalayer.getCollaboratorRequestsByTask(task_id);
                 for(Developer dev : devs){
                     if(dev.getKey() == user_key){
@@ -59,35 +59,35 @@ public class joinTask extends SocialDevelopBaseController {
                         break;
                     }
                 }
-            }
+            }*/
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
+            PrintWriter out = response.getWriter();
             if(!flag){
-                int ret = 0;
-                if(!wait){
-                    ret = datalayer.storeTaskHasDeveloper(task_id, user_key, 0, -1, user_key); 
-                }
                 //sender=1 --> inviata da collaboratore
                 //stato=0 --> in attesa
                 //voto=-1 --> non rilasciato
-
-                //l'utente che sta cercando di rimuovere il collaboratore è effettivamente
-                //il coordiantore del progetto quindi gli è permesso falo
-                datalayer.destroy();
-                response.setContentType("text/plain");
-                response.setCharacterEncoding("UTF-8");
-                PrintWriter out = response.getWriter();
-
-                try {
-                    out.println(ret);
-                }finally {
-                    out.close();
+                
+                //if(!wait){
+                    datalayer.storeTaskHasDeveloper(task_id, user_key, 0, -1, user_key);
+                    try {
+                        out.println("Your request has been sended!");
+                    }finally {
+                        out.close();
+                    }
+               /* }else{
+                    try {
+                        out.println("Your request is pending.");
+                    }finally {
+                        out.close();
+                    }
                 }
+                datalayer.destroy();*/
+                
             }else{
-                response.setContentType("text/plain");
-                response.setCharacterEncoding("UTF-8");
-                PrintWriter out = response.getWriter();
-
+                datalayer.destroy();
                 try {
-                    out.println("error");
+                    out.println("Something went wrong...");
                 }finally {
                     out.close();
                 }

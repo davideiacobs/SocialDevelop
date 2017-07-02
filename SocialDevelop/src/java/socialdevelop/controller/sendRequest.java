@@ -57,20 +57,12 @@ public class sendRequest extends SocialDevelopBaseController {
                 PrintWriter out = response.getWriter();
 
                 try {
-                    out.println(ret);
+                    out.println("Your request has been sended!");
                 }finally {
                     out.close();
                 }
-            
-            }else{
-                response.sendRedirect("index");
             }
-        }else{
-            response.sendRedirect("index");
-        }    
-        
-        
-        
+        }   
     }
     
     

@@ -460,18 +460,15 @@ function join_task(task_key, param){
             task_key:task_key
         },
         success: function (response) {
-            if(response==0){
-                console.log(response);
+            console.log(response);
+                $(param).siblings(".join-msg").text(response);
                 $(param).siblings(".join-msg").removeClass("hidden");
                 setTimeout(function(){ $(param).siblings(".join-msg").addClass("hidden"); }, 5000);
-                
-            }else{
-                console.log("quu");
-                $(param).siblings(".join-msg").removeClass("hidden");
-                $(param).siblings(".join-msg").text("You're already a collaborator for this task!");
-                setTimeout(function(){ $(param).siblings(".join-msg").addClass("hidden"); }, 5000);
-            }  
-            
+        },
+        error: function (){
+            $(param).siblings(".join-msg").text("Something went wrong...");
+            $(param).siblings(".join-msg").removeClass("hidden");
+            setTimeout(function(){ $(param).siblings(".join-msg").addClass("hidden"); }, 5000);
         }
     });
     
@@ -508,18 +505,15 @@ function send_request(task_key, dev_key, param){
             dev_key:dev_key
         },
         success: function (response) {
-            if(response==-1){
-                console.log(response);
                 $(param).siblings(".join-msg").removeClass("hidden");
+                $(param).siblings(".join-msg").text(response);
                 setTimeout(function(){ $(param).siblings(".join-msg").addClass("hidden"); }, 5000);
-                
-            }else{
-                console.log("error");
-                $(param).siblings(".join-msg").removeClass("hidden");
-                $(param).siblings(".join-msg").text("Something went wrong...");
-                setTimeout(function(){ $(param).siblings(".join-msg").addClass("hidden"); }, 5000);   
-            }  
-            
+ 
+        },
+        error: function(){
+            $(param).siblings(".join-msg").removeClass("hidden");
+            $(param).siblings(".join-msg").text("Something went wrong...");
+            setTimeout(function(){ $(param).siblings(".join-msg").addClass("hidden"); }, 5000);
         }
     });
     

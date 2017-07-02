@@ -107,13 +107,22 @@
         </div>
         <div class="row join-task">
             <div class="col-md-6"></div>
-            <#if userid??>
+            <#if isLogged??>
             <#if isCoordinator??>
-            <#else>
             <div class="col-md-6">
-                <input type="submit" class="join-btn" onclick="join_task(${task.key},this)" value="JOIN THE TASK">
-                <p class="join-msg hidden center">Your request has been sended!</p>
+                <form action="DeveloperForTask" method="get">               
+                    <input id="find_devs" type="submit" value="Find Developers"/>
+                    <input type="text" class="hidden" name="n" value="${projectkey}">
+
+                </form>
             </div>
+            <#else>
+            <#if task.open?then("Y","N")=="Y">
+            <div class="col-md-6">
+                <input type="submit" class="join-btn" onclick="join_task(${task.key},this)" value="Send Request">
+                <p class="join-msg hidden center"></p>
+            </div>
+            </#if>
             </#if>
             </#if>
         </div>
@@ -297,5 +306,3 @@
         </div>
     </div>
 </div>
-
-

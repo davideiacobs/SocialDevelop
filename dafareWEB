@@ -26,7 +26,7 @@
 
 --GESTIONE ECCEZIONI!
 
--stile home (bloccare background)
+-stile home (bloccare background)  (PERNA)
 
 -backend -> inserire/modificare lista tipi task e lista skill associati ad ogni tipo (PERNA)
 
@@ -40,13 +40,23 @@
 
 -email
 
--organizzare menù
+-organizzare menù   (PERNA)
 
 -paginazione (forse)
+
+-utilizzare pagina di ricerca del template? ******DOMANDA*******
 
 -TASK CHIUSO NON ACCETTA ULTERIORI COLLABORATORI
 
 -task chiuso in automatico se ci sono tutti i collaboratori oppure se lo chiude il coordinatore
 
 -come fare per il numero di sviluppatori RICHIESTI?!
+
+-Un task chiuso non accetta ulteriori collaboratori, a meno che
+questi non vengano aggiunti direttamente dal coordinatore.
+
+-aggiungere "invita collaboratori" da i miei progetti e da project_detail se lo sta visitando il coordinatore **FATTO VEDERE SE VA BENE**
+
+-opzionalmente, è possibile associare uno skill anche a più di
+un tipo
 

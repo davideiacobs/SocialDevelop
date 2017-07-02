@@ -93,10 +93,11 @@ public class Project_Detail extends SocialDevelopBaseController {
                         //se l'utente è loggato controlliamo se è un collaboratore del progetto.
                         //se lo è rendiamo visibili i messaggi privati e inoltre rendiamo visibile
                         //il form di inserimento del messaggio
+                        request.setAttribute("isLogged", "isLogged");
                         int dev_key = (int) s.getAttribute("userid");
                         Map<Developer, Integer> collaborators = datalayer.getCollaboratorsByTask(task.getKey());
                         for(Map.Entry<Developer, Integer> m : collaborators.entrySet()){
-                           if(m.getKey().getKey() == dev_key){
+                           if(m.getKey().getKey() == dev_key || dev_key == coordinator_key){
                                
                                flag = true;
                                request.setAttribute("userid", dev_key);
