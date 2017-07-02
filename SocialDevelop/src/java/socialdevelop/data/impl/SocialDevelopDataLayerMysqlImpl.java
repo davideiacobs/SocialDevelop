@@ -283,16 +283,14 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             a.setName(rs.getString("name"));
             Timestamp ts = rs.getTimestamp("start");
             GregorianCalendar start = new GregorianCalendar();
-            start.setTime(ts);
+            start.setTime(ts);           
             a.setStartDate(start);
+            
             Timestamp ts2 = rs.getTimestamp("end");
-            //se sono permessi valori nulli bisogna fare check del resultSet
-            if(ts2 != null)
-            {
             GregorianCalendar end = new GregorianCalendar();
             end.setTime(ts2);
             a.setEndDate(end);
-            }
+
             a.setOpen(rs.getBoolean("open"));
             a.setNumCollaborators(rs.getInt("numCollaborators"));
             a.setDescription(rs.getString("description"));   
@@ -1457,11 +1455,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                 } else {
                     iTask.setNull(7, java.sql.Types.INTEGER);
                 }
-                if(task.getTypeByTask() != null){
-                    iTask.setInt(8, task.getType_key());
-                }else{
-                    iTask.setNull(8, java.sql.Types.INTEGER);
-                }
+                iTask.setInt(8, task.getType_key());
+               
                 
               
                 

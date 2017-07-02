@@ -61,15 +61,20 @@ public class InsertProject extends SocialDevelopBaseController {
 
                     String end = thistask[2];
                     GregorianCalendar gc1 = new GregorianCalendar();
-                    gc.setLenient(false);
-                    gc.set(GregorianCalendar.YEAR, Integer.valueOf(end.split("/")[2]));
-                    gc.set(GregorianCalendar.MONTH, Integer.valueOf(end.split("/")[1])-1);
-                    gc.set(GregorianCalendar.DATE, Integer.valueOf(end.split("/")[0]));
+                    gc1.setLenient(false);
+                    gc1.set(GregorianCalendar.YEAR, Integer.valueOf(end.split("/")[2]));
+                    gc1.set(GregorianCalendar.MONTH, Integer.valueOf(end.split("/")[1])-1);
+                    gc1.set(GregorianCalendar.DATE, Integer.valueOf(end.split("/")[0]));
                     current.setEndDate(gc1);
 
                     current.setDescription(thistask[3]);
                     current.setNumCollaborators(Integer.parseInt(thistask[4]));
                     current.setType_key(datalayer.getTypeByName(thistask[6]));
+                    if(thistask[7].equals("Open")){
+                        current.setOpen(true);
+                    }else{
+                        current.setOpen(false);
+                    }
                     int task_key = datalayer.storeTask(current);
                     
                     String [] skills = thistask[5].split(";");
@@ -82,7 +87,9 @@ public class InsertProject extends SocialDevelopBaseController {
                     }
                 }
                 datalayer.destroy();
-                response.sendRedirect("MyProjects");
+                String act_url = request.getRequestURI();
+                s.setAttribute("previous_url", act_url);
+                response.sendRedirect("DeveloperForTask?n="+project_key);
             }else{
                 response.sendRedirect("CreateProject");
             }

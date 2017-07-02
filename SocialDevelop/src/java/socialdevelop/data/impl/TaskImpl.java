@@ -159,7 +159,7 @@ public class TaskImpl implements Task{
     @Override
     public Type getTypeByTask() throws DataLayerException{
         if(type==null){
-            type = ownerdatalayer.getTypeByTask(this.key);
+            type = ownerdatalayer.getTypeByTask(this.type_key);
         }
         return type;
     }

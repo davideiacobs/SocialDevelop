@@ -89,6 +89,16 @@
                             </ul>
                         </div>
                     </div>
+                     <div class="col-md-3">
+                                <div class="gt_privacy_field default_width mb20">
+                                    <input class="c_ph" type="text" readonly="readonly" value="State">
+                                    <label class="switch">
+                                        <input type="checkbox" class="open-check"/>
+                                        <div class="slider round"><span>Open</span></div>
+                                    </label>
+                                    <input type="text" class="hidden isOpen" id="isOpen" name="isOpen" value="1"/>
+                                </div>
+                    </div>
                     <div class="col-md-12">
                         <div class="gt_contact_us_field">
                             <input id="submit-task" type="button" value="submit" name="submit_task">
@@ -140,7 +150,7 @@
                                 <p id="name">Task: ${task.name?cap_first}</p>
                                 <p id="tipo">Type: ${tasks_types[task?index].type?cap_first}</p>
                                 <p id="isOpen">State: <#if task.open==true>Open<#else>Close</#if></p>
-                                <p id="start-end">Start Date: ${task.getStartDate().time?date?string.short} &nbsp; - &nbsp; End Date: ${task.getEndDate().time?date?string.short}</p>
+                                <p id="start-end">Start Date: ${task.getStartDate().time?date?string("dd/MM/yyyy")} &nbsp; - &nbsp; End Date: ${task.getEndDate().time?date?string("dd/MM/yyyy")}</p>
                                 <p id="descr">Description: ${task.description?cap_first}</p>
                                 <p id="coll">Collaborators: ${task.numCollaborators}</p>
                                 <p id="append_here_${taks.name}" class="skills">Skills Richieste: <#list skills_level[task?index] as key,value> ${key.name}(${value}) ; </#list>

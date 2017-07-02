@@ -8,25 +8,27 @@
 
 -coordinatore può chiudere un task quando vuole anche se mancano collaboratori **FATTO**
 
+-visualizzare sviluppatori adatti ai task (dopo la creazione del progetto) **FATTO**
+
+-inviare proposta collaborazione relativa a un task **FATTO**
+
+-escludere sviluppatore da un task **FATTO**
+
+-valutare sviluppatore a fine progetto **FATTO**
+
+-togliere join task da progetti del quale l'utente è coordinatore **FATTO**
+
+-modifica progetto (tutto)  -IO- (GESTIONE COLLABORATORI)  -IO- **FATTO**	
+
+-RISOLVERE PROBLEMA DATA MODIFICA PROGETTO -IO- **FATTO**
+
 ------------------------------------------------------------------------------------
 
 --GESTIONE ECCEZIONI!
 
 -stile home (bloccare background)
 
--backend -> inserire/modificare lista tipi task e lista skill associati ad ogni tipo
-
--modifica progetto (tutto)  -IO- (GESTIONE COLLABORATORI)
-
--RISOLVERE PROBLEMA DATA MODIFICA PROGETTO -IO-
-
--visualizzare sviluppatori adatti ai task (dopo la creazione del progetto)
-
--inviare proposta collaborazione relativa a un task
-
--escludere sviluppatore da un task
-
--valutare sviluppatore a fine progetto
+-backend -> inserire/modificare lista tipi task e lista skill associati ad ogni tipo (PERNA)
 
 -pannello inviti coordinatore
 
@@ -38,8 +40,13 @@
 
 -email
 
--paginazione
+-organizzare menù
 
--togliere join task da progetti del quale l'utente è coordinatore
+-paginazione (forse)
 
+-TASK CHIUSO NON ACCETTA ULTERIORI COLLABORATORI
+
+-task chiuso in automatico se ci sono tutti i collaboratori oppure se lo chiude il coordinatore
+
+-come fare per il numero di sviluppatori RICHIESTI?!
 

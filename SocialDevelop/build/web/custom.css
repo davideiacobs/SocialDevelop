@@ -129,3 +129,5 @@ and open the template in the editor.
 .taskrow{
     padding-bottom: 8%;
 }
+
+.req-select{border-color: red !important;}
