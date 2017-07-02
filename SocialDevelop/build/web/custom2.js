@@ -416,7 +416,7 @@ function remove_collaborator(dev_key, task_key){
         },
         success: function (response) {
             if(response == 1){
-                $("li#"+dev_key).empty();
+                $("li#"+dev_key).remove();
             }else{
                
             }

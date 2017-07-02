@@ -48,7 +48,7 @@
                         <!-- COLLABORATORI TASK-->
                          <#if project_task.collaborators?has_content>
                         <#list project_task.collaborators as task_collaborator,value>
-                    <li> 
+                    <li id="${task_collaborator.key}"> 
                         <div class="col-md-9">
                             <figure>
                                 <#if task_collaborator.fotoFile??>
