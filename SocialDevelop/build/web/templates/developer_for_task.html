@@ -1,6 +1,8 @@
         <#list tasks as task>
         <div class="row">
+            <#if devs[task?index]?has_content>
             <h2 class="taskrow"> Task : ${task.name}</h2>
+                
                 <#list devs[task?index] as sviluppatore>
                 <div class="col-md-4 singleProject">
                 <div class="owl-item cloned"><div class="item">
@@ -33,6 +35,10 @@
                   </div>
                 </div></div>
                 </div>
-                </#list>   
+                </#list>  
+                <#else>
+                <h2> Task : ${task.name}</h2>
+                <h6>There are no developers fit for this task</h6>
+                </#if>
         </div>
     </#list>
