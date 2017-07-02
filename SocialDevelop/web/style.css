@@ -1695,3 +1695,16 @@ ul.gt_rating_start li a {display: inline-block;}
 .msg-project{margin-top: 80px;}
 .single-msg{margin-bottom: 15px; border-bottom: 1px solid #dbdbdb;padding-bottom: 15px;}
 .all-msg{padding: 20px !important;}
+/*
+	  ==============================================================
+		   MyCollaborations
+	  ==============================================================
+*/
+.content-none ul li::before{content: none !important;}
+.li-task{border-bottom: none !important;margin-bottom: 20px;margin-top: 20px;}
+.select-style {border: 1px solid #ccc;width: 150px;border-radius: 3px;overflow: hidden;background: #fafafa url("./images/select-icon.png") no-repeat 90% 50%;}
+.select-style select {padding: 5px 8px;width: 130%;border: none;box-shadow: none;background: transparent;background-image: none;-webkit-appearance: none;}
+.select-style select:focus {outline: none;}
+.li-task h3{text-transform: uppercase;font-size: 20px;font-weight: bold;}
+.mc-project-title{margin-bottom: 0px !important;}
+.add-vote-btn{margin-top: 5px;}

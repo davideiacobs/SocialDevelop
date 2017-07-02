@@ -19,7 +19,7 @@
                 <li><a href="<#if notmy??> DeveloperProjects?n=${id} <#else> MyProjects </#if>"><i class="fa fa-code gt-color"></i><#if notmy??>Projects<#else>My Projects</#if></a></li>
                 <#if notmy??>
                 <#else>
-                <li><a href="MyCollaborators"><i class="fa fa-code gt-color"></i>My Collaborators</a></li>
+                <li><a href="MyCollaborators"><i class="fa fa-users gt-color"></i>My Collaborators</a></li>
                 </#if>
                 <li class="active"><a href="<#if notmy??>DeveloperCollaborations?n=${id} <#else>MyCollaborations </#if>"><i class="fa fa-handshake-o gt-color"></i><#if notmy??>Collaborations<#else>My Collaborations</#if></a></li>
                 <li><a href="<#if notmy??>DeveloperSkills?n=${id} <#else>MySkills </#if>"><i class="icon-book gt-color"></i><#if notmy??>Skills<#else>My Skills</#if></a></li>
@@ -49,7 +49,7 @@
             </ul>
                     
             <ul class="gt-shortlisted">
-                
+                <#if tasksList?has_content>
                 <#list tasksList?keys as task>
                 <li>
                    
@@ -67,7 +67,10 @@
                     </div>
                 </li>
                     
-                </#list>   
+                </#list>
+                <#else>
+                <li> At the moment you do not work in any project.</li>
+                </#if>
             </ul>
                     
                     
@@ -82,7 +85,7 @@
             </ul>
                     
             <ul class="gt-shortlisted">
-                
+                <#if tasksListEnded?has_content>
                 <#list tasksListEnded?keys as taskEnded>
                 <li>
                    
@@ -101,9 +104,12 @@
                         <a href="DeveloperProfile?n=${coordinatorsEnded[taskEnded?index].key}"><span><em>Project Coordinator: &nbsp;</em> ${coordinatorsEnded[taskEnded?index].username?cap_first} - ${coordinatorsEnded[taskEnded?index].mail}</span></a>
                     </div>
                 </li>
-                </#list>   
+                </#list>  
+                <#else>
+                <li>You have not finished any collaboration.</li>
+                </#if>
             </ul>
-                    
+                
                     
         </div>
     </div>   

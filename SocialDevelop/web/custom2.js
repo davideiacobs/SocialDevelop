@@ -461,3 +461,5 @@ function remove_type(param){
         }
     });              
 }
+
+
