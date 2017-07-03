@@ -55,7 +55,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     private PreparedStatement iType, uType, dType, sFileByID;
     private PreparedStatement iRequest, uRequest, dRequest, iImg;
     private PreparedStatement iTaskHasSkill, dTaskHasSkill,uTaskHasSkill,sTaskHasSkill, sCollaboratorRequestsByTask;
-    private PreparedStatement iTaskHasDeveloper,dTaskHasDeveloper,uTaskHasDeveloper,sTaskHasDeveloper;
+    private PreparedStatement iTaskHasDeveloper,dTaskHasDeveloper,uTaskHasDeveloper,sTaskHasDeveloper,dTasksFromProject;
     private PreparedStatement iSkillHasDeveloper,dSkillHasDeveloper,uSkillHasDeveloper,sSkillHasDeveloper;
     private PreparedStatement sProjectByTask, sCurrentTasksByDeveloper, sEndedTasksByDeveloper,sProjectsByCoordinator;
     private PreparedStatement sDateOfTaskByProject,sEndDateOfTaskByProject, sTypeBySkill,dSkillsFromTask,sDeveloperByUsernameLike;
@@ -178,7 +178,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                                         + "thd.sender=1 INNER JOIN task AS t ON (thd.task_ID = t.ID) INNER JOIN project AS p ON (t.project_ID = p.ID) WHERE p.coordinator_ID=?");  
             */
             sQuestionsByCoordinatorID = connection.prepareStatement("SELECT thd.task_ID,thd.developer_ID FROM(((SELECT project.ID FROM project WHERE project.coordinator_ID=?) AS p "
-                    + "INNER JOIN task AS t ON (p.ID=t.project_ID))INNER JOIN task_has_developer AS thd ON (thd.task_ID=t.ID)) WHERE thd.sender=1");    
+                    + "INNER JOIN task AS t ON (p.ID=t.project_ID))INNER JOIN task_has_developer AS thd ON (thd.task_ID=t.ID)) WHERE thd.sender<>? AND thd.state=0");    
             
             //seleziona le skill per le quali il developer risulta idoneo a partecipare(pannello delle offerte)
             /*sOffertsByDeveloperID = connection.prepareStatement("SELECT thd.*,p.coordinator_ID FROM (SELECT task_has_developer.* FROM task_has_developer WHERE\n" +
@@ -204,7 +204,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             iTask = connection.prepareStatement("INSERT INTO task (name,numCollaborators,start,end,description,open,project_ID, type_ID) VALUES(?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             uTask = connection.prepareStatement("UPDATE task SET name=?,numCollaborators=?,start=?,end=?,description=?,open=?,project_ID=? WHERE ID=?");
             dTask = connection.prepareStatement("DELETE FROM task WHERE ID=?");
-            
+            dTasksFromProject = connection.prepareStatement("DELETE FROM task WHERE project_ID=?");
+                    
             iMessage = connection.prepareStatement("INSERT INTO message (private,text,type,project_ID, developer_ID) VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             uMessage = connection.prepareStatement("UPDATE message SET private=?,text=?,type=?,project_ID=? WHERE ID=?");
             dMessage = connection.prepareStatement("DELETE FROM message WHERE ID=?");
@@ -1210,6 +1211,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         List<CollaborationRequest> result = new ArrayList();
         try{
             sQuestionsByCoordinatorID.setInt(1, coordinator_key);
+            sQuestionsByCoordinatorID.setInt(2, coordinator_key);
             try(ResultSet rs = sQuestionsByCoordinatorID.executeQuery()){
                 while(rs.next()){
                     result.add((CollaborationRequest) getCollaborationRequest(rs.getInt("developer_ID"), rs.getInt("task_ID")));
@@ -1487,6 +1489,17 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         try{
             dTask.setInt(1, key);
             dTask.executeUpdate();
+            }catch (SQLException ex) {
+            throw new DataLayerException("Unable to store article", ex);
+        }
+    }
+    
+    @Override
+    public void deleteTasksFromProject(int project_key) throws DataLayerException{
+        
+        try{
+            dTasksFromProject.setInt(1, project_key);
+            dTasksFromProject.executeUpdate();
             }catch (SQLException ex) {
             throw new DataLayerException("Unable to store article", ex);
         }

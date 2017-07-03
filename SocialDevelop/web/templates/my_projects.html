@@ -14,25 +14,24 @@
                 </div>
               </div>
               <div class="gt-usser-account-list">
-                <ul>
-                  <li><a href="<#if notmy??>DeveloperProfile?n=${id}<#else>MyProfile</#if>"><i class="fa fa-user-circle-o gt-color"></i><#if notmy??>Profile<#else>My Profile</#if></a></li>
-                  <li class="active"><a href="<#if notmy??>DeveloperProjects?n=${id}<#else>MyProjects</#if>"><i class="fa fa-code gt-color"></i><#if notmy??>Projects<#else>My Projects</#if></a></li>
-                  <#if notmy??>
-                  <#else>
-                  <li><a href="MyCollaborators"><i class="fa fa-users gt-color"></i>My Collaborators</li>
-                  </#if>
-                  <li><a href="<#if notmy??>DeveloperCollaborations?n=${id}<#else>MyCollaborations</#if>"><i class="fa fa-handshake-o gt-color"></i><#if notmy??>Collaborations<#else>My Collaborations</#if></a></li>
-                  <li><a href="<#if notmy??>DeveloperSkills?n=${id}<#else>MySkills</#if>"><i class="icon-book gt-color"></i><#if notmy??>Skills<#else>My Skills</#if></a></li>
-                  <#if notmy??>
-                    </ul>
-                  <#else>
-                        <li><a href="UpdateProfile"><i class="fa fa-upload"></i>Update Profile</a></li>
-                        <li><a href="CreateProject"> <i class="fa fa-plus-circle"></i>New Project</a></li>
-
-                    </ul>
-                    <a href="Logout" class="gt-logout"><i class="icon-arrows-2 gt-color"></i>Logout</a>
-                </#if>
-              </div>
+            <ul>
+                <li><a href="<#if notmy??>DeveloperProfile?n=${id}<#else>MyProfile</#if>"><i class="fa fa-user-circle-o gt-color"></i><#if notmy??>Profile<#else>My Profile</#if></a></li>
+                <li class="active"><a href="<#if notmy??>DeveloperProjects?n=${id}<#else>MyProjects</#if>"><i class="fa fa-code gt-color"></i><#if notmy??>Projects<#else>My Projects</#if></a></li>
+                
+                <li><a href="<#if notmy??>DeveloperCollaborators?n=${id}<#else>MyCollaborators</#if>"><i class="fa fa-users gt-color"></i><#if notmy??>Collaborators<#else>My Collaborators</#if></a></li>
+             
+                <li><a href="<#if notmy??>DeveloperCollaborations?n=${id} <#else>MyCollaborations </#if>"><i class="fa fa-handshake-o gt-color"></i><#if notmy??>Collaborations<#else>My Collaborations</#if></a></li>
+                <li><a href="<#if notmy??>DeveloperSkills?n=${id} <#else>MySkills </#if>"><i class="icon-book gt-color"></i><#if notmy??>Skills<#else>My Skills</#if></a></li>
+                <#if notmy??>
+            </ul>
+            <#else>
+            <li><a href="UpdateProfile"><i class="fa fa-upload"></i>Update Profile</a></li>
+            <li><a href="CreateProject"> <i class="fa fa-plus-circle"></i>New Project</a></li>
+                            
+            </ul>
+            <a href="Logout" class="gt-logout"><i class="icon-arrows-2 gt-color"></i>Logout</a>
+            </#if>
+        </div>
             </div>
           </div>
           <!-- Dashboard Side Bar Wrap End -->

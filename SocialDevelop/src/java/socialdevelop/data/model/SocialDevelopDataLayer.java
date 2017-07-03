@@ -189,5 +189,6 @@ public interface SocialDevelopDataLayer extends DataLayer {
     List <Skill> getSkills() throws DataLayerException;
     
     List<Developer> getDevelopersBySkillNoLevel(int skill_key, int level) throws DataLayerException;
-   
+    
+    void deleteTasksFromProject(int project_key) throws DataLayerException;
 }

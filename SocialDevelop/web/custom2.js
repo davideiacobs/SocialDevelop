@@ -585,6 +585,67 @@ $(".decline-proposal").on("click",function(){
 
 
 
+$(".accept-demend").on("click",function(){
+
+   var task = $(this).parent().parent().parent();
+   var task_key = task.attr("id"); 
+   var developer_key = $(this).parent().parent().parent().parent().attr("id");
+   $.ajax({
+        datatype: 'text/plain',
+        type: 'post',
+        url: 'acceptProposal',
+        data: {
+            task_key:task_key,
+            state:1,
+            developer_key:developer_key,
+        },
+        success: function (response) {
+           
+                var res = $.trim(response);
+                if(res=="Accepted"){
+                    task.children(".icons").empty();
+                    task.children(".icons").append("<i class='fa fa-check-circle-o' style='font-size:40px'></i>");
+                }
+ 
+        },
+        error: function(){
+            
+        }
+    });
+    
+    
+});
+
+$(".decline-demend").on("click",function(){
+   
+   var task = $(this).parent().parent().parent();
+   var task_key = task.attr("id"); 
+   var developer_key = $(this).parent().parent().parent().parent().attr("id");
+    $.ajax({
+        datatype: 'text/plain',
+        type: 'post',
+        url: 'acceptProposal',
+        data: {
+            task_key:task_key,
+            developer_key:developer_key,
+            state:-1,
+        },
+        success: function (response) {
+           
+                var res = $.trim(response);
+                if(res=="Accepted"){
+                    task.children(".icons").empty();
+                    task.children(".icons").append("<i class='fa fa-times-circle-o' style='font-size:40px'></i>");
+                }
+ 
+        },
+        error: function(){
+            
+        }
+    });
+    
+    
+});
 
 
 

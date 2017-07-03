@@ -37,11 +37,19 @@ public class acceptProposal extends SocialDevelopBaseController {
         if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
             int user_key = (int) s.getAttribute("userid");
             SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
-           
+            int developer_key = 0;
+            if(request.getParameter("developer_key")!=null){
+                developer_key = Integer.parseInt(request.getParameter("developer_key"));
+            }
             int task_key = Integer.parseInt(request.getParameter("task_key"));
-            int sender_key = Integer.parseInt(request.getParameter("sender"));
             int state = Integer.parseInt(request.getParameter("state"));
-            datalayer.storeTaskHasDeveloper(task_key, user_key, state, -1, sender_key);
+
+            if(developer_key==0){
+                int sender_key = Integer.parseInt(request.getParameter("sender"));
+                datalayer.storeTaskHasDeveloper(task_key, user_key, state, -1, sender_key);
+            }else{
+                datalayer.storeTaskHasDeveloper(task_key, developer_key, state, -1, developer_key);
+            }
             
             if(state==1){
                 Task task = datalayer.getTask(task_key);

@@ -33,6 +33,7 @@ public class InsertProject extends SocialDevelopBaseController {
         if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
             String u = (String) s.getAttribute("previous_url");
             if(s.getAttribute("previous_url") != null && u.equals("/socialdevelop/CreateProject")){
+                if(!request.getParameter("tasks").equals("")){
                 SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
                 String project_name = request.getParameter("project_name");
                 String project_descr = request.getParameter("project_descr");
@@ -93,6 +94,9 @@ public class InsertProject extends SocialDevelopBaseController {
             }else{
                 response.sendRedirect("CreateProject");
             }
+            }else{
+                    response.sendRedirect("CreateProject");
+                }
         }else{
             response.sendRedirect("index");
         }

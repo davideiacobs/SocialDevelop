@@ -31,7 +31,7 @@ public class UpdateProjectSave extends SocialDevelopBaseController {
         //recuperare coordinatore dalla sessione!
         HttpSession s = request.getSession(true);   
         if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
-           
+                if(!request.getParameter("tasks").equals("")){
                 SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
                 String project_name = request.getParameter("project_name");
                 String project_descr = request.getParameter("project_descr");
@@ -44,12 +44,15 @@ public class UpdateProjectSave extends SocialDevelopBaseController {
                 String pk = request.getParameter("n");
                 p.setKey(Integer.parseInt(pk));
                 s.removeAttribute("projectKey");
+                String tasks = request.getParameter("tasks");
+                
                 int project_key = datalayer.storeProject(p);
                 //ora recuperiamo le info sui task e le memorizziamo
-                String tasks = request.getParameter("tasks");
+                
                 String tasks_keys = request.getParameter("tasks_keys");
                 String [] task_key = tasks_keys.split(";");
                 String [] task = tasks.split("@");
+                datalayer.deleteTasksFromProject(project_key);
                 for(String t : task){
                     String [] thistask = t.split("#");
                     TaskImpl current = new TaskImpl(datalayer);
@@ -86,6 +89,7 @@ public class UpdateProjectSave extends SocialDevelopBaseController {
                     }else{
                         current.setOpen(false);
                     }
+                    
                     int task_key2 = datalayer.storeTask(current);
                     datalayer.deleteSkillsFromTask(task_key2);
                     String [] skills = thistask[5].split(";");
@@ -99,6 +103,9 @@ public class UpdateProjectSave extends SocialDevelopBaseController {
                 }
                 datalayer.destroy();
                 response.sendRedirect("MyProjects");
+                }else{
+                    response.sendRedirect("UpdateProject?n="+request.getParameter("n"));
+                }
             }else{
                 response.sendRedirect("MyProjects");
             }

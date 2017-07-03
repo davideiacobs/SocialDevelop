@@ -15,12 +15,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import socialdevelop.data.model.CollaborationRequest;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Files;
 import socialdevelop.data.model.Project;
@@ -31,7 +31,7 @@ import socialdevelop.data.model.Task;
  *
  * @author iacobs
  */
-public class PannelloDelleProposte extends SocialDevelopBaseController {
+public class DeveloperCollaborators extends SocialDevelopBaseController {
     
     private void action_error(HttpServletRequest request, HttpServletResponse response) {
         if (request.getAttribute("exception") != null) {
@@ -54,53 +54,54 @@ public class PannelloDelleProposte extends SocialDevelopBaseController {
         
     }
     
+   
     
-    
-    private void action_proposte(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
-            HttpSession s = request.getSession(true);
-            request.setAttribute("page_title", "Panel of proposals");
-            request.setAttribute("page_subtitle", "manage your proposals");
-            if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
-                SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
-                //recuperiamo sviluppatore a cui appartiene il pannello
-                Developer dev = datalayer.getDeveloper((int) s.getAttribute("userid"));
+    private void action_mycollaborators(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
+            SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer)request.getAttribute("datalayer");
+            int dev_key = Integer.parseInt(request.getParameter("n"));
+            Developer dev = datalayer.getDeveloper(dev_key);
+            if(dev!=null){
                 request.setAttribute("username", dev.getUsername());
                 request.setAttribute("fullname", dev.getName()+" "+dev.getSurname());
                 long currentTime = System.currentTimeMillis();
                 Calendar now = Calendar.getInstance();
                 now.setTimeInMillis(currentTime);
-                 //Get difference between years
+                //Get difference between years
                 request.setAttribute("age", now.get(Calendar.YEAR) - dev.getBirthDate().get(Calendar.YEAR));
                 request.setAttribute("bio", dev.getBiography());
                 request.setAttribute("mail", dev.getMail());
                 request.setAttribute("logout", "Logout");
+                request.setAttribute("id", dev_key);
+                request.setAttribute("datalayer", datalayer);
                 getImg(request, response, dev);
-               
-                //recuperiamo le proposte
-                List<CollaborationRequest> proposals = datalayer.getProposalsByCollaborator(dev.getKey());
+                //recupero progetti gestiti dall'utente (progetti dei quali è il coordinatore)
                 
-                //recuperiamo il task relativo alla proposta e il progetto a cui appartiene
                 
-                List<CollaborationRequest> proposalsToSet = new ArrayList();
-               
-                for(CollaborationRequest p : proposals){
-                    Task t = datalayer.getTask(p.getTaskKey());
-                    Project pr = datalayer.getProject(t.getProjectKey());
-                    Developer d = datalayer.getDeveloper(p.getSender_key());
-                    t.setProject(pr);
-                    p.setTaskRequest(t);
-                    p.setSender(d);
-                    
-                    proposalsToSet.add(p);
+                List<Task> tasks = new ArrayList<Task> (datalayer.getTasksByDeveloper(dev_key).keySet());
+                List<Developer> collaborators = new ArrayList();
+                for(Task t : tasks){
+                    List<Developer> t_coll = new ArrayList<Developer> (t.getCollaborators().keySet());
+                    for(Developer d : t_coll){
+                        if(!d.equals(dev)){
+                            if(!collaborators.contains(d)){
+                                collaborators.add(d);
+                            }
+                        }
+                    }
                 }
-                request.setAttribute("proposals", proposalsToSet);
+                request.setAttribute("collaborators", collaborators);
+                request.setAttribute("page_title", "Developer");
+                request.setAttribute("page_subtitle", dev.getUsername());
+                request.setAttribute("notmy", "notmy");
+                
+                
+                datalayer.destroy();    
                 TemplateResult res = new TemplateResult(getServletContext());
-                res.activate("pannello_delle_proposte.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare
+                res.activate("developer_collaborators.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare
                 
             }else{
                  response.sendRedirect("index");
             }
-            
            
     }
     
@@ -110,7 +111,7 @@ public class PannelloDelleProposte extends SocialDevelopBaseController {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException{
         
         try {
-            action_proposte(request, response);
+            action_mycollaborators(request, response);
         } catch (IOException ex) {
             request.setAttribute("exception", ex);
             action_error(request, response);

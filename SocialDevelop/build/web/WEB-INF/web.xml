@@ -270,6 +270,14 @@
         <servlet-name>PannelloDegliInviti</servlet-name>
         <servlet-class>socialdevelop.controller.PannelloDegliInviti</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PannelloDelleDomande</servlet-name>
+        <servlet-class>socialdevelop.controller.PannelloDelleDomande</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeveloperCollaborators</servlet-name>
+        <servlet-class>socialdevelop.controller.DeveloperCollaborators</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>provaDB2</servlet-name>
         <url-pattern>/provaDB2</url-pattern>
@@ -477,6 +485,14 @@
     <servlet-mapping>
         <servlet-name>PannelloDegliInviti</servlet-name>
         <url-pattern>/PannelloDegliInviti</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PannelloDelleDomande</servlet-name>
+        <url-pattern>/PannelloDelleDomande</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeveloperCollaborators</servlet-name>
+        <url-pattern>/DeveloperCollaborators</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

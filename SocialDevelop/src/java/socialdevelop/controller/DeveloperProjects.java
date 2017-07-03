@@ -70,8 +70,10 @@ public class DeveloperProjects extends SocialDevelopBaseController {
                 request.setAttribute("age", now.get(Calendar.YEAR) - dev.getBirthDate().get(Calendar.YEAR));
                 request.setAttribute("bio", dev.getBiography());
                 request.setAttribute("mail", dev.getMail());
-                request.setAttribute("logout", "Logout");
-                request.setAttribute("datalayer", datalayer);
+                request.setAttribute("page_title", "Developer");
+                request.setAttribute("page_subtitle", dev.getUsername());
+                request.setAttribute("notmy", "notmy");
+                request.setAttribute("id", dev_key);
                 getImg(request, response, dev);
                 
                 //recupero progetti gestiti dall'utente (progetti dei quali è il coordinatore)
@@ -110,15 +112,13 @@ public class DeveloperProjects extends SocialDevelopBaseController {
                 if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
                     request.setAttribute("logout", "Logout");
                 }  
-                request.setAttribute("page_title", "Developer");
-                request.setAttribute("page_subtitle", dev.getUsername());
-                request.setAttribute("notmy", "notmy");
+                
                 request.setAttribute("perc", perc);
                 request.setAttribute("projects", projects);
                 request.setAttribute("ncollaboratori", ncollaboratori);
                 request.setAttribute("startdate", startdate);
                 request.setAttribute("enddate", enddate);
-                request.setAttribute("id", dev_key);
+                
                 }else{
                     request.setAttribute("projects", projects);
                 }

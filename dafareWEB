@@ -34,6 +34,14 @@
 
 -PAGINAZIONE!!!!  **FATTO**
 
+-pannello delle domande **FATTO**
+
+-update -> delete task non funge **FATTO**
+
+-aggiungere developerCollaborators a developerProfile **FATTO**
+
+-correggere developerCollaborators **FATTO**
+
 ------------------------------------------------------------------------------------
 
 -CAMBIAMENTI PERNA
@@ -43,8 +51,6 @@
 -backend -> inserire/modificare lista tipi task e lista skill associati ad ogni tipo (PERNA)
 
 -backend login e dove posizionare la pagina
-
--pannello delle domande
 
 -email
 
@@ -60,9 +66,12 @@ un tipo
 
 -controllo date inizio e fino  (PERNA)
 
--aggiungere developerCollaborators a developerProfile
-
--si possono rimuovere i collaboratori anche
-
 -VERDE DEL CAZZO!
+
+-si sformatta DeveloperForTask quando esce il msg di conferma invio richiesta
+
+-inserimento progetto senza task (o aggiornamento con task vuoti) NON DEVE ESSERE PERMESSO! (c'è il controllo lato server, ma si deve bloccare il submit)
+
+-rimuovere datalayer dai set attribute e controllare loggato profilo developer
+
 

@@ -83,8 +83,14 @@ public class DeveloperForTask extends SocialDevelopBaseController {
                             }
                         }
                         votes.put(dev.getKey(),vote2);
-                        
-                        if(!devTask.contains(dev) && dev.getKey() != ((int) s.getAttribute("userid")) )
+                        boolean flag = false;
+                        List<Developer> taskCollaborators = new ArrayList<Developer> (datalayer.getCollaboratorsByTask(task.getKey()).keySet());
+                        for(Developer collaborator : taskCollaborators){
+                            if(collaborator.equals(dev)){
+                                flag = true;
+                            }
+                        }
+                        if(!devTask.contains(dev) && dev.getKey() != ((int) s.getAttribute("userid")) && !flag)
                         {
                             
                             devTask.add(dev);

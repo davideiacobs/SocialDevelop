@@ -31,7 +31,7 @@ import socialdevelop.data.model.Task;
  *
  * @author iacobs
  */
-public class PannelloDelleProposte extends SocialDevelopBaseController {
+public class PannelloDelleDomande extends SocialDevelopBaseController {
     
     private void action_error(HttpServletRequest request, HttpServletResponse response) {
         if (request.getAttribute("exception") != null) {
@@ -56,10 +56,10 @@ public class PannelloDelleProposte extends SocialDevelopBaseController {
     
     
     
-    private void action_proposte(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
+    private void action_domande(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
             HttpSession s = request.getSession(true);
-            request.setAttribute("page_title", "Panel of proposals");
-            request.setAttribute("page_subtitle", "manage your proposals");
+            request.setAttribute("page_title", "Panel of Demends");
+            request.setAttribute("page_subtitle", "manage your demends");
             if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
                 SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
                 //recuperiamo sviluppatore a cui appartiene il pannello
@@ -77,25 +77,29 @@ public class PannelloDelleProposte extends SocialDevelopBaseController {
                 getImg(request, response, dev);
                
                 //recuperiamo le proposte
-                List<CollaborationRequest> proposals = datalayer.getProposalsByCollaborator(dev.getKey());
+                List<CollaborationRequest> demends = datalayer.getQuestionsByCoordinator(dev.getKey());
                 
                 //recuperiamo il task relativo alla proposta e il progetto a cui appartiene
                 
-                List<CollaborationRequest> proposalsToSet = new ArrayList();
+                List<CollaborationRequest> demendsToSet = new ArrayList();
                
-                for(CollaborationRequest p : proposals){
-                    Task t = datalayer.getTask(p.getTaskKey());
+                for(CollaborationRequest q : demends){
+                    Task t = datalayer.getTask(q.getTaskKey());
                     Project pr = datalayer.getProject(t.getProjectKey());
-                    Developer d = datalayer.getDeveloper(p.getSender_key());
+                    Developer d = datalayer.getDeveloper(q.getSender_key());
+                    int foto_key = d.getFoto();
+                    if(foto_key>0){    
+                        d.setFotoFile(datalayer.getFile(foto_key));
+                    }
                     t.setProject(pr);
-                    p.setTaskRequest(t);
-                    p.setSender(d);
+                    q.setTaskRequest(t);
+                    q.setSender(d);
                     
-                    proposalsToSet.add(p);
+                    demendsToSet.add(q);
                 }
-                request.setAttribute("proposals", proposalsToSet);
+                request.setAttribute("demends", demendsToSet);
                 TemplateResult res = new TemplateResult(getServletContext());
-                res.activate("pannello_delle_proposte.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare
+                res.activate("pannello_delle_domande.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare
                 
             }else{
                  response.sendRedirect("index");
@@ -110,7 +114,7 @@ public class PannelloDelleProposte extends SocialDevelopBaseController {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException{
         
         try {
-            action_proposte(request, response);
+            action_domande(request, response);
         } catch (IOException ex) {
             request.setAttribute("exception", ex);
             action_error(request, response);
