@@ -266,6 +266,10 @@
         <servlet-name>PannelloDelleOfferte</servlet-name>
         <servlet-class>socialdevelop.controller.PannelloDelleOfferte</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PannelloDegliInviti</servlet-name>
+        <servlet-class>socialdevelop.controller.PannelloDegliInviti</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>provaDB2</servlet-name>
         <url-pattern>/provaDB2</url-pattern>
@@ -469,6 +473,10 @@
     <servlet-mapping>
         <servlet-name>PannelloDelleOfferte</servlet-name>
         <url-pattern>/PannelloDelleOfferte</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PannelloDegliInviti</servlet-name>
+        <url-pattern>/PannelloDegliInviti</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

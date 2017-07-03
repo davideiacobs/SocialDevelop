@@ -166,9 +166,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                     + " task_has_developer.developer_ID=? AND task_has_developer.date=?) AS thd INNER JOIN task AS t ON (thd.task_ID= t.ID)");
             
             //seleziona inviti di partecipazione inviati da un coordinatore(pannello degli inviti)
-            sInvitesByCoordinatorID = connection.prepareStatement("SELECT thd.* FROM (((SELECT task_has_developer.* FROM task_has_developer\n" +
-                        "WHERE task_has_developer.sender=0) AS thd INNER JOIN task AS t ON (thd.task_ID=t.ID)) \n" +
-                        "INNER JOIN project AS p ON (t.project_ID=p.ID)) WHERE p.coordinator_ID=?");
+            sInvitesByCoordinatorID = connection.prepareStatement("SELECT thd.* FROM  task_has_developer AS thd WHERE sender=? ORDER BY thd.task_ID");
             
             //seleziona proposte che un collaboratore riceve da un coordinatore(pannello delle proposte)
             sProposalsByCollaboratorID = connection.prepareStatement("SELECT thd.* FROM task_has_developer AS thd WHERE "

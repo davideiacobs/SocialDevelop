@@ -402,7 +402,7 @@ $(".findDeveloper").on("click",function(event){
     }
 
 });
-     
+
      
 function remove_collaborator(dev_key, task_key){
     console.log(dev_key);
@@ -560,7 +560,7 @@ $(".decline-proposal").on("click",function(){
    $.ajax({
         datatype: 'text/plain',
         type: 'post',
-        url: 'declineProposal',
+        url: 'acceptProposal',
         data: {
             task_key:task_key,
             sender:sender,

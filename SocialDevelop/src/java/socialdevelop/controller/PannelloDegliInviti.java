@@ -5,6 +5,7 @@
  */
 package socialdevelop.controller;
 
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import it.univaq.f4i.iw.framework.data.DataLayerException;
 import it.univaq.f4i.iw.framework.result.FailureResult;
 import it.univaq.f4i.iw.framework.result.StreamResult;
@@ -20,6 +21,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import socialdevelop.data.model.CollaborationRequest;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Files;
 import socialdevelop.data.model.Project;
@@ -30,7 +32,7 @@ import socialdevelop.data.model.Task;
  *
  * @author iacobs
  */
-public class PannelloDelleOfferte extends SocialDevelopBaseController {
+public class PannelloDegliInviti extends SocialDevelopBaseController {
     
     private void action_error(HttpServletRequest request, HttpServletResponse response) {
         if (request.getAttribute("exception") != null) {
@@ -55,10 +57,10 @@ public class PannelloDelleOfferte extends SocialDevelopBaseController {
     
     
     
-    private void action_offerte(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
+    private void action_inviti(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
             HttpSession s = request.getSession(true);
-            request.setAttribute("page_title", "Panel of Offers");
-            request.setAttribute("page_subtitle", "manage your offers!");
+            request.setAttribute("page_title", "Panel of Invites");
+            request.setAttribute("page_subtitle", "manage your invites!");
             if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
                 SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
                 //recuperiamo sviluppatore a cui appartiene il pannello
@@ -73,28 +75,29 @@ public class PannelloDelleOfferte extends SocialDevelopBaseController {
                 request.setAttribute("bio", dev.getBiography());
                 request.setAttribute("mail", dev.getMail());
                 request.setAttribute("logout", "Logout");
-                request.setAttribute("userid", dev.getKey());
+                request.setAttribute("datalayer", datalayer);
                 getImg(request, response, dev);
                
-                //recuperiamo le proposte
-                List<Task> tasks = datalayer.getOffertsByDeveloper(dev.getKey());
-                
-                //recuperiamo il task relativo alla proposta e il progetto a cui appartiene
-                
-                List<Task> taskToSet = new ArrayList();
-                for(Task task : tasks){
-
-                    Project pr = datalayer.getProject(task.getProjectKey());
-                    Developer coordinator = datalayer.getDeveloper(pr.getCoordinatorKey());
-                    pr.setCoordinator(coordinator);
-                    task.setProject(pr);
-                    
-                    
-                    taskToSet.add(task);
+                //recuperiamo gli inviti 
+                List<CollaborationRequest> invites = datalayer.getInvitesByCoordinator(dev.getKey());
+                List<CollaborationRequest>  invitesToSend = new ArrayList();
+                for(CollaborationRequest i : invites){
+                    Task task = datalayer.getTask(i.getTaskKey());
+                    Project project = datalayer.getProjectByTask(task.getKey());
+                    Developer invitato = datalayer.getDeveloper(i.getCollaboratorKey());
+                    int foto_key = invitato.getFoto();
+                    if(foto_key>0){    
+                        invitato.setFotoFile(datalayer.getFile(foto_key));
+                    }
+                    task.setProject(project);
+                    i.setTaskRequest(task);
+                    i.setCollaboratorRequest(invitato);
+                    invitesToSend.add(i);
                 }
-                request.setAttribute("offerts", taskToSet);
+                
+                request.setAttribute("invites", invitesToSend);
                 TemplateResult res = new TemplateResult(getServletContext());
-                res.activate("pannello_delle_offerte.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare
+                res.activate("pannello_degli_inviti.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare
                 
             }else{
                  response.sendRedirect("index");
@@ -109,7 +112,7 @@ public class PannelloDelleOfferte extends SocialDevelopBaseController {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException{
         
         try {
-            action_offerte(request, response);
+            action_inviti(request, response);
         } catch (IOException ex) {
             request.setAttribute("exception", ex);
             action_error(request, response);

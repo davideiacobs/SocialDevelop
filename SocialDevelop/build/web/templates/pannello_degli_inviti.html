@@ -42,48 +42,61 @@
     <div class="gt_d_classes_wrap default_width">
         <div class="gt_d_fav_courses default_width">
             <ul class="gt_d_fav_hdg">
-                <li>Offerts</li>
+                <li>Invites</li>
+                <li>State</li>
             </ul>
                     
             <ul class="gt-shortlisted">
-                <#if offerts?has_content>
-                <#list offerts as offert>
-                <#if offert.getProject().getCoordinatorKey() != userid>
-                <li>
+                <#if invites?has_content>
+                <#list invites as invite>
+                <li id="${invite.getCollaboratorRequest().key}">
                    
                         <div class="gt-text grade-padding">
                         
-                            <h5><a href="Project_Detail?n=${offert.getProject().key}">${offert.getProject().name?cap_first}</a></h5>
-                            <h6><a href="Project_Detail?n=${offert.getProject().key}#${offert.key}"> Task: ${offert.name?cap_first}</a></h6>
+                            <h5><a href="Project_Detail?n=${invite.getTaskByRequest().getProject().key}#${invite.getTaskByRequest().key}"> Task: ${invite.getTaskByRequest().name?cap_first} (${invite.getTaskByRequest().getProject().name?cap_first})</a></h5>
                                 
-                        <!--<h6 id="grade-right" class="icons"> 
-                            <#if proposal.state==0>
+                        <h6 id="grade-right" class="icons"> 
+                            <#if invite.state==0>
+                            <!--IN ATTESA-->
                                 <i class="fa fa-spinner fa-spin" style="font-size:40px;"></i>
                             <#else>
+                                <#if invite.state gte 1>
+                                <!--ACCETTATA-->
                                 <i class="fa fa-check-circle-o" style="font-size:40px"></i>
+                                <#else>
+                                <i class='fa fa-times-circle-o' style='font-size:40px'></i>
+                                </#if>
                             </#if>
-                        </h6>-->
-                            <p>Start Date: ${offert.getStartDate().time?date?string("dd/MM/yyyy")} &nbsp; - &nbsp; End Date: ${offert.getEndDate().time?date?string("dd/MM/yyyy")}</p>
-                                
-                            <p>Task Description: &nbsp;${offert.description?cap_first}</p>
-                              
-                        <a href="DeveloperProfile?n=${offert.getProject().getCoordinator().key}"><span><em>Project Coordinator: &nbsp;</em> ${offert.getProject().getCoordinator().username?cap_first} - ${offert.getProject().getCoordinator().mail}</span></a>
-                       
-                         <div class="view-update">
+                        </h6>
                             
-                             <button class="btn btn-default" onclick="join_task(${offert.key},this)">Send Request</button>
-                             <p class="join-msg hidden center"></p>
+                            <div class="col-md-3">
+                            <figure>
+                                <#if invite.getCollaboratorRequest().fotoFile??>
+                                <img src="extra-images/${invite.getCollaboratorRequest().getFotoFile().localFile}" alt="">
+                                <#else>
+                                    <img src="extra-images/foto_profilo_default.png" alt="">
+                                </#if>
+                            </figure>
+                            
+                        </div>  
+                            <div class="user-invite">
+                            <a href="DeveloperProfile?n=${invite.getCollaboratorRequest().key}"><h5>${invite.getCollaboratorRequest().username}</h5></a>
+                            
+                            <p>Date: ${invite.getDate().time?date?string("dd/MM/yyyy")}</p>
+                        <#if invite.state==0>
+                         <div class="view-update">
+                             <button class="btn btn-default delete-proposal" onclick="remove_collaborator(${invite.getCollaboratorRequest().key},${invite.getTaskByRequest().key})">Delete</button>       
                          </div>
-                       
+                            </div>
+                        </#if>
                     </div>
                 </li>
-                </#if>
+                    
                 </#list>
                 <#else>
-                <li> There are no offerts for you.</li>
+                <li> There are no invites.</li>
                 </#if>
             </ul>
-                    
                     
         </div>
     </div>

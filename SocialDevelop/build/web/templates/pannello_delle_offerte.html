@@ -21,7 +21,6 @@
                 <li><a href="MyCollaborators"><i class="fa fa-users gt-color"></i>My Collaborators</a></li>
                 
                 <li><a href="MyCollaborations"><i class="fa fa-handshake-o gt-color"></i>My Collaborations</a></li>
-                <li class="active"><a href="Panel Of Proposals"><i class="fa fa-mail-reply-all"></i>Panel Of Proposals</a></li>
                 <li><a href="MySkills"><i class="icon-book gt-color"></i>My Skills</a></li>
             
                 <li><a href="UpdateProfile"><i class="fa fa-upload"></i>Update Profile</a></li>
@@ -49,6 +48,7 @@
             <ul class="gt-shortlisted">
                 <#if offerts?has_content>
                 <#list offerts as offert>
+                <#if offert.getProject().getCoordinatorKey() != userid>
                 <li>
                    
                         <div class="gt-text grade-padding">
@@ -77,7 +77,7 @@
                        
                     </div>
                 </li>
-                    
+                </#if>
                 </#list>
                 <#else>
                 <li> There are no offerts for you.</li>
