@@ -28,6 +28,12 @@
 
 -pannello proposte sviluppatori **FATTO**
 
+-pannello inviti coordinatore **FATTO**
+
+-pannello delle offerte  **FATTO**
+
+-PAGINAZIONE!!!!  **FATTO**
+
 ------------------------------------------------------------------------------------
 
 -CAMBIAMENTI PERNA
@@ -36,9 +42,7 @@
 
 -backend -> inserire/modificare lista tipi task e lista skill associati ad ogni tipo (PERNA)
 
--pannello inviti coordinatore
-
--pannello delle offerte
+-backend login e dove posizionare la pagina
 
 -pannello delle domande
 
@@ -46,13 +50,7 @@
 
 -organizzare menù   (PERNA)
 
--PAGINAZIONE!!!!
-
--utilizzare pagina di ricerca del template? ******DOMANDA*******
-
 -task chiuso in automatico se ci sono tutti i collaboratori oppure se lo chiude il coordinatore
-
--come fare per il numero di sviluppatori RICHIESTI?!
 
 -Un task chiuso non accetta ulteriori collaboratori, a meno che
 questi non vengano aggiunti direttamente dal coordinatore.
@@ -60,7 +58,7 @@ questi non vengano aggiunti direttamente dal coordinatore.
 -opzionalmente, è possibile associare uno skill anche a più di
 un tipo
 
--controllo date inizio e fino
+-controllo date inizio e fino  (PERNA)
 
 -aggiungere developerCollaborators a developerProfile
 

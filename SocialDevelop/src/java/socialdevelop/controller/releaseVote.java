@@ -44,7 +44,7 @@ public class releaseVote extends SocialDevelopBaseController {
             if(coord_key == (int) s.getAttribute("userid")){
                 //l'utente che sta assegnando il voto al collaboratore è
                 //il coordiantore del progetto quindi gli è permesso falo
-                int ret = datalayer.storeTaskHasDeveloper(task_id, developer_key, 2,vote, 0);
+                int ret = datalayer.storeTaskHasDeveloper(task_id, developer_key, 2, vote, coord_key);
                 datalayer.destroy();
                 response.setContentType("text/plain");
                 response.setCharacterEncoding("UTF-8");
