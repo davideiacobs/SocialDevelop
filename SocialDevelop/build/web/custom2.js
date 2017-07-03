@@ -645,3 +645,44 @@ $("#old-type").on("change",function (){
         $("#err-tu").remove();
     }
 });
+
+
+
+$.fn.scrollBottom = function() { 
+  return $(document).height() - this.scrollTop() - this.height(); 
+};
+
+$(window).on("resize",function (){
+     if($(window).width()<974){ 
+         console.log($(window).width());
+         $('.sidebar_fixed').css("top",0);
+     }
+});
+
+(function($) {
+    var element = $('.sidebar_fixed'),
+    originalY = element.offset().top;
+    var topMargin = 30;
+    $(window).on('scroll', function(event) {
+        if($(window).width()>975){ 
+            
+            var scrollTop = $(window).scrollTop();
+            var scrollBottom = $(window).scrollBottom();
+                if (scrollBottom > 370){
+                        element.stop(false, false).animate({
+                            top: scrollTop < originalY
+                            ? 0
+                            : scrollTop - originalY + topMargin
+                        }, 100);
+                }else{
+                    element.stop(false, false).animate({
+                        bottom:  originalY - scrollBottom + topMargin
+                    }, 100);
+                }
+            
+        }
+        else{
+                element.css("top",0);
+            }
+    });
+})(jQuery);

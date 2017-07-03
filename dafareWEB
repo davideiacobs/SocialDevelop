@@ -24,7 +24,11 @@
 
 -TASK CHIUSO NON ACCETTA ULTERIORI COLLABORATORI  **FATTO**
 
+-aggiungere "invita collaboratori" da i miei progetti e da project_detail se lo sta visitando il coordinatore **FATTO**
+
 ------------------------------------------------------------------------------------
+
+-CAMBIAMENTI PERNA
 
 --GESTIONE ECCEZIONI!
 
@@ -44,14 +48,9 @@
 
 -organizzare menù   (PERNA)
 
--paginazione (forse)
+-PAGINAZIONE!!!!
 
 -utilizzare pagina di ricerca del template? ******DOMANDA*******
-
-
-
-
-
 
 -task chiuso in automatico se ci sono tutti i collaboratori oppure se lo chiude il coordinatore
 
@@ -60,8 +59,6 @@
 -Un task chiuso non accetta ulteriori collaboratori, a meno che
 questi non vengano aggiunti direttamente dal coordinatore.
 
--aggiungere "invita collaboratori" da i miei progetti e da project_detail se lo sta visitando il coordinatore **FATTO VEDERE SE VA BENE**
-
 -opzionalmente, è possibile associare uno skill anche a più di
 un tipo
 
@@ -69,5 +66,5 @@ un tipo
 
 -aggiungere developerCollaborators a developerProfile
 
--si possono rimuovere i collaboratori anche se il task è chiuso
+-si possono rimuovere i collaboratori anche
 

@@ -131,3 +131,8 @@ and open the template in the editor.
 }
 
 .req-select{border-color: red !important;}
+
+.sidebar_fixed{
+    position: fixed;
+    top: 0;
+}

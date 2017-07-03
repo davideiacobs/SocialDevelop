@@ -517,7 +517,7 @@ ul.gt_event_meta li>a{display: inline-block;color: #999999;margin-left: 5px;}
 	  ==============================================================
 */
 .home_background_login{background-color: white;}
-.home_background{background-image: url(extra-images/code3.jpg);background-size: cover;background-position: center;background-repeat: no-repeat;}
+.home_background{background-image: url(extra-images/code3.jpg);height : 700px;background-size: cover;background-position: center;background-repeat: no-repeat;}
 .gt_sub_banner_bg{background-image: url(extra-images/back1.jpg);background-size: cover;background-position: center;background-repeat: no-repeat;}
 .gt_sub_banner_bg:before{content: "";position: absolute;top: 0px;left: 0px;width: 100%;height: 100%;background-color: rgba(0,0,0,0.8);}
 .gt_sub_banner_hdg{text-align: center;padding: 80px 0px;}
