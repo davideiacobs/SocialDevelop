@@ -28,7 +28,8 @@ public class CollaborationRequestImpl implements CollaborationRequest{
     private int collaborator_key;
     private GregorianCalendar date;
     private int state; //0 in attesa, 1 confermata, 2 completata
-    private int sender; //0 se inviata da coordinator, 1 se inviata da collaborator
+    private int sender_key; //chiave sender
+    private Developer sender;
     private int vote;
     
     protected SocialDevelopDataLayer ownerdatalayer;
@@ -39,7 +40,8 @@ public class CollaborationRequestImpl implements CollaborationRequest{
         coordinator = null;
         coordinator_key = 0;
         task = null;
-        sender = 0;
+        sender_key = 0;
+        sender = null;
         task_key = 0;
         collaborator = null;
         collaborator_key = 0;
@@ -50,20 +52,30 @@ public class CollaborationRequestImpl implements CollaborationRequest{
     }
     
     @Override
-    public int getSender(){
-        return sender;
+    public int getSender_key(){
+        return sender_key;
     }
     
     @Override 
-    public void setSender(int sender){
-        if(sender > 1){
-            this.sender = 1;
-        }else{
-            this.sender = 0;
-        }
-           
+    public void setSender_key(int sender_key){
+        this.sender_key = sender_key;
         this.dirty = true;
     }
+    
+    @Override
+    public Developer getSender() throws DataLayerException{
+        if(sender == null){
+            sender = ownerdatalayer.getDeveloper(sender_key);
+        }
+        return sender;
+    }
+    
+    @Override
+    public void setSender(Developer sender){
+        this.sender = sender;
+        this.sender_key = sender.getKey();
+    }
+    
     
     @Override
     public Developer getCoordinatorRequest() throws DataLayerException{
@@ -95,7 +107,7 @@ public class CollaborationRequestImpl implements CollaborationRequest{
     @Override
     public Task getTaskByRequest() throws DataLayerException {
         if(task == null){
-            task = ownerdatalayer.getTaskByRequest(this.collaborator_key, this.coordinator_key);
+            task = ownerdatalayer.getTask(task_key);
         }
         return task;
     }
@@ -196,7 +208,7 @@ public class CollaborationRequestImpl implements CollaborationRequest{
         collaborator_key = request.getCollaboratorKey();
         vote = request.getVote();
         date = request.getDate();
-        sender = request.getSender();
+        sender_key = request.getSender_key();
         state = request.getState();
         coordinator_key = request.getCoordinatorKey();
         this.dirty = true;

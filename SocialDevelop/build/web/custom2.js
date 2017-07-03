@@ -521,6 +521,79 @@ function send_request(task_key, dev_key, param){
 
 
 
+$(".accept-proposal").on("click",function(){
+   
+   var task = $(this).parent().parent().parent();
+   var task_key = task.attr("id"); 
+   var sender = $(this).parent().parent().attr("id");
+   $.ajax({
+        datatype: 'text/plain',
+        type: 'post',
+        url: 'acceptProposal',
+        data: {
+            task_key:task_key,
+            sender:sender,
+            state:1
+        },
+        success: function (response) {
+           
+                var res = $.trim(response);
+                if(res=="Accepted"){
+                    task.children("#"+sender).children(".icons").empty();
+                    task.children("#"+sender).children(".icons").append("<i class='fa fa-check-circle-o' style='font-size:40px'></i>");
+                }
+ 
+        },
+        error: function(){
+            
+        }
+    });
+    
+    
+});
+
+$(".decline-proposal").on("click",function(){
+   
+   var task = $(this).parent().parent().parent();
+   var task_key = task.attr("id"); 
+   var sender = $(this).parent().parent().attr("id");
+   $.ajax({
+        datatype: 'text/plain',
+        type: 'post',
+        url: 'declineProposal',
+        data: {
+            task_key:task_key,
+            sender:sender,
+            state:-1,
+        },
+        success: function (response) {
+           
+                var res = $.trim(response);
+                if(res=="Accepted"){
+                    task.children("#"+sender).children(".icons").empty();
+                    task.children("#"+sender).children(".icons").append("<i class='fa fa-times-circle-o' style='font-size:40px'></i>");
+                }
+ 
+        },
+        error: function(){
+            
+        }
+    });
+    
+    
+});
+
+
+
+
+
+
+
+
+
+
+
+
 /********BACKOFFICE********/
 
 $("#submit-skill").on("click",function (){

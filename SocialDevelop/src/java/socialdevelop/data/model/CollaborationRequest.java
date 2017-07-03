@@ -22,9 +22,13 @@ public interface CollaborationRequest {
     
     void setCoordinatorKey(int coordinator_key);
     
-    int getSender();
+    int getSender_key();
     
-    void setSender(int sender);
+    void setSender_key(int sender_key);
+    
+    Developer getSender() throws DataLayerException;
+    
+    void setSender(Developer sender);
     
     Developer getCollaboratorRequest() throws DataLayerException;
     

@@ -97,7 +97,7 @@ public interface SocialDevelopDataLayer extends DataLayer {
 
     List<CollaborationRequest> getProposalsByCollaborator(int collaborator_key) throws DataLayerException;
     
-    List<CollaborationRequest> getOffertsByDeveloper(int developer_key) throws DataLayerException;
+    List<Task> getOffertsByDeveloper(int developer_key) throws DataLayerException;
     
     //richiede la lista delle skills del developer e cerca i task aperti che richiedono
     //tali skills

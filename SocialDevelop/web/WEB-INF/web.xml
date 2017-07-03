@@ -250,6 +250,22 @@
         <servlet-name>sendRequest</servlet-name>
         <servlet-class>socialdevelop.controller.sendRequest</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PannelloDelleProposte</servlet-name>
+        <servlet-class>socialdevelop.controller.PannelloDelleProposte</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>acceptProposal</servlet-name>
+        <servlet-class>socialdevelop.controller.acceptProposal</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>declineProposal</servlet-name>
+        <servlet-class>socialdevelop.controller.declineProposal</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PannelloDelleOfferte</servlet-name>
+        <servlet-class>socialdevelop.controller.PannelloDelleOfferte</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>provaDB2</servlet-name>
         <url-pattern>/provaDB2</url-pattern>
@@ -437,6 +453,22 @@
     <servlet-mapping>
         <servlet-name>sendRequest</servlet-name>
         <url-pattern>/sendRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PannelloDelleProposte</servlet-name>
+        <url-pattern>/PannelloDelleProposte</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>acceptProposal</servlet-name>
+        <url-pattern>/acceptProposal</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>declineProposal</servlet-name>
+        <url-pattern>/declineProposal</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PannelloDelleOfferte</servlet-name>
+        <url-pattern>/PannelloDelleOfferte</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

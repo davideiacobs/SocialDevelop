@@ -172,7 +172,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             
             //seleziona proposte che un collaboratore riceve da un coordinatore(pannello delle proposte)
             sProposalsByCollaboratorID = connection.prepareStatement("SELECT thd.* FROM task_has_developer AS thd WHERE "
-                                        + "thd.developer_ID=? AND thd.sender=0");  
+                                        + "thd.developer_ID=? AND thd.sender<>? AND state=0");  
             
             //seleziona proposte che un coordinatore riceve da un collaboratore(pannello delle domande)
             
@@ -183,10 +183,13 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                     + "INNER JOIN task AS t ON (p.ID=t.project_ID))INNER JOIN task_has_developer AS thd ON (thd.task_ID=t.ID)) WHERE thd.sender=1");    
             
             //seleziona le skill per le quali il developer risulta idoneo a partecipare(pannello delle offerte)
-            sOffertsByDeveloperID = connection.prepareStatement("SELECT thd.*,p.coordinator_ID FROM (SELECT task_has_developer.* FROM task_has_developer WHERE\n" +
+            /*sOffertsByDeveloperID = connection.prepareStatement("SELECT thd.*,p.coordinator_ID FROM (SELECT task_has_developer.* FROM task_has_developer WHERE\n" +
                             "task_has_developer.developer_ID=? AND task_has_developer.sender=0) AS thd INNER JOIN task AS t ON (thd.task_ID = t.ID) INNER JOIN project AS p\n" +
                             "ON(p.ID=t.project_ID)");
-                        
+            */
+
+            sOffertsByDeveloperID = connection.prepareStatement("SELECT task_ID FROM (SELECT skill_ID FROM skill_has_developer WHERE developer_ID=?) AS shd "
+                                    + "INNER JOIN task_has_skill AS ths ON (shd.skill_ID = ths.skill_ID) WHERE task_ID NOT IN (SELECT task_ID FROM task_has_developer WHERE developer_ID=?)");
             iProject = connection.prepareStatement("INSERT INTO project (name,description,coordinator_ID) VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
             uProject = connection.prepareStatement("UPDATE project SET name=?,description=?,coordinator_ID=? WHERE ID=?");
             dProject = connection.prepareStatement("DELETE FROM project WHERE ID=?");
@@ -225,8 +228,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             
             iTaskHasDeveloper = connection.prepareStatement("INSERT INTO task_has_developer (task_ID,developer_ID,state,date,vote,sender) VALUES(?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
             dTaskHasDeveloper= connection.prepareStatement("DELETE FROM task_has_developer WHERE task_id=? AND developer_ID=?");
-            uTaskHasDeveloper = connection.prepareStatement("UPDATE task_has_developer SET state=?,vote=? WHERE task_ID=? AND developer_ID=?");
-            sTaskHasDeveloper = connection.prepareStatement("SELECT * FROM task_has_developer WHERE task_ID=? AND developer_ID=?" );
+            uTaskHasDeveloper = connection.prepareStatement("UPDATE task_has_developer SET state=?,vote=? WHERE task_ID=? AND developer_ID=? AND sender=?");
+            sTaskHasDeveloper = connection.prepareStatement("SELECT * FROM task_has_developer WHERE task_ID=? AND developer_ID=? AND sender=?" );
             
             
             iSkillHasDeveloper = connection.prepareStatement("INSERT INTO skill_has_developer (skill_ID,developer_ID,level) VALUES(?,?,?)",Statement.RETURN_GENERATED_KEYS);
@@ -439,7 +442,6 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     public CollaborationRequest createCollaborationRequest(ResultSet rs) throws DataLayerException {
         try {
             CollaborationRequestImpl a = new CollaborationRequestImpl(this);
-            //a.setKey(rs.getInt("ID"));
             GregorianCalendar requestDate = new GregorianCalendar();
             java.sql.Date date;
             date = rs.getDate("date");
@@ -447,9 +449,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             a.setDate(requestDate);
             a.setState(rs.getInt("state"));
             a.setCollaboratorKey(rs.getInt("developer_ID"));
-            a.setCoordinatorKey(rs.getInt("coordinator_ID"));
             a.setTaskKey(rs.getInt(("task_ID")));
-            a.setSender(rs.getInt("sender"));
+            a.setSender_key(rs.getInt("sender"));
             return a;
         } catch (SQLException ex) {
             throw new DataLayerException("Unable to create collaborationRequest object form ResultSet", ex);
@@ -1101,13 +1102,14 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
      }
      
     @Override
-    public List<CollaborationRequest> getOffertsByDeveloper(int developer_key) throws DataLayerException{
-        List<CollaborationRequest> result= new ArrayList();
+    public List<Task> getOffertsByDeveloper(int developer_key) throws DataLayerException{
+        List<Task> result= new ArrayList();
         try{
             sOffertsByDeveloperID.setInt(1,developer_key);
+            sOffertsByDeveloperID.setInt(2,developer_key);
             try(ResultSet rs = sOffertsByDeveloperID.executeQuery()){
                 while(rs.next()){
-                    result.add(createCollaborationRequest(rs));
+                    result.add(getTask(rs.getInt("task_ID")));
                 }
 
             }
@@ -1176,6 +1178,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         List<CollaborationRequest> result = new ArrayList();
         try{
             sProposalsByCollaboratorID.setInt(1, collaborator_key);
+            sProposalsByCollaboratorID.setInt(2, collaborator_key);
             try(ResultSet rs = sProposalsByCollaboratorID.executeQuery()){
                 while(rs.next()){
                     result.add((CollaborationRequest) getCollaborationRequest(collaborator_key, rs.getInt("task_ID")));
@@ -1672,6 +1675,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         try {
             sTaskHasDeveloper.setInt(1, task_ID);
             sTaskHasDeveloper.setInt(2, developer_ID);
+            sTaskHasDeveloper.setInt(3, sender);
             try(ResultSet rs = sTaskHasDeveloper.executeQuery()){
                 if(!rs.next()){
                     try {
@@ -1719,6 +1723,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                             uTaskHasDeveloper.setInt(2, vote);
                             uTaskHasDeveloper.setInt(3, task_ID);
                             uTaskHasDeveloper.setInt(4, developer_ID);
+                            uTaskHasDeveloper.setInt(5, sender);
                             if(uTaskHasDeveloper.executeUpdate()==1){
                                 return vote;
                             }
