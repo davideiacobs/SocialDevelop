@@ -96,7 +96,8 @@
                 </#list>
                 <div class="gt_pagination_outer_wrap">
               <ul>
-                  <#list page..1 as i>
+         
+                  <#list 1..page as i>
                     <#if i gte 1>
                     <#if selected?number == i ><li class="active"><a  href="FindDeveloper?n=${i}">${i}</a></li><#else><li><a href="FindDeveloper?n=${i}">${i}</a></li></#if>
                     </#if>

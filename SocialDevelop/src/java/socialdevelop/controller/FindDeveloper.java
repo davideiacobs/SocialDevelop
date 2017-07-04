@@ -9,6 +9,7 @@ import it.univaq.f4i.iw.framework.data.DataLayerException;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.IOException;
+import static java.lang.Math.ceil;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,17 +39,21 @@ public class FindDeveloper extends SocialDevelopBaseController {
         SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
         int skilluser = Integer.parseInt(request.getParameter("skill"));
         int level = Integer.parseInt(request.getParameter("level"));
-        int n = ((Integer.parseInt(request.getParameter("n")))-1)*12;
+        int n = ((Integer.parseInt(request.getParameter("n")))-1)*6;
+        double pagesize = ((double) datalayer.getDevelopersBySkill(skilluser, level).size()/6);
+        request.setAttribute("page",pagesize);
         Map<Developer,Integer> devdl = datalayer.getDevelopersBySkillLimit(skilluser,level,n);
         if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
                 request.setAttribute("logout", "Logout");
                 Developer currentUser = datalayer.getDeveloper((int) s.getAttribute("userid"));
                 if(devdl.keySet().contains(currentUser)){
-            devdl.remove(currentUser);
-        }
+                    devdl.remove(currentUser);
+                    pagesize = pagesize-1;
+                }
             }
-        int pagesize = (datalayer.getDevelopersBySkill(skilluser,level).size())/12; 
-        request.setAttribute("page",pagesize);
+       
+        //double pagesize = ceil((double)(datalayer.getDevelopersBySkill(skilluser,level).size())/6);
+        
         request.setAttribute("selected",request.getParameter("n"));
         List <Developer> dev = new ArrayList<Developer>(devdl.keySet());
             if (dev.size() != 0) {

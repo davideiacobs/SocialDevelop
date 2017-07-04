@@ -107,7 +107,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             
             sProjects = connection.prepareStatement("SELECT ID FROM project");
             
-            sProjectsLimit = connection.prepareStatement("SELECT ID FROM project LIMIT ?,12");
+            sProjectsLimit = connection.prepareStatement("SELECT ID FROM project LIMIT ?,6");
             
             sRequestByID = connection.prepareStatement("SELECT thd.*,p.coordinator_ID FROM (SELECT task_has_developer.* FROM task_has_developer WHERE developer_ID=? AND task_ID=?)AS thd \n" +
                             "INNER JOIN task AS t ON (t.ID=thd.task_ID) INNER JOIN project AS p ON (t.project_ID=p.ID)");
@@ -150,7 +150,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             
             sDeveloperBySkillWithLevelLimit = connection.prepareStatement("SELECT developer.*, skill_has_developer.level FROM developer INNER JOIN "
                                 + "skill_has_developer ON (developer.ID = skill_has_developer.developer_ID)"
-                                            + "WHERE skill_has_developer.skill_ID=? AND skill_has_developer.level>=? LIMIT ?,12");
+                                            + "WHERE skill_has_developer.skill_ID=? AND skill_has_developer.level>=? LIMIT ?,6");
             
             sDeveloperBySkill = connection.prepareStatement("SELECT developer.*, skill_has_developer.level FROM developer INNER JOIN skill_has_developer "
                                             + "ON(developer.ID = skill_has_developer.developer_ID) WHERE skill_has_developer.skill_ID=?");
@@ -194,7 +194,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             */
 
             sOffertsByDeveloperID = connection.prepareStatement("SELECT task_ID FROM (SELECT skill_ID FROM skill_has_developer WHERE developer_ID=?) AS shd "
-                                    + "INNER JOIN task_has_skill AS ths ON (shd.skill_ID = ths.skill_ID) WHERE task_ID NOT IN (SELECT task_ID FROM task_has_developer WHERE developer_ID=?)");
+                                    + "INNER JOIN task_has_skill AS ths ON (shd.skill_ID = ths.skill_ID) WHERE task_ID NOT IN (SELECT task_ID FROM task_has_developer WHERE developer_ID=?) GROUP BY task_ID");
             iProject = connection.prepareStatement("INSERT INTO project (name,description,coordinator_ID) VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
             uProject = connection.prepareStatement("UPDATE project SET name=?,description=?,coordinator_ID=? WHERE ID=?");
             dProject = connection.prepareStatement("DELETE FROM project WHERE ID=?");

@@ -9,6 +9,7 @@ import it.univaq.f4i.iw.framework.data.DataLayerException;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.IOException;
+import static java.lang.Math.ceil;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
@@ -40,9 +41,9 @@ public class List_project extends SocialDevelopBaseController {
         if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
                 request.setAttribute("logout", "Logout");
             }
-        int n = ((Integer.parseInt(request.getParameter("n")))-1)*12;
+        int n = ((Integer.parseInt(request.getParameter("n")))-1)*6;
         SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
-        int pagesize = (datalayer.getProjects().size())/12;
+        double pagesize = ceil((double)(datalayer.getProjects().size())/6);
         request.setAttribute("page",pagesize);
         request.setAttribute("selected",request.getParameter("n"));
         List<Project> pro = datalayer.getProjectsLimit(n);

@@ -42,7 +42,12 @@
 
 -correggere developerCollaborators **FATTO**
 
+-pannello delle offerte visualizza più volte lo stesso task **FATTO**
+
 ------------------------------------------------------------------------------------
+-paginazione DeveloperForTask
+
+-rimuovere effetti over pannelli ecc
 
 -CAMBIAMENTI PERNA
 
@@ -73,5 +78,11 @@ un tipo
 -inserimento progetto senza task (o aggiornamento con task vuoti) NON DEVE ESSERE PERMESSO! (c'è il controllo lato server, ma si deve bloccare il submit)
 
 -rimuovere datalayer dai set attribute e controllare loggato profilo developer
+
+-rimuovere provaDB 
+
+-cambiare scritte alle eccezioni
+
+-meno 1 non deve farlo se num collab =0
 
 

@@ -81,18 +81,7 @@
             </form>
         </div>
     </div>
-    <!-- SORT BY (SE CE LO VOGLIAMO METTE) -->
-    <div class="col-md-3 col-sm-4">
-        <div class="gt_sort_wrap">
-            <span>Sort by:</span>
-            <label class="fa fa-angle-down"></label>
-            <select>
-                <option>Popular</option>
-                <option>Number</option>
-                <option>Booo</option>
-            </select>
-        </div>
-    </div>
+    
     <!-- END SORT BY -->
 </div>
 
@@ -137,7 +126,7 @@
     </#if>
     <div class="gt_pagination_outer_wrap">
               <ul>
-                  <#list page..1 as i>
+                  <#list 1..page as i>
                     <#if i gte 1>
                     <#if selected?number == i ><li class="active"><a  href="List_project?n=${i}">${i}</a></li><#else><li><a href="List_project?n=${i}">${i}</a></li></#if>
                     </#if>
