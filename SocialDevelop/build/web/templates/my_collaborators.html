@@ -14,17 +14,17 @@
             </div>
         </div>
         <div class="gt-usser-account-list">
-             <ul>
-                  <li class="active"><a href="MyProfile"><i class="fa fa-user-circle-o gt-color"></i>My Profile</a></li>
-                  <li><a href="MyProjects"><i class="fa fa-code gt-color"></i>My Projects</a></li>
-                  <li><a href="MyCollaborators"><i class="fa fa-users gt-color"></i>My Collaborators</a></li>
-                  <li><a href="MyCollaborations"><i class="fa fa-handshake-o gt-color"></i>My Collaborations</a></li>
-                  <li><a href="MySkills"><i class="icon-book gt-color"></i>My Skills</a></li>
-                  <li><a href="UpdateProfile"><i class="fa fa-upload"></i>Update Profile</a></li>
-                  <li><a href="CreateProject"> <i class="fa fa-plus-circle"></i>New Project</a></li>
-                </ul>
-                <a href="Logout" class="gt-logout"><i class="icon-arrows-2 gt-color"></i>Logout</a>
-              </div>
+            <ul>
+                <li><a href="MyProfile"><i class="fa fa-user-circle-o gt-color"></i>My Profile</a></li>
+                <li><a href="MyProjects"><i class="fa fa-code gt-color"></i>My Projects</a></li>
+                <li class="active"><a href="MyCollaborators"><i class="fa fa-users gt-color"></i>My Collaborators</a></li>
+                <li><a href="MyCollaborations"><i class="fa fa-handshake-o gt-color"></i>My Collaborations</a></li>
+                <li><a href="MySkills"><i class="icon-book gt-color"></i>My Skills</a></li>
+                <li><a href="UpdateProfile"><i class="fa fa-upload"></i>Update Profile</a></li>
+                <li><a href="CreateProject"> <i class="fa fa-plus-circle"></i>New Project</a></li>
+            </ul>
+            <a href="Logout" class="gt-logout"><i class="icon-arrows-2 gt-color"></i>Logout</a>
+        </div>
     </div>
 </div>
 <!-- Dashboard Side Bar Wrap End -->
@@ -40,21 +40,21 @@
             </div>
             <div class="lista-skill gt_aside_category content-none">
                 <ul class="gt_aside_fea_course">
-                   
+                    
                     <#list tasks[project?index] as project_task>
                     <!--TASK-->
                     <li class="li-task">
                         <h3>${project_task.name}</h3>
                         <!-- COLLABORATORI TASK-->
-                         <#if project_task.collaborators?has_content>
+                        <#if project_task.collaborators?has_content>
                         <#list project_task.collaborators as task_collaborator,value>
                     <li id="${task_collaborator.key}"> 
                         <div class="col-md-9">
                             <figure>
                                 <#if task_collaborator.fotoFile??>
-                                    <img src="extra-images/${task_collaborator.fotoFile.localFile}" alt="">
+                                <img src="extra-images/${task_collaborator.fotoFile.localFile}" alt="">
                                 <#else>
-                                    <img src="extra-images/foto_profilo_default.png" alt="">
+                                <img src="extra-images/foto_profilo_default.png" alt="">
                                 </#if>
                             </figure>
                             <div class="aside_fea_course_des">
@@ -64,43 +64,43 @@
                         <#assign current = .now>
                         <!-- se il task non è terminato permette di rimuovere i collaboratori-->
                         <#if current?date < project_task.getEndDate().time?date>
-                            <div class="col-md-3">
-                                <span>
-                                    <button onclick="remove_collaborator(${task_collaborator.key},${project_task.key})" type="button" id="rm-coll-btn" class="btn btn-default btn-sm remove-coll-button rm-coll-btn">
-                                        <span class="glyphicon glyphicon-remove"></span>
-                                    </button>   
-                                </span>
-                            </div>
+                        <div class="col-md-3">
+                            <span>
+                                <button onclick="remove_collaborator(${task_collaborator.key},${project_task.key})" type="button" id="rm-coll-btn" class="btn btn-default btn-sm remove-coll-button rm-coll-btn">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>   
+                            </span>
+                        </div>
                         <!-- se il task è chiuso permette di rilasciare il voto ai collaboratori che non lo hanno-->
                         <#else>
-                            
-                            <#if value==-1>
-                                
-                                <span> 
-                                    <label>Release Vote</label>
-                                    <div class="select-style div_vote">
-                                        <select class="form-control vote">
-                                            <option selected value="">Select a Vote</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                        </select>
-                                    </div>
-                                    <div class="add-vote-btn">
-                                        <button onclick="release_vote(${task_collaborator.key},${project_task.key},this)" type="button"  class="btn btn-default ">
-                                            Vote
-                                        </button>  
-                                    </div> 
-                                </span>
-                                
-                            <!-- se i collaboratori hanno già il voto lo visualizzo-->
-                            <#else>
-                                <span> 
-                                    <h4> ${value}<i class="fa fa-star"></i></h4>
-                                </span>
-                            </#if>
+                        
+                        <#if value==-1>
+                        
+                        <span> 
+                            <label>Release Vote</label>
+                            <div class="select-style div_vote">
+                                <select class="form-control vote">
+                                    <option selected value="">Select a Vote</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                            <div class="add-vote-btn">
+                                <button onclick="release_vote(${task_collaborator.key},${project_task.key},this)" type="button"  class="btn btn-default ">
+                                    Vote
+                                </button>  
+                            </div> 
+                        </span>
+                        
+                        <!-- se i collaboratori hanno già il voto lo visualizzo-->
+                        <#else>
+                        <span> 
+                            <h4> ${value}<i class="fa fa-star"></i></h4>
+                        </span>
+                        </#if>
                         </#if>
                     </li>
                     

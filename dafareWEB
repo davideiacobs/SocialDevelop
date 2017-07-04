@@ -55,11 +55,15 @@ questi non vengano aggiunti direttamente dal coordinatore. **FATTO**
 
 -rimuovere provaDB **FATTO**
 
+-value select box  **FATTO**
+
+-rimuovere effetti over pannelli ecc **FATTO**
+
+-organizzare menù **FATTO** 
+
 ------------------------------------------------------------------------------------
 
 -paginazione DeveloperForTask (no)
-
--rimuovere effetti over pannelli ecc (perna)
 
 -CAMBIAMENTI PERNA
 
@@ -70,8 +74,6 @@ questi non vengano aggiunti direttamente dal coordinatore. **FATTO**
 -backend login e dove posizionare la pagina (perna)
 
 -email
-
--organizzare menù   
 
 -task chiuso in automatico se ci sono tutti i collaboratori oppure se lo chiude il coordinatore (perna)
 
@@ -85,6 +87,7 @@ un tipo
 -rimuovere datalayer dai set attribute e controllare loggato profilo developer
 
 -cambiare scritte alle eccezioni
+
 
 
 

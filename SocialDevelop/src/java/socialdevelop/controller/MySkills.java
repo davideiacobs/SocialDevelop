@@ -70,7 +70,6 @@ public class MySkills extends SocialDevelopBaseController {
                 request.setAttribute("mail", dev.getMail());
                 request.setAttribute("userid", dev.getKey());
                 request.setAttribute("logout", "Logout");
-                request.setAttribute("datalayer", datalayer);
                 getImg(request, response, dev);
                 
                  List<Skill> skills = datalayer.getSkillsParentList();

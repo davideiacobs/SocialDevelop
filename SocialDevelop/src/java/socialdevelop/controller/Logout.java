@@ -30,8 +30,6 @@ public class Logout extends SocialDevelopBaseController {
             SecurityLayer.disposeSession(request);
             request.setAttribute("slider", "hidden");
             request.setAttribute("home_background", "home_background");
-            //TemplateResult res = new TemplateResult(getServletContext());
-            //res.activate("index.html",request, response);
             response.sendRedirect("index");
     }
     

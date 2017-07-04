@@ -6,6 +6,7 @@
 package socialdevelop.controller;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
+import it.univaq.f4i.iw.framework.result.FailureResult;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.IOException;
@@ -16,7 +17,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -30,11 +30,17 @@ import socialdevelop.data.model.SocialDevelopDataLayer;
  * @author manuel
  */
 public class SearchDeveloper extends SocialDevelopBaseController {
-
+    
+    private void action_error(HttpServletRequest request, HttpServletResponse response) {
+        if (request.getAttribute("exception") != null) {
+            (new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request, response);
+        }
+    }
+    
     private void action_searchDeveloper(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
         HttpSession s = request.getSession(true);
-        request.setAttribute("page_title", "Sviluppatori");
-        request.setAttribute("page_subtitle", "Sviluppatori");
+        request.setAttribute("page_title", "Search Developers");
+        request.setAttribute("page_subtitle", "who are you looking for?");
         if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
                 request.setAttribute("logout", "Logout");
             }
@@ -91,7 +97,7 @@ public class SearchDeveloper extends SocialDevelopBaseController {
             }
             else{
                 request.setAttribute("listasviluppatori", dev);
-                request.setAttribute("nontrovato","Nessun sviluppatore trovato");
+                request.setAttribute("nontrovato","There are no developers with these parameters in the system..");
             }
             List<Skill> skills = datalayer.getSkillsParentList();
         //ora recuperiamo per ognuna di esse le skills figlie
@@ -115,15 +121,20 @@ public class SearchDeveloper extends SocialDevelopBaseController {
         try {
             action_searchDeveloper(request, response);
         } catch (IOException ex) {
-            Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("exception", ex);
+            action_error(request, response);
         } catch (TemplateManagerException ex) {
-            Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("exception", ex);
+            action_error(request, response);
+        } catch (SQLException ex) {
+            request.setAttribute("exception", ex);
+            action_error(request, response);
+        } catch (NamingException ex) {
+            request.setAttribute("exception", ex);
+            action_error(request, response);
         } catch (DataLayerException ex) {
-             Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (SQLException ex) {
-              Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
-          } catch (NamingException ex) {
-              Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
-          }
+            request.setAttribute("exception", ex);
+            action_error(request, response);        }
+        
     }
 }

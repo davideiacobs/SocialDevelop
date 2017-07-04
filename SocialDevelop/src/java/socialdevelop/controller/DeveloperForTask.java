@@ -6,6 +6,7 @@
 package socialdevelop.controller;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
+import it.univaq.f4i.iw.framework.result.FailureResult;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.IOException;
@@ -14,8 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -33,11 +32,16 @@ import socialdevelop.data.model.Task;
  */
 public class DeveloperForTask extends SocialDevelopBaseController {
     
+     private void action_error(HttpServletRequest request, HttpServletResponse response) {
+        if (request.getAttribute("exception") != null) {
+            (new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request, response);
+        }
+    }
     
     private void action_developTask(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
         HttpSession s = request.getSession(true);
-        request.setAttribute("page_title", "Sviluppatori ");
-        request.setAttribute("page_subtitle", "Sviluppatori Suggeriti");
+        request.setAttribute("page_title", "Suggested Developers");
+        request.setAttribute("page_subtitle", "find your collaborators!");
         if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
             String u = (String) s.getAttribute("previous_url");
             request.setAttribute("logout", "Logout");
@@ -124,15 +128,20 @@ public class DeveloperForTask extends SocialDevelopBaseController {
         try {
             action_developTask(request, response);
         } catch (IOException ex) {
-            Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("exception", ex);
+            action_error(request, response);
         } catch (TemplateManagerException ex) {
-            Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (DataLayerException ex) {
-            Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("exception", ex);
+            action_error(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("exception", ex);
+            action_error(request, response);
         } catch (NamingException ex) {
-            Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("exception", ex);
+            action_error(request, response);
+        } catch (DataLayerException ex) {
+            request.setAttribute("exception", ex);
+            action_error(request, response);      
         }
     }
     

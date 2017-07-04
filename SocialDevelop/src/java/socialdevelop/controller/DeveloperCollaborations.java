@@ -70,9 +70,7 @@ public class DeveloperCollaborations extends SocialDevelopBaseController {
                 request.setAttribute("age", now.get(Calendar.YEAR) - dev.getBirthDate().get(Calendar.YEAR));
                 request.setAttribute("bio", dev.getBiography());
                 request.setAttribute("mail", dev.getMail());
-                request.setAttribute("logout", "Logout");
                 request.setAttribute("id", dev_key);
-                request.setAttribute("datalayer", datalayer);
                 getImg(request, response, dev);
                 
                 Map<Task, Integer> tasks = datalayer.getCurrentTasksByDeveloper(dev.getKey());
@@ -91,8 +89,7 @@ public class DeveloperCollaborations extends SocialDevelopBaseController {
                 List<Developer> coordinatorsEnded = new ArrayList();
                 //recupero progetto e coordinatore
                 for(Map.Entry<Task, Integer> entryEnded : tasksEnded.entrySet()){
-                    //Type type2 = datalayer.getType(entryEnded.getKey().getType_key());
-                    //entryEnded.getKey().setType(type2);
+                   
                     Project pEnded = datalayer.getProjectByTask(entryEnded.getKey().getKey());
                     Developer cEnded = datalayer.getDeveloper(pEnded.getCoordinatorKey());
                     entryEnded.getKey().setProject(pEnded);
@@ -100,14 +97,16 @@ public class DeveloperCollaborations extends SocialDevelopBaseController {
                 }
                 datalayer.destroy();
                 HttpSession s = request.getSession(true);
-                if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
+                 if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {  
                     request.setAttribute("logout", "Logout");
-                }  
+                }else{
+                    request.setAttribute("MyProfile", "hidden");
+                }   
                 request.setAttribute("tasksList", tasks);
                 request.setAttribute("coordinators", coordinators);
                 request.setAttribute("tasksListEnded", tasksEnded);
                 request.setAttribute("coordinatorsEnded", coordinatorsEnded);
-                request.setAttribute("page_title", "Developer");
+                request.setAttribute("page_title", "Collaborations Of");
                 request.setAttribute("page_subtitle", dev.getUsername());
                 request.setAttribute("notmy", "notmy");
                 TemplateResult res = new TemplateResult(getServletContext());

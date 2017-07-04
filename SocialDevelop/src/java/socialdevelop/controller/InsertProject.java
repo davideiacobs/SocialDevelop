@@ -6,6 +6,7 @@
 package socialdevelop.controller;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
+import it.univaq.f4i.iw.framework.result.FailureResult;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -26,7 +27,13 @@ import socialdevelop.data.model.SocialDevelopDataLayer;
  * @author manuel
  */
 public class InsertProject extends SocialDevelopBaseController {
-
+    
+      private void action_error(HttpServletRequest request, HttpServletResponse response) {
+        if (request.getAttribute("exception") != null) {
+            (new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request, response);
+        }
+    } 
+    
      private void action_insertproject(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
         //recuperare coordinatore dalla sessione!
         HttpSession s = request.getSession(true);   
@@ -108,16 +115,21 @@ public class InsertProject extends SocialDevelopBaseController {
             throws ServletException {
         try {
             action_insertproject(request, response);
-        } catch (IOException ex) { 
-             Logger.getLogger(InsertProject.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (TemplateManagerException ex) {
-             Logger.getLogger(InsertProject.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (SQLException ex) {
-             Logger.getLogger(InsertProject.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (NamingException ex) {
-             Logger.getLogger(InsertProject.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (DataLayerException ex) {
-             Logger.getLogger(InsertProject.class.getName()).log(Level.SEVERE, null, ex);
-         } 
+        } catch (IOException ex) {
+           request.setAttribute("exception", ex);
+            action_error(request, response);  
+        } catch (DataLayerException ex) {
+           request.setAttribute("exception", ex);
+            action_error(request, response);  
+        } catch (SQLException ex) {
+           request.setAttribute("exception", ex);
+            action_error(request, response);  
+        } catch (NamingException ex) {
+           request.setAttribute("exception", ex);
+            action_error(request, response);  
+        } catch (TemplateManagerException ex) {
+            request.setAttribute("excpetion", ex);
+            action_error(request, response);
+        }
     }
 }

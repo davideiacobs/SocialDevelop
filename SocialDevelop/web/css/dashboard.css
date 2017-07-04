@@ -63,7 +63,7 @@ h4.gt_d_title{text-transform: uppercase;font-weight: 600;margin: 0px 0px 15px;fo
 .gt_d_fav_courses ul.gt_d_fav_hdg li:first-child{width: 85%;}
 .gt_d_fav_courses ul.gt_d_fav_hdg li:last-child{width: 15%;text-align: center;}
  .gt_d_fav_courses ul.gt-shortlisted li{padding: 15px; position: relative;float: left;width: 100%;}
- .gt_d_fav_courses ul.gt-shortlisted li:nth-child(odd){background-color: #f5f5f5;}
+ /*.gt_d_fav_courses ul.gt-shortlisted li:nth-child(odd){background-color: #f5f5f5;}*/
  .gt_d_fav_courses ul.gt-shortlisted li .gt-media{float: left; margin-right: 30px; width:118px;}
  .gt_d_fav_courses ul.gt-shortlisted li .gt-media img{ width:100%;}
  .gt_d_fav_courses ul.gt-shortlisted li .gt-text{overflow: hidden; padding-right:15%;}

@@ -8,7 +8,6 @@ package socialdevelop.controller;
 import it.univaq.f4i.iw.framework.data.DataLayerException;
 import it.univaq.f4i.iw.framework.result.FailureResult;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
-import it.univaq.f4i.iw.framework.result.TemplateResult;
 import it.univaq.f4i.iw.framework.security.SecurityLayer;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -49,16 +48,15 @@ public class Login extends SocialDevelopBaseController {
                     }
                     Developer dev = datalayer.getDeveloper(dev_key);
                     datalayer.destroy();
-
+                    
+                    String act_url = request.getRequestURI();
+                    s.setAttribute("previous_url", act_url);
+                    
                     if(dev!=null){
                         if(dev.getPwd().equals(pwd)){
                             SecurityLayer.createSession(request, dev.getUsername(), dev_key);
-                            request.setAttribute("username", dev.getUsername());
-                            request.setAttribute("logout", "Logout");
-                            request.setAttribute("page_title", dev.getUsername()+", ");
-                            request.setAttribute("page_subtitle", "Welcome back in SocialDevelop!");
-                            TemplateResult res = new TemplateResult(getServletContext());
-                            res.activate(null,request, response);
+                            
+                            response.sendRedirect("List_project?n=1");
                         } else {
                             //password errata
                             s.setAttribute("problem", "login_pwd");
@@ -77,8 +75,7 @@ public class Login extends SocialDevelopBaseController {
             }else{
                 response.sendRedirect("index");
             }
-            String act_url = request.getRequestURI();
-            s.setAttribute("previous_url", act_url);
+           
             
     }
     

@@ -55,7 +55,6 @@ public class sendRequest extends SocialDevelopBaseController {
                 response.setContentType("text/plain");
                 response.setCharacterEncoding("UTF-8");
                 PrintWriter out = response.getWriter();
-
                 try {
                     out.println("Your request has been sended!");
                 }finally {

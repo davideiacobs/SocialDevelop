@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package socialdevelop.controller;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
@@ -44,42 +44,49 @@ public class DeveloperProjects extends SocialDevelopBaseController {
     private void getImg(HttpServletRequest request, HttpServletResponse response, Developer dev) throws IOException, SQLException, DataLayerException, NamingException {
         StreamResult result = new StreamResult(getServletContext());
         
-         SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
-         if(dev.getFoto() != 0){
+        SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
+        if(dev.getFoto() != 0){
             Files foto_profilo = datalayer.getFile(dev.getFoto());
             request.setAttribute("foto_profilo", "extra-images/" + foto_profilo.getLocalFile());
-         }else{
-            request.setAttribute("foto_profilo", "extra-images/foto_profilo_default.png");             
-         }
+        }else{
+            request.setAttribute("foto_profilo", "extra-images/foto_profilo_default.png");
+        }
         
     }
     
     
     
     private void action_devprojects(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
-            SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer)request.getAttribute("datalayer");
-            int dev_key = Integer.parseInt(request.getParameter("n"));
-            Developer dev = datalayer.getDeveloper(dev_key);
-            if(dev!=null){
-                request.setAttribute("username", dev.getUsername());
-                request.setAttribute("fullname", dev.getName()+" "+dev.getSurname());
-                long currentTime = System.currentTimeMillis();
-                Calendar now = Calendar.getInstance();
-                now.setTimeInMillis(currentTime);
-                //Get difference between years
-                request.setAttribute("age", now.get(Calendar.YEAR) - dev.getBirthDate().get(Calendar.YEAR));
-                request.setAttribute("bio", dev.getBiography());
-                request.setAttribute("mail", dev.getMail());
-                request.setAttribute("page_title", "Developer");
-                request.setAttribute("page_subtitle", dev.getUsername());
-                request.setAttribute("notmy", "notmy");
-                request.setAttribute("id", dev_key);
-                getImg(request, response, dev);
-                
-                //recupero progetti gestiti dall'utente (progetti dei quali è il coordinatore)
-                
-                List<Project> projects = datalayer.getProjectsByCoordinator(dev.getKey());
-                if(projects.size()!=0){
+        SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer)request.getAttribute("datalayer");
+        int dev_key = Integer.parseInt(request.getParameter("n"));
+        HttpSession s = request.getSession(true);
+        if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
+            request.setAttribute("logout", "Logout");
+        }else{
+            request.setAttribute("MyProfile", "hidden");
+        }
+        Developer dev = datalayer.getDeveloper(dev_key);
+        if(dev!=null){
+            
+            request.setAttribute("username", dev.getUsername());
+            request.setAttribute("fullname", dev.getName()+" "+dev.getSurname());
+            long currentTime = System.currentTimeMillis();
+            Calendar now = Calendar.getInstance();
+            now.setTimeInMillis(currentTime);
+            //Get difference between years
+            request.setAttribute("age", now.get(Calendar.YEAR) - dev.getBirthDate().get(Calendar.YEAR));
+            request.setAttribute("bio", dev.getBiography());
+            request.setAttribute("mail", dev.getMail());
+            request.setAttribute("page_title", "Projects of");
+            request.setAttribute("page_subtitle", dev.getUsername());
+            request.setAttribute("notmy", "notmy");
+            request.setAttribute("id", dev_key);
+            getImg(request, response, dev);
+            
+            //recupero progetti gestiti dall'utente (progetti dei quali è il coordinatore)
+            
+            List<Project> projects = datalayer.getProjectsByCoordinator(dev.getKey());
+            if(projects.size()!=0){
                 Date startdate[] = new Date[projects.size()];
                 Date enddate[] = new Date[projects.size()];
                 int ncollaboratori[] = new int[projects.size()];
@@ -98,20 +105,17 @@ public class DeveloperProjects extends SocialDevelopBaseController {
                     enddate[c] = datalayer.getEndDateOfTaskByProject(progetto.getKey());
                     for (Task task : tasks){
                         if(!task.isOpen()){
-                            tasksEnded.add(task);     
+                            tasksEnded.add(task);
                         }
                         ncollaboratori[c]+=task.getNumCollaborators();
-                    
+                        
                     }
-                    perc[c] = Math.round(((double)tasksEnded.size() / (double)tasks.size())*100) ;  
+                    perc[c] = Math.round(((double)tasksEnded.size() / (double)tasks.size())*100) ;
                     c++;
                 }
                 
                 datalayer.destroy();
-                HttpSession s = request.getSession(true);
-                if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
-                    request.setAttribute("logout", "Logout");
-                }  
+                
                 
                 request.setAttribute("perc", perc);
                 request.setAttribute("projects", projects);
@@ -119,16 +123,16 @@ public class DeveloperProjects extends SocialDevelopBaseController {
                 request.setAttribute("startdate", startdate);
                 request.setAttribute("enddate", enddate);
                 
-                }else{
-                    request.setAttribute("projects", projects);
-                }
-                TemplateResult res = new TemplateResult(getServletContext());
-                res.activate("my_projects.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare
-                
             }else{
-                 response.sendRedirect("index");
+                request.setAttribute("projects", projects);
             }
-           
+            TemplateResult res = new TemplateResult(getServletContext());
+            res.activate("my_projects.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare
+            
+        }else{
+            response.sendRedirect("index");
+        }
+        
     }
     
     
@@ -155,12 +159,12 @@ public class DeveloperProjects extends SocialDevelopBaseController {
             action_error(request, response);        }
         
     }
-
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-   
+    
     @Override
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+    
 }

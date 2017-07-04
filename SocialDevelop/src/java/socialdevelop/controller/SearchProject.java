@@ -6,14 +6,13 @@
 package socialdevelop.controller;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
+import it.univaq.f4i.iw.framework.result.FailureResult;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -30,11 +29,17 @@ import socialdevelop.data.model.Task;
  * @author manuel
  */
 public class SearchProject extends SocialDevelopBaseController {
+     
+     private void action_error(HttpServletRequest request, HttpServletResponse response) {
+        if (request.getAttribute("exception") != null) {
+            (new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request, response);
+        }
+    }
     
      private void action_searchProject(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
         HttpSession s = request.getSession(true);
-        request.setAttribute("page_title", "Progetti disponibili");
-        request.setAttribute("page_subtitle", "Progetti");
+        request.setAttribute("page_title", "Search Projects");
+        request.setAttribute("page_subtitle", "What project are you looking for?");
         if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
                 request.setAttribute("logout", "Logout");
             }
@@ -77,7 +82,7 @@ public class SearchProject extends SocialDevelopBaseController {
          }
          else{
              request.setAttribute("listaprogetti", pro);
-             request.setAttribute("nontrovato","Nessun progetto trovato");
+             request.setAttribute("nontrovato","There are no projects with these parameters in the system..");
          }
         TemplateResult res = new TemplateResult(getServletContext());
         res.activate("project_list.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare 
@@ -90,16 +95,21 @@ public class SearchProject extends SocialDevelopBaseController {
         try {
             action_searchProject(request, response);
         } catch (IOException ex) {
-            Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("exception", ex);
+            action_error(request, response);
         } catch (TemplateManagerException ex) {
-            Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("exception", ex);
+            action_error(request, response);
+        } catch (SQLException ex) {
+            request.setAttribute("exception", ex);
+            action_error(request, response);
+        } catch (NamingException ex) {
+            request.setAttribute("exception", ex);
+            action_error(request, response);
         } catch (DataLayerException ex) {
-             Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (SQLException ex) {
-              Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
-          } catch (NamingException ex) {
-              Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
-          }
+            request.setAttribute("exception", ex);
+            action_error(request, response);        }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -1,5 +1,5 @@
 <div class="row pl-border-b">
-        <div class="col-md-12">
+    <div class="col-md-12">
         <div class="get_started_services mb30 pl-no-border">
             <i class="fa fa-users"></i>
             <div class="get_icon_des">
@@ -63,52 +63,52 @@
         </div>
     </div>
 </div>
-
-        <div class="row projects">
-            <#if listasviluppatori?size != 0>
-                <#list listasviluppatori as sviluppatore>
-                <div class="col-md-4">
-                <div class="owl-item cloned"><div class="item">
-                  <div class="gt_courses_wrap default_width single-dev-pl">
+    
+<div class="row projects">
+    <#if listasviluppatori?size != 0>
+    <#list listasviluppatori as sviluppatore>
+    <div class="col-md-4">
+        <div class="owl-item cloned"><div class="item">
+                <div class="gt_courses_wrap default_width single-dev-pl">
                     <figure>
-                      <figcaption class="gt_course_img_des">
-                        <div class="gt_course_des_holder projectCoordinator">
-                          <div class="gt_course_author pl-img">
-                            <img src=${foto[sviluppatore?index]} alt="">
-                            <a class="dev-name" href="DeveloperProfile?n=${sviluppatore.key}">${sviluppatore.name?cap_first} ${sviluppatore.surname?cap_first}</i></a>
-                          </div>
-                        </div>
-                        <div class="gt_course_cat gt_bg_4">New</div>
-                      </figcaption>
+                        <figcaption class="gt_course_img_des">
+                            <div class="gt_course_des_holder projectCoordinator">
+                                <div class="gt_course_author pl-img">
+                                    <img src=${foto[sviluppatore?index]} alt="">
+                                    <a class="dev-name" href="DeveloperProfile?n=${sviluppatore.key}">${sviluppatore.name?cap_first} ${sviluppatore.surname?cap_first}</i></a>
+                                </div>
+                            </div>
+                            <div class="gt_course_cat gt_bg_4">New</div>
+                        </figcaption>
                     </figure>
                     <div class="gt_course_des projectDescription default_width">
-                      <h5><a href="DeveloperProfile?n=${sviluppatore.key}">${sviluppatore.username?cap_first}</a></h5>
-                      <p class="description_project2" >${sviluppatore.mail}</p>
+                        <h5><a href="DeveloperProfile?n=${sviluppatore.key}">${sviluppatore.username?cap_first}</a></h5>
+                        <p class="description_project2" >${sviluppatore.mail}</p>
                     </div>
                     <div class="gt_course_bottom default_width dev-prog">
-                    <h5>${progetto[sviluppatore?index]}<span><a href="DeveloperProjects?n=${sviluppatore.key}">Progetti</a></span></h5>
+                        <h5>${progetto[sviluppatore?index]}<span><a href="DeveloperProjects?n=${sviluppatore.key}">Progetti</a></span></h5>
                         <a href="DeveloperCollaborations?n=${sviluppatore.key}"><h5>${voto[sviluppatore?index]}<span>Voto</span></h5></a>
-
+                            
                     </div>
-                  </div>
-                </div></div>
                 </div>
-                </#list>
-                <div class="gt_pagination_outer_wrap">
-              <ul>
-         
-                  <#list 1..page as i>
-                    <#if i gte 1>
-                    <#if selected?number == i ><li class="active"><a  href="FindDeveloper?n=${i}">${i}</a></li><#else><li><a href="FindDeveloper?n=${i}">${i}</a></li></#if>
-                    </#if>
-                  </#list>
-              </ul>
-          </div>
-            <#else>
-                <h1>${nontrovato}</h1>
-        </div>
+            </div></div>
+    </div>
+    </#list>
+    <div class="gt_pagination_outer_wrap">
+        <ul>
+            
+            <#list 1..page as i>
+            <#if i gte 1>
+            <#if selected?number == i ><li class="active"><a  href="FindDeveloper?n=${i}">${i}</a></li><#else><li><a href="FindDeveloper?n=${i}">${i}</a></li></#if>
             </#if>
-            
-            
-            
-           
+            </#list>
+        </ul>
+    </div>
+    <#else>
+    <h1>${nontrovato}</h1>
+</div>
+</#if>
+    
+    
+    
+    

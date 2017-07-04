@@ -41,8 +41,8 @@ public class BackEndSkill extends SocialDevelopBaseController {
                 HttpSession s = request.getSession(true);
                 if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0){
                    
-                request.setAttribute("page_title", "SKILL BACKEND");
-                request.setAttribute("page_subtitle", "Manage the Skills");
+                request.setAttribute("page_title", "Skills (BACKEND)");
+                request.setAttribute("page_subtitle", "Manage Skills");
                 
                 List <Skill> skills = datalayer.getSkills();
                 request.setAttribute("skills",skills);

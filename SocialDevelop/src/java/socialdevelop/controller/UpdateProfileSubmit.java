@@ -98,7 +98,6 @@ public class UpdateProfileSubmit extends SocialDevelopBaseController {
                 dev.setBiography(bio);
                 datalayer.storeDeveloper(dev);
                 datalayer.destroy();
-                request.setAttribute("logout", "Logout");   
                 response.sendRedirect("MyProfile");
             }else{
                 response.sendRedirect("UpdateProfile");

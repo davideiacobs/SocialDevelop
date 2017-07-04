@@ -43,7 +43,7 @@ public class acceptProposal extends SocialDevelopBaseController {
             }
             int task_key = Integer.parseInt(request.getParameter("task_key"));
             int state = Integer.parseInt(request.getParameter("state"));
-
+            
             if(developer_key==0){
                 int sender_key = Integer.parseInt(request.getParameter("sender"));
                 datalayer.storeTaskHasDeveloper(task_key, user_key, state, -1, sender_key);
@@ -66,10 +66,10 @@ public class acceptProposal extends SocialDevelopBaseController {
             PrintWriter out = response.getWriter();
             
             try {
-                        out.println("Accepted");
-                    }finally {
-                        out.close();
-                    }
+                out.println("Accepted");
+            }finally {
+                out.close();
+            }
         }
         
     }

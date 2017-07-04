@@ -63,7 +63,7 @@
         </div>
     </div>
 </div>
-
+    
 <div class="gt_hdg_1 default_width pl-desc">
     <h3>Explore all the PROJECTS</h3>
     <p>Search a project by name or explore the list of projects below<br></p>
@@ -71,7 +71,7 @@
     <i class="icon-school"></i>
     <span class="gt_hdg_right"></span>
 </div>
-
+    
 <div class="row">
     <div class="col-md-9 col-sm-8">
         <div class="gt_course_search default_width">
@@ -81,10 +81,10 @@
             </form>
         </div>
     </div>
-    
+        
     <!-- END SORT BY -->
 </div>
-
+    
 <div class="row projects">
     <#if listaprogetti?size != 0>
     <#list listaprogetti as progetto>
@@ -121,15 +121,15 @@
     </div>
     </#list>
     <#else>
-    <h1>${nontrovato}</h1>
+    <h4>${nontrovato}</h4>
 </div>
-    </#if>
-    <div class="gt_pagination_outer_wrap">
-              <ul>
-                  <#list 1..page as i>
-                    <#if i gte 1>
-                    <#if selected?number == i ><li class="active"><a  href="List_project?n=${i}">${i}</a></li><#else><li><a href="List_project?n=${i}">${i}</a></li></#if>
-                    </#if>
-                  </#list>
-              </ul>
-          </div>
+</#if>
+<div class="gt_pagination_outer_wrap">
+    <ul>
+        <#list 1..page as i>
+        <#if i gte 1>
+        <#if selected?number == i ><li class="active"><a href="List_project?n=${i}">${i}</a></li><#else><li><a href="List_project?n=${i}">${i}</a></li></#if>
+        </#if>
+        </#list>
+    </ul>
+</div>

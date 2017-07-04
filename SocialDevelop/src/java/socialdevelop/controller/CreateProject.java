@@ -1,11 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package socialdevelop.controller;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
+import it.univaq.f4i.iw.framework.result.FailureResult;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.IOException;
@@ -27,15 +28,22 @@ import socialdevelop.data.model.Type;
  * @author manuel
  */
 public class CreateProject extends SocialDevelopBaseController {
-
-     private void action_createproject(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
+    
+    private void action_error(HttpServletRequest request, HttpServletResponse response) {
+        if (request.getAttribute("exception") != null) {
+            (new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request, response);
+        }
+    }
+    
+    
+    private void action_createproject(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
         HttpSession s = request.getSession(true);
-       
+        
         
         if(s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
             request.setAttribute("logout", "Logout");
-            request.setAttribute("page_title", "Crea Progetto");
-            request.setAttribute("page_subtitle", "Nuovo Progetto");
+            request.setAttribute("page_title", "New Project");
+            request.setAttribute("page_subtitle", "realize your ideas!");
             SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
             //recupero skills che non hanno figli
             List<Type> types = datalayer.getTypes();
@@ -43,7 +51,7 @@ public class CreateProject extends SocialDevelopBaseController {
                 request.setAttribute("types", types);
             }
             List<Skill> skills = datalayer.getSkillsParentList();
-
+            
             //ora recuperiamo per ognuna di esse le skills figlie
             if(skills!=null){
                 for(Skill skill : skills){
@@ -52,13 +60,13 @@ public class CreateProject extends SocialDevelopBaseController {
                         skill.setChild(child);
                     }
                 }
-            request.setAttribute("skills", skills);
+                request.setAttribute("skills", skills);
             }
             datalayer.destroy();
             String act_url = request.getRequestURI();
             s.setAttribute("previous_url", act_url);
             TemplateResult res = new TemplateResult(getServletContext());
-            res.activate("create_project.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare 
+            res.activate("create_project.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare
         }else{
             response.sendRedirect("index");
         }
@@ -70,16 +78,20 @@ public class CreateProject extends SocialDevelopBaseController {
             throws ServletException {
         try {
             action_createproject(request, response);
-        } catch (IOException ex) {
-            Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
+        }  catch (IOException ex) {
+            request.setAttribute("exception", ex);
+            action_error(request, response);
         } catch (TemplateManagerException ex) {
-            Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("exception", ex);
+            action_error(request, response);
         } catch (DataLayerException ex) {
-             Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (SQLException ex) {
-              Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
-          } catch (NamingException ex) {
-              Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
-          }
+            request.setAttribute("exception", ex);
+            action_error(request, response);
+        } catch (SQLException ex) {
+            request.setAttribute("exception", ex);
+            action_error(request, response);
+        } catch (NamingException ex) {
+            Logger.getLogger(CreateProject.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

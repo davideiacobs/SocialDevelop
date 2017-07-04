@@ -53,14 +53,14 @@
             <a href="#show-msg"><p>Show Messages</p></a>
         </div>
     </div>
-    
-    
+        
+        
     <div class="row">         <!--LIST OF TASKS-->  
         <div class="gt_hdg_1 default_width">
             <h3>List of tasks</h3>
             <span class="gt_hdg_left"></span>
-    <span class="gt_hdg_right"></span></div></div>
-        
+            <span class="gt_hdg_right"></span></div></div>
+                
     <#list tasks as task>
     <div class="row task-card"><a name="${task.key}"></a>
         <div class="">
@@ -102,7 +102,7 @@
                         </#list>
                     </ul>
                 </div>
-                
+                    
             </div>
         </div>
         <div class="row join-task">
@@ -113,7 +113,7 @@
                 <form action="DeveloperForTask" method="get">               
                     <input id="find_devs" type="submit" value="Find Developers"/>
                     <input type="text" class="hidden" name="n" value="${projectkey}">
-
+                        
                 </form>
             </div>
             <#else>
@@ -128,8 +128,8 @@
         </div>
     </div>
     </#list>
-    
-    
+        
+        
     <div class="gt_event_tab default_width msg-project"><a name="show-msg"></a>
         
         <div class="gt_event_inside_tab default_width">
@@ -161,7 +161,7 @@
                         </#if>
                         </#list>
                     </div> 
-                    
+                        
                     <#if userid??>
                     <div class="gt_post_comment_wrap gt_detail_hdg">
                         <h5>Post Your Ad</h5>

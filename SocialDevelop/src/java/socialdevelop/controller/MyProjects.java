@@ -73,7 +73,6 @@ public class MyProjects extends SocialDevelopBaseController {
                 request.setAttribute("bio", dev.getBiography());
                 request.setAttribute("mail", dev.getMail());
                 request.setAttribute("logout", "Logout");
-                request.setAttribute("datalayer", datalayer);
                 getImg(request, response, dev);
                 
                 //recupero progetti gestiti dall'utente (progetti dei quali è il coordinatore)

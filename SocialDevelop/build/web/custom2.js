@@ -9,13 +9,13 @@ $( "#submitsearch" ).click(function() {
 function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
-
+        
         reader.onload = function (e) {
             $('#img-profilo')
                     .attr('src', e.target.result);
-                    
+            
         };
-
+        
         reader.readAsDataURL(input.files[0]);
     }
 }
@@ -67,8 +67,8 @@ $(".add-skill-btn").on("click",function(){
     });
     
 });
- 
- 
+
+
 $(".add-skill-to-task-btn").on("click",function(){  
     //se non ci sono skill nella lista annulliamo il valore dell'input nascosto
     if( $('a.skill-name').length == 0){
@@ -81,7 +81,7 @@ $(".add-skill-to-task-btn").on("click",function(){
         var skill_level = skill.val()+":"+level;
         console.log(skill_level);
         var skill_text = skill.text();
-
+        
         if(skill_text.indexOf("-")>=0){
             skill_text = skill_text.split("-")[1];
         }
@@ -112,8 +112,8 @@ function remove_skill_from_task(param){
     var rm = $(param).parent().parent("li");
     rm.remove();
 }          
- 
- 
+
+
 function reset_popup(){
     $(".list-skill").empty();
     $(".add-task-form")[0].reset();
@@ -135,11 +135,13 @@ function remove_task(param){
 function reload_task(name,type,state,start,end,descr,coll,skills){
     $("#task_name").val(name);
     $(".req-list").removeClass("req-list");
-    $("#select-type option").each(function() {
-        if($(this).text() == type) {
-          $(this).attr('selected', 'selected');            
-        }                        
-      });
+    
+    $("#select-type option").filter(function() {
+        return this.text == type; 
+    }).attr('selected', true);
+    
+    
+    
     if(isOpen=="Open"){
         $("#isOpen").val(1);
     }else{
@@ -149,7 +151,7 @@ function reload_task(name,type,state,start,end,descr,coll,skills){
     $("#end_date").val(end);
     $("#task_descr").val(descr);
     $("#num_collaborators").val(coll);
-
+    
     var i=0;
     var skl = skills.split(";");
     for(i;i<skl.length-1;i++){
@@ -192,7 +194,6 @@ function update_task(param){
     var descr = $.trim($(param).siblings("p#descr").text().split(":")[1]);
     var coll = $.trim($(param).siblings("p#coll").text().split(":")[1]);
     var skills = $.trim($(param).siblings("p.skills").text().split(":")[1]);
-    //$(param).parent("div").parent("li").remove();
     updatedElement = $(param).parent("div").parent("li");
     $("a.add-task").trigger("click");
     document.location.href = $("a.add-task").attr("href");
@@ -229,7 +230,7 @@ function aggiungi_task(name,start,end,descr,ncoll, skill_level, tipo,isOpen){
     }
     
 }
-    
+
 $("#submit-task").on("click", function(){
     $("input").each(function(){
         $(this).removeClass("req"); 
@@ -312,17 +313,11 @@ $("#submit-project").on("click", function(){
         var coll = $.trim($(task).children().children("p#coll").text().split(":")[1]);
         var skills = $.trim($(task).children().children("p.skills").text().split(":")[1]);
         if(input_tasks==""){
-                $("#tasks").val(name+"#"+start+"#"+end+"#"+descr+"#"+coll+"#"+skills+"#"+tipo+"#"+isOpen+"@");
-            }else{
-                $("#tasks").val(input_tasks+name+"#"+start+"#"+end+"#"+descr+"#"+coll+"#"+skills+"#"+tipo+"#"+isOpen+"@");
-            }
-        /*}else{
-            if(input_tasks==""){
-                $("#tasks").val(name+"#"+start+"#"+end+"#"+descr+"#"+coll+"#"+skills+"#"+tipo+"#"+isOpen+"@");
-            }else{
-                $("#tasks").val(input_tasks+name+"#"+start+"#"+end+"#"+descr+"#"+coll+"#"+skills+"#"+tipo+"#"+isOpen+"@");
-            }
-        }*/
+            $("#tasks").val(name+"#"+start+"#"+end+"#"+descr+"#"+coll+"#"+skills+"#"+tipo+"#"+isOpen+"@");
+        }else{
+            $("#tasks").val(input_tasks+name+"#"+start+"#"+end+"#"+descr+"#"+coll+"#"+skills+"#"+tipo+"#"+isOpen+"@");
+        }
+        
     }
     
 });
@@ -400,10 +395,10 @@ $(".findDeveloper").on("click",function(event){
             $(".levelSelect").focus();
         }
     }
-
+    
 });
 
-     
+
 function remove_collaborator(dev_key, task_key){
     console.log(dev_key);
     $.ajax({
@@ -418,7 +413,7 @@ function remove_collaborator(dev_key, task_key){
             if(response == 1){
                 $("li#"+dev_key).remove();
             }else{
-               
+                
             }
         }
     });
@@ -461,9 +456,9 @@ function join_task(task_key, param){
         },
         success: function (response) {
             console.log(response);
-                $(param).siblings(".join-msg").text(response);
-                $(param).siblings(".join-msg").removeClass("hidden");
-                setTimeout(function(){ $(param).siblings(".join-msg").addClass("hidden"); }, 5000);
+            $(param).siblings(".join-msg").text(response);
+            $(param).siblings(".join-msg").removeClass("hidden");
+            setTimeout(function(){ $(param).siblings(".join-msg").addClass("hidden"); }, 5000);
         },
         error: function (){
             $(param).siblings(".join-msg").text("Something went wrong...");
@@ -505,10 +500,10 @@ function send_request(task_key, dev_key, param){
             dev_key:dev_key
         },
         success: function (response) {
-                $(param).siblings(".join-msg").removeClass("hidden");
-                $(param).siblings(".join-msg").text(response);
-                setTimeout(function(){ $(param).siblings(".join-msg").addClass("hidden"); }, 5000);
- 
+            $(param).siblings(".join-msg").removeClass("hidden");
+            $(param).siblings(".join-msg").text(response);
+            setTimeout(function(){ $(param).siblings(".join-msg").addClass("hidden"); }, 5000);
+            
         },
         error: function(){
             $(param).siblings(".join-msg").removeClass("hidden");
@@ -531,13 +526,13 @@ function send_request_dft(task_key, dev_key, param){
             dev_key:dev_key
         },
         success: function (response) {
-                
-                var div = $(param).parent();
-                console.log(div);
-                $(param).remove();
-                div.append("<p class='center'>Your Request Has Been Sended!</p>");
-
- 
+            
+            var div = $(param).parent();
+            console.log(div);
+            $(param).remove();
+            div.append("<p class='center'>Your Request Has Been Sended!</p>");
+            
+            
         },
         error: function(){
             var button = $(param);
@@ -545,7 +540,7 @@ function send_request_dft(task_key, dev_key, param){
             $(param).remove();
             div.append("<p class='center'>Something went wrong...</p>");
             setTimeout(function(){ div.empty();
-            div.append(button);}, 5000);
+                div.append(button);}, 5000);
             
         }
     });
@@ -556,11 +551,11 @@ function send_request_dft(task_key, dev_key, param){
 
 
 $(".accept-proposal").on("click",function(){
-   
-   var task = $(this).parent().parent().parent();
-   var task_key = task.attr("id"); 
-   var sender = $(this).parent().parent().attr("id");
-   $.ajax({
+    
+    var task = $(this).parent().parent().parent();
+    var task_key = task.attr("id"); 
+    var sender = $(this).parent().parent().attr("id");
+    $.ajax({
         datatype: 'text/plain',
         type: 'post',
         url: 'acceptProposal',
@@ -570,13 +565,13 @@ $(".accept-proposal").on("click",function(){
             state:1
         },
         success: function (response) {
-           
-                var res = $.trim(response);
-                if(res=="Accepted"){
-                    task.children("#"+sender).children(".icons").empty();
-                    task.children("#"+sender).children(".icons").append("<i class='fa fa-check-circle-o' style='font-size:40px'></i>");
-                }
- 
+            
+            var res = $.trim(response);
+            if(res=="Accepted"){
+                task.children("#"+sender).children(".icons").empty();
+                task.children("#"+sender).children(".icons").append("<i class='fa fa-check-circle-o' style='font-size:40px'></i>");
+            }
+            
         },
         error: function(){
             
@@ -587,11 +582,11 @@ $(".accept-proposal").on("click",function(){
 });
 
 $(".decline-proposal").on("click",function(){
-   
-   var task = $(this).parent().parent().parent();
-   var task_key = task.attr("id"); 
-   var sender = $(this).parent().parent().attr("id");
-   $.ajax({
+    
+    var task = $(this).parent().parent().parent();
+    var task_key = task.attr("id"); 
+    var sender = $(this).parent().parent().attr("id");
+    $.ajax({
         datatype: 'text/plain',
         type: 'post',
         url: 'acceptProposal',
@@ -601,13 +596,13 @@ $(".decline-proposal").on("click",function(){
             state:-1,
         },
         success: function (response) {
-           
-                var res = $.trim(response);
-                if(res=="Accepted"){
-                    task.children("#"+sender).children(".icons").empty();
-                    task.children("#"+sender).children(".icons").append("<i class='fa fa-times-circle-o' style='font-size:40px'></i>");
-                }
- 
+            
+            var res = $.trim(response);
+            if(res=="Accepted"){
+                task.children("#"+sender).children(".icons").empty();
+                task.children("#"+sender).children(".icons").append("<i class='fa fa-times-circle-o' style='font-size:40px'></i>");
+            }
+            
         },
         error: function(){
             
@@ -620,11 +615,11 @@ $(".decline-proposal").on("click",function(){
 
 
 $(".accept-demend").on("click",function(){
-
-   var task = $(this).parent().parent().parent();
-   var task_key = task.attr("id"); 
-   var developer_key = $(this).parent().parent().parent().parent().attr("id");
-   $.ajax({
+    
+    var task = $(this).parent().parent().parent();
+    var task_key = task.attr("id"); 
+    var developer_key = $(this).parent().parent().parent().parent().attr("id");
+    $.ajax({
         datatype: 'text/plain',
         type: 'post',
         url: 'acceptProposal',
@@ -634,13 +629,13 @@ $(".accept-demend").on("click",function(){
             developer_key:developer_key,
         },
         success: function (response) {
-           
-                var res = $.trim(response);
-                if(res=="Accepted"){
-                    task.children(".icons").empty();
-                    task.children(".icons").append("<i class='fa fa-check-circle-o' style='font-size:40px'></i>");
-                }
- 
+            
+            var res = $.trim(response);
+            if(res=="Accepted"){
+                task.children(".icons").empty();
+                task.children(".icons").append("<i class='fa fa-check-circle-o' style='font-size:40px'></i>");
+            }
+            
         },
         error: function(){
             
@@ -651,10 +646,10 @@ $(".accept-demend").on("click",function(){
 });
 
 $(".decline-demend").on("click",function(){
-   
-   var task = $(this).parent().parent().parent();
-   var task_key = task.attr("id"); 
-   var developer_key = $(this).parent().parent().parent().parent().attr("id");
+    
+    var task = $(this).parent().parent().parent();
+    var task_key = task.attr("id"); 
+    var developer_key = $(this).parent().parent().parent().parent().attr("id");
     $.ajax({
         datatype: 'text/plain',
         type: 'post',
@@ -665,13 +660,13 @@ $(".decline-demend").on("click",function(){
             state:-1,
         },
         success: function (response) {
-           
-                var res = $.trim(response);
-                if(res=="Accepted"){
-                    task.children(".icons").empty();
-                    task.children(".icons").append("<i class='fa fa-times-circle-o' style='font-size:40px'></i>");
-                }
- 
+            
+            var res = $.trim(response);
+            if(res=="Accepted"){
+                task.children(".icons").empty();
+                task.children(".icons").append("<i class='fa fa-times-circle-o' style='font-size:40px'></i>");
+            }
+            
         },
         error: function(){
             
@@ -683,22 +678,16 @@ $(".decline-demend").on("click",function(){
 
 
 
-
-
-
-
-
-
 /********BACKOFFICE********/
 
 $("#submit-skill").on("click",function (){
     var val = $("#typeS").val();
     if (val == ""){
         $("#typeS_chosen").children("a").addClass("req-select");
-       
-            $("#err-ss").remove();
-            $("#skill-submit").append("<p id='err-ss' style='margin-top : 10px'>Please, choose the skill's type</p>");
-      
+        
+        $("#err-ss").remove();
+        $("#skill-submit").append("<p id='err-ss' style='margin-top : 10px'>Please, choose the skill's type</p>");
+        
     }else{
         $("#typeS_chosen").children("a").removeClass("req-select");
         $("#err-ss").remove();
@@ -718,8 +707,8 @@ $("#delete-skill").on("click",function (){
     if (val == ""){
         $("#rm_skill_b_chosen").children("a").addClass("req-select");
         
-            $("#err-sd").remove();
-            $("#skill-delete").append("<p id='err-sd' style='margin-top : 10px'>Please, choose the skill to delete</p>");
+        $("#err-sd").remove();
+        $("#skill-delete").append("<p id='err-sd' style='margin-top : 10px'>Please, choose the skill to delete</p>");
         
     }else{
         $("#rm_skill_b_chosen").children("a").removeClass("req-select");
@@ -740,8 +729,8 @@ $("#update-skill").on("click",function (){
     if (val == ""){
         $("#old_skill_chosen").children("a").addClass("req-select");
         
-            $("#err-su").remove();
-            $("#skill-update").append("<p id='err-su' style='margin-top : 10px'>Please, choose the skill to update</p>");
+        $("#err-su").remove();
+        $("#skill-update").append("<p id='err-su' style='margin-top : 10px'>Please, choose the skill to update</p>");
         
     }else{
         $("#old_skill_chosen").children("a").removeClass("req-select");
@@ -763,7 +752,7 @@ $("#form-update-skill").on("submit",function (e){
     var type = $("#new-type").val();
     if (new_name=="" && skill_father =="" && type ==""){
         
-       
+        
         e.preventDefault();
         
         $("#new-skill-name").addClass("req-select");
@@ -797,8 +786,8 @@ $("#update-type").on("click",function (){
     if (val == ""){
         $("#old_type_chosen").children("a").addClass("req-select");
         
-            $("#err-tu").remove();
-            $("#type-update").append("<p id='err-tu' style='margin-top : 10px'>Please, choose the type to update</p>");
+        $("#err-tu").remove();
+        $("#type-update").append("<p id='err-tu' style='margin-top : 10px'>Please, choose the type to update</p>");
         
     }else{
         $("#old_type_chosen").children("a").removeClass("req-select");
@@ -817,14 +806,14 @@ $("#old-type").on("change",function (){
 
 
 $.fn.scrollBottom = function() { 
-  return $(document).height() - this.scrollTop() - this.height(); 
+    return $(document).height() - this.scrollTop() - this.height(); 
 };
 
 $(window).on("resize",function (){
-     if($(window).width()<974){ 
-         console.log($(window).width());
-         $('.sidebar_fixed').css("top",0);
-     }
+    if($(window).width()<974){ 
+        console.log($(window).width());
+        $('.sidebar_fixed').css("top",0);
+    }
 });
 
 (function($) {
@@ -836,21 +825,21 @@ $(window).on("resize",function (){
             
             var scrollTop = $(window).scrollTop();
             var scrollBottom = $(window).scrollBottom();
-                if (scrollBottom > 370){
-                        element.stop(false, false).animate({
-                            top: scrollTop < originalY
-                            ? 0
-                            : scrollTop - originalY + topMargin
-                        }, 100);
-                }else{
-                    element.stop(false, false).animate({
-                        bottom:  originalY - scrollBottom + topMargin
-                    }, 100);
-                }
+            if (scrollBottom > 370){
+                element.stop(false, false).animate({
+                    top: scrollTop < originalY
+                    ? 0
+                    : scrollTop - originalY + topMargin
+                }, 100);
+            }else{
+                element.stop(false, false).animate({
+                    bottom:  originalY - scrollBottom + topMargin
+                }, 100);
+            }
             
         }
         else{
-                element.css("top",0);
-            }
+            element.css("top",0);
+        }
     });
 })(jQuery);

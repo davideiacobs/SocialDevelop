@@ -12,7 +12,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 import socialdevelop.data.model.Type;
 
@@ -38,8 +37,8 @@ public class BackEndType extends SocialDevelopBaseController {
                 if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0){
                  
 
-                request.setAttribute("page_title", "TYPE BACKEND");
-                request.setAttribute("page_subtitle", "Manage the Types");
+                request.setAttribute("page_title", "Types (BACKEND)");
+                request.setAttribute("page_subtitle", "Manage Types");
                 
                 List <Type> types = datalayer.getTypes();
                 request.setAttribute("types",types);

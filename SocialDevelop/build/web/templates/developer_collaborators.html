@@ -14,13 +14,13 @@
             </div>
         </div>
         <div class="gt-usser-account-list">
-             <ul>
-                 <li ><a href="DeveloperProfile?n=${id}"><i class="fa fa-user-circle-o gt-color"></i>Profile</a></li>
+            <ul>
+                <li ><a href="DeveloperProfile?n=${id}"><i class="fa fa-user-circle-o gt-color"></i>Profile</a></li>
                 <li><a href="DeveloperProjects?n=${id}"><i class="fa fa-code gt-color"></i>Projects</a></li>
                 <li class="active"><a href="DeveloperCollaborators?n=${id}"><i class="fa fa-users gt-color"></i>Collaborators</a></li>
                 <li><a href="DeveloperCollaborations?n=${id}"><i class="fa fa-handshake-o gt-color"></i>Collaborations</a></li>
                 <li><a href="DeveloperSkills?n=${id}"><i class="icon-book gt-color"></i>Skills</a></li>
-              </div>
+        </div>
     </div>
 </div>
 <!-- Dashboard Side Bar Wrap End -->
@@ -40,14 +40,14 @@
                     <#list collaborators as collaborator>
                     <!--TASK-->
                     
-                       
+                    
                     <li>
                         <div class="col-md-9">
                             <figure>
                                 <#if collaborator.fotoFile??>
-                                    <img src="extra-images/${collaborator.fotoFile.localFile}" alt="">
+                                <img src="extra-images/${collaborator.fotoFile.localFile}" alt="">
                                 <#else>
-                                    <img src="extra-images/foto_profilo_default.png" alt="">
+                                <img src="extra-images/foto_profilo_default.png" alt="">
                                 </#if>
                             </figure>
                             <div class="aside_fea_course_des">
@@ -61,8 +61,8 @@
                     </#list>
                     <#else> <li>You do not have any collaborators yet  </li> 
                     </#if>
-                 
-              
+                    
+                    
                 </ul>
             </div> 
         </div>   

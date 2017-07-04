@@ -13,7 +13,6 @@ import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
@@ -67,9 +66,8 @@ public class DeveloperSkills extends SocialDevelopBaseController {
                 request.setAttribute("age", now.get(Calendar.YEAR) - dev.getBirthDate().get(Calendar.YEAR));
                 request.setAttribute("bio", dev.getBiography());
                 request.setAttribute("mail", dev.getMail());
-                request.setAttribute("logout", "Logout");
+                
                 request.setAttribute("id", dev_key);
-                request.setAttribute("datalayer", datalayer);
                 getImg(request, response, dev);
                 
                 Map<Skill, Integer> skills_level = datalayer.getSkillsByDeveloper(dev_key);
@@ -77,10 +75,12 @@ public class DeveloperSkills extends SocialDevelopBaseController {
                 
                 datalayer.destroy();
                 HttpSession s = request.getSession(true);
-                if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
+                 if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {  
                     request.setAttribute("logout", "Logout");
-                }  
-                request.setAttribute("page_title", "Developer");
+                }else{
+                    request.setAttribute("MyProfile", "hidden");
+                }   
+                request.setAttribute("page_title", "Skills Of");
                 request.setAttribute("page_subtitle", dev.getUsername());
                 TemplateResult res = new TemplateResult(getServletContext());
                 res.activate("developer_skills.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare

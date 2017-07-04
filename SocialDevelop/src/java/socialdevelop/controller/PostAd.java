@@ -6,11 +6,10 @@
 package socialdevelop.controller;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
+import it.univaq.f4i.iw.framework.result.FailureResult;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +23,13 @@ import socialdevelop.data.model.SocialDevelopDataLayer;
  * @author manuel
  */
 public class PostAd extends SocialDevelopBaseController {
-
+    
+    private void action_error(HttpServletRequest request, HttpServletResponse response) {
+        if (request.getAttribute("exception") != null) {
+            (new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request, response);
+        }
+    }
+    
      private void action_postmsg(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
         HttpSession s = request.getSession(true);
         String u = (String) s.getAttribute("previous_url");
@@ -70,15 +75,20 @@ public class PostAd extends SocialDevelopBaseController {
         try {
             action_postmsg(request, response);
         } catch (IOException ex) {
-            Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("exception", ex);
+            action_error(request, response);
         } catch (TemplateManagerException ex) {
-            Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("exception", ex);
+            action_error(request, response);
+        } catch (SQLException ex) {
+            request.setAttribute("exception", ex);
+            action_error(request, response);
+        } catch (NamingException ex) {
+            request.setAttribute("exception", ex);
+            action_error(request, response);
         } catch (DataLayerException ex) {
-             Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (SQLException ex) {
-              Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
-          } catch (NamingException ex) {
-              Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
-          }
+            request.setAttribute("exception", ex);
+            action_error(request, response);        }
+        
     }
 }

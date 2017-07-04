@@ -6,6 +6,7 @@
 package socialdevelop.controller;
 
 import it.univaq.f4i.iw.framework.data.DataLayerException;
+import it.univaq.f4i.iw.framework.result.FailureResult;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.IOException;
@@ -14,8 +15,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -31,16 +30,22 @@ import socialdevelop.data.model.SocialDevelopDataLayer;
  * @author manuel
  */
 public class FindDeveloper extends SocialDevelopBaseController {
-
+    
+    private void action_error(HttpServletRequest request, HttpServletResponse response) {
+        if (request.getAttribute("exception") != null) {
+            (new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request, response);
+        }
+    } 
+   
    private void action_listproject(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
         HttpSession s = request.getSession(true);
-        request.setAttribute("page_title", "Sviluppatori");
-        request.setAttribute("page_subtitle", "Sviluppatori");
+        request.setAttribute("page_title", "Search Developer");
+        request.setAttribute("page_subtitle", "who are you looking for?");
         SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
         int skilluser = Integer.parseInt(request.getParameter("skill"));
         int level = Integer.parseInt(request.getParameter("level"));
         int n = ((Integer.parseInt(request.getParameter("n")))-1)*6;
-        double pagesize = ((double) datalayer.getDevelopersBySkill(skilluser, level).size()/6);
+        double pagesize = ceil((double) datalayer.getDevelopersBySkill(skilluser, level).size()/6);
         request.setAttribute("page",pagesize);
         Map<Developer,Integer> devdl = datalayer.getDevelopersBySkillLimit(skilluser,level,n);
         if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
@@ -102,7 +107,7 @@ public class FindDeveloper extends SocialDevelopBaseController {
             }
             else{
                 request.setAttribute("listasviluppatori", dev);
-                request.setAttribute("nontrovato","Nessun sviluppatore trovato");
+                request.setAttribute("nontrovato","There are no developers with these parameters in the system..");
             }
             List<Skill> skills = datalayer.getSkillsParentList();
         //ora recuperiamo per ognuna di esse le skills figlie
@@ -127,15 +132,21 @@ public class FindDeveloper extends SocialDevelopBaseController {
         try {
             action_listproject(request, response);
         } catch (IOException ex) {
-            Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (TemplateManagerException ex) {
-            Logger.getLogger(MakeLoginReg.class.getName()).log(Level.SEVERE, null, ex);
+           request.setAttribute("exception", ex);
+            action_error(request, response);  
         } catch (DataLayerException ex) {
-             Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (SQLException ex) {
-              Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
-          } catch (NamingException ex) {
-              Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
-          }
+           request.setAttribute("exception", ex);
+            action_error(request, response);  
+        } catch (SQLException ex) {
+           request.setAttribute("exception", ex);
+            action_error(request, response);  
+        } catch (NamingException ex) {
+           request.setAttribute("exception", ex);
+            action_error(request, response);  
+        } catch (TemplateManagerException ex) {
+            request.setAttribute("excpetion", ex);
+            action_error(request, response);
+        }
+        
     }
 }

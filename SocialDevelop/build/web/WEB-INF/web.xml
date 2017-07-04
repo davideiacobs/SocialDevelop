@@ -13,7 +13,7 @@
         <param-name>curriculums.directory</param-name>
         <param-value>C:\Users\david\Desktop\SocialDevelop\SocialDevelop\SocialDevelop\web\curriculums</param-value>
     </context-param>
-    <!- davide ubuntu 
+    <!- davide ubuntu --> 
     <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/extra-images</param-value>
@@ -22,7 +22,7 @@
         <param-name>curriculums.directory</param-name>
         <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/curriculums</param-value>
     </context-param>
-    Manuel -->
+    <!--Manuel 
     <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>/Users/manuel/Desktop/GIT/SocialDevelop/SocialDevelop/web/extra-images</param-value>
@@ -30,7 +30,7 @@
     <context-param>
         <param-name>curriculums.directory</param-name>
         <param-value>/Users/manuel/Desktop/GIT/SocialDevelop/SocialDevelop/web/curriculums</param-value>
-    </context-param>
+    </context-param>-->
     <!-- Luca 
     <context-param>
         <param-name>extra-images.directory</param-name>

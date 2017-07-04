@@ -71,12 +71,14 @@ public class DeveloperProfile extends SocialDevelopBaseController {
                 getImg(request, response, dev);
                 datalayer.destroy();
 
-                request.setAttribute("page_title", "Developer");
+                request.setAttribute("page_title", "Profile Of");
                 request.setAttribute("page_subtitle", dev.getUsername());
                 
                 HttpSession s = request.getSession(true);
                 if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {  
                     request.setAttribute("logout", "Logout");
+                }else{
+                    request.setAttribute("MyProfile", "hidden");
                 }   
                 TemplateResult res = new TemplateResult(getServletContext());
                 res.activate("developer_profile.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare

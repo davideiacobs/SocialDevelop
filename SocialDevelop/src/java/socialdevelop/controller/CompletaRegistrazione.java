@@ -8,7 +8,6 @@ package socialdevelop.controller;
 import it.univaq.f4i.iw.framework.data.DataLayerException;
 import it.univaq.f4i.iw.framework.result.FailureResult;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
-import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -100,12 +99,15 @@ public class CompletaRegistrazione extends SocialDevelopBaseController {
                 }
                 datalayer.storeDeveloper(dev);
                 datalayer.destroy();
+                /*request.setAttribute("page_title", "My Profile");
+                request.setAttribute("page_subtitle", "manage your data");
                 request.setAttribute("username", dev.getUsername());
                 request.setAttribute("pwd", dev.getPwd());
                 request.setAttribute("username", dev.getUsername());
-                request.setAttribute("logout", "Logout");
                 TemplateResult res = new TemplateResult(getServletContext());
-                res.activate("MyProfile",request, response);
+                res.activate("myprofile.html",request, response);*/
+                response.sendRedirect("List_project?n=1");
+                
             }else{
                 response.sendRedirect("UpdateProfile");
             }

@@ -13,14 +13,14 @@
                     </div>
                     <div class="col-md-3">
                         <label id="label-pop" class="type-err">Select type</label> 
-                            <div class="gt_explore_search gt_clas_search select-skill fullWidth">   
-                                <select id="select-type" class="form-control">
-                                    <option value="">Select Type</option>
-                                    <#list types as type>
-                                        <option value="${type.key}">${type.type}</option>
-                                    </#list>
-                                </select>
-                            </div>
+                        <div class="gt_explore_search gt_clas_search select-skill fullWidth">   
+                            <select id="select-type" class="form-control">
+                                <option value="">Select Type</option>
+                                <#list types as type>
+                                <option value="${type.key}">${type.type}</option>
+                                </#list>
+                            </select>
+                        </div>
                     </div>
                     <div class="col-md-4">
                         <div class="gt_contact_us_field nome-progetto">
@@ -54,7 +54,7 @@
                             <div class="gt_explore_search gt_clas_search select-skill">   
                                 <select id="select-skill" class="form-control">
                                     <option value="">Select Skill</option>
-                                        
+                                    
                                     <#list skills as skill>
                                     <option class="${skill.type_key} hidden" value="${skill.key}">${skill.name}</option>
                                     <#list skill.child as child>
@@ -89,15 +89,15 @@
                             </ul>
                         </div>
                     </div>
-                     <div class="col-md-3">
-                                <div class="gt_privacy_field default_width mb20">
-                                    <input class="c_ph" type="text" readonly="readonly" value="State">
-                                    <label class="switch">
-                                        <input type="checkbox" class="open-check"/>
-                                        <div class="slider round"><span>Open</span></div>
-                                    </label>
-                                    <input type="text" class="hidden isOpen" id="isOpen" name="isOpen" value="1"/>
-                                </div>
+                    <div class="col-md-3">
+                        <div class="gt_privacy_field default_width mb20">
+                            <input class="c_ph" type="text" readonly="readonly" value="State">
+                            <label class="switch">
+                                <input type="checkbox" class="open-check"/>
+                                <div class="slider round"><span>Open</span></div>
+                            </label>
+                            <input type="text" class="hidden isOpen" id="isOpen" name="isOpen" value="1"/>
+                        </div>
                     </div>
                     <div class="col-md-12">
                         <div class="gt_contact_us_field">
@@ -131,7 +131,7 @@
                 </div>
             </div>
         </div>
-         <div class="row">
+        <div class="row">
             <div class="col-md-12">
                 <div class="add-task-box">
                     <a class="add-task" href="#popup1">Add Task</a>
@@ -147,18 +147,18 @@
                 <#list tasks as task>
                 <li>
                     <div class='gt-text grade-padding'>
-                                <p id="name">Task: ${task.name?cap_first}</p>
-                                <p id="tipo">Type: ${tasks_types[task?index].type?cap_first}</p>
-                                <p id="isOpen">State: <#if task.open==true>Open<#else>Close</#if></p>
-                                <p id="start-end">Start Date: ${task.getStartDate().time?date?string("dd/MM/yyyy")} &nbsp; - &nbsp; End Date: ${task.getEndDate().time?date?string("dd/MM/yyyy")}</p>
-                                <p id="descr">Description: ${task.description?cap_first}</p>
-                                <p id="coll">Collaborators: ${task.numCollaborators}</p>
-                                <p id="append_here_${taks.name}" class="skills">Skills Richieste: <#list skills_level[task?index] as key,value> ${key.name}(${value}) ; </#list>
-                                </p>
-                                <input type="button" value="Update" id="update-skill" onclick="update_task(this)"/>
-                                <input type="button" value="Delete" id="delete-skill" onclick="remove_task(this)"/>
-                                <input type="button" value="Close Task" id="close-skill" onclick="close_task(this)"/>
-
+                        <p id="name">Task: ${task.name?cap_first}</p>
+                        <p id="tipo">Type: ${tasks_types[task?index].type?cap_first}</p>
+                        <p id="isOpen">State: <#if task.open==true>Open<#else>Close</#if></p>
+                        <p id="start-end">Start Date: ${task.getStartDate().time?date?string("dd/MM/yyyy")} &nbsp; - &nbsp; End Date: ${task.getEndDate().time?date?string("dd/MM/yyyy")}</p>
+                        <p id="descr">Description: ${task.description?cap_first}</p>
+                        <p id="coll">Collaborators: ${task.numCollaborators}</p>
+                        <p id="append_here_${taks.name}" class="skills">Skills Richieste: <#list skills_level[task?index] as key,value> ${key.name}(${value}) ; </#list>
+                        </p>
+                        <input type="button" value="Update" id="update-skill" onclick="update_task(this)"/>
+                        <input type="button" value="Delete" id="delete-skill" onclick="remove_task(this)"/>
+                        <input type="button" value="Close Task" id="close-skill" onclick="close_task(this)"/>
+                        
                     </div>
                 </li>
                 </#list>
@@ -166,7 +166,7 @@
         </div>
         <!-- fine lista task aggiunti -->
         <!--   AGGIUNGI TASK   -->
-       
+        
         <div class="col-md-12">
             <div class="gt_contact_us_field">
                 <input id="submit-project" type="submit" value="Save changes" name="submit_project">

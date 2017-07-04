@@ -58,8 +58,8 @@ public class MyCollaborations extends SocialDevelopBaseController {
     
     private void action_mycollaborations(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
             HttpSession s = request.getSession(true);
-            request.setAttribute("page_title", "My Profile");
-            request.setAttribute("page_subtitle", "manage your data");
+            request.setAttribute("page_title", "My Collaborations");
+            request.setAttribute("page_subtitle", "check you collaborations");
             if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
                 SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
                 Developer dev = datalayer.getDeveloper((int) s.getAttribute("userid"));

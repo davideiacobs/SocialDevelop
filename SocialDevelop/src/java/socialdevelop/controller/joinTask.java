@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
@@ -55,13 +54,13 @@ public class joinTask extends SocialDevelopBaseController {
             if(!flag){
                 //sender=1 --> inviata da collaboratore
                 //stato=0 --> in attesa
-                //voto=-1 --> non rilasciato             
+                //voto=-1 --> non rilasciato
                 datalayer.storeTaskHasDeveloper(task_id, user_key, 0, -1, user_key);
                 try {
                     out.println("Your request has been sended!");
                 }finally {
                     out.close();
-                }    
+                }
             }else{
                 datalayer.destroy();
                 try {
@@ -72,7 +71,7 @@ public class joinTask extends SocialDevelopBaseController {
             }
         }else{
             response.sendRedirect("index");
-        } 
+        }
     }
     
     

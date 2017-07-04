@@ -141,3 +141,16 @@ and open the template in the editor.
     display:inline-block;
     margin-left:50px;
 }
+
+.gt-shortlisted > li:hover > div > h5 > a {
+    color: black !important;
+}
+
+.gt-shortlisted > li:hover > div > p {
+    color: #333 !important;
+}
+
+
+.gt-shortlisted > li:hover > div > div > p {
+    color: #333 !important;
+}

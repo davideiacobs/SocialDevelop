@@ -68,7 +68,6 @@ public class MyProfile extends SocialDevelopBaseController {
                 request.setAttribute("curriculum", dev.getCurriculumString());
                 request.setAttribute("curriculum_pdf", dev.getCurriculumFile());
                 request.setAttribute("logout", "Logout");
-                request.setAttribute("datalayer", datalayer);
                 getImg(request, response, dev);
                 datalayer.destroy();
                 TemplateResult res = new TemplateResult(getServletContext());

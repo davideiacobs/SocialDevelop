@@ -52,8 +52,8 @@ public class UpdateProfile extends SocialDevelopBaseController {
     
     private void action_updprofile(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
             HttpSession s = request.getSession(true);
-            request.setAttribute("page_title", "My Profile");
-            request.setAttribute("page_subtitle", "manage your data");
+            request.setAttribute("page_title", "Update Profile");
+            request.setAttribute("page_subtitle", "update your profile");
             if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
                 SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer)request.getAttribute("datalayer");
                 Developer dev = datalayer.getDeveloper((int) s.getAttribute("userid"));
@@ -67,7 +67,6 @@ public class UpdateProfile extends SocialDevelopBaseController {
                 request.setAttribute("curriculum", dev.getCurriculumString());
                 request.setAttribute("curriculum_pdf", dev.getCurriculumFile());
                 request.setAttribute("logout", "Logout");
-                request.setAttribute("datalayer", datalayer);
                 getImg(request, response, dev);
                 String act_url = request.getRequestURI();
                 s.setAttribute("previous_url", act_url);
