@@ -40,8 +40,12 @@ public class List_project extends SocialDevelopBaseController {
         if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
                 request.setAttribute("logout", "Logout");
             }
+        int n = ((Integer.parseInt(request.getParameter("n")))-1)*12;
         SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
-        List<Project> pro = datalayer.getProjects();
+        int pagesize = (datalayer.getProjects().size())/12;
+        request.setAttribute("page",pagesize);
+        request.setAttribute("selected",request.getParameter("n"));
+        List<Project> pro = datalayer.getProjectsLimit(n);
             if (pro.size()!=0) {
                request.setAttribute("listaprogetti", pro);
                Files foto = null ;

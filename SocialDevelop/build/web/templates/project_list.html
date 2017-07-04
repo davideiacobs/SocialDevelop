@@ -1,86 +1,146 @@
-        <div class="row developerFinder">
-            <p class="titleDeveloper">Cerca Sviluppatore</p>
-            <form method="post" action="FindDeveloper">
-                <div class="col-md-4">
-                    <select class="skillSelect" name="skill">
-                            <option value="">Select Skill</option>
-                                <#list skills as skill>
-                                    <option class="${skill.type_key}" value="${skill.key}">${skill.name}</option>
-                                    <#list skill.child as child>
-                                        <option class="${skill.type_key}" value="${child.key}"> - ${child.name}</option>
-                                    </#list>
-                                </#list>
-                        </select>
-                </div>
-                <div class="col-md-4">
-                    <select id="select-level" class="levelSelect" name="level">
-                        <option value="">Level</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="1">6</option>
-                        <option value="2">7</option>
-                        <option value="3">8</option>
-                        <option value="4">9</option>
-                        <option value="5">10</option>
-                    </select>
-                </div>
-                <div class="col-md-4 ">
-                    <input type="submit" class="btn btn-default findDeveloper" value="Cerca Sviluppatore" >
-                </div>
-            </form>
-        </div>
-        <div class="row">
-            <div class="col-md-4 create_project">
-                <a href="CreateProject" type="button" class="btn btn-default" >Crea Progetto</a>
-            </div>
-            <div class="col-md-12">
-                <div class="gt_course_search default_width find_project">
-                    <form id="findByKeyWord" action="SearchProject" method="post">
-                        <input type="search" name="keyWord" placeholder="Cerca Progetto">
-                        <a id="submitsearch"><i class="fa fa-search"></i></a>
+<div class="row pl-border-b">
+    <div class="col-md-4 col-sm-6">
+        <div class="get_started_services mb30 pl-no-border">
+            <i class="fa fa-code"></i>
+            <div class="get_icon_des">
+                <h5>CREATE PROJECT</h5>
+                <p>Crea un progetto, scegli i task necessari per realizzarlo e cerca i collaboratori adatti.</p>
+                <div class="gt_contact_us_field pl-create-p">
+                    <form action="CreateProject">
+                        <button id="create-project" type="submit">New Project&nbsp;
+                            <i class="fa fa-plus-circle" style="font-size: 15px;"></i>
+                        </button>
                     </form>
                 </div>
             </div>
-
-        <div class="row projects">
-            <#if listaprogetti?size != 0>
-                <#list listaprogetti as progetto>
-                <div class="col-md-4 singleProject">
-                <div class="owl-item cloned"><div class="item">
-                  <div class="gt_courses_wrap default_width">
-                    <figure>
-                      <figcaption class="gt_course_img_des">
-                        <div class="gt_course_des_holder projectCoordinator">
-                          <div class="gt_course_author">
-                            <img src=${fotoCoordinatore[progetto?index]} alt="">
-                            <a href="DeveloperProfile?n=${progetto.coordinator.key}">${progetto.coordinator.name?cap_first}</i></a>
-                          </div>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-7 col-sm-12">
+        <div class="get_started_services mb30 pl-no-border">
+            <i class="fa fa-users"></i>
+            <div class="get_icon_des">
+                <h5>SEARCH DEVELOPER</h5>
+                <p>Cerca lo sviluppatore di cui hai bisogno, selezionando la skill e il livello necessario. Devono esse due righe cosi esce meglio.</p>
+                <form method="post" action="FindDeveloper?n=1">
+                    <div class="col-md-4">
+                        <div class="select-style-circle">
+                            <select class="skillSelect" name="skill">
+                                <option value="">Select Skill</option>
+                                <#list skills as skill>
+                                <option class="${skill.type_key}" value="${skill.key}">${skill.name}</option>
+                                <#list skill.child as child>
+                                <option class="${skill.type_key}" value="${child.key}"> - ${child.name}</option>
+                                </#list>
+                                </#list>
+                            </select>
                         </div>
-                        <div class="gt_course_cat gt_bg_4">New</div>
-                      </figcaption>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="select-style-circle">
+                            <select id="select-level" class="levelSelect" name="level">
+                                <option value="">Level</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="1">6</option>
+                                <option value="2">7</option>
+                                <option value="3">8</option>
+                                <option value="4">9</option>
+                                <option value="5">10</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="search-dev">
+                            <input type="submit" class="btn btn-default findDeveloper" value="Search" >
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="gt_hdg_1 default_width pl-desc">
+    <h3>Explore all the PROJECTS</h3>
+    <p>Search a project by name or explore the list of projects below<br></p>
+    <span class="gt_hdg_left"></span>
+    <i class="icon-school"></i>
+    <span class="gt_hdg_right"></span>
+</div>
+
+<div class="row">
+    <div class="col-md-9 col-sm-8">
+        <div class="gt_course_search default_width">
+            <form id="findByKeyWord" action="SearchProject" method="post">
+                <input type="search" name="keyWord" placeholder="Search a Project">
+                <a id="submitsearch"><i class="fa fa-search"></i></a>
+            </form>
+        </div>
+    </div>
+    <!-- SORT BY (SE CE LO VOGLIAMO METTE) -->
+    <div class="col-md-3 col-sm-4">
+        <div class="gt_sort_wrap">
+            <span>Sort by:</span>
+            <label class="fa fa-angle-down"></label>
+            <select>
+                <option>Popular</option>
+                <option>Number</option>
+                <option>Booo</option>
+            </select>
+        </div>
+    </div>
+    <!-- END SORT BY -->
+</div>
+
+<div class="row projects">
+    <#if listaprogetti?size != 0>
+    <#list listaprogetti as progetto>
+    <div class="col-md-4">
+        <div class="owl-item cloned">
+            <div class="item">
+                <div class="gt_courses_wrap default_width single-dev-pl">
+                    <figure>
+                        <figcaption class="gt_course_img_des">
+                            <div class="gt_course_des_holder projectCoordinator">
+                                <div class="gt_course_author pl-img">
+                                    <img src=${fotoCoordinatore[progetto?index]} alt="">
+                                    <a class="dev-name" href="DeveloperProfile?n=${progetto.coordinator.key}">${progetto.coordinator.name?cap_first}</i></a>
+                                </div>
+                            </div>
+                            <div class="gt_course_cat gt_bg_4">New</div>
+                        </figcaption>
                     </figure>
                     <div class="gt_course_des projectDescription default_width">
-                      <span> Data Inizio: ${inizioprogetto[progetto?index]} </span>
-                      <h5><a href="Project_Detail?n=${progetto.key}">${progetto.name?cap_first}</a></h5>
-                      <p class="description_project" >${progetto.description}</p>
+                        <span> Data Inizio: ${inizioprogetto[progetto?index]} </span>
+                        <h5><a href="Project_Detail?n=${progetto.key}">${progetto.name?cap_first}</a></h5>
+                        <p class="description_project" >${progetto.description}</p>
                     </div>
-                    <div class="gt_event_grid_des default_width piu_info">
-                        <a href="#">Pi&uacute; informazioni</a>
+                    <div class="gt_course_bottom default_width t-c-bc">
+                        <h5>${ntasks[progetto?index]}<span>Task</span></h5>
+                        <a><h5>${ncollaboratori[progetto?index]}<span>Collaborators</span></h5></a> 
                     </div>
-                    <div class="gt_course_bottom default_width">
-                      <h5>${ntasks[progetto?index]}<span>Task</span></h5>
-                   
-                        <a><h5>${ncollaboratori[progetto?index]}<span>Collaboratori</span></h5></a>
-                        
+                    <div class="get_icon_des view-more">
+                        <a href="#">View More <i class="fa fa-arrow-right"></i></a>
                     </div>
-                  </div>
-                </div></div>
                 </div>
-                </#list>
-            <#else>
-                <h1>${nontrovato}</h1>
+            </div>
         </div>
-            </#if>
+    </div>
+    </#list>
+    <#else>
+    <h1>${nontrovato}</h1>
+</div>
+    </#if>
+    <div class="gt_pagination_outer_wrap">
+              <ul>
+                  <#list page..1 as i>
+                    <#if i gte 1>
+                    <#if selected?number == i ><li class="active"><a  href="List_project?n=${i}">${i}</a></li><#else><li><a href="List_project?n=${i}">${i}</a></li></#if>
+                    </#if>
+                  </#list>
+              </ul>
+          </div>

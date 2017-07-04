@@ -35,22 +35,22 @@ public class FindDeveloper extends SocialDevelopBaseController {
         HttpSession s = request.getSession(true);
         request.setAttribute("page_title", "Sviluppatori");
         request.setAttribute("page_subtitle", "Sviluppatori");
-        if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
-                request.setAttribute("logout", "Logout");
-            }
         SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
         int skilluser = Integer.parseInt(request.getParameter("skill"));
         int level = Integer.parseInt(request.getParameter("level"));
-        Map<Developer,Integer> devdl = datalayer.getDevelopersBySkill(skilluser,level);
-        Developer currentUser = datalayer.getDeveloper((int) s.getAttribute("userid"));
-        if(devdl.keySet().contains(currentUser)){
+        int n = ((Integer.parseInt(request.getParameter("n")))-1)*12;
+        Map<Developer,Integer> devdl = datalayer.getDevelopersBySkillLimit(skilluser,level,n);
+        if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
+                request.setAttribute("logout", "Logout");
+                Developer currentUser = datalayer.getDeveloper((int) s.getAttribute("userid"));
+                if(devdl.keySet().contains(currentUser)){
             devdl.remove(currentUser);
         }
-        
-        
+            }
+        int pagesize = (datalayer.getDevelopersBySkill(skilluser,level).size())/12; 
+        request.setAttribute("page",pagesize);
+        request.setAttribute("selected",request.getParameter("n"));
         List <Developer> dev = new ArrayList<Developer>(devdl.keySet());
-        
-        
             if (dev.size() != 0) {
                request.setAttribute("listasviluppatori", dev);
                Files foto = null ;

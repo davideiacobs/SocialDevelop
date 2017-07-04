@@ -1643,7 +1643,7 @@ ul.gt_rating_start li a {display: inline-block;}
 
 /*
 	  ==============================================================
-		   crea-progeto
+		   crea-progetto
 	  ==============================================================
 */
 .nome-progetto>label{text-align: left; margin-left: 10px; margin-bottom: 10px;}
@@ -1704,7 +1704,48 @@ ul.gt_rating_start li a {display: inline-block;}
 .li-task{border-bottom: none !important;margin-bottom: 20px;margin-top: 20px;}
 .select-style {border: 1px solid #ccc;width: 150px;border-radius: 3px;overflow: hidden;background: #fafafa url("./images/select-icon.png") no-repeat 90% 50%;}
 .select-style select {padding: 5px 8px;width: 130%;border: none;box-shadow: none;background: transparent;background-image: none;-webkit-appearance: none;}
-.select-style select:focus {outline: none;}
+.select-style select:focus {outline: none;border-radius: 30px;}
 .li-task h3{text-transform: uppercase;font-size: 20px;font-weight: bold;}
 .mc-project-title{margin-bottom: 0px !important;}
 .add-vote-btn{margin-top: 5px;}
+/*
+	  ==============================================================
+		   DeveloperForTask
+	  ==============================================================
+*/
+.dev-for-task h2{font-size: 35px;text-transform: uppercase;font-weight: bold;}
+.dev-margin{margin-bottom: 110px;}
+.dev-for-task h6{margin-top: 20px;margin-left: 10px;}
+.single-dev-m{margin-bottom: 70px;}
+.dev-taskrow{margin-bottom: 90px;}
+.single-dev{box-shadow: 5px 5px 10px #dedede;}
+.single-dev:hover{box-shadow: 5px 5px 10px #31b8f5;}
+.invite-dev input[type="submit"]{width: 130px;margin: 0 auto;display: block;border-radius: 5px;color: #fff;text-transform: uppercase;padding: 10px 5px;border: 0px;font-weight: 700;background-color: #31b8f5;}
+.invite-dev input[type="submit"]:hover{background-color: black;}
+.dev-prog>h5>span>a{color: #999999 !important;}
+.dev-prog>h5>span>a:hover{color: #31b8f5 !important;}
+.dev-prog>a>h5>span:hover{color: #31b8f5 !important;}
+.dev-name:hover{color: black !important;}
+/*
+	  ==============================================================
+		  project_list
+	  ==============================================================
+*/
+.select-style-circle {margin-bottom:15px;border: 1px solid #ccc;border-radius: 30px;overflow: hidden;background: #fafafa url("./images/select-icon.png") no-repeat 90% 50%;}
+.select-style-circle select {padding: 5px 8px;width: 130%;border: none;box-shadow: none;background: transparent;background-image: none;-webkit-appearance: none;}
+.select-style-circle select:focus {outline: none;border-radius: 30px;}
+.select-style-circle select>option{width: 50px;}
+.search-dev input[type="submit"]{width:100%;border-radius: 30px;color: #fff;text-transform: uppercase;padding: 10px 30px;border: 0px;font-weight: 700;background-color: #31b8f5;height: 40px;}
+.search-dev input[type="submit"]:hover{background-color: black;}
+.pl-no-border{border-bottom: none !important;margin-bottom: 0 !important;}
+.pl-no-border::before{border-bottom: none !important;}
+.pl-create-p button[type="submit"]{font-size: 15px;height: 40px;width: 180px;margin-top: 0px !important;margin-bottom: 0px !important;padding: 8px 0 !important;}
+.pl-border-b{border-bottom: 1px solid #dbdbdb;margin-bottom: 40px !important;}
+.pl-desc{margin-top: 30px;}
+.single-dev-pl{margin-bottom: 70px;margin-top: 30px;box-shadow: 5px 5px 10px #dedede;}
+.single-dev-pl:hover{box-shadow: 5px 5px 10px #31b8f5;}
+.view-more a{float: right;}
+.view-more a:hover{color: #31b8f5;}
+.view-more{padding: 10px;background-color: #efefef;border-top: 1px solid #dbdbdb}
+.t-c-bc{background-color: #f9f9f9;border-top: 1px solid #dbdbdb}
+.pl-img > img{background-color: #fff !important;}

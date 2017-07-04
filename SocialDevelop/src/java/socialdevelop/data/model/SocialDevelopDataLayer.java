@@ -191,4 +191,8 @@ public interface SocialDevelopDataLayer extends DataLayer {
     List<Developer> getDevelopersBySkillNoLevel(int skill_key, int level) throws DataLayerException;
     
     void deleteTasksFromProject(int project_key) throws DataLayerException;
+    
+    List<Project> getProjectsLimit(int n) throws DataLayerException;
+    
+    Map<Developer,Integer> getDevelopersBySkillLimit(int skill_key, int level,int n) throws DataLayerException;
 }

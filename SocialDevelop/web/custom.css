@@ -43,14 +43,6 @@ and open the template in the editor.
 .projects{
     padding-top:5%; 
 }
-#findByKeyWord{
-    padding-bottom: 4% !important;
-    padding-top: 2% !important;
-    width:100% !important;
-}
-#submitsearch{
-    padding-top: 2%;
-}
 .description_project{
     overflow: hidden;
     text-overflow: ellipsis;
