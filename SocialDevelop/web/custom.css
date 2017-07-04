@@ -136,3 +136,8 @@ and open the template in the editor.
 .user-invite{
     margin-top:5%;
 }
+
+.menu{
+    display:inline-block;
+    margin-left:50px;
+}

@@ -37,10 +37,13 @@ public class List_project extends SocialDevelopBaseController {
      private void action_listproject(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {
         HttpSession s = request.getSession(true);
         request.setAttribute("page_title", "Progetti disponibili");
+        request.setAttribute("home", "hidden");
         request.setAttribute("page_subtitle", "Progetti");
         if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
                 request.setAttribute("logout", "Logout");
-            }
+            }else{
+                request.setAttribute("MyProfile", "hidden");
+        }
         int n = ((Integer.parseInt(request.getParameter("n")))-1)*6;
         SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
         double pagesize = ceil((double)(datalayer.getProjects().size())/6);
