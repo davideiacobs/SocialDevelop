@@ -95,6 +95,10 @@ and open the template in the editor.
     padding-bottom:2%;
 }
 
+.send-request-button{
+    padding-bottom: 15%;
+}
+
 #submit-project {
     margin-top:5%;
 }

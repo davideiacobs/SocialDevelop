@@ -44,10 +44,22 @@
 
 -pannello delle offerte visualizza più volte lo stesso task **FATTO**
 
-------------------------------------------------------------------------------------
--paginazione DeveloperForTask
+-Un task chiuso non accetta ulteriori collaboratori, a meno che
+questi non vengano aggiunti direttamente dal coordinatore. **FATTO**
 
--rimuovere effetti over pannelli ecc
+-developerForTask SOLO COLLABORATORE AUTENTICATO!  **FATTO**
+
+-si sformatta DeveloperForTask quando esce il msg di conferma invio richiesta **FATTO**
+
+-inserimento progetto senza task (o aggiornamento con task vuoti) NON DEVE ESSERE PERMESSO! (c'è il controllo lato server, ma si deve bloccare il submit) **FATTO**
+
+-rimuovere provaDB **FATTO**
+
+------------------------------------------------------------------------------------
+
+-paginazione DeveloperForTask (no)
+
+-rimuovere effetti over pannelli ecc (perna)
 
 -CAMBIAMENTI PERNA
 
@@ -55,16 +67,13 @@
 
 -backend -> inserire/modificare lista tipi task e lista skill associati ad ogni tipo (PERNA)
 
--backend login e dove posizionare la pagina
+-backend login e dove posizionare la pagina (perna)
 
 -email
 
--organizzare menù   (PERNA)
+-organizzare menù   
 
--task chiuso in automatico se ci sono tutti i collaboratori oppure se lo chiude il coordinatore
-
--Un task chiuso non accetta ulteriori collaboratori, a meno che
-questi non vengano aggiunti direttamente dal coordinatore.
+-task chiuso in automatico se ci sono tutti i collaboratori oppure se lo chiude il coordinatore (perna)
 
 -opzionalmente, è possibile associare uno skill anche a più di
 un tipo
@@ -73,16 +82,10 @@ un tipo
 
 -VERDE DEL CAZZO!
 
--si sformatta DeveloperForTask quando esce il msg di conferma invio richiesta
-
--inserimento progetto senza task (o aggiornamento con task vuoti) NON DEVE ESSERE PERMESSO! (c'è il controllo lato server, ma si deve bloccare il submit)
-
 -rimuovere datalayer dai set attribute e controllare loggato profilo developer
-
--rimuovere provaDB 
 
 -cambiare scritte alle eccezioni
 
--meno 1 non deve farlo se num collab =0
+
 
 

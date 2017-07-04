@@ -40,7 +40,6 @@ public class joinTask extends SocialDevelopBaseController {
             int user_key = (int) s.getAttribute("userid");
             SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
             boolean flag = false;
-            boolean wait = false;
             int task_id = Integer.parseInt(request.getParameter("task_key"));
             Map<Developer, Integer> map = datalayer.getCollaboratorsByTask(task_id);
             //controlliamo se è già tra i collaboratori
@@ -50,40 +49,19 @@ public class joinTask extends SocialDevelopBaseController {
                     break;
                 }
             }
-            //controlliamo se la richiesta è tra quelle in attesa
-            /*if(!flag){
-                List<Developer> devs = datalayer.getCollaboratorRequestsByTask(task_id);
-                for(Developer dev : devs){
-                    if(dev.getKey() == user_key){
-                        wait=true;
-                        break;
-                    }
-                }
-            }*/
             response.setContentType("text/plain");
             response.setCharacterEncoding("UTF-8");
             PrintWriter out = response.getWriter();
             if(!flag){
                 //sender=1 --> inviata da collaboratore
                 //stato=0 --> in attesa
-                //voto=-1 --> non rilasciato
-                
-                //if(!wait){
-                    datalayer.storeTaskHasDeveloper(task_id, user_key, 0, -1, user_key);
-                    try {
-                        out.println("Your request has been sended!");
-                    }finally {
-                        out.close();
-                    }
-               /* }else{
-                    try {
-                        out.println("Your request is pending.");
-                    }finally {
-                        out.close();
-                    }
-                }
-                datalayer.destroy();*/
-                
+                //voto=-1 --> non rilasciato             
+                datalayer.storeTaskHasDeveloper(task_id, user_key, 0, -1, user_key);
+                try {
+                    out.println("Your request has been sended!");
+                }finally {
+                    out.close();
+                }    
             }else{
                 datalayer.destroy();
                 try {
@@ -94,8 +72,7 @@ public class joinTask extends SocialDevelopBaseController {
             }
         }else{
             response.sendRedirect("index");
-        }
-        
+        } 
     }
     
     

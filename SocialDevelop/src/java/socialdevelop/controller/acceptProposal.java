@@ -53,9 +53,11 @@ public class acceptProposal extends SocialDevelopBaseController {
             
             if(state==1){
                 Task task = datalayer.getTask(task_key);
-                int n = task.getNumCollaborators()-1;
-                task.setNumCollaborators(n);
-                datalayer.storeTask(task);
+                if(task.getNumCollaborators()!=0){
+                    int n = task.getNumCollaborators()-1;
+                    task.setNumCollaborators(n);
+                    datalayer.storeTask(task);
+                }
             }
             
             datalayer.destroy();

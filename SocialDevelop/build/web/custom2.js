@@ -521,6 +521,40 @@ function send_request(task_key, dev_key, param){
 
 
 
+function send_request_dft(task_key, dev_key, param){
+    $.ajax({
+        datatype: 'text/plain',
+        type: 'post',
+        url: 'sendRequest',
+        data: {
+            task_key:task_key,
+            dev_key:dev_key
+        },
+        success: function (response) {
+                
+                var div = $(param).parent();
+                console.log(div);
+                $(param).remove();
+                div.append("<p class='center'>Your Request Has Been Sended!</p>");
+
+ 
+        },
+        error: function(){
+            var button = $(param);
+            var div = $(param).parent();
+            $(param).remove();
+            div.append("<p class='center'>Something went wrong...</p>");
+            setTimeout(function(){ div.empty();
+            div.append(button);}, 5000);
+            
+        }
+    });
+    
+}
+
+
+
+
 $(".accept-proposal").on("click",function(){
    
    var task = $(this).parent().parent().parent();
