@@ -90,6 +90,7 @@ un tipo
 
 -open/close non va bene perchè non riapre il popup -> non risetta nell'input nascosto la chiave
 
+-rendere list_project?n=1 come pagina principale
 
 
 

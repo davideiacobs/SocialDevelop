@@ -24,8 +24,8 @@
                 <p>Cerca lo sviluppatore di cui hai bisogno, selezionando la skill e il livello necessario. Devono esse due righe cosi esce meglio.</p>
                 <form method="post" action="FindDeveloper?n=1">
                     <div class="col-md-4">
-                        <div class="select-style-circle">
-                            <select class="skillSelect" name="skill">
+                       <!--<div class="select-style-circle">-->
+                            <select class="skillSelect form-control select-list-profile" name="skill">
                                 <option value="">Select Skill</option>
                                 <#list skills as skill>
                                 <option class="${skill.type_key}" value="${skill.key}">${skill.name}</option>
@@ -34,11 +34,11 @@
                                 </#list>
                                 </#list>
                             </select>
-                        </div>
+                       <!-- </div>-->
                     </div>
                     <div class="col-md-4">
-                        <div class="select-style-circle">
-                            <select id="select-level" class="levelSelect" name="level">
+                        <!--<div class="select-style-circle">-->
+                            <select id="select-level" class="levelSelect form-control select-list-profile" name="level">
                                 <option value="">Level</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -51,7 +51,7 @@
                                 <option value="4">9</option>
                                 <option value="5">10</option>
                             </select>
-                        </div>
+                        <!--</div>-->
                     </div>
                     <div class="col-md-4">
                         <div class="search-dev">

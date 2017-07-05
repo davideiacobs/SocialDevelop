@@ -56,9 +56,13 @@
                         <div class="form-group upload-pic" id="profile-center">
                             
                             <label for="upload-profile-pictures">Profile Picture</label>
-                            <img id="img-profilo" src="extra-images/foto_profilo_default.png" >
-                            <input type="file" id="foto-profilo" name="foto-profilo" accept="image/*" onchange="readURL(this);"/>
-                            
+                            <figure>
+                                <img id="img-profilo" src="extra-images/foto_profilo_default.png" >
+                            </figure>
+                            <label class="btn btn-default btn-file btn-upd">
+                                Choose Picture
+                                <input type="file" id="foto-profilo" class="hidden" name="foto-profilo" accept="image/*" onchange="readURL(this);"/>
+                            </label>
                         </div>
                     </div>
                 </div>

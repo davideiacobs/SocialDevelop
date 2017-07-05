@@ -158,3 +158,15 @@ and open the template in the editor.
 .foot{
     height:100px;
 }
+
+.select-list-profile {
+    height: 42px !important;
+    border-radius: 50px !important;
+    width: 180px !important;
+    -moz-appereance: none !important;
+    -webkit-appereance: none !important;
+    overflow: hidden;
+    background:#fafafa url("./images/select-icon.png") no-repeat right !important;
+    
+}
+
