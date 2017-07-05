@@ -54,7 +54,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     private PreparedStatement iTask, uTask, dTask;
     private PreparedStatement iMessage, uMessage, dMessage;
     private PreparedStatement iType, uType, dType, sFileByID;
-    private PreparedStatement iRequest, uRequest, dRequest, iImg,sAdmin;
+    private PreparedStatement iRequest, uRequest, dRequest, iImg,sAdmin, sTasksBySkill;
     private PreparedStatement iTaskHasSkill, dTaskHasSkill,uTaskHasSkill,sTaskHasSkill, sCollaboratorRequestsByTask;
     private PreparedStatement iTaskHasDeveloper,dTaskHasDeveloper,uTaskHasDeveloper,sTaskHasDeveloper,dTasksFromProject;
     private PreparedStatement iSkillHasDeveloper,dSkillHasDeveloper,uSkillHasDeveloper,sSkillHasDeveloper;
@@ -133,6 +133,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             
             sTasksByDeveloper = connection.prepareStatement("SELECT task_ID,vote FROM task_has_developer WHERE developer_ID=? AND state>0");
             
+            sTasksBySkill = connection.prepareStatement("SELECT task_ID FROM task_has_skill WHERE skill_ID=?");
+            
             sCurrentTasksByDeveloper = connection.prepareStatement("SELECT task_ID,vote FROM task_has_developer WHERE developer_ID=? AND state=1");
             
             sEndedTasksByDeveloper = connection.prepareStatement("SELECT task_ID,vote FROM task_has_developer WHERE developer_ID=? AND state=2");
@@ -175,7 +177,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                     + " task_has_developer.developer_ID=? AND task_has_developer.date=?) AS thd INNER JOIN task AS t ON (thd.task_ID= t.ID)");
             
             //seleziona inviti di partecipazione inviati da un coordinatore(pannello degli inviti)
-            sInvitesByCoordinatorID = connection.prepareStatement("SELECT thd.* FROM  task_has_developer AS thd WHERE sender=? ORDER BY thd.task_ID");
+            sInvitesByCoordinatorID = connection.prepareStatement("SELECT thd.* FROM  task_has_developer AS thd WHERE sender=? AND developer_ID<>? ORDER BY thd.task_ID");
             
             //seleziona proposte che un collaboratore riceve da un coordinatore(pannello delle proposte)
             sProposalsByCollaboratorID = connection.prepareStatement("SELECT thd.* FROM task_has_developer AS thd WHERE "
@@ -1170,6 +1172,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         List<CollaborationRequest> result = new ArrayList();
         try{
             sInvitesByCoordinatorID.setInt(1,coordinator_key);
+            sInvitesByCoordinatorID.setInt(2,coordinator_key);
             try(ResultSet rs = sInvitesByCoordinatorID.executeQuery()){
                 while(rs.next()){
                     result.add((CollaborationRequest) getCollaborationRequest(rs.getInt("developer_ID"), rs.getInt("task_ID")));
@@ -2155,6 +2158,23 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             throw new DataLayerException("Unable to load admin by ID", ex);
         }
         return null;
+    }
+    
+    
+    @Override
+    public List<Task> getTasksBySkill(int skill_key) throws DataLayerException{
+        List<Task> result = new ArrayList();
+        try{
+            sTasksBySkill.setInt(1, skill_key);
+            try(ResultSet rs = sTasksBySkill.executeQuery()){
+                if(rs.next()){
+                    result.add((Task) getTask(rs.getInt("task_ID")));
+                }
+            }
+        }catch (SQLException ex) {
+            throw new DataLayerException("Unable to load admin by ID", ex);
+        }
+        return result;
     }
 
     

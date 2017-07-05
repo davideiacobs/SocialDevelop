@@ -48,9 +48,9 @@ public class Signup extends SocialDevelopBaseController {
 
                 String name = request.getParameter("first_name");
                 String surname = request.getParameter("second_name");
-                String username = request.getParameter("username");
+                String username = request.getParameter("username1");
                 String mail = request.getParameter("mail");
-                String pwd = request.getParameter("pwd");
+                String pwd = request.getParameter("pwd1");
                 String pwd2 = request.getParameter("pwd2");
                 String bday = request.getParameter("birthdate");
                 SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer)request.getAttribute("datalayer");

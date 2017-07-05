@@ -200,7 +200,7 @@ public interface SocialDevelopDataLayer extends DataLayer {
 
     Admin getAdmin (int developer_key) throws DataLayerException;
 
-
+    List<Task> getTasksBySkill(int skill_key) throws DataLayerException;
 
 
 }

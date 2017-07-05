@@ -74,12 +74,11 @@ $(".add-skill-to-task-btn").on("click",function(){
     if( $('a.skill-name').length == 0){
         $(".input-skills").val(""); 
     }
-    var skill = $("#select-skill option:selected");
-    var level = $("#select-level option:selected").val();
+    var skill = $("#select-skill2 option:selected");
+    var level = $("#select-level2 option:selected").val();
     //controlliamo innanzitutto se è stata selezionata una skill e un level
     if(skill.val()!="" && level!=""){
         var skill_level = skill.val()+":"+level;
-        console.log(skill_level);
         var skill_text = skill.text();
         
         if(skill_text.indexOf("-")>=0){
@@ -108,7 +107,6 @@ $(".add-skill-to-task-btn").on("click",function(){
 
 function remove_skill_from_task(param){
     var skill = $.trim($(param).parent().parent().children("a.skill-name").text());
-    console.log(skill);
     var rm = $(param).parent().parent("li");
     rm.remove();
 }          
@@ -134,9 +132,9 @@ function remove_task(param){
 
 function reload_task(name,type,state,start,end,descr,coll,skills){
     $("#task_name").val(name);
-    $(".req-list").removeClass("req-list");
+   
     
-    $("#select-type option").filter(function() {
+    $("#task_type option").filter(function() {
         return this.text == type; 
     }).attr('selected', true);
     
@@ -169,10 +167,11 @@ function reload_task(name,type,state,start,end,descr,coll,skills){
     
 }
 
+
+
 function close_task(param){
-    
+    console.log("ciao");
     var isOpen = $(param).parent().children("#isOpen");
-    console.log(isOpen.text());
     if(isOpen.text()=="State: Open"){
         isOpen.text("State: Close");
         $(param).attr('value', 'Open Task');
@@ -197,6 +196,7 @@ function update_task(param){
     updatedElement = $(param).parent("div").parent("li");
     $("a.add-task").trigger("click");
     document.location.href = $("a.add-task").attr("href");
+    console.log("ciaociao");
     reload_task(name,type,state,start,end,descr,coll,skills);
 }
 
@@ -220,7 +220,6 @@ function aggiungi_task(name,start,end,descr,ncoll, skill_level, tipo,isOpen){
                                 <p id='coll'>Collaborators: "+ncoll+"</p>\n\
                                 <p id='append_here_"+name+"' class='skills'>Skills Richieste: </p>\n\
                                 <input type='button' value='Update' id='update-skill' onclick='update_task(this)'/>\n\
-                                <input type='button' value='Delete' id='delete-skill' onclick='remove_task(this)' />\n\
                                 <input type='button' value='Close Task' id='close-skill' onclick='close_task(this)'/></div></li>");
     var i = 0;
     for(i;i<skill_level.length;i++){
@@ -230,7 +229,7 @@ function aggiungi_task(name,start,end,descr,ncoll, skill_level, tipo,isOpen){
     }
     
 }
-
+/*
 $("#submit-task").on("click", function(){
     $("input").each(function(){
         $(this).removeClass("req"); 
@@ -286,22 +285,20 @@ $("#submit-task").on("click", function(){
         $("#task_name").addClass("req");
         $("#task_name").focus();
     }
-});
+});*/
 
 
 
-
+/*
 $("#submit-project").on("click", function(){
     //azzero lavore input nascosto
     $("#tasks").val("");
     //conto il numero di task aggiunti
     var c = $(".task-aggiunti").children("li").length;
-    console.log(c);
     var i=0;
     for(i=0;i<c;i++){
         //controlliamo valore dell'input nascosto
         var input_tasks = $("#tasks").val();
-        console.log(input_tasks);
         //recuperiamo tutti i valori del task
         var task = $(".task-aggiunti").children("li")[i];
         var name = $.trim($(task).children().children("p#name").text().split(":")[1]);
@@ -320,22 +317,27 @@ $("#submit-project").on("click", function(){
         
     }
     
-});
+});*/
 
 
 
-$("#select-type").on("change", function(){
-    $("#select-skill option").removeClass("hidden");
+$("#task_type").on("change", function(){
+    $("#select-skill2 option").removeClass("hidden");
     $(".list-skill").empty();
-    $("#select-skill").val("");
-    var type_id = $("#select-type option:selected").val();
-    $("#select-skill option").not("."+type_id).addClass("hidden");
+    $("#select-skill2").val("");
+    var type_id = $("#task_type option:selected").val();
+    $("#select-skill2 option").not("."+type_id).addClass("hidden");
 });
 
 
 $(function(){
     $(".add-project-form")[0].reset();
     $(".add-task-form")[0].reset();
+    
+    $(".close-task").each(function(){
+        var param = $(this);
+       close_task(param); 
+    });
 });
 
 
@@ -364,8 +366,6 @@ $(".open-check").on("click", function(){
         private.val(0);
     }
 });
-
-
 
 
 
@@ -400,7 +400,6 @@ $(".findDeveloper").on("click",function(event){
 
 
 function remove_collaborator(dev_key, task_key){
-    console.log(dev_key);
     $.ajax({
         datatype: 'text/plain',
         type: 'post',
@@ -422,7 +421,6 @@ function remove_collaborator(dev_key, task_key){
 
 function release_vote(dev_key, task_key, param){
     var vote = $(param).parent().parent("span").children(".div_vote").children("select.vote").val();
-    console.log(vote);
     $.ajax({
         datatype: 'text/plain',
         type: 'post',
@@ -447,6 +445,7 @@ function release_vote(dev_key, task_key, param){
 
 
 function join_task(task_key, param){
+    
     $.ajax({
         datatype: 'text/plain',
         type: 'post',
@@ -455,7 +454,6 @@ function join_task(task_key, param){
             task_key:task_key
         },
         success: function (response) {
-            console.log(response);
             $(param).siblings(".join-msg").text(response);
             $(param).siblings(".join-msg").removeClass("hidden");
             setTimeout(function(){ $(param).siblings(".join-msg").addClass("hidden"); }, 5000);
@@ -528,7 +526,6 @@ function send_request_dft(task_key, dev_key, param){
         success: function (response) {
             
             var div = $(param).parent();
-            console.log(div);
             $(param).remove();
             div.append("<p class='center'>Your Request Has Been Sended!</p>");
             
@@ -552,6 +549,7 @@ function send_request_dft(task_key, dev_key, param){
 
 $(".accept-proposal").on("click",function(){
     var button = $(this);
+    button.prop('disabled', true);
     var task = $(this).parent().parent().parent();
     var task_key = task.attr("id"); 
     var sender = $(this).parent().parent().attr("id");
@@ -571,11 +569,12 @@ $(".accept-proposal").on("click",function(){
                 task.children("#"+sender).children(".icons").empty();
                 task.children("#"+sender).children(".icons").append("<i class='fa fa-check-circle-o' style='font-size:40px'></i>");
                 button.parent().remove();
+                button.prop('disabled', false);
             }
             
         },
         error: function(){
-            
+            button.prop('disabled', false);
         }
     });
     
@@ -584,6 +583,7 @@ $(".accept-proposal").on("click",function(){
 
 $(".decline-proposal").on("click",function(){
     var button = $(this);
+    button.prop('disabled', true);
     var task = $(this).parent().parent().parent();
     var task_key = task.attr("id"); 
     var sender = $(this).parent().parent().attr("id");
@@ -603,11 +603,12 @@ $(".decline-proposal").on("click",function(){
                 task.children("#"+sender).children(".icons").empty();
                 task.children("#"+sender).children(".icons").append("<i class='fa fa-times-circle-o' style='font-size:40px'></i>");
                 button.parent().remove();
+                button.prop('disabled', false);
             }
             
         },
         error: function(){
-            
+            button.prop('disabled', false);
         }
     });
     
@@ -618,6 +619,7 @@ $(".decline-proposal").on("click",function(){
 
 $(".accept-demend").on("click",function(){
     var button = $(this);
+    button.prop('disabled', true);
     var task = $(this).parent().parent().parent();
     var task_key = task.attr("id"); 
     var developer_key = $(this).parent().parent().parent().parent().attr("id");
@@ -637,11 +639,14 @@ $(".accept-demend").on("click",function(){
                 task.children(".icons").empty();
                 task.children(".icons").append("<i class='fa fa-check-circle-o' style='font-size:40px'></i>");
                 button.parent().remove();
+                button.prop('disabled', false);
+                
             }
             
         },
         error: function(){
-            
+                button.prop('disabled', false);
+        
         }
     });
     
@@ -650,6 +655,7 @@ $(".accept-demend").on("click",function(){
 
 $(".decline-demend").on("click",function(){
     var button = $(this);
+    button.prop('disabled', true);
     var task = $(this).parent().parent().parent();
     var task_key = task.attr("id"); 
     var developer_key = $(this).parent().parent().parent().parent().attr("id");
@@ -669,11 +675,12 @@ $(".decline-demend").on("click",function(){
                 task.children(".icons").empty();
                 task.children(".icons").append("<i class='fa fa-times-circle-o' style='font-size:40px'></i>");
                 button.parent().remove();
+                button.prop('disabled', false);
             }
             
         },
         error: function(){
-            
+            button.prop('disabled', false);
         }
     });
     
@@ -682,40 +689,131 @@ $(".decline-demend").on("click",function(){
 
 
 
+$("#task_type").on("change", function(){
+    $("#select-skill2 option").removeClass("hidden");
+    $(".list-skill").empty();
+    $("#select-skill2").val("");
+    var type_id = $("#task_type option:selected").val();
+    $("#select-skill2 option").not("."+type_id).addClass("hidden");
+});
+
+
 /********BACKOFFICE********/
 
-$("#submit-skill").on("click",function (){
+
+function remove_type(param){
+    var type = $.trim($(param).parent().parent().children("a.type-name").text());
+    
+    var rm = $(param).parent().parent("li");
+    $.ajax({
+        datatype:'text/plain',
+        type: 'post',
+        url: 'rmType',
+        data: {
+            type:type
+        },
+        success: function(response) {
+            if(response==1){
+                $("#err-td").parent().removeClass("req");
+                $("#err-td").remove();
+                rm.remove();
+            }
+        },
+        error: function(){
+                $("#err-td").remove();
+                $(".title-add-skill").parent().parent().addClass("req-select");
+                $(".title-add-skill").parent().append("<p id='err-td' align='center' style='margin-top : 30px'><font size=5>This type can't be deleted</font></p>");
+                $("#err-td").parent().addClass("req");
+        }
+    });              
+}
+
+$("#submit-skill").on("click",function (e){
+    var skill = $("#skill-name").val();
     var val = $("#typeS").val();
-    if (val == ""){
-        $("#typeS_chosen").children("a").addClass("req-select");
-        
+    if (val == "" && skill == ""){
+        e.preventDefault();
+        $("#typeS").addClass("req-select");
         $("#err-ss").remove();
-        $("#skill-submit").append("<p id='err-ss' style='margin-top : 10px'>Please, choose the skill's type</p>");
+        $("#skill-name").addClass("req");
+        $("#skill-submit").append("<p id='err-ss' style='margin-top : 10px'>Please, fill the form</p>");
+    } else if (val == ""){
+        e.preventDefault();
+            $("#skill-name").removeClass("req");
+            $("#typeS").addClass("req-select");
+       
+            $("#err-ss").remove();
+            $("#skill-submit").append("<p id='err-ss' style='margin-top : 10px'>Please, choose the skill's type</p>");
+      
+    }else if( skill ==""){
+        e.preventDefault();
+         $("#typeS").removeClass("req-select");
+         $("#err-ss").remove();
+         $("#skill-name").addClass("req");
+         $("#skill-submit").append("<p id='err-ss' style='margin-top : 10px'>Please, choose the skill's name</p>");
         
     }else{
-        $("#typeS_chosen").children("a").removeClass("req-select");
+        $("#skill-name").removeClass("req");
+        $("#typeS").children("a").removeClass("req-select");
         $("#err-ss").remove();
     }
 });
+
+
 
 $("#typeS").on("change",function (){
     var val = $("#typeS").val();
     if (val != ""){      
-        $("#typeS_chosen").children("a").removeClass("req-select");
+        $("#typeS").removeClass("req-select");
+        $("#err-ss").remove();
+    } else{
+        
+            $("#typeS").addClass("req-select");
+       
+            $("#err-ss").remove();
+            $("#skill-submit").append("<p id='err-ss' style='margin-top : 10px'>Please, choose the skill's type</p>");
+    }
+});
+
+$("#skill-name").on("change", function(){
+    if( skill ==""){
+       
+         $("#err-ss").remove();
+         $("#skill-name").addClass("req");
+         $("#skill-submit").append("<p id='err-ss' style='margin-top : 10px'>Please, choose the skill's name</p>");
+        
+    } else {
+        $("#skill-name").removeClass("req");
         $("#err-ss").remove();
     }
 });
 
-$("#delete-skill").on("click",function (){
+$("#skill-father").on("click", function(){
+    var type =  $("#typeS").val();
+    if (type == ""){
+        $("#err-ss").remove();
+        $("#typeS").addClass("req-select");
+        $("#skill-submit").append("<p id='err-ss' style='margin-top : 10px'>Please, select a type before</p>");
+        $("#typeS").focus();
+    } else{
+        $("#err-ss").remove();
+        $("#typeS").removeClass("req-select");
+    }
+});
+
+
+
+$("#delete-skill").on("click",function (e){
     var val = $("#rm-skill-b").val();
     if (val == ""){
-        $("#rm_skill_b_chosen").children("a").addClass("req-select");
+        e.preventDefault();
+            $("#rm-skill-b").addClass("req-select");
         
-        $("#err-sd").remove();
-        $("#skill-delete").append("<p id='err-sd' style='margin-top : 10px'>Please, choose the skill to delete</p>");
+            $("#err-sd").remove();
+            $("#skill-delete").append("<p id='err-sd' style='margin-top : 10px'>Please, choose the skill to delete</p>");
         
     }else{
-        $("#rm_skill_b_chosen").children("a").removeClass("req-select");
+        $("#rm-skill-b").removeClass("req-select");
         $("#err-sd").remove();
     }
 });
@@ -723,21 +821,26 @@ $("#delete-skill").on("click",function (){
 $("#rm-skill-b").on("change",function (){
     var val = $("#rm-skill-b").val();
     if (val != ""){      
-        $("#rm_skill_b_chosen").children("a").removeClass("req-select");
+        $("#rm-skill-b").removeClass("req-select");
         $("#err-sd").remove();
+    }else{
+        $("#rm-skill-b").addClass("req-select");
+        
+            $("#err-sd").remove();
+            $("#skill-delete").append("<p id='err-sd' style='margin-top : 10px'>Please, choose the skill to delete</p>");
     }
 });
 
 $("#update-skill").on("click",function (){
     var val = $("#old-skill").val();
     if (val == ""){
-        $("#old_skill_chosen").children("a").addClass("req-select");
+        $("#old-skill").addClass("req-select");
         
-        $("#err-su").remove();
-        $("#skill-update").append("<p id='err-su' style='margin-top : 10px'>Please, choose the skill to update</p>");
+            $("#err-su").remove();
+            $("#skill-update").append("<p id='err-su' style='margin-top : 10px'>Please, choose the skill to update</p>");
         
     }else{
-        $("#old_skill_chosen").children("a").removeClass("req-select");
+        $("#old-skill").removeClass("req-select");
         $("#err-su").remove();
     }
 });
@@ -745,7 +848,7 @@ $("#update-skill").on("click",function (){
 $("#old-skill").on("change",function (){
     var val = $("#old-skill").val();
     if (val != ""){      
-        $("#old_skill_chosen").children("a").removeClass("req-select");
+        $("#old-skill").removeClass("req-select");
         $("#err-su").remove();
     }
 });
@@ -756,19 +859,19 @@ $("#form-update-skill").on("submit",function (e){
     var type = $("#new-type").val();
     if (new_name=="" && skill_father =="" && type ==""){
         
-        
+       
         e.preventDefault();
         
         $("#new-skill-name").addClass("req-select");
-        $("#new_father_chosen").children("a").addClass("req-select");
-        $("#new_type_chosen").children("a").addClass("req-select");
+        $("#new-father").addClass("req-select");
+        $("#new-type").addClass("req-select");
         $("#err-su2").remove();
         $("#skill-update").append("<p id='err-su2' style='margin-top : 10px'>Please, make at least one change</p>");
         
     }else{
         $("#new-skill-name").removeClass("req-select");
-        $("#new_father_chosen").children("a").removeClass("req-select");
-        $("#new_type_chosen").children("a").removeClass("req-select");
+        $("#new-father").removeClass("req-select");
+        $("#new-type").removeClass("req-select");
         $("#err-su2").remove();
     }
 });
@@ -779,71 +882,638 @@ $("#new-skill-name , #new-father, #new-type").on("change",function (){
     var type = $("#new-type").val();
     if (new_name!="" || skill_father !="" || type !=""){   
         $("#new-skill-name").removeClass("req-select");
-        $("#new_father_chosen").children("a").removeClass("req-select");
-        $("#new_type_chosen").children("a").removeClass("req-select");
+        $("#new-father").removeClass("req-select");
+        $("#new-type").removeClass("req-select");
         $("#err-su2").remove();
     }
 });
 
-$("#update-type").on("click",function (){
-    var val = $("#old-type").val();
-    if (val == ""){
-        $("#old_type_chosen").children("a").addClass("req-select");
-        
+$("#new-father").on("click", function(){
+    var new_type =  $("#new-type").val();
+    if (new_type == ""){
+        $("#err-su2").remove();
+        $("#new-type").addClass("req-select");
+        $("#skill-update").append("<p id='err-su2' style='margin-top : 10px'>Please, select a type before</p>");
+        $("#new-type").focus();
+    } else{
+        $("#err-su2").remove();
+        $("#new-type").removeClass("req-select");
+    }
+});
+
+$("#type-name").on("change", function (e){
+      var name = $("#type-name").val();
+      if (name == ""){
+        e.preventDefault();
+        $("#err-ts").remove();
+        $("#type-name").addClass("req");
+        $("#type-submit").append("<p id='err-ts' style='margin-top : 10px'>Please, insert the type name</p>");
+    } else {
+        $("#err-ts").remove();
+        $("#type-name").removeClass("req");
+    }
+});
+
+$("#type-submit").on("click", function(e){
+    var name = $("#type-name").val();
+    if (name == ""){
+        e.preventDefault();
+        $("#err-ts").remove();
+        $("#type-name").addClass("req");
+        $("#type-submit").append("<p id='err-ts' style='margin-top : 10px'>Please, insert the type name</p>");
+    } else {
+        $("#err-ts").remove();
+        $("#type-name").removeClass("req");
+    }
+});
+
+$("#update-type").on("click",function (e){
+    var old = $("#old-type").val();
+    var mod = $("#mod-type").val();
+    if (old == ""){
+        e.preventDefault();
         $("#err-tu").remove();
+        $("#old-type").addClass("req-select");
         $("#type-update").append("<p id='err-tu' style='margin-top : 10px'>Please, choose the type to update</p>");
         
-    }else{
-        $("#old_type_chosen").children("a").removeClass("req-select");
+    }else if (mod == ""){
+        e.preventDefault();
         $("#err-tu").remove();
+        $("#mod-type").addClass("req");
+        $("#type-update").append("<p id='err-tu' style='margin-top : 10px'>Please, choose the skill's new name</p>");
+        
+    }else{
+        $("#mod-type").removeClass("req");
+        $("#old-type").removeClass("req-select");
+        $("#err-tu").remove();
+    }
+});
+
+
+$("#mod-type").on("change", function(){
+    var mod_type = $("#mod-type").val();
+    if (mod_type==""){
+        $("#err-tu").remove();
+         $("#mod-type").addClass("req");
+         $("#type-update").append("<p id='err-tu' style='margin-top : 10px'>Please, insert the skill's new name</p>");
+    } else {
+        $("#err-tu").remove();
+        $("#mod-type").removeClass("req");
     }
 });
 
 $("#old-type").on("change",function (){
     var val = $("#old-type").val();
     if (val != ""){      
-        $("#old_type_chosen").children("a").removeClass("req-select");
+        $("#old-type").removeClass("req-select");
         $("#err-tu").remove();
+    }else{
+        $("#err-tu").remove();
+        $("#old-type").addClass("req-select");
+        $("#type-update").append("<p id='err-tu' style='margin-top : 10px'>Please, choose the type to update</p>");
     }
 });
 
 
+//CHECKS ON VALUE
 
-$.fn.scrollBottom = function() { 
-    return $(document).height() - this.scrollTop() - this.height(); 
-};
 
-$(window).on("resize",function (){
-    if($(window).width()<974){ 
-        console.log($(window).width());
-        $('.sidebar_fixed').css("top",0);
+//signup checks
+function isValidDateBirth(s) {
+  
+  var bits = s.split('/');
+  var y = bits[2],
+    m = bits[1],
+    d = bits[0];
+  
+  var date = new Date(bits[2],bits[1],bits[0]); 
+  var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+  
+  if ((!(y % 4) && y % 100) || !(y % 400)) {
+    daysInMonth[1] = 29;
+  }
+  var today = new Date();
+  today.setHours(0,0,0,0);
+  
+  if(date > today){
+      return false;
+  }
+  
+  return !(/\D/.test(String(d))) && d > 0 && d <= daysInMonth[--m];
+}
+
+function isGreaterDate(s,e){
+    var bits1 = s.split('/');
+    var y1 = bits1[2],
+    m1 = bits1[1],
+    d1 = bits1[0];
+    var bits2 = e.split('/');
+    var y2 = bits2[2],
+    m2 = bits2[1],
+    d2 = bits2[0];
+  
+    var start_date = new Date(y1,m1,d1);
+    var end_date = new Date(y2,m2,d2);
+    
+    
+    
+    if (start_date > end_date){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+function isValidDateTask(s) {
+  
+  var bits = s.split('/');
+  var y = bits[2],
+    m = bits[1],
+    d = bits[0];
+  
+  var date = new Date(bits[2],bits[1],bits[0]); 
+  var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+  
+  if ((!(y % 4) && y % 100) || !(y % 400)) {
+    daysInMonth[1] = 29;
+  }
+  var today = new Date();
+  today.setHours(0,0,0,0);
+  
+  if(date < today){
+      return false;
+  }
+  
+  return !(/\D/.test(String(d))) && d > 0 && d <= daysInMonth[--m];
+}
+
+$("#pwd2").on("change",function(){
+   var pwd1 = $("#pwd1").val(),
+   pwd2 = $("#pwd2").val();
+   
+   if ( pwd1 != pwd2){
+       $("#pwd2").addClass("req");
+       $("#pwd1").addClass("req");
+       $("#err-pwd").remove();
+       $("#pwd2").parent().append("<p id='err-pwd' style='margin-top : 10px'>Passwords don't match </p>");
+   }else{
+       
+       $("#pwd2").removeClass("req");
+       $("#pwd1").removeClass("req");
+       $("#err-pwd").remove();
+   }
+});
+
+$("#pwd1").on("change",function(){
+   var pwd1 = $("#pwd1").val(),
+   pwd2 = $("#pwd2").val();
+
+if(pwd1 ==="") {  
+   if ( pwd1 != pwd2){
+       $("#pwd2").addClass("req");
+       $("#pwd1").addClass("req");
+       $("#err-pwd").remove();
+       $("#pwd2").parent().append("<p id='err-pwd' style='margin-top : 10px'>Passwords don't match </p>");
+   }else{
+   
+       $("#pwd2").removeClass("req");
+       $("#pwd1").removeClass("req");
+       $("#err-pwd").remove();
+   }
+}
+});
+
+
+
+
+$("#birthdate").on("change",function(){
+   if($("#birthdate").val()!==""){
+   
+    if(!(isValidDateBirth($("#birthdate").val()))){
+      $("#birthdate").addClass("req");
+      
+    }else{
+      $("#birthdate").removeClass("req");
+      
+    }
+   }
+});
+
+$("#registrati").on("submit", function(e){
+    
+    if($("#birthdate").val()!==""){
+    if(!(isValidDateBirth($("#birthdate").val()))){
+        e.preventDefault();
+        $("#birthdate").addClass("req");
+        
+    }else{
+        $("#birthdate").removeClass("req");
+      
+    }
+    }else{
+        console.log("ciao");
+        e.preventDefault();
+        $("#birthdate").addClass("req");
+      }
+    
+   var pwd1 = $("#pwd1").val(),
+   pwd2 = $("#pwd2").val();
+   if ( pwd1 != pwd2){
+       e.preventDefault();
+       $("#pwd2").addClass("req");
+       $("#pwd1").addClass("req");
+       $("#err-pwd").remove();
+       $("#pwd2").parent().append("<p id='err-pwd' style='margin-top : 10px'>Passwords don't match </p>");
+   }else{
+       $("#pwd2").removeClass("req");
+       $("#pwd1").removeClass("req");
+       $("#err-pwd").remove();
+   }
+    
+});
+
+
+
+//myskill checks
+$("#add-button").on("click",function(){
+    var skill = $("#select-skill").val();
+    var level = $("#select-level").val();
+    if(skill === "" && level ===""){
+        $("#select_skill_chosen").children("a").addClass("req-select");
+        $("#select_level_chosen").children("a").addClass("req-select");
+        }else if(skill === ""){
+        $("#select_skill_chosen").children("a").addClass("req-select");
+        }else if(level === ""){
+        $("#select_level_chosen").children("a").addClass("req-select");
+    }else{
+        $("#select_skill_chosen").children("a").removeClass("req-select");
+        $("#select_level_chosen").children("a").removeClass("req-select");
+        $("#err-addskill").remove();
     }
 });
 
-(function($) {
-    var element = $('.sidebar_fixed'),
-    originalY = element.offset().top;
-    var topMargin = 30;
-    $(window).on('scroll', function(event) {
-        if($(window).width()>975){ 
-            
-            var scrollTop = $(window).scrollTop();
-            var scrollBottom = $(window).scrollBottom();
-            if (scrollBottom > 370){
-                element.stop(false, false).animate({
-                    top: scrollTop < originalY
-                    ? 0
-                    : scrollTop - originalY + topMargin
-                }, 100);
-            }else{
-                element.stop(false, false).animate({
-                    bottom:  originalY - scrollBottom + topMargin
-                }, 100);
-            }
-            
+$("#select-skill").on("change",function(){
+    var skill = $("#select-skill").val();
+    var level = $("#select-level").val();
+    if(skill === "" && level ===""){
+        $("#select_skill_chosen").children("a").addClass("req-select");
+        $("#select_level_chosen").children("a").addClass("req-select");
+    }else if(skill === ""){
+        $("#select_skill_chosen").children("a").addClass("req-select");
+    }else{
+        $("#select_skill_chosen").children("a").removeClass("req-select");
+    }
+});
+
+$("#select-level").on("change",function(){
+    var skill = $("#select-skill").val();
+    var level = $("#select-level").val();
+    if(skill === "" && level ===""){
+        $("#select_skill_chosen").children("a").addClass("req-select");
+        $("#select_level_chosen").children("a").addClass("req-select");
+    }else if(skill === ""){
+       $("#select_skill_chosen").children("a").addClass("req-select");
+    }else if(level === ""){
+        $("#select_level_chosen").children("a").addClass("req-select");
+    }else{
+        $("#select_level_chosen").children("a").removeClass("req-select");
+        $("#err-addskill").remove();
+    }
+});
+
+
+//create project checks
+
+$("#task_name").on("change", function(){
+    var task_name = $("#task_name").val();
+    if(task_name === ""){
+        $("#task_name").addClass("req");
+        $("#err-tasN").remove();
+        $("#task_name").parent().append("<p id='err-tasN' align = 'left'>Please, insert the task's type</p>");
+    }else{
+        $("#task_name").removeClass("req");
+        $("#err-tasN").remove();
+    }
+});
+
+$("#task_type").on("change", function(){
+    var task_type = $("#task_type").val();
+    if(task_type === ""){
+        $("#task_type").addClass("req-select");
+        $("#err-tasT").remove();
+        $("#task_type").parent().parent().append("<p id='err-tasT' align='left'>Please, insert the task's type</p>");
+    }else{
+        $("#task_type").removeClass("req-select");
+        $("#err-tasT").remove();
+    }
+});
+
+$("#select-skill2").on("click", function(){
+    var type =  $("#task_type").val();
+    if (type == ""){
+        $("#err-tasT").remove();
+        $("#task_type").addClass("req-select");
+        $("#task_type").parent().parent().append("<p id='err-tasT' style='margin-top : 10px'>Please, select a type before</p>");
+        $("#task_type").focus();
+    } else{
+        $("#err-tasT").remove();
+        $("#task_type").removeClass("req-select");
+    }
+});
+
+
+$("#start_date").on("change",function(){
+   var start_date = $("#start_date").val();
+   if(start_date!==""){
+   
+    if(!(isValidDateTask(start_date))){
+      $("#start_date").addClass("req");
+      $("#err-taskSD").remove();
+      $("#start_date").parent().append("<p id='err-taskSD' align='left'>The task's start date is uncorrect</p>");
+      
+    }else if($("#end_date").val()!=="" && (isGreaterDate(start_date,$("#end_date").val()))){
+      
+        $("#start_date").addClass("req");
+        $("#end_date").addClass("req");
+        $("#err-taskSD").remove();
+        $("#err-taskED").remove();
+        $("#start_date").parent().append("<p id='err-taskSD' align='left'>A task can't end before it starts</p>");
+      }else{ 
+      
+      $("#start_date").removeClass("req");
+      $("#err-taskSD").remove();
+      if(isValidDateTask($("#end_date").val())){
+          $("#end_date").removeClass("req");
+          $("#err-taskED").remove();
+      }
+    }
+   }
+});
+
+$("#end_date").on("change",function(){
+   var end_date = $("#end_date").val();
+   if(end_date!==""){
+   
+    if(!(isValidDateTask(end_date))){
+      $("#end_date").addClass("req");
+      $("#err-taskED").remove();
+      $("#end_date").parent().append("<p id='err-taskED' align='left'>The task's end date is uncorrect</p>");
+      
+    }else if($("#start_date").val()!=="" && (isGreaterDate($("#start_date").val(),end_date))){
+      
+        $("#start_date").addClass("req");
+        $("#end_date").addClass("req");
+        $("#err-taskSD").remove();
+        $("#err-taskED").remove();
+        $("#start_date").parent().append("<p id='err-taskSD' align='left'>A task can't end before it starts</p>");
+      }else{ 
+      
+      $("#end_date").removeClass("req");
+      $("#err-taskED").remove();
+      
+      if(isValidDateTask($("#start_date").val())){
+          $("#start_date").removeClass("req");
+          $("#err-taskSD").remove();
+      }
+    }
+   }
+});
+
+$("#num_collaborators").on("change", function(){
+    
+    var task_coll = $("#num_collaborators").val();
+    if(task_coll === "" || Number(task_coll)<1){
+        $("#num_collaborators").addClass("req");
+        $("#err-tasC").remove();
+        $("#num_collaborators").parent().parent().append("<p id='err-tasC' align='left'>Please, insert a value greater than 0</p>");
+    }else{
+        $("#num_collaborators").removeClass("req");
+        $("#err-tasC").remove();
+    }
+});
+
+
+$("#select-skill2").on("change",function(){
+    var skill = $("#select-skill2").val();
+    var level = $("#select-level2").val();
+    if(skill === "" && level ===""){
+        $("#select-skill2").addClass("req-select");
+        $("#select-level2").addClass("req-select");
+        $("#err-tasSK").remove();
+        $("#list-skill").append("<p id='err-tasSK' style='margin-top : 10px'>Please, choose a skill and the relative level</p>");
+    }else if(skill === ""){
+        $("#select-skill2").addClass("req-select");
+        $("#err-tasSK").remove();
+        $("#list-skill").append("<p id='err-tasSK' style='margin-top : 10px'>Please, choose a skill</p>");
+    }else{
+        $("#select-skill2").removeClass("req-select");
+        $("#err-tasSK").remove();
+    }
+});
+
+$("#select-level2").on("change",function(){
+    var skill = $("#select-skill2").val();
+    var level = $("#select-level2").val();
+    if(skill === "" && level ===""){
+        $("#select-skill2").addClass("req-select");
+        $("#select-level2").addClass("req-select");
+        $("#err-tasSK").remove();
+        $("#list-skill").append("<p id='err-tasSK' style='margin-top : 10px'>Please, choose a skill and the relative level</p>");
+    }else if(skill === ""){
+        $("#select-skill2").addClass("req-select");
+        $("#err-tasSK").remove();
+        $("#list-skill").append("<p id='err-tasSK' style='margin-top : 10px'>Please, choose a skill</p>");
+    }else if(level === ""){
+        $("#select-level2").addClass("req-select");
+        $("#err-tasSK").remove();
+        $("#list-skill").append("<p id='err-tasSK' style='margin-top : 10px'>Please, select a level to the skill</p>");
+    }else{
+        $("#err-tasSK").remove();
+        $("#select-skill2").removeClass("req-select");
+        $("#select-level2").removeClass("req-select");
+    }
+});
+
+$("#add-button2").on("click",function(){
+    var skill = $("#select-skill2").val();
+    var level = $("#select-level2").val();
+    if(skill === "" && level ===""){
+       
+        $("#err-tasSK").remove();
+        $("#select-skill2").addClass("req-select");
+        $("#select-level2").addClass("req-select");
+        $("#list-skill").append("<p id='err-tasSK' style='margin-top : 10px'>Please, choose a skill and the relative level</p>");
+    }else if(skill === ""){
+        
+        $("#select-skill2").addClass("req-select");
+        $("#err-tasSK").remove();
+        $("#list-skill").prepend("<p id='err-tasSK' style='margin-top : 10px'>Please, choose a skill</p>");
+    }else if(level === ""){
+        
+        $("#select-level2").addClass("req-select");
+        $("#err-tasSK").remove();
+        $("#list-skill").prepend("<p id='err-tasSK' style='margin-top : 10px'>Please, select a level to the skill</p>");
+    }else{
+        $("#err-tasSK").remove();
+        $("#select-skill2").removeClass("req-select");
+        $("#select-level2").removeClass("req-select");
+    }
+    
+});
+
+
+$("#submit-task").on("click",function(e){
+   var task_name = $("#task_name").val(),
+   task_type = $("#task_type option:selected").text(),
+
+   start_date = $("#start_date").val(),
+   end_date = $("#end_date").val(),
+   task_descr = $("#task_descr").val(),
+   task_coll = $("#num_collaborators").val();
+   var isOpen = $("#isOpen").val();
+   var skill_level = [];
+   console.log(task_type);
+   if (task_name == "" || task_type == "Select Type" ||  start_date == "" ||   end_date == "" || task_descr == ""  || task_coll=="" || ($('ul#list-skill li').length < 1)){
+      
+       if(task_name === ""){
+            $("#task_name").addClass("req");
+            $("#err-tasN").remove();
+            $("#task_name").parent().append("<p id='err-tasN' align = 'left'>Please, insert the task's type</p>");
         }
-        else{
-            element.css("top",0);
+      
+    if(task_type === "Select Type"){
+        $("#task_type").addClass("req-select");
+        $("#err-tasT").remove();
+        $("#task_type").parent().parent().append("<p id='err-tasT' align='left'>Please, insert the task's type</p>");
+    }
+      
+    if(start_date!==""){
+   
+    if(!(isValidDateTask(start_date))){
+      $("#start_date").addClass("req");
+      $("#err-taskSD").remove();
+      $("#start_date").parent().append("<p id='err-taskSD' align='left'>The task's start date is uncorrect</p>");
+      
+    }else if($("#end_date").val()!=="" && (isGreaterDate(start_date,$("#end_date").val()))){
+      
+        $("#start_date").addClass("req");
+        $("#end_date").addClass("req");
+        $("#err-taskSD").remove();
+        $("#err-taskED").remove();
+        $("#start_date").parent().append("<p id='err-taskSD' align='left'>A task can't end before it starts</p>");
+      }
+      
+      
+    } else{
+      $("#start_date").addClass("req");
+      $("#err-taskSD").remove();
+      $("#start_date").parent().append("<p id='err-taskSD' align='left'>Please, insert the start_date</p>");
+    }   
+    if(end_date!==""){
+   
+    if(!(isValidDateTask(end_date))){
+      $("#end_date").addClass("req");
+      $("#err-taskED").remove();
+      $("#end_date").parent().append("<p id='err-taskED' align='left'>The task's end date is uncorrect</p>");
+      
+    }
+    }else{
+      $("#end_date").addClass("req");
+      $("#err-taskED").remove();
+      $("#end_date").parent().append("<p id='err-taskED' align='left'>Please, insert the end date</p>");
+    }if(task_coll === "" || Number(task_coll)<1){
+        $("#num_collaborators").addClass("req");
+        $("#err-tasC").remove();
+        $("#num_collaborators").parent().parent().append("<p id='err-tasC' align='left'>Please, insert a value greater than 0</p>");
+    }
+      if ($('ul#list-skill li').length < 1){
+            $("#err-tasSK").remove();
+            $("#select-skill2").addClass("req-select");
+            $("#select-level2").addClass("req-select");
+            $("#list-skill").append("<p id='err-tasSK' align='left'>Please, insert at least on skill</p>");
+    }
+     e.preventDefault();
+   }else{
+       $("#err-projT").remove();
+       $(".list-skill").children("li").each(function (){
+          var skill_name = $.trim($(this).children("a.skill-name").text());
+          var level = $.trim($(this).children("a#skill-level").text());
+          skill_level.push(skill_name+":"+level);
+            });
+            
+        $("#popup1").addClass("hidden");
+        aggiungi_task(task_name,start_date,end_date,task_descr, task_coll, skill_level,task_type,isOpen);
+    
+   }
+}); 
+ 
+   $("#project_name").on("change",function(){
+       var project_name = $("#project_name").val();
+       if (project_name == ""){
+        $("#project_name").addClass("req");
+        $("#err-proj").remove();
+        $("#project_name").parent().append("<p id='err-proj' align='left' style='margin-bottom : 20px'>Please, insert the project name</p>");
+       }else{
+         $("#project_name").removeClass("req");  
+         $("#err-proj").remove();
+       }
+   });
+  
+   $("#submit-project").on("click",function(e){
+       var project_name = $("#project_name").val();
+       if( project_name == "" || $('ul#task-list li').length < 1){
+           e.preventDefault();
+           if(project_name == ""){
+               $("#project_name").addClass("req");
+               $("#err-proj").remove();
+               $("#project_name").parent().append("<p id='err-proj' align='left' style='margin-bottom : 20px'>Please, insert the project name</p>");
+           }
+           if($('ul#task-list li').length < 1){
+               $("#err-projT").remove();
+               $("#task-list").parent().append("<p id='err-projT' align='center' style='margin-top : 20px'><font size=6>Please, insert at least a task</font></p>");
+           }
+       }else{
+           //azzero lavore input nascosto
+    $("#tasks").val("");
+    //conto il numero di task aggiunti
+    var c = $(".task-aggiunti").children("li").length;
+    var i=0;
+    for(i=0;i<c;i++){
+        //controlliamo valore dell'input nascosto
+        var input_tasks = $("#tasks").val();
+        //recuperiamo tutti i valori del task
+        var task = $(".task-aggiunti").children("li")[i];
+        var name = $.trim($(task).children().children("p#name").text().split(":")[1]);
+        var isOpen = $.trim($(task).children().children("p#isOpen").text().split(":")[1]);
+        var tipo = $.trim($(task).children().children("p#tipo").text().split(":")[1]);
+        var start = $.trim($(task).children().children("p#start-end").text().split(":")[1].split("-")[0]);
+        var end = $.trim($(task).children().children("p#start-end").text().split("-")[1].split(":")[1]);
+        var descr = $.trim($(task).children().children("p#descr").text().split(":")[1]);
+        var coll = $.trim($(task).children().children("p#coll").text().split(":")[1]);
+        var skills = $.trim($(task).children().children("p.skills").text().split(":")[1]);
+        if(input_tasks==""){
+            $("#tasks").val(name+"#"+start+"#"+end+"#"+descr+"#"+coll+"#"+skills+"#"+tipo+"#"+isOpen+"@");
+        }else{
+            $("#tasks").val(input_tasks+name+"#"+start+"#"+end+"#"+descr+"#"+coll+"#"+skills+"#"+tipo+"#"+isOpen+"@");
         }
-    });
-})(jQuery);
+        
+    }
+       }
+   });
+   
+  
+$("#typeS").on("change", function(){
+    $("#skill-father option").removeClass("hidden");
+    $("#skill-father").val("");
+    var type_id = $("#typeS option:selected").val();
+    $("#skill-father option").not("."+type_id).addClass("hidden");
+});
+
+$("#new-type").on("change", function(){
+    $("#new-father option").removeClass("hidden");
+    $("#new-father").val("");
+    var type_id = $("#new-type option:selected").val();
+    $("#new-father option").not("."+type_id).addClass("hidden");
+});

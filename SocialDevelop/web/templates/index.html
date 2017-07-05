@@ -31,19 +31,7 @@
                                    <input type="submit" value="Submit">
                                </div>
                               </form>
-                              <div class="gt_login_field">
-                                  
-                                  <p>Signin with Social Networks</p>
-                                  <ul class="gt_scl_icon">
-                                      <li><a class="bg_fb" href="#"><i class="fa fa-facebook"></i></a></li>
-                                      <li><a class="bg_twitter" href="#"><i class="fa fa-twitter"></i></a></li>
-                                      <li><a class="bg_gp" href="#"><i class="fa fa-google-plus"></i></a></li>
-                                      <li><a class="bg_linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
-                                      <li><a class="bg_behance" href="#"><i class="fa fa-behance"></i></a></li>
-                                      <li><a class="bg_vimeo" href="#"><i class="fa fa-vimeo"></i></a></li>
-                                      <li><a class="bg_youtube" href="#"><i class="fa fa-youtube-play"></i></a></li>
-                                  </ul>
-                              </div>
+                              
                              </div>
                             </div>
                             <div class=<#if active=="register">"tab-pane active"<#else>"tab-pane"</#if> id="register">
@@ -59,12 +47,12 @@
                                              <label><i class="fa fa-user"></i></label>
                                          </div>  
                                          <div class="gt_login_field">
-                                             <input type="text" name="username" required="required" placeholder="Username">
+                                             <input type="text" name="username1" required="required" placeholder="Username">
                                              <label><i class="fa fa-user-circle"></i></label>
                                              <p class=${hidden_register_username!"hidden"} style="color:#DC143C;">${error_username}</p> 
                                              </div>
                                              <div class="gt_login_field">
-                                                 <input type="text" pattern="\d{1,2}/\d{1,2}/\d{4}" required="required" name="birthdate" placeholder="Birthdate dd/mm/yyyy" />
+                                                 <input type="text" pattern="\d{1,2}/\d{1,2}/\d{4}" required="required" id="birthdate" name="birthdate" placeholder="Birthdate dd/mm/yyyy" />
                                                  <label><i class="fa fa-calendar"></i></label>
                                              </div> 
                                              <div class="gt_login_field">
@@ -73,16 +61,16 @@
                                                  <p class=${hidden_register_email!"hidden"} style="color:#DC143C;">${error_email}</p> 
                                                  </div>
                                                  <div class="gt_login_field">
-                                                     <input type="password" name="pwd" required="required" placeholder="Your Password">
+                                                     <input type="password" id="pwd1" name="pwd1" required="required" placeholder="Your Password">
                                                      <label><i class="icon-lock"></i></label>
                                                  </div>
                                                  <div class="gt_login_field">
-                                                     <input type="password" name="pwd2" required="required" placeholder="Confirm password">
+                                                     <input type="password" id="pwd2" name="pwd2" required="required" placeholder="Confirm password">
                                                      <label><i class="icon-lock"></i></label>
                                                      <p class=${hidden_register_pwd!"hidden"} style="color:#DC143C;">${error_pwd}</p> 
                                                      </div>
                                                      <div class="gt_login_field">
-                                                         <input type="submit" value="Submit">
+                                                         <input id="submit-sign" type="submit" value="Submit">
                                                      </div>
                                                  </form>
                                              </div>

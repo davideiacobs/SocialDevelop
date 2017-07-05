@@ -11,7 +11,9 @@ import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +23,7 @@ import socialdevelop.data.model.Admin;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Skill;
 import socialdevelop.data.model.SocialDevelopDataLayer;
+import socialdevelop.data.model.Task;
 import socialdevelop.data.model.Type;
 
 /**
@@ -49,17 +52,25 @@ public class BackEndSkill extends SocialDevelopBaseController {
                         request.setAttribute("admin", "admin");
                         request.setAttribute("page_title", "SKILL BACKEND");
                         request.setAttribute("page_subtitle", "Manage the Skills");
-
                         List<Skill> skills = datalayer.getSkillsParentList();
-                        
+                        List<Skill> skills_ok = new ArrayList();
                         if(skills!=null){
                             for(Skill skill : skills){
                                 List<Skill> child = datalayer.getChild(skill.getKey());
                                 if(child!=null){
                                     skill.setChild(child);
                                 }
+                                //riempiamo skills_ok con le skill cancellabili
+                                Map<Developer, Integer> devs = datalayer.getDevelopersBySkill(skill.getKey());
+                                if(devs.size()==0){
+                                    List<Task> tasks = datalayer.getTasksBySkill(skill.getKey());
+                                    if(tasks.size()==0){
+                                        skills_ok.add(skill);
+                                    }
+                                }
+                                
                             }
-                            request.setAttribute("skills", skills);
+                            request.setAttribute("skills", skills_ok);
                         }
                         List <Type> types = datalayer.getTypes();
                         if (types != null){

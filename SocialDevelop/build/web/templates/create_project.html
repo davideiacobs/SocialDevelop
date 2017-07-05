@@ -14,7 +14,7 @@
                     <div class="col-md-3">
                         <label id="label-pop" class="type-err">Select type</label> 
                         <div class="gt_explore_search gt_clas_search select-skill fullWidth">   
-                            <select id="select-type" class="form-control">
+                            <select id="task_type" class="form-control">
                                 <option value="">Select Type</option>
                                 <#list types as type>
                                 <option value="${type.key}">${type.type}</option>
@@ -52,7 +52,7 @@
                         <div class="add-skill">
                             <label id="label-pop" class="skills-err">Select skills and level required</label> 
                             <div class="gt_explore_search gt_clas_search select-skill">   
-                                <select id="select-skill" class="form-control">
+                                <select id="select-skill2" class="form-control">
                                     <option value="">Select Skill</option>
                                     
                                     <#list skills as skill>
@@ -64,7 +64,7 @@
                                 </select>
                             </div>
                             <div class="gt_explore_search gt_clas_search select-skill">            
-                                <select id="select-level" class="form-control" >
+                                <select id="select-level2" class="form-control" >
                                     <option value="">Level</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -79,12 +79,12 @@
                                 </select>
                             </div>
                             <div class="add-skill-pop gt_clas_search select-skill">                          
-                                <input id ="add-button" type="button" class="add-button add-skill-to-task-btn" value="Add">
+                                <input id ="add-button2" type="button" class="add-button add-skill-to-task-btn" value="Add">
                             </div>
                         </div>
                         <div class="lista-skill gt_aside_category">
                             
-                            <ul class="list-skill">
+                            <ul class="list-skill" id="list-skill">
                                 <!--contenuto = lista skill selezionate -->
                             </ul>
                         </div>
@@ -144,7 +144,7 @@
                 <li>Task Aggiunti</li>
                 
             </ul>
-            <ul class="gt-shortlisted task-aggiunti">
+            <ul class="gt-shortlisted task-aggiunti" id="task-list">
                 
             </ul>
         </div>

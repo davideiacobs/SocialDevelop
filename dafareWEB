@@ -65,33 +65,15 @@ questi non vengano aggiunti direttamente dal coordinatore. **FATTO**
 
 -paginazione DeveloperForTask (no)
 
--CAMBIAMENTI PERNA
-
---GESTIONE ECCEZIONI!
-
--backend -> inserire/modificare lista tipi task e lista skill associati ad ogni tipo (PERNA)
-
--backend login e dove posizionare la pagina (perna)
-
--email
-
--task chiuso in automatico se ci sono tutti i collaboratori oppure se lo chiude il coordinatore (perna)
-
 -opzionalmente, è possibile associare uno skill anche a più di
 un tipo
 
--controllo date inizio e fino  (PERNA)
-
--VERDE DEL CAZZO!
-
--rimuovere datalayer dai set attribute e controllare loggato profilo developer
-
 -cambiare scritte alle eccezioni
 
--open/close non va bene perchè non riapre il popup -> non risetta nell'input nascosto la chiave
+-rimuovere le cazzo di icone
 
--rendere list_project?n=1 come pagina principale
+-creare altri due progetti e controllare numpage
 
-
+-INDEX = LIST_PROJETCS?N=1
 
 

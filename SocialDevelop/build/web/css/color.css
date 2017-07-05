@@ -96,7 +96,7 @@ ul.gt_event_meta li:hover a,
 ul.gt_rating_start li a,
 .gt_product_des_wrap h5 > a:hover
 {
-	color:#2dcc70;	
+	color:#31B8F5;	
 }
 /*
 	  ============================================================
@@ -350,7 +350,7 @@ ul.gt_login_link li a,
 /*Product List Wrap Start*/
 ul.gt_product_ui_element li a
 {
-	border-color:#2dcc70;	
+	border-color:#31B8F5;	
 }
 /*
 	  ============================================================
@@ -612,14 +612,14 @@ ul.gt_product_ui_element li a i
 	  ============================================================
 */
 ::selection {
-    background: #2dcc70;
+    background: #31B8F5;
     color:#ffffff;
 }
 ::-webkit-selection {
-    background: #2dcc70;
+    background: #31B8F5;
     color: #ffffff;
 }
 ::-moz-selection {
-    background: #2dcc70;
+    background: #31B8F5;
     color: #ffffff;
 }

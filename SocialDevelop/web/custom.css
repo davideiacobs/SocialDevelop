@@ -170,3 +170,11 @@ and open the template in the editor.
     
 }
 
+select:not(:hover) {
+    background-color:transparent;
+}
+
+
+.single-dev-m{
+    min-height: 240px !important;
+}

@@ -14,7 +14,7 @@
                     <div class="col-md-3">
                         <label id="label-pop" class="type-err">Select type</label> 
                         <div class="gt_explore_search gt_clas_search select-skill fullWidth">   
-                            <select id="select-type" class="form-control">
+                            <select id="task_type" class="form-control">
                                 <option value="">Select Type</option>
                                 <#list types as type>
                                 <option value="${type.key}">${type.type}</option>
@@ -52,7 +52,7 @@
                         <div class="add-skill">
                             <label id="label-pop" class="skills-err">Select skills and level required</label> 
                             <div class="gt_explore_search gt_clas_search select-skill">   
-                                <select id="select-skill" class="form-control">
+                                <select id="select-skill2" class="form-control">
                                     <option value="">Select Skill</option>
                                     
                                     <#list skills as skill>
@@ -64,7 +64,7 @@
                                 </select>
                             </div>
                             <div class="gt_explore_search gt_clas_search select-skill">            
-                                <select id="select-level" class="form-control" >
+                                <select id="select-level2" class="form-control" >
                                     <option value="">Level</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -79,12 +79,12 @@
                                 </select>
                             </div>
                             <div class="add-skill-pop gt_clas_search select-skill">                          
-                                <input id ="add-button" type="button" class="add-button add-skill-to-task-btn" value="Add">
+                                <input id ="add-button2" type="button" class="add-button add-skill-to-task-btn" value="Add">
                             </div>
                         </div>
                         <div class="lista-skill gt_aside_category">
                             
-                            <ul class="list-skill">
+                            <ul class="list-skill" id="list-skill">
                                 <!--contenuto = lista skill selezionate -->
                             </ul>
                         </div>
@@ -127,7 +127,7 @@
             <div class="col-md-12">
                 <div class="gt_contact_us_field nome-progetto">
                     <label>Inserisci una descrizione del progetto</label>
-                    <textarea class="gt_c_bg" name="project_descr" id="project_descr" placeholder="Description" required>${project.description}</textarea>
+                    <textarea class="gt_c_bg" name="project_descr" id="project_descr" placeholder="Description">${project.description}</textarea>
                 </div>
             </div>
         </div>
@@ -143,7 +143,7 @@
             <ul class="gt_d_fav_hdg">
                 <li>Task Aggiunti</li>                  
             </ul>
-            <ul class="gt-shortlisted task-aggiunti">
+            <ul class="gt-shortlisted task-aggiunti"  id="task-list">
                 <#list tasks as task>
                 <li>
                     <div class='gt-text grade-padding'>
@@ -156,7 +156,7 @@
                         <p id="append_here_${taks.name}" class="skills">Skills Richieste: <#list skills_level[task?index] as key,value> ${key.name}(${value}) ; </#list>
                         </p>
                         <input type="button" value="Update" id="update-skill" onclick="update_task(this)"/>
-                        <input type="button" value="Close Task" id="close-skill" onclick="close_task(this)"/>
+                        <input type="button" value="Close Task" id="close-skill" class="close-task" onclick="close_task(this)"/>
                         
                     </div>
                 </li>
@@ -170,9 +170,7 @@
             <div class="gt_contact_us_field">
                 <input id="submit-project" type="submit" value="Save changes" name="submit_project">
             </div>
-            <!--Alert Message-->
-            <div id="contact-result">
-            </div>
+           
         </div>
         <input id="tasks_keys" name="tasks_keys" type="text" class="hidden" value="<#list tasks as task>${task.name},${task.key};</#list>"/>
         <input id="tasks" name="tasks" type="text" class="hidden"/>
