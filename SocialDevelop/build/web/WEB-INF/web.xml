@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
-    
     <context-param>
         <param-name>view.outline_template</param-name>
         <param-value>header-footer.html</param-value>
@@ -14,7 +13,7 @@
         <param-name>curriculums.directory</param-name>
         <param-value>C:\Users\david\Desktop\SocialDevelop\SocialDevelop\SocialDevelop\web\curriculums</param-value>
     </context-param>
-    <!- davide ubuntu --> 
+    <!- davide ubuntu -->
     <context-param>
         <param-name>extra-images.directory</param-name>
         <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/extra-images</param-value>
@@ -279,6 +278,10 @@
         <servlet-name>DeveloperCollaborators</servlet-name>
         <servlet-class>socialdevelop.controller.DeveloperCollaborators</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetPhoto</servlet-name>
+        <servlet-class>socialdevelop.controller.GetPhoto</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>provaDB2</servlet-name>
         <url-pattern>/provaDB2</url-pattern>
@@ -494,6 +497,10 @@
     <servlet-mapping>
         <servlet-name>DeveloperCollaborators</servlet-name>
         <url-pattern>/DeveloperCollaborators</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetPhoto</servlet-name>
+        <url-pattern>/GetPhoto</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

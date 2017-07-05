@@ -170,6 +170,10 @@ and open the template in the editor.
     
 }
 
+select::-ms-expand{
+    display:none;
+}
+
 select:not(:hover) {
     background-color:transparent;
 }

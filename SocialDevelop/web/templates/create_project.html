@@ -14,7 +14,7 @@
                     <div class="col-md-3">
                         <label id="label-pop" class="type-err">Select type</label> 
                         <div class="gt_explore_search gt_clas_search select-skill fullWidth">   
-                            <select id="task_type" class="form-control">
+                            <select id="task_type" class="form-control select-list-profile ">
                                 <option value="">Select Type</option>
                                 <#list types as type>
                                 <option value="${type.key}">${type.type}</option>
@@ -52,7 +52,7 @@
                         <div class="add-skill">
                             <label id="label-pop" class="skills-err">Select skills and level required</label> 
                             <div class="gt_explore_search gt_clas_search select-skill">   
-                                <select id="select-skill2" class="form-control">
+                                <select id="select-skill2" class="form-control select-list-profile ">
                                     <option value="">Select Skill</option>
                                     
                                     <#list skills as skill>
@@ -64,7 +64,7 @@
                                 </select>
                             </div>
                             <div class="gt_explore_search gt_clas_search select-skill">            
-                                <select id="select-level2" class="form-control" >
+                                <select id="select-level2" class="form-control select-list-profile " >
                                     <option value="">Level</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -127,7 +127,7 @@
             <div class="col-md-12">
                 <div class="gt_contact_us_field nome-progetto">
                     <label>Inserisci una descrizione del progetto</label>
-                    <textarea class="gt_c_bg" name="project_descr" id="project_descr" placeholder="Description" required></textarea>
+                    <textarea class="gt_c_bg" name="project_descr" id="project_descr" placeholder="Description"></textarea>
                 </div>
             </div>
         </div>
