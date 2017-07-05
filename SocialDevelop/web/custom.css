@@ -178,3 +178,7 @@ select:not(:hover) {
 .single-dev-m{
     min-height: 240px !important;
 }
+
+.guest a:hover{
+    color:#31B8F5 !important;
+}

@@ -9,7 +9,7 @@
             </ul>
             <div class="tab-content">
                 <div class=<#if active=="login">"tab-pane active"<#else>"tab-pane"</#if> id="login">
-                     <div class="gt_login_des_wrap default_width">
+                     <div class="gt_login_des_wrap default_width ">
                         <form id="login" action="Login" method="post">
                             <p class=${hidden_login_all!"hidden"} style="color:#DC143C;">${error_login_all}</p> 
                              <div class="gt_login_field">
@@ -22,17 +22,15 @@
                                   <label><i class="fa fa-lock"></i></label>
                               </div>
                               <p class=${hidden_login_pwd!"hidden"} style="color:#DC143C;">${error_pwd}</p>   
-                               <div class="gt_login_radio_btn">
-                                   <input id="2" type="checkbox">
-                                   <label for="2"><span></span>Keep Me logged In</label>
-                               </div>
-                                   
-                               <div class="gt_login_field">
+ 
+                               <div class="gt_login_field mb20">
                                    <input type="submit" value="Submit">
                                </div>
                               </form>
-                              
                              </div>
+                            <div class="gt_contact_us_field mb20">
+                                 <h6><a href="List_project?n=1" class="guest grade-right"> ..Or Enter As A Guest</a></h6>
+                            </div>
                             </div>
                             <div class=<#if active=="register">"tab-pane active"<#else>"tab-pane"</#if> id="register">
                                  <div class="gt_login_des_wrap default_width">
