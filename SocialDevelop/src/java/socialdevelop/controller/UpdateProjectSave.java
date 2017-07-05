@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
 import socialdevelop.data.impl.ProjectImpl;
 import socialdevelop.data.impl.TaskImpl;
 import socialdevelop.data.model.SocialDevelopDataLayer;
+import socialdevelop.data.model.Task;
 
 /**
  *
@@ -59,17 +60,25 @@ public class UpdateProjectSave extends SocialDevelopBaseController {
                 String tasks_keys = request.getParameter("tasks_keys");
                 String [] task_key = tasks_keys.split(";");
                 String [] task = tasks.split("@");
-                datalayer.deleteTasksFromProject(project_key);
+                //datalayer.deleteTasksFromProject(project_key);
+                int i = 0;
                 for(String t : task){
                     String [] thistask = t.split("#");
                     TaskImpl current = new TaskImpl(datalayer);
                     current.setName(thistask[0]);
-                    int i;
-                    for(i=0;i<task_key.length;i++){
-                        if(thistask[0].equals(task_key[i].split(",")[0])){
+                    //int i;
+                    //for(i=0;i<task_key.length;i++){
+                        /*if(thistask[0].equals(task_key[i].split(",")[0])){
                             current.setKey(Integer.parseInt(task_key[i].split(",")[1]));
-                        }
-                    }
+                        }*/
+                        if(i<task_key.length){
+                        Task temp = datalayer.getTask(Integer.parseInt(task_key[i].split(",")[1]));
+                        if(temp!=null){
+                            current.setKey(Integer.parseInt(task_key[i].split(",")[1]));
+                        //}
+                        
+                    }}
+                        i++;
                     
                     current.setProjectKey(project_key);
                     String start = thistask[1];

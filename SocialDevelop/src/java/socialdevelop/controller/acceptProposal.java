@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 import socialdevelop.data.model.Task;
+import socialdevelop.mailer.Mailer;
 
 
 /**
@@ -45,10 +46,42 @@ public class acceptProposal extends SocialDevelopBaseController {
             int state = Integer.parseInt(request.getParameter("state"));
             
             if(developer_key==0){
+                //riposta a proposta
                 int sender_key = Integer.parseInt(request.getParameter("sender"));
                 datalayer.storeTaskHasDeveloper(task_key, user_key, state, -1, sender_key);
+                
+                //invio mail
+                String obj = "Stato dell'invito aggiornato";
+                if(state==1){
+                    //proposta accettata
+                    String txt = datalayer.getDeveloper(user_key).getUsername()+" ha accettato la tua proposta di collaborazione"
+                            + " al task "+datalayer.getTask(task_key).getName()+"!";
+                    Mailer m1 = new Mailer(datalayer.getDeveloper(sender_key).getMail(),obj,txt);
+                    m1.sendEmail();
+                }else{
+                    //proposta rifiutata
+                    String txt = datalayer.getDeveloper(user_key).getUsername()+" ha rifiutato la tua proposta di collaborazione"
+                            + " al task "+datalayer.getTask(task_key).getName()+".";
+                    Mailer m1 = new Mailer(datalayer.getDeveloper(sender_key).getMail(),obj,txt);
+                    m1.sendEmail();
+                }
             }else{
+                //risposta a domanda
                 datalayer.storeTaskHasDeveloper(task_key, developer_key, state, -1, developer_key);
+                //invio mail
+                String obj = "Stato della domanda aggiornato";
+                if(state==1){
+                    //domanda accettata
+                    String txt = "La tua domanda di partecipazione al task "+datalayer.getTask(task_key).getName()+" è stata accettata.";
+                    Mailer m1 = new Mailer(datalayer.getDeveloper(developer_key).getMail(),obj,txt);
+                    m1.sendEmail();
+                }else{
+                    //domanda rifiutata
+                    String txt = "La tua domanda di partecipazione al task "+datalayer.getTask(task_key).getName()+" è stata rifiutata.";
+                    Mailer m1 = new Mailer(datalayer.getDeveloper(developer_key).getMail(),obj,txt);
+                    m1.sendEmail();
+                }
+                
             }
             
             if(state==1){

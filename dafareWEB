@@ -88,6 +88,8 @@ un tipo
 
 -cambiare scritte alle eccezioni
 
+-open/close non va bene perchè non riapre il popup -> non risetta nell'input nascosto la chiave
+
 
 
 

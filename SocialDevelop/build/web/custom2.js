@@ -461,7 +461,7 @@ function join_task(task_key, param){
             setTimeout(function(){ $(param).siblings(".join-msg").addClass("hidden"); }, 5000);
         },
         error: function (){
-            $(param).siblings(".join-msg").text("Something went wrong...");
+            $(param).siblings(".join-msg").text("There is already a waiting request");
             $(param).siblings(".join-msg").removeClass("hidden");
             setTimeout(function(){ $(param).siblings(".join-msg").addClass("hidden"); }, 5000);
         }
@@ -507,7 +507,7 @@ function send_request(task_key, dev_key, param){
         },
         error: function(){
             $(param).siblings(".join-msg").removeClass("hidden");
-            $(param).siblings(".join-msg").text("Something went wrong...");
+            $(param).siblings(".join-msg").text("There is already a waiting request");
             setTimeout(function(){ $(param).siblings(".join-msg").addClass("hidden"); }, 5000);
         }
     });
@@ -551,7 +551,7 @@ function send_request_dft(task_key, dev_key, param){
 
 
 $(".accept-proposal").on("click",function(){
-    
+    var button = $(this);
     var task = $(this).parent().parent().parent();
     var task_key = task.attr("id"); 
     var sender = $(this).parent().parent().attr("id");
@@ -570,6 +570,7 @@ $(".accept-proposal").on("click",function(){
             if(res=="Accepted"){
                 task.children("#"+sender).children(".icons").empty();
                 task.children("#"+sender).children(".icons").append("<i class='fa fa-check-circle-o' style='font-size:40px'></i>");
+                button.parent().remove();
             }
             
         },
@@ -582,7 +583,7 @@ $(".accept-proposal").on("click",function(){
 });
 
 $(".decline-proposal").on("click",function(){
-    
+    var button = $(this);
     var task = $(this).parent().parent().parent();
     var task_key = task.attr("id"); 
     var sender = $(this).parent().parent().attr("id");
@@ -601,6 +602,7 @@ $(".decline-proposal").on("click",function(){
             if(res=="Accepted"){
                 task.children("#"+sender).children(".icons").empty();
                 task.children("#"+sender).children(".icons").append("<i class='fa fa-times-circle-o' style='font-size:40px'></i>");
+                button.parent().remove();
             }
             
         },
@@ -615,7 +617,7 @@ $(".decline-proposal").on("click",function(){
 
 
 $(".accept-demend").on("click",function(){
-    
+    var button = $(this);
     var task = $(this).parent().parent().parent();
     var task_key = task.attr("id"); 
     var developer_key = $(this).parent().parent().parent().parent().attr("id");
@@ -634,6 +636,7 @@ $(".accept-demend").on("click",function(){
             if(res=="Accepted"){
                 task.children(".icons").empty();
                 task.children(".icons").append("<i class='fa fa-check-circle-o' style='font-size:40px'></i>");
+                button.parent().remove();
             }
             
         },
@@ -646,7 +649,7 @@ $(".accept-demend").on("click",function(){
 });
 
 $(".decline-demend").on("click",function(){
-    
+    var button = $(this);
     var task = $(this).parent().parent().parent();
     var task_key = task.attr("id"); 
     var developer_key = $(this).parent().parent().parent().parent().attr("id");
@@ -665,6 +668,7 @@ $(".decline-demend").on("click",function(){
             if(res=="Accepted"){
                 task.children(".icons").empty();
                 task.children(".icons").append("<i class='fa fa-times-circle-o' style='font-size:40px'></i>");
+                button.parent().remove();
             }
             
         },

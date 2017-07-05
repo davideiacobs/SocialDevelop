@@ -142,7 +142,7 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="annunci">
                     <div class="gt_comment_list_wrap gt_detail_hdg all-msg">  
-                        
+                        <#if messages?has_content>
                         <#list messages as message>
                         <#if message.type=="annuncio">
                         <ul>
@@ -158,8 +158,16 @@
                                 </div>
                             </li>
                         </ul>
+                        
                         </#if>
                         </#list>
+                        <#else>
+                        <ul>
+                            <li>
+                                <p>There are no ads here</p>
+                            </li>
+                        </ul>
+                        </#if>
                     </div> 
                         
                     <#if userid??>
@@ -198,6 +206,7 @@
                 <!-- RICHIESTE -->  
                 <div class="tab-pane" id="richieste">
                     <div class="gt_comment_list_wrap gt_detail_hdg all-msg">
+                        <#if messages?has_content>
                         <#list messages as message>
                         <#if message.type=="richiesta">
                         <ul>
@@ -215,6 +224,13 @@
                         </ul>
                         </#if>
                         </#list>
+                        <#else>
+                        <ul>
+                            <li>
+                                <p>There are no requests here</p>
+                            </li>
+                        </ul>
+                        </#if>
                     </div>
                     <#if userid??>
                     <div class="gt_post_comment_wrap gt_detail_hdg">
@@ -252,6 +268,7 @@
                 <!-- DISCUSSIONI -->
                 <div class="tab-pane" id="discussioni">
                     <div class="gt_comment_list_wrap gt_detail_hdg all-msg">
+                        <#if messages?has_content>
                         <#list messages as message>
                         <#if message.type=="discussione">
                         <ul>
@@ -269,6 +286,13 @@
                         </ul>
                         </#if>
                         </#list>
+                        <#else>
+                        <ul>
+                            <li>
+                                <p>There are no discussions here</p>
+                            </li>
+                        </ul>
+                        </#if>
                     </div> 
                     <#if userid??>
                     <div class="gt_post_comment_wrap gt_detail_hdg">

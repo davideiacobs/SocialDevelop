@@ -154,3 +154,7 @@ and open the template in the editor.
 .gt-shortlisted > li:hover > div > div > p {
     color: #333 !important;
 }
+
+.foot{
+    height:100px;
+}

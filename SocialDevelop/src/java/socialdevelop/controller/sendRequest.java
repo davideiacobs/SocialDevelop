@@ -15,8 +15,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import socialdevelop.data.model.CollaborationRequest;
 import socialdevelop.data.model.Project;
 import socialdevelop.data.model.SocialDevelopDataLayer;
+import socialdevelop.mailer.Mailer;
 
 
 /**
@@ -43,8 +45,17 @@ public class sendRequest extends SocialDevelopBaseController {
             Project p = datalayer.getProjectByTask(task_id);
             int coordinator_key = p.getCoordinatorKey();
             if(user_key==coordinator_key){
-                int ret = datalayer.storeTaskHasDeveloper(task_id, dev_key, 0, -1, user_key);
-
+                CollaborationRequest temp = datalayer.getCollaborationRequest(dev_key, task_id);
+                if(temp!=null){
+                    if(temp.getState()==-1){
+                        datalayer.deleteTaskHasDeveloper(dev_key,task_id);
+                    }
+                }
+                datalayer.storeTaskHasDeveloper(task_id, dev_key, 0, -1, user_key);
+                String obj = "Richiesta di Collaborazione";
+                String txt = "Hai ricevuto una richiesta di partecipazione al task "+datalayer.getTask(task_id).getName()+" da "+datalayer.getDeveloper(user_key).getUsername()+".";
+                Mailer m1 = new Mailer(datalayer.getDeveloper(dev_key).getMail(),obj,txt);
+                m1.sendEmail();
                 //sender=1 --> inviata da collaboratore
                 //stato=0 --> in attesa
                 //voto=-1 --> non rilasciato

@@ -66,6 +66,9 @@ public class Project_Detail extends SocialDevelopBaseController {
                 int coordinator_key = project.getCoordinatorKey();
                 if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0){
                     request.setAttribute("logout", "Logout");
+                    if(coordinator_key == (int) s.getAttribute("userid")){
+                        request.setAttribute("userid", coordinator_key);
+                    }
                     
                 }
                 
@@ -78,7 +81,6 @@ public class Project_Detail extends SocialDevelopBaseController {
                 List <Task> tasks = datalayer.getTasks(project.getKey()); //lista task del progetto
                 List <Task> tasksEnded = new ArrayList();  //lista di quelli terminati
                 List<Type> tasks_types = new ArrayList<>(); //lista dei tipi di ogni task
-                //ArrayList collaborators = new ArrayList(); //lista dei collaboratori di ogni task
                 int nProjectCollaborators = 0; //numero collaboratori totali task
                 ArrayList skills = new ArrayList();
                 request.setAttribute("tasks", tasks);
@@ -128,22 +130,7 @@ public class Project_Detail extends SocialDevelopBaseController {
                     }
                     Map <Skill, Integer> skillsList = datalayer.getSkillsByTask(task.getKey());
                     skills.add(skillsList);
-                    /*if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
-                        Developer dev = datalayer.getDeveloper((int) s.getAttribute("userid"));
-                        Map <Skill,Integer> devSkill = dev.getSkillsByDeveloper();
-                        for( Map.Entry <Skill,Integer> entryP : skillsList.entrySet()){
-                            if(devSkill.containsKey(entryP.getKey())){
-                                for (Map.Entry <Skill,Integer> entryD : devSkill.entrySet() ){
-                                    if(entryP.getKey().equals(entryD.getKey())){
-                                        request.setAttribute("uskill",entryD.getValue());
-                                    }
-                                }
-                            }
-                            else{
-                                request.setAttribute("skillN", 1);
-                            }
-                        }
-                    }*/
+                    
                 }
                 request.setAttribute("nProjectCollaborators", nProjectCollaborators);
                 request.setAttribute("skills", skills);

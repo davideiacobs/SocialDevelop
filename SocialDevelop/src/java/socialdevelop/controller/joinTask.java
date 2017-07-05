@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.SocialDevelopDataLayer;
+import socialdevelop.mailer.Mailer;
 
 
 /**
@@ -56,6 +57,10 @@ public class joinTask extends SocialDevelopBaseController {
                 //stato=0 --> in attesa
                 //voto=-1 --> non rilasciato
                 datalayer.storeTaskHasDeveloper(task_id, user_key, 0, -1, user_key);
+                String obj = "Richiesta di Collaborazione";
+                String txt = "Hai ricevuto una richiesta di partecipazione al task "+datalayer.getTask(task_id).getName()+" da "+datalayer.getDeveloper(user_key).getUsername()+".";
+                Mailer m1 = new Mailer(datalayer.getDeveloper(user_key).getMail(),obj,txt);
+                m1.sendEmail();
                 try {
                     out.println("Your request has been sended!");
                 }finally {
