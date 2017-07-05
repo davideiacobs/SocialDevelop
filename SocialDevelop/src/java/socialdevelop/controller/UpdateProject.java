@@ -19,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import socialdevelop.data.model.Admin;
 import socialdevelop.data.model.Project;
 import socialdevelop.data.model.Skill;
 import socialdevelop.data.model.SocialDevelopDataLayer;
@@ -45,6 +46,10 @@ public class UpdateProject extends SocialDevelopBaseController {
             request.setAttribute("page_title", "Update Project");
             request.setAttribute("page_subtitle", "Update your project infos");
             SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
+            Admin admin = datalayer.getAdmin((int) s.getAttribute("userid"));
+            if(admin!=null){
+                request.setAttribute("admin", "admin");
+            }
             //recupero skills che non hanno figli
             List<Type> types = datalayer.getTypes();
             if(types!=null){

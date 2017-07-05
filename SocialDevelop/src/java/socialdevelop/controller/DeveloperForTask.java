@@ -20,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import socialdevelop.data.model.Admin;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Project;
 import socialdevelop.data.model.Skill;
@@ -32,7 +33,7 @@ import socialdevelop.data.model.Task;
  */
 public class DeveloperForTask extends SocialDevelopBaseController {
     
-     private void action_error(HttpServletRequest request, HttpServletResponse response) {
+    private void action_error(HttpServletRequest request, HttpServletResponse response) {
         if (request.getAttribute("exception") != null) {
             (new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request, response);
         }
@@ -47,13 +48,17 @@ public class DeveloperForTask extends SocialDevelopBaseController {
             request.setAttribute("logout", "Logout");
             
             SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
+            Admin admin = datalayer.getAdmin((int) s.getAttribute("userid"));
+            if(admin!=null){
+                request.setAttribute("admin", "admin");
+            }
             Project p = datalayer.getProject(Integer.parseInt(request.getParameter("n")));
             if(p.getCoordinatorKey()== (int) s.getAttribute("userid")){
                 List<Task> tasks = datalayer.getTasks(Integer.parseInt(request.getParameter("n")));
                 List <List<Developer>> devs = new ArrayList<List<Developer>>();
                 HashMap <Integer,Integer> votes = new HashMap<Integer,Integer>();
                 HashMap <Integer,Integer> projects = new HashMap<Integer,Integer>();
-
+                
                 for(Task task: tasks)
                 {
                     List <Developer> devTask = new ArrayList<Developer> ();
@@ -75,7 +80,7 @@ public class DeveloperForTask extends SocialDevelopBaseController {
                             if(votes.size()> 0)
                             {
                                 int count2 = 0;
-
+                                
                                 for (int vote1 : vote )
                                 {
                                     if(vote1>=0)
@@ -99,10 +104,10 @@ public class DeveloperForTask extends SocialDevelopBaseController {
                             }
                             if(!devTask.contains(dev) && dev.getKey() != ((int) s.getAttribute("userid")) && !flag)
                             {
-
+                                
                                 devTask.add(dev);
                             }
-
+                            
                         }
                     }
                     devs.add(devTask);
@@ -141,7 +146,7 @@ public class DeveloperForTask extends SocialDevelopBaseController {
             action_error(request, response);
         } catch (DataLayerException ex) {
             request.setAttribute("exception", ex);
-            action_error(request, response);      
+            action_error(request, response);
         }
     }
     

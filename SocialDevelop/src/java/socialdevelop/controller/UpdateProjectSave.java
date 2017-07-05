@@ -11,8 +11,6 @@ import it.univaq.f4i.iw.framework.result.TemplateManagerException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.GregorianCalendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import socialdevelop.data.impl.ProjectImpl;
 import socialdevelop.data.impl.TaskImpl;
+import socialdevelop.data.model.Admin;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 import socialdevelop.data.model.Task;
 
@@ -41,6 +40,7 @@ public class UpdateProjectSave extends SocialDevelopBaseController {
         if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
                 if(!request.getParameter("tasks").equals("")){
                 SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
+                
                 String project_name = request.getParameter("project_name");
                 String project_descr = request.getParameter("project_descr");
                 int userid = (int) s.getAttribute("userid");

@@ -78,6 +78,14 @@
                                     <li><a href="PannelloDegliInviti">Invites</a></li>
                                     <li><a href="PannelloDelleOfferte">Offers</a></li>
                                     <li><a href="PannelloDelleDomande">Demends</a></li>
+                                    <#if admin??>
+                                    <li><a href="javascript:avoid(0);">Admin Panel</a>
+                                        <ul>
+                                            <li><a href="BackEndType">Types</a></li>
+                                            <li><a href="BackEndSkill">Skills</a></li>
+                                        </ul>
+                                    </li>
+                                    </#if>
                                     <#else>
                                     <li><a href="List_project?n=1"><i class="fa fa-home" style="font-size:17px"></i></a></li>
                                     </#if> 

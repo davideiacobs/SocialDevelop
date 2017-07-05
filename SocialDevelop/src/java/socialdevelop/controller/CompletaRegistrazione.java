@@ -8,7 +8,6 @@ package socialdevelop.controller;
 import it.univaq.f4i.iw.framework.data.DataLayerException;
 import it.univaq.f4i.iw.framework.result.FailureResult;
 import it.univaq.f4i.iw.framework.result.TemplateManagerException;
-import it.univaq.f4i.iw.framework.result.TemplateResult;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;

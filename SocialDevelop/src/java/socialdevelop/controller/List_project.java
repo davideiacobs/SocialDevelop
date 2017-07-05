@@ -19,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import socialdevelop.data.model.Admin;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Files;
 import socialdevelop.data.model.Project;
@@ -43,13 +44,18 @@ public class List_project extends SocialDevelopBaseController {
         request.setAttribute("page_title", "Progetti disponibili");
         request.setAttribute("home", "hidden");
         request.setAttribute("page_subtitle", "Progetti");
+        SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
         if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
                 request.setAttribute("logout", "Logout");
+                Admin admin = datalayer.getAdmin((int) s.getAttribute("userid"));
+                if(admin!=null){
+                    request.setAttribute("admin", "admin");
+                }
             }else{
                 request.setAttribute("MyProfile", "hidden");
         }
         int n = ((Integer.parseInt(request.getParameter("n")))-1)*6;
-        SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
+       
         double pagesize = ceil((double)(datalayer.getProjects().size())/6);
         request.setAttribute("page",pagesize);
         request.setAttribute("selected",request.getParameter("n"));

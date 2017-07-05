@@ -21,6 +21,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import socialdevelop.data.model.Admin;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Files;
 import socialdevelop.data.model.Project;
@@ -95,13 +96,18 @@ public class DeveloperCollaborations extends SocialDevelopBaseController {
                     entryEnded.getKey().setProject(pEnded);
                     coordinatorsEnded.add(cEnded);   
                 }
-                datalayer.destroy();
+               
                 HttpSession s = request.getSession(true);
                  if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {  
                     request.setAttribute("logout", "Logout");
+                    Admin admin = datalayer.getAdmin((int) s.getAttribute("userid"));
+                    if(admin!=null){
+                        request.setAttribute("admin", "admin");
+                    }
                 }else{
                     request.setAttribute("MyProfile", "hidden");
-                }   
+                }
+                datalayer.destroy();
                 request.setAttribute("tasksList", tasks);
                 request.setAttribute("coordinators", coordinators);
                 request.setAttribute("tasksListEnded", tasksEnded);

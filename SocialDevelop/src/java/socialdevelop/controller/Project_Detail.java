@@ -22,6 +22,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import socialdevelop.data.model.Admin;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Files;
 import socialdevelop.data.model.Message;
@@ -69,10 +70,12 @@ public class Project_Detail extends SocialDevelopBaseController {
                     if(coordinator_key == (int) s.getAttribute("userid")){
                         request.setAttribute("userid", coordinator_key);
                     }
+                    Admin admin = datalayer.getAdmin((int) s.getAttribute("userid"));
+                    if(admin!=null){
+                        request.setAttribute("admin", "admin");
+                    }
                     
                 }
-                
-                
                 request.setAttribute("page_title", "Project" + " " + project.getName());
                 request.setAttribute("page_subtitle", "Check project info");
                 request.setAttribute("projectname", project.getName());

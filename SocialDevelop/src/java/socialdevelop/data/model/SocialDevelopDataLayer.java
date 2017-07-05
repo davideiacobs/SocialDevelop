@@ -195,4 +195,12 @@ public interface SocialDevelopDataLayer extends DataLayer {
     List<Project> getProjectsLimit(int n) throws DataLayerException;
     
     Map<Developer,Integer> getDevelopersBySkillLimit(int skill_key, int level,int n) throws DataLayerException;
+
+    Admin createAdmin();
+
+    Admin getAdmin (int developer_key) throws DataLayerException;
+
+
+
+
 }

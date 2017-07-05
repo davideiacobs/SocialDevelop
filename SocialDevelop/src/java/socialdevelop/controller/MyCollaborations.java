@@ -21,6 +21,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import socialdevelop.data.model.Admin;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Files;
 import socialdevelop.data.model.Project;
@@ -62,6 +63,10 @@ public class MyCollaborations extends SocialDevelopBaseController {
             request.setAttribute("page_subtitle", "check you collaborations");
             if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
                 SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
+                Admin admin = datalayer.getAdmin((int) s.getAttribute("userid"));
+                if(admin!=null){
+                    request.setAttribute("admin", "admin");
+                }
                 Developer dev = datalayer.getDeveloper((int) s.getAttribute("userid"));
                 request.setAttribute("username", dev.getUsername());
                 request.setAttribute("fullname", dev.getName()+" "+dev.getSurname());
@@ -73,7 +78,6 @@ public class MyCollaborations extends SocialDevelopBaseController {
                 request.setAttribute("bio", dev.getBiography());
                 request.setAttribute("mail", dev.getMail());
                 request.setAttribute("logout", "Logout");
-                request.setAttribute("datalayer", datalayer);
                 getImg(request, response, dev);
                 
                 //recupero task a cui ha partecipato o sta partecipando (in cima quelli a cui sta partecipando

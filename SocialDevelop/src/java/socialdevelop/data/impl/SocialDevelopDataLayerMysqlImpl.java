@@ -23,6 +23,7 @@ import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.http.Part;
 import javax.sql.DataSource;
+import socialdevelop.data.model.Admin;
 import socialdevelop.data.model.CollaborationRequest;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Files;
@@ -53,7 +54,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
     private PreparedStatement iTask, uTask, dTask;
     private PreparedStatement iMessage, uMessage, dMessage;
     private PreparedStatement iType, uType, dType, sFileByID;
-    private PreparedStatement iRequest, uRequest, dRequest, iImg;
+    private PreparedStatement iRequest, uRequest, dRequest, iImg,sAdmin;
     private PreparedStatement iTaskHasSkill, dTaskHasSkill,uTaskHasSkill,sTaskHasSkill, sCollaboratorRequestsByTask;
     private PreparedStatement iTaskHasDeveloper,dTaskHasDeveloper,uTaskHasDeveloper,sTaskHasDeveloper,dTasksFromProject;
     private PreparedStatement iSkillHasDeveloper,dSkillHasDeveloper,uSkillHasDeveloper,sSkillHasDeveloper;
@@ -70,7 +71,8 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             super.init();
 
             //precompiliamo tutte le query utilizzate
-
+            sAdmin = connection.prepareStatement("SELECT * FROM admin WHERE developer_ID=?");
+            
             sProjectByID = connection.prepareStatement("SELECT * FROM project WHERE ID=?");
             
             sProjectsByCoordinator = connection.prepareStatement("SELECT ID from project WHERE coordinator_ID=?");
@@ -2122,6 +2124,44 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
         }
         return result; //restituisce in result tutti gli oggetti Project esistenti
     }
+    
+    @Override
+    public Admin createAdmin() {
+        return new AdminImpl(this);
+    }
+    
+    
+    public Admin createAdmin(ResultSet rs) throws DataLayerException {
+        try {
+            Admin a = new AdminImpl(this);
+            a.setKey(rs.getInt("ID"));
+            a.setDeveloperKey(rs.getInt("developer_ID"));
+            return a;
+        } catch (SQLException ex) {
+            throw new DataLayerException("Unable to create admin object form ResultSet", ex);
+        }
+    }
+    
+    @Override
+    public Admin getAdmin(int developer_key) throws DataLayerException {
+        try {
+            sAdmin.setInt(1, developer_key); 
+            try (ResultSet rs = sAdmin.executeQuery()) {
+                if (rs.next()) {
+                    return createAdmin(rs);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DataLayerException("Unable to load admin by ID", ex);
+        }
+        return null;
+    }
+
+    
+    
+   
+
+      
     
 }
     

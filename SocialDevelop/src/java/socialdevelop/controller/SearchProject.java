@@ -18,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import socialdevelop.data.model.Admin;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Files;
 import socialdevelop.data.model.Project;
@@ -40,11 +41,16 @@ public class SearchProject extends SocialDevelopBaseController {
         HttpSession s = request.getSession(true);
         request.setAttribute("page_title", "Search Projects");
         request.setAttribute("page_subtitle", "What project are you looking for?");
+        SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
         if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
                 request.setAttribute("logout", "Logout");
+                Admin admin = datalayer.getAdmin((int) s.getAttribute("userid"));
+                if(admin!=null){
+                    request.setAttribute("admin", "admin");
+                }
             }
         String keyWord = request.getParameter("keyWord");
-        SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
+        
         List<Project> pro = datalayer.getProjects(keyWord);
          if (pro.size()!=0) {
             request.setAttribute("listaprogetti", pro);

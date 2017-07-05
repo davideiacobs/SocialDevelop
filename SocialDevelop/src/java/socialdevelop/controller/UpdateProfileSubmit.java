@@ -22,6 +22,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import socialdevelop.data.model.Admin;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 
@@ -62,8 +63,9 @@ public class UpdateProfileSubmit extends SocialDevelopBaseController {
         String u = (String) s.getAttribute("previous_url");
         if(s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0){
             if(s.getAttribute("previous_url") != null && u.equals("/socialdevelop/UpdateProfile")){
+                
                 SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
-
+                
                 String bio = request.getParameter("biography");
 
                 String curriculum = request.getParameter("curriculum");

@@ -18,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import socialdevelop.data.model.Admin;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Files;
 import socialdevelop.data.model.SocialDevelopDataLayer;
@@ -69,17 +70,20 @@ public class DeveloperProfile extends SocialDevelopBaseController {
                 request.setAttribute("curriculum_pdf", dev.getCurriculumFile());
                 //request.setAttribute("datalayer", datalayer);
                 getImg(request, response, dev);
-                datalayer.destroy();
-
                 request.setAttribute("page_title", "Profile Of");
                 request.setAttribute("page_subtitle", dev.getUsername());
                 
                 HttpSession s = request.getSession(true);
                 if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {  
                     request.setAttribute("logout", "Logout");
+                    Admin admin = datalayer.getAdmin((int) s.getAttribute("userid"));
+                    if(admin!=null){
+                        request.setAttribute("admin", "admin");
+                    }
                 }else{
                     request.setAttribute("MyProfile", "hidden");
-                }   
+                }
+                datalayer.destroy();
                 TemplateResult res = new TemplateResult(getServletContext());
                 res.activate("developer_profile.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare
             }else{

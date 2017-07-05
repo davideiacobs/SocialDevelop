@@ -12,6 +12,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import socialdevelop.data.model.Admin;
+import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 import socialdevelop.data.model.Type;
 
@@ -32,23 +34,32 @@ public class BackEndType extends SocialDevelopBaseController {
     
     private void action_backendt(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, SQLException, NamingException, DataLayerException {    
                 
-                SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");           
+                       
                 HttpSession s = request.getSession(true);
                 if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0){
-                 
+                    SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");    
+                    Developer dev = datalayer.getDeveloper((int) s.getAttribute("userid"));
+                    Admin admin = datalayer.getAdmin(dev.getKey());
+                    if (admin != null ){
+                        request.setAttribute("admin", "admin");
+                        request.setAttribute("page_title", "TYPE BACKEND");
+                        request.setAttribute("page_subtitle", "Manage the Types");
 
-                request.setAttribute("page_title", "Types (BACKEND)");
-                request.setAttribute("page_subtitle", "Manage Types");
-                
-                List <Type> types = datalayer.getTypes();
-                request.setAttribute("types",types);
-                request.setAttribute("logout", "Logout");
-                
-                datalayer.destroy();
-                String act_url = request.getRequestURI();
-                s.setAttribute("previous_url", act_url);
-                TemplateResult res = new TemplateResult(getServletContext());
-                res.activate("backend_type.html",request, response);  
+                        List <Type> types = datalayer.getTypes();
+                        if (types != null){
+                            request.setAttribute("types",types);
+                        }
+                        request.setAttribute("logout", "Logout");
+
+                        datalayer.destroy();
+                        String act_url = request.getRequestURI();
+                        s.setAttribute("previous_url", act_url);
+                        TemplateResult res = new TemplateResult(getServletContext());
+                        res.activate("backend_type.html",request, response); 
+                    }else{
+                    s.removeAttribute("previous_url");
+                     response.sendRedirect("index");
+                }
                 }else{
                     s.removeAttribute("previous_url");
                      response.sendRedirect("index");

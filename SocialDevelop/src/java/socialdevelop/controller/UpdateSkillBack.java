@@ -16,6 +16,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import socialdevelop.data.model.Admin;
+import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Skill;
 import socialdevelop.data.model.SocialDevelopDataLayer;
 
@@ -44,6 +46,9 @@ public class UpdateSkillBack extends SocialDevelopBaseController {
             
                         SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
                         
+                        Developer dev = datalayer.getDeveloper((int) s.getAttribute("userid"));
+                        Admin admin = datalayer.getAdmin(dev.getKey());
+                        if (admin != null && admin.getDevelperKey() > 0){
                         
                         Skill updateSkill = datalayer.getSkill(parseInt(request.getParameter("old-skill")));
                         
@@ -64,6 +69,11 @@ public class UpdateSkillBack extends SocialDevelopBaseController {
                         datalayer.destroy();
                         s.removeAttribute("previous_url");
                         response.sendRedirect(u.split("/")[2]);
+                        }else{
+                        s.removeAttribute("previous_url");
+                        response.sendRedirect("index");
+
+                    }
 
                     }else{
                         s.removeAttribute("previous_url");

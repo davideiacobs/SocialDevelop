@@ -13,13 +13,12 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import socialdevelop.data.model.Admin;
 import socialdevelop.data.model.Developer;
 import socialdevelop.data.model.Files;
 import socialdevelop.data.model.Skill;
@@ -41,10 +40,15 @@ public class SearchDeveloper extends SocialDevelopBaseController {
         HttpSession s = request.getSession(true);
         request.setAttribute("page_title", "Search Developers");
         request.setAttribute("page_subtitle", "who are you looking for?");
+        SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
         if (s.getAttribute("userid") != null && ((int) s.getAttribute("userid"))>0) {
                 request.setAttribute("logout", "Logout");
+                Admin admin = datalayer.getAdmin((int) s.getAttribute("userid"));
+                if(admin!=null){
+                    request.setAttribute("admin", "admin");
+                }
             }
-        SocialDevelopDataLayer datalayer = (SocialDevelopDataLayer) request.getAttribute("datalayer");
+        
         List<Integer> developersID = datalayer.getDeveloperByUsernameLike(request.getParameter("username"));
         List <Developer> dev = new ArrayList<Developer>();
         for(int developerID: developersID)
