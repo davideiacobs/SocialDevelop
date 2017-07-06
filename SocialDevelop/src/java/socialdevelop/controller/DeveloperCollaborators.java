@@ -87,7 +87,7 @@ public class DeveloperCollaborators extends SocialDevelopBaseController {
                 }
             }
             request.setAttribute("collaborators", collaborators);
-            request.setAttribute("page_title", "Collaborators Of");
+            request.setAttribute("page_title", "Collaborators");
             request.setAttribute("page_subtitle", dev.getUsername());
             request.setAttribute("notmy", "notmy");
             HttpSession s = request.getSession(true);

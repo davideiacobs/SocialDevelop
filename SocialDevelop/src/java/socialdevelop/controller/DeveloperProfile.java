@@ -70,7 +70,7 @@ public class DeveloperProfile extends SocialDevelopBaseController {
                 request.setAttribute("curriculum_pdf", dev.getCurriculumFile());
                 //request.setAttribute("datalayer", datalayer);
                 getImg(request, response, dev);
-                request.setAttribute("page_title", "Profile Of");
+                request.setAttribute("page_title", "Profile");
                 request.setAttribute("page_subtitle", dev.getUsername());
                 
                 HttpSession s = request.getSession(true);

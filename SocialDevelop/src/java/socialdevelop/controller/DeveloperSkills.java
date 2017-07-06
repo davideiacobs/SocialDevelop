@@ -85,7 +85,7 @@ public class DeveloperSkills extends SocialDevelopBaseController {
                 request.setAttribute("MyProfile", "hidden");
             }
             datalayer.destroy();
-            request.setAttribute("page_title", "Skills Of");
+            request.setAttribute("page_title", "Skills");
             request.setAttribute("page_subtitle", dev.getUsername());
             TemplateResult res = new TemplateResult(getServletContext());
             res.activate("developer_skills.html",request, response);  //al posto di ciao va inserito il nome dell'html da attivare

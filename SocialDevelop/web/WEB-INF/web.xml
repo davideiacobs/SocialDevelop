@@ -16,11 +16,11 @@
     <!- davide ubuntu -->
     <context-param>
         <param-name>extra-images.directory</param-name>
-        <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/extra-images</param-value>
+        <param-value>C:\Users\Andrea\Desktop\INGWEB\SocialDevelop\SocialDevelop\web\extra-images</param-value>
     </context-param>
     <context-param>
         <param-name>curriculums.directory</param-name>
-        <param-value>/home/iacobs/GitHub/SocialDevelop/SocialDevelop/SocialDevelop/web/curriculums</param-value>
+        <param-value>C:\Users\Andrea\Desktop\INGWEB\SocialDevelop\SocialDevelop\web\curriculums</param-value>
     </context-param>
     <!--Manuel 
     <context-param>

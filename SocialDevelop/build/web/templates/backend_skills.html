@@ -55,7 +55,7 @@
                                 <div class="gt_privacy_field default_width mb20">
                                     <select class="form-control" id="rm-skill-b" required="required" name="rm-skill-b">
                                         <option value="">Select the skill to delete </option>
-                                        <#list skills as skill>
+                                        <#list skillsD as skill>
                                             
                                             <option value="${skill.key}">${skill.name}</option>
                                             <#if skill.child?has_content>

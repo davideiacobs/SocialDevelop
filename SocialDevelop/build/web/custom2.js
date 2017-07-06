@@ -170,7 +170,6 @@ function reload_task(name,type,state,start,end,descr,coll,skills){
 
 
 function close_task(param){
-    console.log("ciao");
     var isOpen = $(param).parent().children("#isOpen");
     if(isOpen.text()=="State: Open"){
         isOpen.text("State: Close");
@@ -196,7 +195,6 @@ function update_task(param){
     updatedElement = $(param).parent("div").parent("li");
     $("a.add-task").trigger("click");
     document.location.href = $("a.add-task").attr("href");
-    console.log("ciaociao");
     reload_task(name,type,state,start,end,descr,coll,skills);
 }
 
@@ -1024,7 +1022,6 @@ $("#registrati").on("submit", function(e){
       
     }
     }else{
-        console.log("ciao");
         e.preventDefault();
         $("#birthdate").addClass("req");
       }
@@ -1285,7 +1282,6 @@ $("#submit-task").on("click",function(e){
    task_coll = $("#num_collaborators").val();
    var isOpen = $("#isOpen").val();
    var skill_level = [];
-   console.log(task_type);
    if (task_name == "" || task_type == "Select Type" ||  start_date == "" ||   end_date == "" || task_descr == ""  || task_coll=="" || ($('ul#list-skill li').length < 1)){
       
        if(task_name === ""){

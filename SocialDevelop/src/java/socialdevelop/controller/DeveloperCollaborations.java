@@ -112,7 +112,7 @@ public class DeveloperCollaborations extends SocialDevelopBaseController {
                 request.setAttribute("coordinators", coordinators);
                 request.setAttribute("tasksListEnded", tasksEnded);
                 request.setAttribute("coordinatorsEnded", coordinatorsEnded);
-                request.setAttribute("page_title", "Collaborations Of");
+                request.setAttribute("page_title", "Collaborations");
                 request.setAttribute("page_subtitle", dev.getUsername());
                 request.setAttribute("notmy", "notmy");
                 TemplateResult res = new TemplateResult(getServletContext());

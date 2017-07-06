@@ -82,7 +82,7 @@ public class DeveloperProjects extends SocialDevelopBaseController {
             request.setAttribute("age", now.get(Calendar.YEAR) - dev.getBirthDate().get(Calendar.YEAR));
             request.setAttribute("bio", dev.getBiography());
             request.setAttribute("mail", dev.getMail());
-            request.setAttribute("page_title", "Projects of");
+            request.setAttribute("page_title", "Projects");
             request.setAttribute("page_subtitle", dev.getUsername());
             request.setAttribute("notmy", "notmy");
             request.setAttribute("id", dev_key);

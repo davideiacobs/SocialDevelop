@@ -335,7 +335,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             
             return a;
         } catch (SQLException ex) {
-            throw new DataLayerException("Unable to create task object form ResultSet", ex);
+            throw new DataLayerException("Unable to create skill object form ResultSet", ex);
         }
     }
     
@@ -374,7 +374,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             a.setFoto(rs.getInt("photo_ID"));
             return a;
         } catch (SQLException ex) {
-            throw new DataLayerException("Unable to create task object form ResultSet", ex);
+            throw new DataLayerException("Unable to create developer object form ResultSet", ex);
         }
     }
     
@@ -404,7 +404,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             }
             return a;
         } catch (SQLException ex) {
-            throw new DataLayerException("Unable to create files object form ResultSet", ex);
+            throw new DataLayerException("Unable to create file object form ResultSet", ex);
         }
     }
     
@@ -420,7 +420,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
             a.setType(rs.getString("type"));  
             return a;
         } catch (SQLException ex) {
-            throw new DataLayerException("Unable to create task object form ResultSet", ex);
+            throw new DataLayerException("Unable to create type object form ResultSet", ex);
         }
     }
     
@@ -497,7 +497,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                 }
             }
         } catch (SQLException ex) {
-            throw new DataLayerException("Unable to load project by ID", ex);
+            throw new DataLayerException("Unable to load number of task by project key", ex);
         }
         return 0;
     }
@@ -516,7 +516,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                 }
             }
         } catch (SQLException ex) {
-            throw new DataLayerException("Unable to load files by ID", ex);
+            throw new DataLayerException("Unable to load file by ID", ex);
         }
         return null;
     }
@@ -615,7 +615,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                 }
             }
         } catch (SQLException ex) {
-            throw new DataLayerException("unable to load developer by message_id", ex);
+            throw new DataLayerException("unable to load developer by message key", ex);
         }
         return null;
     }
@@ -631,7 +631,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                 }
             }
         } catch (SQLException ex) {
-            throw new DataLayerException("Unable to load projects", ex);
+            throw new DataLayerException("Unable to load messages", ex);
         }
         return result; //restituisce in result tutti gli oggetti Project esistenti
     }
@@ -693,7 +693,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                 }
             }
         } catch (SQLException ex) {
-            throw new DataLayerException("Unable to load skills", ex);
+            throw new DataLayerException("Unable to load skills by type key", ex);
         }
         return result; 
     }
@@ -710,7 +710,7 @@ public class SocialDevelopDataLayerMysqlImpl extends DataLayerMysqlImpl implemen
                }
            }
         }catch (SQLException ex) {
-            throw new DataLayerException("Unable to create type by ID", ex);
+            throw new DataLayerException("Unable to load type by ID", ex);
         }
         return null;
     }

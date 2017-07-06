@@ -70,8 +70,9 @@ public class BackEndSkill extends SocialDevelopBaseController {
                                 }
                                 
                             }
-                            request.setAttribute("skills", skills_ok);
+                            request.setAttribute("skillsD", skills_ok);
                         }
+                        request.setAttribute("skills", skills);
                         List <Type> types = datalayer.getTypes();
                         if (types != null){
                             request.setAttribute("types", types);
