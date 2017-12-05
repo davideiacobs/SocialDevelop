@@ -1,2 +1,0 @@
-colore background: #31b8f5
-dimensioni logo: 189x60
